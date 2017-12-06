@@ -2,7 +2,7 @@
 
 namespace TaurusSoftware.BillomatNet
 {
-    public class Class1
+    public class BillomatClient
     {
     }
 }

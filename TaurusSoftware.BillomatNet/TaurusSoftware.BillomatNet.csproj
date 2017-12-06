@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Version>0.1.0-alpha</Version>
+    <Authors>Martin Hey</Authors>
+    <Company>Martin Hey</Company>
+    <Description>A C# client to access Billomat.</Description>
+    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/martinhey/BillomatNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/martinhey/BillomatNet</RepositoryUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/martinhey/BillomatNet/master/icon.png</PackageIconUrl>
+    <PackageTags>billomat</PackageTags>
   </PropertyGroup>
 
 </Project>
