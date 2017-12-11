@@ -8,8 +8,9 @@ namespace TaurusSoftware.BillomatNet.Tests
         [Fact]
         public async Task Testit()
         {
+            var config = Helpers.GetTestConfiguration();
 
-            var s = new ClientService(null);
+            var s = new ClientService(config);
             var r = await s.MyselfAsync();
             Assert.True(true);
         }
