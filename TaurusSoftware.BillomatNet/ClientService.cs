@@ -17,7 +17,7 @@ namespace TaurusSoftware.BillomatNet
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             var httpResponse = await httpClient.GetAsync(new Uri("/api/clients/myself", UriKind.Relative), token);
-            var jsonModel = JsonConvert.DeserializeObject<Json.AccountOwnerWrapper>(httpResponse);
+            var jsonModel = JsonConvert.DeserializeObject<Json.AccountWrapper>(httpResponse);
             return new Client
             {
                 Id = int.Parse(jsonModel.Client.Id),

@@ -2,9 +2,9 @@
 
 namespace TaurusSoftware.BillomatNet.Json
 {
-    internal class AccountOwnerWrapper
+    internal class AccountWrapper
     {
         [JsonProperty("client")]
-        public AccountOwner Client { get; set; }
+        public Account Client { get; set; }
     }
 }
