@@ -7,6 +7,24 @@ namespace TaurusSoftware.BillomatNet
 {
     public static class MappingExtensions
     {
+        internal static string ToQueryString(this ClientFilter value)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
+            var filters = new List<string>();
+            if (!string.IsNullOrEmpty(value.Name))
+            {
+                filters.Add($"name={value.Name}");
+            }
+
+
+            // TODO add other filter options
+            return string.Join("&", filters);
+        }
+
         internal static Quota ToDomain(this Json.Quota value)
         {
             if (value == null)

@@ -37,10 +37,21 @@ namespace TaurusSoftware.BillomatNet.Net
         public string AppSecret { get; set; }
 
 
-        public async Task<string> GetAsync(Uri relativeUri, CancellationToken token = default(CancellationToken))
+        public Task<string> GetAsync(Uri relativeUri, CancellationToken token = default(CancellationToken))
         {
-            Uri baseUri = new Uri($"https://{BillomatId}.billomat.net/");
-            Uri uri = new Uri(baseUri, relativeUri);
+            return GetAsync(relativeUri, null, token);
+
+        }
+
+        public async Task<string> GetAsync(Uri relativeUri, string query, CancellationToken token = default(CancellationToken))
+        {
+            var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
+            var builder = new UriBuilder(new Uri(baseUri, relativeUri));
+            if (!string.IsNullOrEmpty(query))
+            {
+                builder.Query = query;
+            }
+            var uri = builder.ToString();
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpWebRequest.Method = "GET";
@@ -65,7 +76,7 @@ namespace TaurusSoftware.BillomatNet.Net
             }
 
             string result;
-            using (StreamReader streamReader = new StreamReader(responseStream))
+            using (var streamReader = new StreamReader(responseStream))
             {
                 result = await streamReader.ReadToEndAsync();
             }
