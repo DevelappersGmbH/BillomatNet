@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using TaurusSoftware.BillomatNet.Api;
 using TaurusSoftware.BillomatNet.Model;
+using Account = TaurusSoftware.BillomatNet.Model.Account;
+using Quota = TaurusSoftware.BillomatNet.Model.Quota;
 
 namespace TaurusSoftware.BillomatNet
 {
@@ -25,7 +28,7 @@ namespace TaurusSoftware.BillomatNet
             return string.Join("&", filters);
         }
 
-        internal static Quota ToDomain(this Json.Quota value)
+        internal static Quota ToDomain(this Api.Quota value)
         {
             if (value == null)
             {
@@ -60,17 +63,17 @@ namespace TaurusSoftware.BillomatNet
             };
         }
 
-        internal static List<Quota> ToDomain(this Json.QuotaWrapper value)
+        internal static List<Quota> ToDomain(this QuotaWrapper value)
         {
             return value?.Quota?.Select(x => x.ToDomain()).ToList();
         }
 
-        internal static Account ToDomain(this Json.AccountWrapper value)
+        internal static Account ToDomain(this AccountWrapper value)
         {
             return value?.Client.ToDomain();
         }
 
-        internal static Account ToDomain(this Json.Account value)
+        internal static Account ToDomain(this Api.Account value)
         {
             if (value == null)
             {

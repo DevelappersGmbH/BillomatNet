@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace TaurusSoftware.BillomatNet.Json
+namespace TaurusSoftware.BillomatNet.Api
 {
     internal class ClientWrapper
     {
