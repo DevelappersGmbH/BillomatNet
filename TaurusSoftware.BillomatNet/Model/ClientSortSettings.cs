@@ -2,7 +2,7 @@
 
 namespace TaurusSoftware.BillomatNet.Model
 {
-    public class ClientSort : List<ClientSortItem>
+    public class ClientSortSettings : List<ClientSortItem>
     {
     }
 }

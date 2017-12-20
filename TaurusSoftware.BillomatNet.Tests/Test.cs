@@ -12,7 +12,13 @@ namespace TaurusSoftware.BillomatNet.Tests
             var config = Helpers.GetTestConfiguration();
 
             var s = new ClientService(config);
-            var r = await s.ListAsync(new ClientFilter{Name = "Regiofaktur" }, null);
+            var r = await s.ListAsync(new ClientFilterSortOptions
+            {
+                Filter = new ClientFilter
+                {
+                    Name = "Regiofaktur"
+                }
+            });
             Assert.True(true);
         }
     }
