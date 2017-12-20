@@ -3,8 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using TaurusSoftware.BillomatNet.Api;
+using TaurusSoftware.BillomatNet.Api.Net;
+using TaurusSoftware.BillomatNet.Helpers;
 using TaurusSoftware.BillomatNet.Model;
-using TaurusSoftware.BillomatNet.Net;
 using Account = TaurusSoftware.BillomatNet.Model.Account;
 using Client = TaurusSoftware.BillomatNet.Model.Client;
 
@@ -31,7 +32,6 @@ namespace TaurusSoftware.BillomatNet
 
         public async Task<PagedList<Client>> ListAsync(ClientFilterSortOptions options, CancellationToken token = default(CancellationToken))
         {
-            
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             var httpResponse = await httpClient.GetAsync(new Uri("/api/clients", UriKind.Relative), QueryString.For(options), token);
             var jsonModel = JsonConvert.DeserializeObject<ClientListWrapper>(httpResponse);

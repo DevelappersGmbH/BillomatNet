@@ -6,7 +6,7 @@ using Newtonsoft.Json.Linq;
 
 namespace TaurusSoftware.BillomatNet.Api.Json
 {
-    public class CollectionConverter<T> : JsonConverter
+    internal class CollectionConverter<T> : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {

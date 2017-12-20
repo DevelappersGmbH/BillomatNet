@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace TaurusSoftware.BillomatNet
+namespace TaurusSoftware.BillomatNet.Helpers
 {
-    public static class ExtensionMethods
+    internal static class ExtensionMethods
     {
         public static List<string> ToStringList(this string values)
         {

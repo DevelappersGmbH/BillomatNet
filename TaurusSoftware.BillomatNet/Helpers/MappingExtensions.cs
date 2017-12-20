@@ -7,7 +7,7 @@ using Account = TaurusSoftware.BillomatNet.Model.Account;
 using Client = TaurusSoftware.BillomatNet.Model.Client;
 using Quota = TaurusSoftware.BillomatNet.Model.Quota;
 
-namespace TaurusSoftware.BillomatNet
+namespace TaurusSoftware.BillomatNet.Helpers
 {
     internal static class MappingExtensions
     {
@@ -34,7 +34,7 @@ namespace TaurusSoftware.BillomatNet
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
                 TotalItems = value.Total,
-                List = value.List?.Select(x =>  x.ToDomain()).ToList()
+                List = value.List?.Select(x => x.ToDomain()).ToList()
             };
             //return value.Item.ToDomain();
 

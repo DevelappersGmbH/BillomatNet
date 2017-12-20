@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using TaurusSoftware.BillomatNet.Model;
 
-namespace TaurusSoftware.BillomatNet
+namespace TaurusSoftware.BillomatNet.Helpers
 {
     internal static class QueryString
     {
@@ -20,15 +22,55 @@ namespace TaurusSoftware.BillomatNet
             var paging = value.Paging.ToQueryString();
 
             return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
-
         }
 
 
         internal static string ToQueryString(this ClientSortSettings value)
         {
-            // TODO: implement
-            return null;
+            if (value == null ||value.Count == 0)
+            {
+                return null;
+            }
+
+            var sortItems = value.Select(x =>
+            {
+                var domainObjectName = GetMemberInfo(x.Property).Member.Name;
+                var queryMemberName = (typeof(Api.Client)
+                    .GetProperty(domainObjectName)
+                    .GetCustomAttributes(typeof(JsonPropertyAttribute), true)
+                    .FirstOrDefault() as JsonPropertyAttribute)?.PropertyName;
+                var order = x.Order == SortOrder.Descending ? "ASC" : "DESC";
+                return HttpUtility.UrlEncode($"{queryMemberName} {order}");
+            });
+
+            
+            return "order_by=" + string.Join(",", sortItems);
         }
+
+        private static MemberExpression GetMemberInfo(Expression method)
+        {
+            LambdaExpression lambda = method as LambdaExpression;
+            if (lambda == null)
+                throw new ArgumentNullException("method");
+
+            MemberExpression memberExpr = null;
+
+            if (lambda.Body.NodeType == ExpressionType.Convert)
+            {
+                memberExpr =
+                    ((UnaryExpression)lambda.Body).Operand as MemberExpression;
+            }
+            else if (lambda.Body.NodeType == ExpressionType.MemberAccess)
+            {
+                memberExpr = lambda.Body as MemberExpression;
+            }
+
+            if (memberExpr == null)
+                throw new ArgumentException("method");
+
+            return memberExpr;
+        }
+
 
         internal static string ToQueryString(this PagingSettings value)
         {
