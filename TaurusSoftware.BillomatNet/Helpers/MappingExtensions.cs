@@ -85,6 +85,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return value?.Client.ToDomain();
         }
 
+        internal static Client ToDomain(this ClientWrapper value)
+        {
+            return value?.Client.ToDomain();
+        }
+
         private static Client ToDomain(this Api.Client value)
         {
             if (value == null)

@@ -25,16 +25,24 @@ namespace TaurusSoftware.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        public Task<PagedList<Client>> ListAsync(CancellationToken token = default(CancellationToken))
+        public Task<PagedList<Client>> GetListAsync(CancellationToken token = default(CancellationToken))
         {
-            return ListAsync(null, token);
+            return GetListAsync(null, token);
         }
 
-        public async Task<PagedList<Client>> ListAsync(ClientFilterSortOptions options, CancellationToken token = default(CancellationToken))
+        public async Task<PagedList<Client>> GetListAsync(ClientFilterSortOptions options, CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             var httpResponse = await httpClient.GetAsync(new Uri("/api/clients", UriKind.Relative), QueryString.For(options), token);
             var jsonModel = JsonConvert.DeserializeObject<ClientListWrapper>(httpResponse);
+            return jsonModel.ToDomain();
+        }
+
+        public async Task<Client> GetById(int id, CancellationToken token = default(CancellationToken))
+        {
+            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            var httpResponse = await httpClient.GetAsync(new Uri($"/api/clients/{id}", UriKind.Relative), token);
+            var jsonModel = JsonConvert.DeserializeObject<Api.ClientWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }
     }
