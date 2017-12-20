@@ -5,6 +5,8 @@ namespace TaurusSoftware.BillomatNet.Api
 {
     internal class Client
     {
+        // TODO: see missing propeties https://www.billomat.com/api/kunden/
+
         [JsonProperty("id")]
         public string Id { get; set; }
 
