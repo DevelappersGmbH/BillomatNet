@@ -1,7 +1,6 @@
-﻿using System;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
-namespace TaurusSoftware.BillomatNet.Json
+namespace TaurusSoftware.BillomatNet.Api
 {
     internal class Account : Client
     {
