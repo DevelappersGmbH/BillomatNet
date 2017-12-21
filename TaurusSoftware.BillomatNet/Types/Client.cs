@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TaurusSoftware.BillomatNet.Model
+namespace TaurusSoftware.BillomatNet.Types
 {
     public class Client
     {

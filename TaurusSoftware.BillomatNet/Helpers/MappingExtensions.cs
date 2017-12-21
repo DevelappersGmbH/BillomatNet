@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using TaurusSoftware.BillomatNet.Api;
-using TaurusSoftware.BillomatNet.Model;
-using Account = TaurusSoftware.BillomatNet.Model.Account;
-using Client = TaurusSoftware.BillomatNet.Model.Client;
-using Quota = TaurusSoftware.BillomatNet.Model.Quota;
+using TaurusSoftware.BillomatNet.Types;
+using Account = TaurusSoftware.BillomatNet.Types.Account;
+using Client = TaurusSoftware.BillomatNet.Types.Client;
+using Quota = TaurusSoftware.BillomatNet.Types.Quota;
 
 namespace TaurusSoftware.BillomatNet.Helpers
 {
