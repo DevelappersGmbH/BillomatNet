@@ -23,6 +23,19 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
         }
 
+        internal static string For(Query<Article, ArticleFilter> value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var filter = value.Filter.ToQueryString();
+            var sort = value.Sort.ToQueryString();
+            var paging = value.Paging.ToQueryString();
+
+            return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
+        }
 
         internal static string ToQueryString(this List<SortItem<Client>> value)
         {
@@ -46,7 +59,27 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return "order_by=" + string.Join(",", sortItems);
         }
 
-       
+        internal static string ToQueryString(this List<SortItem<Article>> value)
+        {
+            if (value == null || value.Count == 0)
+            {
+                return null;
+            }
+
+            var sortItems = value.Select(x =>
+            {
+                var domainObjectName = ReflectionHelper.GetPropertyInfo(x.Property).Name;
+                var queryMemberName = (typeof(Api.Article)
+                    .GetProperty(domainObjectName)
+                    .GetCustomAttributes(typeof(JsonPropertyAttribute), true)
+                    .FirstOrDefault() as JsonPropertyAttribute)?.PropertyName;
+                var order = x.Order == SortOrder.Descending ? "ASC" : "DESC";
+                return HttpUtility.UrlEncode($"{queryMemberName} {order}");
+            });
+
+
+            return "order_by=" + string.Join(",", sortItems);
+        }
 
 
         internal static string ToQueryString(this PagingSettings value)
@@ -59,6 +92,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return $"per_page={value.ItemsPerPage}&page={value.Page}";
         }
 
+        internal static string ToQueryString(this ArticleFilter value)
+        {
+            // TODO
+            return "";
+        }
 
         internal static string ToQueryString(this ClientFilter value)
         {

@@ -6,6 +6,7 @@ using TaurusSoftware.BillomatNet.Types;
 using Account = TaurusSoftware.BillomatNet.Types.Account;
 using Client = TaurusSoftware.BillomatNet.Types.Client;
 using Quota = TaurusSoftware.BillomatNet.Types.Quota;
+using Article = TaurusSoftware.BillomatNet.Types.Article;
 
 namespace TaurusSoftware.BillomatNet.Helpers
 {
@@ -36,8 +37,6 @@ namespace TaurusSoftware.BillomatNet.Helpers
                 TotalItems = value.Total,
                 List = value.List?.Select(x => x.ToDomain()).ToList()
             };
-            //return value.Item.ToDomain();
-
         }
 
         private static Quota ToDomain(this Api.Quota value)
@@ -133,6 +132,70 @@ namespace TaurusSoftware.BillomatNet.Helpers
                 VatNumber = value.VatNumber,
                 Web = value.Www,
                 ZipCode = value.Zip
+            };
+        }
+
+        internal static PagedList<Article> ToDomain(this Api.ArticleListWrapper value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return value.Item.ToDomain();
+
+        }
+
+        internal static PagedList<Article> ToDomain(this Api.ArticleList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new PagedList<Article>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(x => x.ToDomain()).ToList()
+            };
+        }
+
+        internal static Article ToDomain(this ArticleWrapper value)
+        {
+            return value?.Article.ToDomain();
+        }
+
+        private static Article ToDomain(this Api.Article value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Article
+            {
+                Id = value.Id,
+                Created = value.Created,
+                ArticleNumber = value.ArticleNumber,
+                CurrencyCode = value.CurrencyCode,
+                Description = value.Description,
+                Number = value.Number,
+                NumberLength = value.NumberLength,
+                NumberPre = value.NumberPre,
+                PurchasePrice = value.PurchasePrice,
+                PurchasePriceNetGross = value.PurchasePriceNetGross,
+                SalesPrice = value.SalesPrice,
+                SalesPrice2 = value.SalesPrice2,
+                SalesPrice3 = value.SalesPrice3,
+                SalesPrice4 = value.SalesPrice4,
+                SalesPrice5 = value.SalesPrice5,
+                SupplierId = value.SupplierId,
+                TaxId = value.TaxId,
+                Title = value.Title,
+                UnitId = value.UnitId
+
             };
         }
 
