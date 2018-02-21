@@ -1,4 +1,4 @@
-﻿namespace TaurusSoftware.BillomatNet
+﻿namespace TaurusSoftware.BillomatNet.Queries
 {
     public enum SortOrder
     {

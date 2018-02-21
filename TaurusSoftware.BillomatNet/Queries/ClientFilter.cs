@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TaurusSoftware.BillomatNet.Model
+namespace TaurusSoftware.BillomatNet.Queries
 {
     public class ClientFilter
     {

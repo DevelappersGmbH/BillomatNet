@@ -1,6 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Threading;
 using System.Threading.Tasks;
-using TaurusSoftware.BillomatNet.Model;
+using TaurusSoftware.BillomatNet.Queries;
+using TaurusSoftware.BillomatNet.Types;
 using Xunit;
 
 namespace TaurusSoftware.BillomatNet.Tests
@@ -13,17 +14,12 @@ namespace TaurusSoftware.BillomatNet.Tests
             var config = Helpers.GetTestConfiguration();
            
             var s = new ClientService(config);
-            var r = await s.GetListAsync(new ClientFilterSortOptions
-            {
-                Filter = new ClientFilter
-                {
-                    Name = "Regiofaktur"
-                },
-                Sort = new ClientSortSettings
-                {
-                    new ClientSortItem{ Order = SortOrder.Ascending, Property = y => y.City}
-                }
-            });
+
+            var q = new Query<Client, ClientFilter>()
+                .AddFilter(x => x.Name, "Regiofaktur")
+                .AddSort(x => x.City, SortOrder.Ascending);
+
+            var r = await s.GetListAsync(q, CancellationToken.None);
 
             var c = await s.GetById(1227912);
             Assert.True(true);

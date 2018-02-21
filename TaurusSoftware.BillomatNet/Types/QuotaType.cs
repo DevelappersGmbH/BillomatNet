@@ -1,4 +1,4 @@
-﻿namespace TaurusSoftware.BillomatNet.Model
+﻿namespace TaurusSoftware.BillomatNet.Types
 {
     public enum QuotaType
     {

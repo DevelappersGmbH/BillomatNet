@@ -5,9 +5,9 @@ using Newtonsoft.Json;
 using TaurusSoftware.BillomatNet.Api;
 using TaurusSoftware.BillomatNet.Api.Net;
 using TaurusSoftware.BillomatNet.Helpers;
-using TaurusSoftware.BillomatNet.Model;
-using Account = TaurusSoftware.BillomatNet.Model.Account;
-using Client = TaurusSoftware.BillomatNet.Model.Client;
+using TaurusSoftware.BillomatNet.Queries;
+using Account = TaurusSoftware.BillomatNet.Types.Account;
+using Client = TaurusSoftware.BillomatNet.Types.Client;
 
 namespace TaurusSoftware.BillomatNet
 {
@@ -30,10 +30,10 @@ namespace TaurusSoftware.BillomatNet
             return GetListAsync(null, token);
         }
 
-        public async Task<PagedList<Client>> GetListAsync(ClientFilterSortOptions options, CancellationToken token = default(CancellationToken))
+        public async Task<PagedList<Client>> GetListAsync(Query<Client, ClientFilter> query, CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri("/api/clients", UriKind.Relative), QueryString.For(options), token);
+            var httpResponse = await httpClient.GetAsync(new Uri("/api/clients", UriKind.Relative), QueryString.For(query), token);
             var jsonModel = JsonConvert.DeserializeObject<ClientListWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }
