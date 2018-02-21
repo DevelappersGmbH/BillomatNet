@@ -42,7 +42,7 @@ namespace TaurusSoftware.BillomatNet
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             var httpResponse = await httpClient.GetAsync(new Uri($"/api/clients/{id}", UriKind.Relative), token);
-            var jsonModel = JsonConvert.DeserializeObject<Api.ClientWrapper>(httpResponse);
+            var jsonModel = JsonConvert.DeserializeObject<ClientWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }
     }
