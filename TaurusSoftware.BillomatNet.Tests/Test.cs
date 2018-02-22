@@ -33,12 +33,12 @@ namespace TaurusSoftware.BillomatNet.Tests
             var s = new ArticleService(config);
 
             var q = new Query<Article, ArticleFilter>()
-                .AddFilter(x => x.ArticleNumber, "ART")
+                //.AddFilter(x => x.ArticleNumber, "ART")
                 .AddSort(x => x.SalesPrice, SortOrder.Descending);
 
             var r = await s.GetListAsync(q, CancellationToken.None);
 
-            //var c = await s.GetById(1227912);
+            var c = await s.GetById(434867);
             Assert.True(true);
         }
     }

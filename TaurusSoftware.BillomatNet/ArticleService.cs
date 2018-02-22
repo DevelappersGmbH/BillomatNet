@@ -28,5 +28,13 @@ namespace TaurusSoftware.BillomatNet
             var jsonModel = JsonConvert.DeserializeObject<ArticleListWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }
+
+        public async Task<Article> GetById(int id, CancellationToken token = default(CancellationToken))
+        {
+            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            var httpResponse = await httpClient.GetAsync(new Uri($"/api/articles/{id}", UriKind.Relative), token);
+            var jsonModel = JsonConvert.DeserializeObject<ArticleWrapper>(httpResponse);
+            return jsonModel.ToDomain();
+        }
     }
 }
