@@ -37,29 +37,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
         }
 
-        internal static string ToQueryString(this List<SortItem<Client>> value)
-        {
-            if (value == null ||value.Count == 0)
-            {
-                return null;
-            }
-
-            var sortItems = value.Select(x =>
-            {
-                var domainObjectName = ReflectionHelper.GetPropertyInfo(x.Property).Name;
-                var queryMemberName = (typeof(Api.Client)
-                    .GetProperty(domainObjectName)
-                    .GetCustomAttributes(typeof(JsonPropertyAttribute), true)
-                    .FirstOrDefault() as JsonPropertyAttribute)?.PropertyName;
-                var order = x.Order == SortOrder.Descending ? "ASC" : "DESC";
-                return HttpUtility.UrlEncode($"{queryMemberName} {order}");
-            });
-
-            
-            return "order_by=" + string.Join(",", sortItems);
-        }
-
-        internal static string ToQueryString(this List<SortItem<Article>> value)
+        internal static string ToQueryString<TDomain, TApi>(this List<SortItem<TDomain>> value)
         {
             if (value == null || value.Count == 0)
             {
@@ -69,11 +47,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
             var sortItems = value.Select(x =>
             {
                 var domainObjectName = ReflectionHelper.GetPropertyInfo(x.Property).Name;
-                var queryMemberName = (typeof(Api.Article)
+                var queryMemberName = (typeof(TApi)
                     .GetProperty(domainObjectName)
                     .GetCustomAttributes(typeof(JsonPropertyAttribute), true)
                     .FirstOrDefault() as JsonPropertyAttribute)?.PropertyName;
-                var order = x.Order == SortOrder.Descending ? "ASC" : "DESC";
+                var order = x.Order == SortOrder.Descending ? "DESC" : "ASC";
                 return HttpUtility.UrlEncode($"{queryMemberName} {order}");
             });
 
@@ -81,6 +59,15 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return "order_by=" + string.Join(",", sortItems);
         }
 
+        internal static string ToQueryString(this List<SortItem<Client>> value)
+        {
+            return ToQueryString<Client, Api.Client>(value);
+        }
+
+        internal static string ToQueryString(this List<SortItem<Article>> value)
+        {
+            return ToQueryString<Article, Api.Article>(value);
+        }
 
         internal static string ToQueryString(this PagingSettings value)
         {
@@ -94,8 +81,48 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
         internal static string ToQueryString(this ArticleFilter value)
         {
-            // TODO
-            return "";
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
+            var filters = new List<string>();
+            if (!string.IsNullOrEmpty(value.ArticleNumber))
+            {
+                filters.Add($"article_number={HttpUtility.UrlEncode(value.ArticleNumber)}");
+            }
+
+            if (!string.IsNullOrEmpty(value.Title))
+            {
+                filters.Add($"title={HttpUtility.UrlEncode(value.Title)}");
+            }
+
+            if (!string.IsNullOrEmpty(value.Description))
+            {
+                filters.Add($"description={HttpUtility.UrlEncode(value.Description)}");
+            }
+
+            if (!string.IsNullOrEmpty(value.CurrencyCode))
+            {
+                filters.Add($"currency_code={HttpUtility.UrlEncode(value.CurrencyCode)}");
+            }
+
+            if (value.SupplierId.HasValue)
+            {
+                filters.Add($"supplier_id={value.SupplierId.Value}");
+            }
+
+            if (value.UnitId.HasValue)
+            {
+                filters.Add($"unit_id={value.UnitId.Value}");
+            }
+
+            if ((value.Tags?.Count ?? 0) > 0)
+            {
+                filters.Add($"tags={string.Join(",", value.Tags.Select(HttpUtility.UrlEncode))}");
+            }
+
+            return string.Join("&", filters);
         }
 
         internal static string ToQueryString(this ClientFilter value)
@@ -153,7 +180,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
             if ((value.Tags?.Count ?? 0) > 0)
             {
-                filters.Add($"invoice_id={string.Join(",", value.Tags.Select(HttpUtility.UrlEncode))}");
+                filters.Add($"tags={string.Join(",", value.Tags.Select(HttpUtility.UrlEncode))}");
             }
 
             return string.Join("&", filters);

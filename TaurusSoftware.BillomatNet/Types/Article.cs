@@ -32,9 +32,9 @@ namespace TaurusSoftware.BillomatNet.Types
 
         public string CurrencyCode { get; set; }
 
-        public int UnitId { get; set; }
+        public int? UnitId { get; set; }
 
-        public int TaxId { get; set; }
+        public int? TaxId { get; set; }
 
         public float? PurchasePrice { get; set; }
 

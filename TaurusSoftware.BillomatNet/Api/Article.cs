@@ -48,10 +48,10 @@ namespace TaurusSoftware.BillomatNet.Api
         public string CurrencyCode { get; set; }
 
         [JsonProperty("unit_id")]
-        public int UnitId { get; set; }
+        public int? UnitId { get; set; }
 
         [JsonProperty("tax_id")]
-        public int TaxId { get; set; }
+        public int? TaxId { get; set; }
 
         [JsonProperty("purchase_price")]
         public float? PurchasePrice { get; set; }
