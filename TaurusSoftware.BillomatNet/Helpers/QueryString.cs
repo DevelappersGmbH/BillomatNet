@@ -37,6 +37,20 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
         }
 
+        internal static string For(Query<ArticleProperty, ArticlePropertyFilter> value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var filter = value.Filter.ToQueryString();
+            var sort = value.Sort.ToQueryString();
+            var paging = value.Paging.ToQueryString();
+
+            return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
+        }
+
         internal static string ToQueryString<TDomain, TApi>(this List<SortItem<TDomain>> value)
         {
             if (value == null || value.Count == 0)
@@ -67,6 +81,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
         internal static string ToQueryString(this List<SortItem<Article>> value)
         {
             return ToQueryString<Article, Api.Article>(value);
+        }
+
+        internal static string ToQueryString(this List<SortItem<ArticleProperty>> value)
+        {
+            return ToQueryString<ArticleProperty, Api.ArticleProperty>(value);
         }
 
         internal static string ToQueryString(this PagingSettings value)
@@ -120,6 +139,42 @@ namespace TaurusSoftware.BillomatNet.Helpers
             if ((value.Tags?.Count ?? 0) > 0)
             {
                 filters.Add($"tags={string.Join(",", value.Tags.Select(HttpUtility.UrlEncode))}");
+            }
+
+            return string.Join("&", filters);
+        }
+
+        internal static string ToQueryString(this ArticlePropertyFilter value)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
+            var filters = new List<string>();
+            if (value.ArticleId.HasValue)
+            {
+                filters.Add($"article_id={value.ArticleId.Value}");
+            }
+
+            if (value.ArticlePropertyId.HasValue)
+            {
+                filters.Add($"article_property_id={value.ArticlePropertyId.Value}");
+            }
+
+            if (value.Value != null)
+            {
+                string val;
+                if (value.Value is bool)
+                {
+                    val = value.Value.ToString();
+                }
+                else
+                {
+                    val = (string) value.Value;
+                }
+
+                filters.Add($"value={HttpUtility.UrlEncode(val)}");
             }
 
             return string.Join("&", filters);

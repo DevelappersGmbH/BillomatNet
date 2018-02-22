@@ -7,6 +7,7 @@ using Account = TaurusSoftware.BillomatNet.Types.Account;
 using Client = TaurusSoftware.BillomatNet.Types.Client;
 using Quota = TaurusSoftware.BillomatNet.Types.Quota;
 using Article = TaurusSoftware.BillomatNet.Types.Article;
+using ArticleProperty = TaurusSoftware.BillomatNet.Types.ArticleProperty;
 
 namespace TaurusSoftware.BillomatNet.Helpers
 {
@@ -132,6 +133,75 @@ namespace TaurusSoftware.BillomatNet.Helpers
                 VatNumber = value.VatNumber,
                 Web = value.Www,
                 ZipCode = value.Zip
+            };
+        }
+
+        internal static PagedList<ArticleProperty> ToDomain(this Api.ArticlePropertyListWrapper value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return value.Item.ToDomain();
+
+        }
+
+        internal static PagedList<ArticleProperty> ToDomain(this Api.ArticlePropertyList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new PagedList<ArticleProperty>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(x => x.ToDomain()).ToList()
+            };
+        }
+
+        private static PropertyType ParsePropertyType(string value)
+        {
+            switch (value)
+            {
+                case "CHECKBOX":
+                    return PropertyType.Checkbox;
+                case "TEXTAREA":
+                    return PropertyType.Textarea;
+                default:
+                    return PropertyType.Textfield;
+            }
+        }
+
+        private static object ParsePropertyValue(PropertyType type, string value)
+        {
+            if (type == PropertyType.Checkbox)
+            {
+                return value != "0";
+            }
+
+            return value;
+        }
+
+        private static ArticleProperty ToDomain(this Api.ArticleProperty value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            PropertyType type = ParsePropertyType(value.Type);
+            return new ArticleProperty
+            {
+                Id = value.Id,
+                ArticlePropertyId = value.ArticlePropertyId,
+                Type = type,
+                ArticleId = value.ArticleId,
+                Name = value.Name,
+                Value = ParsePropertyValue(type, value.Value)
             };
         }
 

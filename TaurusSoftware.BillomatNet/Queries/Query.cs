@@ -6,7 +6,6 @@ using TaurusSoftware.BillomatNet.Helpers;
 namespace TaurusSoftware.BillomatNet.Queries
 { 
     public class Query<TBase, TFilter> where TFilter: new()
-
     {
         public Query()
         {
