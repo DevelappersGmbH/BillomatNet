@@ -2,9 +2,10 @@
 
 This is an API client to access your data in [Billomat](https://www.billomat.com/). It is written as .NET Standard library to be used in .NET Framework projects and .NET Core projects as well. 
 
-## Build status
+## Status
 
 ![Build status](https://travis-ci.org/martinhey/BillomatNet.svg?branch=master)
+[![NuGet](https://img.shields.io/nuget/dt/TaurusSoftware.BillomatNet.svg)](https://www.nuget.org/packages/TaurusSoftware.BillomatNet/)
 
 ## Usage
 
@@ -45,7 +46,7 @@ var service = new ClientService(config);
 var client = await service.GetById(435363);
 ```
 
-## Status
+## Project Status
 
 The REST-API itself contains a whole bunch of functionality. This wrapper is still under development. New functions will be added 
 successively.
