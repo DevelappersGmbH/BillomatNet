@@ -9,7 +9,6 @@ using Quota = TaurusSoftware.BillomatNet.Types.Quota;
 
 namespace TaurusSoftware.BillomatNet.Helpers
 {
-
     internal static class ClientMappingExtensions
     {
         private static Account ToDomain(this Api.Account value)

@@ -10,7 +10,7 @@ namespace TaurusSoftware.BillomatNet.Types
 
         public string ArticleNumber { get; set; }
 
-        public int Number { get; set; }
+        public int? Number { get; set; }
 
         public string NumberPre { get; set; }
 

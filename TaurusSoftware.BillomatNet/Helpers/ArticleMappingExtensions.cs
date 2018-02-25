@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Globalization;
+using System.Linq;
 using TaurusSoftware.BillomatNet.Api;
 using Article = TaurusSoftware.BillomatNet.Types.Article;
 using ArticleProperty = TaurusSoftware.BillomatNet.Types.ArticleProperty;
@@ -61,13 +63,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
         internal static PagedList<Article> ToDomain(this ArticleListWrapper value)
         {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return value.Item.ToDomain();
-
+            return value?.Item.ToDomain();
         }
 
         internal static PagedList<Article> ToDomain(this ArticleList value)
@@ -110,25 +106,25 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
             return new Article
             {
-                Id = value.Id,
-                Created = value.Created,
+                Id = int.Parse(value.Id),
+                Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
                 ArticleNumber = value.ArticleNumber,
                 CurrencyCode = value.CurrencyCode,
                 Description = value.Description,
-                Number = value.Number,
+                Number = int.Parse(value.Number),
                 NumberLength = value.NumberLength,
                 NumberPre = value.NumberPre,
-                PurchasePrice = value.PurchasePrice,
+                PurchasePrice = !string.IsNullOrEmpty(value.PurchasePrice) ? float.Parse(value.PurchasePrice, CultureInfo.InvariantCulture) : (float?)null,
                 PurchasePriceNetGross = value.PurchasePriceNetGross,
-                SalesPrice = value.SalesPrice,
-                SalesPrice2 = value.SalesPrice2,
-                SalesPrice3 = value.SalesPrice3,
-                SalesPrice4 = value.SalesPrice4,
-                SalesPrice5 = value.SalesPrice5,
-                SupplierId = value.SupplierId,
-                TaxId = value.TaxId,
+                SalesPrice = !string.IsNullOrEmpty(value.SalesPrice) ? float.Parse(value.SalesPrice, CultureInfo.InvariantCulture) : (float?)null,
+                SalesPrice2 = !string.IsNullOrEmpty(value.SalesPrice2) ? float.Parse(value.SalesPrice2, CultureInfo.InvariantCulture) : (float?)null,
+                SalesPrice3 = !string.IsNullOrEmpty(value.SalesPrice3) ? float.Parse(value.SalesPrice3, CultureInfo.InvariantCulture) : (float?)null,
+                SalesPrice4 = !string.IsNullOrEmpty(value.SalesPrice4) ? float.Parse(value.SalesPrice4, CultureInfo.InvariantCulture) : (float?)null,
+                SalesPrice5 = !string.IsNullOrEmpty(value.SalesPrice5) ? float.Parse(value.SalesPrice5, CultureInfo.InvariantCulture) : (float?)null,
+                SupplierId = !string.IsNullOrEmpty(value.SupplierId) ? int.Parse(value.SupplierId) : (int?)null,
+                TaxId = !string.IsNullOrEmpty(value.TaxId) ? int.Parse(value.TaxId) : (int?)null,
                 Title = value.Title,
-                UnitId = value.UnitId
+                UnitId = !string.IsNullOrEmpty(value.UnitId) ? int.Parse(value.UnitId) : (int?)null
 
             };
         }

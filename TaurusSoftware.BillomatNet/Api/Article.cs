@@ -6,16 +6,16 @@ namespace TaurusSoftware.BillomatNet.Api
     internal class Article
     {
         [JsonProperty("id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [JsonProperty("created")]
-        public DateTime Created { get; set; }
+        public string Created { get; set; }
 
         [JsonProperty("article_number")]
         public string ArticleNumber { get; set; }
 
         [JsonProperty("number")]
-        public int Number { get; set; }
+        public string Number { get; set; }
 
         [JsonProperty("number_pre")]
         public string NumberPre { get; set; }
@@ -30,36 +30,36 @@ namespace TaurusSoftware.BillomatNet.Api
         public string Description { get; set; }
 
         [JsonProperty("sales_price")]
-        public float? SalesPrice { get; set; }
+        public string SalesPrice { get; set; }
 
         [JsonProperty("sales_price2")]
-        public float? SalesPrice2 { get; set; }
+        public string SalesPrice2 { get; set; }
 
         [JsonProperty("sales_price3")]
-        public float? SalesPrice3 { get; set; }
+        public string SalesPrice3 { get; set; }
 
         [JsonProperty("sales_price4")]
-        public float? SalesPrice4 { get; set; }
+        public string SalesPrice4 { get; set; }
 
         [JsonProperty("sales_price5")]
-        public float? SalesPrice5 { get; set; }
+        public string SalesPrice5 { get; set; }
 
         [JsonProperty("currency_code")]
         public string CurrencyCode { get; set; }
 
         [JsonProperty("unit_id")]
-        public int? UnitId { get; set; }
+        public string UnitId { get; set; }
 
         [JsonProperty("tax_id")]
-        public int? TaxId { get; set; }
+        public string TaxId { get; set; }
 
         [JsonProperty("purchase_price")]
-        public float? PurchasePrice { get; set; }
+        public string PurchasePrice { get; set; }
 
         [JsonProperty("purchase_price_net_gross")]
         public string PurchasePriceNetGross { get; set; }
 
         [JsonProperty("supplier_id")]
-        public int? SupplierId { get; set; }
+        public string SupplierId { get; set; }
     }
 }

@@ -37,6 +37,20 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
         }
 
+        internal static string For(Query<Invoice, InvoiceFilter> value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var filter = value.Filter.ToQueryString();
+            var sort = value.Sort.ToQueryString();
+            var paging = value.Paging.ToQueryString();
+
+            return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
+        }
+
         internal static string For(Query<Article, ArticleFilter> value)
         {
             if (value == null)
@@ -90,6 +104,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
         internal static string ToQueryString(this List<SortItem<Client>> value)
         {
             return ToQueryString<Client, Api.Client>(value);
+        }
+
+        internal static string ToQueryString(this List<SortItem<Invoice>> value)
+        {
+            return ToQueryString<Invoice, Api.Invoice>(value);
         }
 
         internal static string ToQueryString(this List<SortItem<Article>> value)
@@ -209,6 +228,72 @@ namespace TaurusSoftware.BillomatNet.Helpers
             var filters = new List<string>();
             filters.Add($"article_id={value.ArticleId}");
             
+            return string.Join("&", filters);
+        }
+
+        internal static string ToQueryString(this InvoiceFilter value)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
+            var filters = new List<string>();
+            if (value.ClientId.HasValue)
+            {
+                filters.Add($"client_id={value.ClientId.Value}");
+            }
+
+            if (value.ContactId.HasValue)
+            {
+                filters.Add($"contact_id={value.ContactId.Value}");
+            }
+
+            if (!string.IsNullOrEmpty(value.InvoiceNumber))
+            {
+                filters.Add($"invoice_number={HttpUtility.UrlEncode(value.InvoiceNumber)}");
+            }
+
+            if ((value.Status?.Count ?? 0) > 0)
+            {
+                filters.Add($"status={string.Join(",", value.Status.Select(MappingHelpers.ToApiValue))}");
+            }
+
+            if ((value.PaymentType?.Count ?? 0) > 0)
+            {
+                filters.Add($"payment_type={string.Join(",", value.PaymentType.Select(MappingHelpers.ToApiValue))}");
+            }
+
+            if (value.From.HasValue)
+            {
+                filters.Add($"from={value.From.Value:YYYY-mm-DD}");
+            }
+
+            if (value.To.HasValue)
+            {
+                filters.Add($"from={value.To.Value:YYYY-mm-DD}");
+            }
+
+            if (!string.IsNullOrEmpty(value.Label))
+            {
+                filters.Add($"label={HttpUtility.UrlEncode(value.Label)}");
+            }
+
+            if (!string.IsNullOrEmpty(value.Intro))
+            {
+                filters.Add($"intro={HttpUtility.UrlEncode(value.Intro)}");
+            }
+
+            if (!string.IsNullOrEmpty(value.Note))
+            {
+                filters.Add($"note={HttpUtility.UrlEncode(value.Note)}");
+            }
+
+            if ((value.Tags?.Count ?? 0) > 0)
+            {
+                filters.Add($"tags={string.Join(",", value.Tags.Select(HttpUtility.UrlEncode))}");
+            }
+
             return string.Join("&", filters);
         }
 
