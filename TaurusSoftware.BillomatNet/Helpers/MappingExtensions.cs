@@ -15,7 +15,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
 {
     internal static class MappingExtensions
     {
-        internal static PagedList<Client> ToDomain(this Api.ClientListWrapper value)
+        internal static PagedList<Client> ToDomain(this ClientListWrapper value)
         {
             if (value == null)
             {
@@ -26,7 +26,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
         }
 
-        internal static PagedList<Client> ToDomain(this Api.ClientList value)
+        internal static PagedList<Client> ToDomain(this ClientList value)
         {
             if (value == null)
             {
@@ -138,7 +138,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
             };
         }
 
-        internal static PagedList<ArticleProperty> ToDomain(this Api.ArticlePropertyListWrapper value)
+        internal static PagedList<ArticleProperty> ToDomain(this ArticlePropertyListWrapper value)
         {
             if (value == null)
             {
@@ -149,7 +149,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
         }
 
-        internal static PagedList<TagCloudItem> ToDomain(this Api.ArticleTagCloudItemListWrapper value)
+        internal static PagedList<TagCloudItem> ToDomain(this ArticleTagCloudItemListWrapper value)
         {
             if (value == null)
             {
@@ -160,7 +160,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
         }
 
-        internal static PagedList<ArticleTag> ToDomain(this Api.ArticleTagListWrapper value)
+        internal static PagedList<ArticleTag> ToDomain(this ArticleTagListWrapper value)
         {
             if (value == null)
             {
@@ -171,7 +171,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
         }
 
-        internal static PagedList<ArticleProperty> ToDomain(this Api.ArticlePropertyList value)
+        internal static PagedList<ArticleProperty> ToDomain(this ArticlePropertyList value)
         {
             if (value == null)
             {
@@ -187,7 +187,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
             };
         }
 
-        internal static PagedList<TagCloudItem> ToDomain(this Api.ArticleTagCloudItemList value)
+        internal static PagedList<TagCloudItem> ToDomain(this ArticleTagCloudItemList value)
         {
             if (value == null)
             {
@@ -204,7 +204,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
         }
         
 
-        internal static PagedList<ArticleTag> ToDomain(this Api.ArticleTagList value)
+        internal static PagedList<ArticleTag> ToDomain(this ArticleTagList value)
         {
             if (value == null)
             {
@@ -293,7 +293,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
         }
         
 
-        internal static PagedList<Article> ToDomain(this Api.ArticleListWrapper value)
+        internal static PagedList<Article> ToDomain(this ArticleListWrapper value)
         {
             if (value == null)
             {
@@ -304,7 +304,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
         }
 
-        internal static PagedList<Article> ToDomain(this Api.ArticleList value)
+        internal static PagedList<Article> ToDomain(this ArticleList value)
         {
             if (value == null)
             {
@@ -328,6 +328,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
         internal static ArticleProperty ToDomain(this ArticlePropertyWrapper value)
         {
             return value?.ArticleProperty.ToDomain();
+        }
+
+        internal static ArticleTag ToDomain(this ArticleTagWrapper value)
+        {
+            return value?.ArticleTag.ToDomain();
         }
 
         private static Article ToDomain(this Api.Article value)

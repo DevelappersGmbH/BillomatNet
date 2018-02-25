@@ -82,5 +82,13 @@ namespace TaurusSoftware.BillomatNet
             var jsonModel = JsonConvert.DeserializeObject<ArticleTagListWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }
+
+        public async Task<ArticleTag> GetTagById(int id, CancellationToken token = default(CancellationToken))
+        {
+            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            var httpResponse = await httpClient.GetAsync(new Uri($"/api/article-tags/{id}", UriKind.Relative), token);
+            var jsonModel = JsonConvert.DeserializeObject<ArticleTagWrapper>(httpResponse);
+            return jsonModel.ToDomain();
+        }
     }
 }
