@@ -42,6 +42,8 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             var d = await s.GetPropertyListAsync();
 
+            var l = await s.GetPropertyById(434532);
+
             Assert.True(true);
         }
     }

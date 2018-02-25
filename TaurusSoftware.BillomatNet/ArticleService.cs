@@ -50,5 +50,13 @@ namespace TaurusSoftware.BillomatNet
             var jsonModel = JsonConvert.DeserializeObject<ArticleWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }
+
+        public async Task<ArticleProperty> GetPropertyById(int id, CancellationToken token = default(CancellationToken))
+        {
+            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            var httpResponse = await httpClient.GetAsync(new Uri($"/api/article-property-values/{id}", UriKind.Relative), token);
+            var jsonModel = JsonConvert.DeserializeObject<ArticlePropertyWrapper>(httpResponse);
+            return jsonModel.ToDomain();
+        }
     }
 }

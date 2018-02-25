@@ -237,6 +237,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return value?.Article.ToDomain();
         }
 
+        internal static ArticleProperty ToDomain(this ArticlePropertyWrapper value)
+        {
+            return value?.ArticleProperty.ToDomain();
+        }
+
         private static Article ToDomain(this Api.Article value)
         {
             if (value == null)
