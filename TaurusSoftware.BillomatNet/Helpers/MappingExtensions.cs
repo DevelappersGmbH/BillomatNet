@@ -140,34 +140,18 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
         internal static PagedList<ArticleProperty> ToDomain(this ArticlePropertyListWrapper value)
         {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return value.Item.ToDomain();
+            return value?.Item.ToDomain();
 
         }
 
         internal static PagedList<TagCloudItem> ToDomain(this ArticleTagCloudItemListWrapper value)
         {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return value.Item.ToDomain();
-
+            return value?.Item.ToDomain();
         }
 
         internal static PagedList<ArticleTag> ToDomain(this ArticleTagListWrapper value)
         {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return value.Item.ToDomain();
+            return value?.Item.ToDomain();
 
         }
 
