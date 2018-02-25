@@ -33,7 +33,7 @@ namespace TaurusSoftware.BillomatNet.Tests
             var s = new ArticleService(config);
 
             var q = new Query<Article, ArticleFilter>()
-                //.AddFilter(x => x.ArticleNumber, "ART")
+                .AddFilter(x => x.ArticleNumber, "ART")
                 .AddSort(x => x.SalesPrice, SortOrder.Descending);
 
             var r = await s.GetListAsync(q, CancellationToken.None);
@@ -43,6 +43,10 @@ namespace TaurusSoftware.BillomatNet.Tests
             var d = await s.GetPropertyListAsync();
 
             var l = await s.GetPropertyById(434532);
+
+            var p = await s.GetTagCloudAsync();
+            var t = await s.GetTagListAsync(
+                new Query<ArticleTag, ArticleTagFilter>().AddFilter(x => x.ArticleId, 434867));
 
             Assert.True(true);
         }

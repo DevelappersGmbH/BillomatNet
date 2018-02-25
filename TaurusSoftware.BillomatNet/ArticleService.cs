@@ -8,6 +8,8 @@ using TaurusSoftware.BillomatNet.Helpers;
 using TaurusSoftware.BillomatNet.Queries;
 using Article = TaurusSoftware.BillomatNet.Types.Article;
 using ArticleProperty = TaurusSoftware.BillomatNet.Types.ArticleProperty;
+using ArticleTag = TaurusSoftware.BillomatNet.Types.ArticleTag;
+using TagCloudItem = TaurusSoftware.BillomatNet.Types.TagCloudItem;
 
 namespace TaurusSoftware.BillomatNet
 {
@@ -56,6 +58,28 @@ namespace TaurusSoftware.BillomatNet
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             var httpResponse = await httpClient.GetAsync(new Uri($"/api/article-property-values/{id}", UriKind.Relative), token);
             var jsonModel = JsonConvert.DeserializeObject<ArticlePropertyWrapper>(httpResponse);
+            return jsonModel.ToDomain();
+        }
+
+        public async Task<PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
+        {
+            // do we need paging possibilities in parameters? 100 items in tagcloud should be enough, shouldn't it?
+            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            var httpResponse = await httpClient.GetAsync(new Uri("/api/article-tags", UriKind.Relative), null, token);
+            var jsonModel = JsonConvert.DeserializeObject<ArticleTagCloudItemListWrapper>(httpResponse);
+            return jsonModel.ToDomain();
+        }
+
+        public async Task<PagedList<ArticleTag>> GetTagListAsync(Query<ArticleTag, ArticleTagFilter> query, CancellationToken token = default(CancellationToken))
+        {
+            if (query?.Filter == null)
+            {
+                throw new ArgumentException("filter has to be set", nameof(query));
+            }
+
+            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            var httpResponse = await httpClient.GetAsync(new Uri("/api/article-tags", UriKind.Relative), QueryString.For(query), token);
+            var jsonModel = JsonConvert.DeserializeObject<ArticleTagListWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }
     }

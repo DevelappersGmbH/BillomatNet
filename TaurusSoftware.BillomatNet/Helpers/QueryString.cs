@@ -23,6 +23,20 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
         }
 
+        internal static string For(Query<ArticleTag, ArticleTagFilter> value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var filter = value.Filter.ToQueryString();
+            var sort = value.Sort.ToQueryString();
+            var paging = value.Paging.ToQueryString();
+
+            return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
+        }
+
         internal static string For(Query<Article, ArticleFilter> value)
         {
             if (value == null)
@@ -86,6 +100,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
         internal static string ToQueryString(this List<SortItem<ArticleProperty>> value)
         {
             return ToQueryString<ArticleProperty, Api.ArticleProperty>(value);
+        }
+
+        internal static string ToQueryString(this List<SortItem<ArticleTag>> value)
+        {
+            return ToQueryString<ArticleTag, Api.ArticleTag>(value);
         }
 
         internal static string ToQueryString(this PagingSettings value)
@@ -171,7 +190,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
                 }
                 else
                 {
-                    val = (string) value.Value;
+                    val = (string)value.Value;
                 }
 
                 filters.Add($"value={HttpUtility.UrlEncode(val)}");
@@ -179,6 +198,20 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
             return string.Join("&", filters);
         }
+
+        internal static string ToQueryString(this ArticleTagFilter value)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
+            var filters = new List<string>();
+            filters.Add($"article_id={value.ArticleId}");
+            
+            return string.Join("&", filters);
+        }
+
 
         internal static string ToQueryString(this ClientFilter value)
         {

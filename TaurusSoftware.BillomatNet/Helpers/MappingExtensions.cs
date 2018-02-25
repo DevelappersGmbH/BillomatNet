@@ -8,6 +8,8 @@ using Client = TaurusSoftware.BillomatNet.Types.Client;
 using Quota = TaurusSoftware.BillomatNet.Types.Quota;
 using Article = TaurusSoftware.BillomatNet.Types.Article;
 using ArticleProperty = TaurusSoftware.BillomatNet.Types.ArticleProperty;
+using ArticleTag = TaurusSoftware.BillomatNet.Types.ArticleTag;
+using TagCloudItem = TaurusSoftware.BillomatNet.Types.TagCloudItem;
 
 namespace TaurusSoftware.BillomatNet.Helpers
 {
@@ -147,6 +149,28 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
         }
 
+        internal static PagedList<TagCloudItem> ToDomain(this Api.ArticleTagCloudItemListWrapper value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return value.Item.ToDomain();
+
+        }
+
+        internal static PagedList<ArticleTag> ToDomain(this Api.ArticleTagListWrapper value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return value.Item.ToDomain();
+
+        }
+
         internal static PagedList<ArticleProperty> ToDomain(this Api.ArticlePropertyList value)
         {
             if (value == null)
@@ -155,6 +179,39 @@ namespace TaurusSoftware.BillomatNet.Helpers
             }
 
             return new PagedList<ArticleProperty>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(x => x.ToDomain()).ToList()
+            };
+        }
+
+        internal static PagedList<TagCloudItem> ToDomain(this Api.ArticleTagCloudItemList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new PagedList<TagCloudItem>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(x => x.ToDomain()).ToList()
+            };
+        }
+        
+
+        internal static PagedList<ArticleTag> ToDomain(this Api.ArticleTagList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new PagedList<ArticleTag>
             {
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
@@ -204,6 +261,37 @@ namespace TaurusSoftware.BillomatNet.Helpers
                 Value = ParsePropertyValue(type, value.Value)
             };
         }
+
+        private static ArticleTag ToDomain(this Api.ArticleTag value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new ArticleTag
+            {
+                Id = value.Id,
+                ArticleId = value.ArticleId,
+                Name = value.Name
+            };
+        }
+
+        private static TagCloudItem ToDomain(this Api.TagCloudItem value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new TagCloudItem
+            {
+                Id = value.Id,
+                Count = value.Count,
+                Name = value.Name
+            };
+        }
+        
 
         internal static PagedList<Article> ToDomain(this Api.ArticleListWrapper value)
         {
