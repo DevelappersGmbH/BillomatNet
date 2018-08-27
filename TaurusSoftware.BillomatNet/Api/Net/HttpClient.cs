@@ -40,7 +40,6 @@ namespace TaurusSoftware.BillomatNet.Api.Net
         public Task<string> GetAsync(Uri relativeUri, CancellationToken token = default(CancellationToken))
         {
             return GetAsync(relativeUri, null, token);
-
         }
 
         public async Task<string> GetAsync(Uri relativeUri, string query, CancellationToken token = default(CancellationToken))

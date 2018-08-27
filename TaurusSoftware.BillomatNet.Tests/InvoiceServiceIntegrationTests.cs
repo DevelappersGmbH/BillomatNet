@@ -1,7 +1,6 @@
-﻿using System.Threading;
+﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
-using TaurusSoftware.BillomatNet.Queries;
-using TaurusSoftware.BillomatNet.Types;
 using Xunit;
 
 namespace TaurusSoftware.BillomatNet.Tests
@@ -36,15 +35,18 @@ namespace TaurusSoftware.BillomatNet.Tests
             Assert.True(result.List.Count > 0);
         }
 
-        //[Fact]
-        //public async Task GetClientById()
-        //{
-        //    var config = Helpers.GetTestConfiguration();
+        [Fact]
+        public async Task GetinvoicePDF()
+        {
+            var config = Helpers.GetTestConfiguration();
 
-        //    var service = new ClientService(config);
+            var service = new InvoiceService(config);
 
-        //    var result = await service.GetById(1227912);
-        //    Assert.NotNull(result);
-        //}
+            var result = await service.GetPdfAsync(1322705);
+
+            File.WriteAllBytes($"C:\\temp\\{result.FileName}", result.Bytes);
+
+            Assert.NotNull(result);
+        }
     }
 }
