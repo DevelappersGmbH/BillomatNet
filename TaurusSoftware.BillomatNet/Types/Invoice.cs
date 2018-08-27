@@ -48,8 +48,7 @@ namespace TaurusSoftware.BillomatNet.Types
 
         public string Address { get; set; }
 
-        //[JsonProperty("status")]
-        //public string Status { get; set; }
+        public InvoiceStatus Status { get; set; }
 
         //[JsonProperty("discount_rate")]
         //public string DiscountRate { get; set; }

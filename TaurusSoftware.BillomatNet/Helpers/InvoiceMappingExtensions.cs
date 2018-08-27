@@ -82,7 +82,6 @@ namespace TaurusSoftware.BillomatNet.Helpers
             }
 
 
-
             SupplyDateType supplyDateType;
             DateTime? supplyDate = null;
             string supplyDateText = null;
@@ -92,21 +91,45 @@ namespace TaurusSoftware.BillomatNet.Helpers
                     supplyDateType = SupplyDateType.SupplyDate;
                     supplyDate = DateTime.Parse(value.SupplyDate, CultureInfo.InvariantCulture);
                     break;
-                case "DELIVERY_DATE":
+                case "delivery_date":
                     supplyDateType = SupplyDateType.DeliveryDate;
                     supplyDate = DateTime.Parse(value.SupplyDate, CultureInfo.InvariantCulture);
                     break;
-                case "SUPPLY_TEXT":
+                case "supply_text":
                     supplyDateType = SupplyDateType.SupplyText;
                     supplyDateText = value.SupplyDate;
                     break;
-                case "DELIVERY_TEXT":
+                case "delivery_text":
                     supplyDateType = SupplyDateType.DeliveryText;
                     supplyDateText = value.SupplyDate;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+
+            InvoiceStatus status;
+            switch (value.Status)
+            {
+                case "draft":
+                    status = InvoiceStatus.Draft;
+                    break;
+                case "open":
+                    status = InvoiceStatus.Open;
+                    break;
+                case "overdue":
+                    status = InvoiceStatus.Overdue;
+                    break;
+                case "paid":
+                    status = InvoiceStatus.Paid;
+                    break;
+                case "canceled":
+                    status = InvoiceStatus.Canceled;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
 
             return new Invoice
             {
@@ -140,7 +163,8 @@ namespace TaurusSoftware.BillomatNet.Helpers
                 NetGross = netGrossType,
                 SupplyDate = supplyDate,
                 SupplyDateType = supplyDateType,
-                SupplyDateText = supplyDateText
+                SupplyDateText = supplyDateText,
+                Status = status
             };
 
         }
