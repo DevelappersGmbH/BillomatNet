@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -36,7 +35,7 @@ namespace TaurusSoftware.BillomatNet.Tests
         }
 
         [Fact]
-        public async Task GetinvoicePDF()
+        public async Task GetInvoicePDF()
         {
             var config = Helpers.GetTestConfiguration();
 
@@ -44,7 +43,21 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             var result = await service.GetPdfAsync(1322705);
 
-            File.WriteAllBytes($"C:\\temp\\{result.FileName}", result.Bytes);
+            //File.WriteAllBytes($"C:\\temp\\{result.FileName}", result.Bytes);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task GetInvoice()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new InvoiceService(config);
+
+            var result = await service.GetByIdAsync(1322705);
+
+            //File.WriteAllBytes($"C:\\temp\\{result.FileName}", result.Bytes);
 
             Assert.NotNull(result);
         }

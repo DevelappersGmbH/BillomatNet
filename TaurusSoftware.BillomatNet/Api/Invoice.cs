@@ -13,6 +13,9 @@ namespace TaurusSoftware.BillomatNet.Api
         [JsonProperty("contact_id")]
         public string ContactId { get; set; }
 
+        [JsonProperty("client_id")]
+        public string ClientId { get; set; }
+
         [JsonProperty("invoice_number")]
         public string InvoiceNumber { get; set; }
 
@@ -99,6 +102,25 @@ namespace TaurusSoftware.BillomatNet.Api
 
         [JsonProperty("open_amount")]
         public string OpenAmount { get; set; }
+
+        [JsonProperty("customerportal_url")]
+        public string CustomerPortalUrl { get; set; }
+
+        [JsonProperty("invoice_id")]
+        public string InvoiceId { get; set; }
+
+        [JsonProperty("offer_id")]
+        public string OfferId { get; set; }
+
+        [JsonProperty("confirmation_id")]
+        public string ConfirmationId { get; set; }
+
+        [JsonProperty("recurring_id")]
+        public string RecurringId { get; set; }
+
+        [JsonProperty("template_id")]
+        public string TemplateId { get; set; }
+
 
 
 

@@ -106,7 +106,7 @@ namespace TaurusSoftware.BillomatNet.Helpers
 
             return new Article
             {
-                Id = int.Parse(value.Id),
+                Id = int.Parse(value.Id, CultureInfo.InvariantCulture),
                 Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
                 ArticleNumber = value.ArticleNumber,
                 CurrencyCode = value.CurrencyCode,
@@ -114,17 +114,17 @@ namespace TaurusSoftware.BillomatNet.Helpers
                 Number = int.Parse(value.Number),
                 NumberLength = value.NumberLength,
                 NumberPre = value.NumberPre,
-                PurchasePrice = !string.IsNullOrEmpty(value.PurchasePrice) ? float.Parse(value.PurchasePrice, CultureInfo.InvariantCulture) : (float?)null,
+                PurchasePrice = value.PurchasePrice.ToOptionalFloat(),
                 PurchasePriceNetGross = value.PurchasePriceNetGross,
-                SalesPrice = !string.IsNullOrEmpty(value.SalesPrice) ? float.Parse(value.SalesPrice, CultureInfo.InvariantCulture) : (float?)null,
-                SalesPrice2 = !string.IsNullOrEmpty(value.SalesPrice2) ? float.Parse(value.SalesPrice2, CultureInfo.InvariantCulture) : (float?)null,
-                SalesPrice3 = !string.IsNullOrEmpty(value.SalesPrice3) ? float.Parse(value.SalesPrice3, CultureInfo.InvariantCulture) : (float?)null,
-                SalesPrice4 = !string.IsNullOrEmpty(value.SalesPrice4) ? float.Parse(value.SalesPrice4, CultureInfo.InvariantCulture) : (float?)null,
-                SalesPrice5 = !string.IsNullOrEmpty(value.SalesPrice5) ? float.Parse(value.SalesPrice5, CultureInfo.InvariantCulture) : (float?)null,
-                SupplierId = !string.IsNullOrEmpty(value.SupplierId) ? int.Parse(value.SupplierId) : (int?)null,
-                TaxId = !string.IsNullOrEmpty(value.TaxId) ? int.Parse(value.TaxId) : (int?)null,
+                SalesPrice = value.SalesPrice.ToOptionalFloat(),
+                SalesPrice2 = value.SalesPrice2.ToOptionalFloat(),
+                SalesPrice3 = value.SalesPrice3.ToOptionalFloat(),
+                SalesPrice4 = value.SalesPrice4.ToOptionalFloat(),
+                SalesPrice5 = value.SalesPrice5.ToOptionalFloat(),
+                SupplierId = value.SupplierId.ToOptionalInt(),
+                TaxId = value.TaxId.ToOptionalInt(),
                 Title = value.Title,
-                UnitId = !string.IsNullOrEmpty(value.UnitId) ? int.Parse(value.UnitId) : (int?)null
+                UnitId = value.UnitId.ToOptionalInt()
 
             };
         }

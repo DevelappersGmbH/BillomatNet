@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using TagCloudItem = TaurusSoftware.BillomatNet.Types.TagCloudItem;
 
@@ -6,6 +7,26 @@ namespace TaurusSoftware.BillomatNet.Helpers
 {
     internal static class CommonMappingExtensions
     {
+        public static int? ToOptionalInt(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
+            return int.Parse(value, CultureInfo.InvariantCulture);
+        }
+
+        public static float? ToOptionalFloat(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
+            return float.Parse(value, CultureInfo.InvariantCulture);
+        }
+
         public static List<string> ToStringList(this string values)
         {
             if (values == null)

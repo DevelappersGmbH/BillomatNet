@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using TaurusSoftware.BillomatNet.Api;
+using TaurusSoftware.BillomatNet.Types;
 using Invoice = TaurusSoftware.BillomatNet.Types.Invoice;
 using InvoiceDocument = TaurusSoftware.BillomatNet.Types.InvoiceDocument;
 
@@ -8,6 +10,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
 {
     internal static class InvoiceMappingExtensions
     {
+        internal static Invoice ToDomain(this InvoiceWrapper value)
+        {
+            return value?.Invoice.ToDomain();
+        }
+
         internal static InvoiceDocument ToDomain(this InvoiceDocumentWrapper value)
         {
             return value?.Pdf.ToDomain();
@@ -23,10 +30,10 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return new InvoiceDocument
             {
                 Id = int.Parse(value.Id),
-                Created = DateTime.Parse(value.Created),
+                Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
                 FileName = value.FileName,
-                FileSize = int.Parse(value.FileSize),
-                InvoiceId = int.Parse(value.InvoiceId),
+                FileSize = int.Parse(value.FileSize, CultureInfo.InvariantCulture),
+                InvoiceId = int.Parse(value.InvoiceId, CultureInfo.InvariantCulture),
                 MimeType = value.MimeType,
                 Bytes = Convert.FromBase64String(value.Base64File)
             };
@@ -61,10 +68,81 @@ namespace TaurusSoftware.BillomatNet.Helpers
                 return null;
             }
 
+            NetGrossType netGrossType;
+            switch (value.NetGross.ToLowerInvariant())
+            {
+                case "net":
+                    netGrossType = NetGrossType.Net;
+                    break;
+                case "gross":
+                    netGrossType = NetGrossType.Gross;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+
+
+            SupplyDateType supplyDateType;
+            DateTime? supplyDate = null;
+            string supplyDateText = null;
+            switch (value.SupplyDateType.ToLowerInvariant())
+            {
+                case "supply_date":
+                    supplyDateType = SupplyDateType.SupplyDate;
+                    supplyDate = DateTime.Parse(value.SupplyDate, CultureInfo.InvariantCulture);
+                    break;
+                case "DELIVERY_DATE":
+                    supplyDateType = SupplyDateType.DeliveryDate;
+                    supplyDate = DateTime.Parse(value.SupplyDate, CultureInfo.InvariantCulture);
+                    break;
+                case "SUPPLY_TEXT":
+                    supplyDateType = SupplyDateType.SupplyText;
+                    supplyDateText = value.SupplyDate;
+                    break;
+                case "DELIVERY_TEXT":
+                    supplyDateType = SupplyDateType.DeliveryText;
+                    supplyDateText = value.SupplyDate;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             return new Invoice
             {
-                Id = int.Parse(value.Id),
+                Id = int.Parse(value.Id, CultureInfo.InvariantCulture),
+                InvoiceId = value.InvoiceId.ToOptionalInt(),
+                ConfirmationId = value.ConfirmationId.ToOptionalInt(),
+                OfferId = value.OfferId.ToOptionalInt(),
+                RecurringId = value.RecurringId.ToOptionalInt(),
+                TemplateId = value.TemplateId.ToOptionalInt(),
+                CustomerPortalUrl = value.CustomerPortalUrl,
+                ClientId = int.Parse(value.ClientId, CultureInfo.InvariantCulture),
+                ContactId = value.ContactId.ToOptionalInt(),
+                InvoiceNumber = value.InvoiceNumber,
+                Number = value.Number.ToOptionalInt(),
+                NumberPre = value.NumberPre,
+                NumberLength = int.Parse(value.NumberLength, CultureInfo.InvariantCulture),
+                Title = value.Title,
+                Date = DateTime.Parse(value.Date, CultureInfo.InvariantCulture),
+                Address = value.Address,
+                Label = value.Label,
+                Intro = value.Intro,
+                Note = value.Note,
+                TotalGross = float.Parse(value.TotalGross, CultureInfo.InvariantCulture),
+                TotalNet = float.Parse(value.TotalNet, CultureInfo.InvariantCulture),
+                CurrencyCode = value.CurrencyCode,
+                TotalGrossUnreduced = float.Parse(value.TotalGrossUnreduced, CultureInfo.InvariantCulture),
+                TotalNetUnreduced = float.Parse(value.TotalNetUnreduced, CultureInfo.InvariantCulture),
+                Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
+                DueDate = DateTime.Parse(value.DueDate, CultureInfo.InvariantCulture),
+                DueDays = int.Parse(value.DueDays, CultureInfo.InvariantCulture),
+                NetGross = netGrossType,
+                SupplyDate = supplyDate,
+                SupplyDateType = supplyDateType,
+                SupplyDateText = supplyDateText
             };
+
         }
     }
 }
