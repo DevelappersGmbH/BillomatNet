@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace TaurusSoftware.BillomatNet
+namespace TaurusSoftware.BillomatNet.Types
 {
     public class PagedList<T>
     {

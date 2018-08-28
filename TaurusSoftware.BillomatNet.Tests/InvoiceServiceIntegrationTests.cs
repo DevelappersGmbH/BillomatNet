@@ -57,5 +57,34 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             Assert.NotNull(result);
         }
+
+        [Fact]
+        public async Task GetInvoiceItems()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new InvoiceService(config);
+
+            var result = await service.GetItemsAsync(1322705, CancellationToken.None);
+
+            Assert.True(result.List.Count > 0);
+        }
+
+        [Fact]
+        public async Task GetInvoiceItems2()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new InvoiceService(config);
+
+            var list = await service.GetListAsync(CancellationToken.None);
+
+            foreach (var invoice in list.List)
+            {
+                var result = await service.GetItemsAsync(invoice.Id, CancellationToken.None);
+            }
+
+            Assert.True(true);
+        }
     }
 }
