@@ -43,8 +43,6 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             var result = await service.GetPdfAsync(1322705);
 
-            //File.WriteAllBytes($"C:\\temp\\{result.FileName}", result.Bytes);
-
             Assert.NotNull(result);
         }
 
@@ -56,8 +54,6 @@ namespace TaurusSoftware.BillomatNet.Tests
             var service = new InvoiceService(config);
 
             var result = await service.GetByIdAsync(1322705);
-
-            //File.WriteAllBytes($"C:\\temp\\{result.FileName}", result.Bytes);
 
             Assert.NotNull(result);
         }
