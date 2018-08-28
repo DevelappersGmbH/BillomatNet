@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>0.1.1</Version>
+    <Version>0.1.2-alpha</Version>
     <Authors>Martin Hey</Authors>
     <Company>Martin Hey</Company>
     <Description>A C# client to access Billomat.</Description>
