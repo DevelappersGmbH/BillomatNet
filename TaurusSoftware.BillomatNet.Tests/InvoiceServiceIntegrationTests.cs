@@ -35,7 +35,7 @@ namespace TaurusSoftware.BillomatNet.Tests
         }
 
         [Fact]
-        public async Task GetInvoicePDF()
+        public async Task GetInvoicePdf()
         {
             var config = Helpers.GetTestConfiguration();
 

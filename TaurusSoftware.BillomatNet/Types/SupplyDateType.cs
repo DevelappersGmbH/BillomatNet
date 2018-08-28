@@ -4,7 +4,5 @@
     {
         SupplyDate,
         DeliveryDate,
-        SupplyText,
-        DeliveryText
     }
 }

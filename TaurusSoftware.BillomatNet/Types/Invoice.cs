@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TaurusSoftware.BillomatNet.Types
 {
@@ -36,11 +37,9 @@ namespace TaurusSoftware.BillomatNet.Types
 
         public DateTime Date { get; set; }
 
-        public DateTime? SupplyDate { get; set; }
+        public ISupplyDate SupplyDate { get; set; }
 
-        public string SupplyDateText { get; set; }
-
-        public SupplyDateType SupplyDateType { get; set; }
+        public SupplyDateType? SupplyDateType { get; set; }
 
         public DateTime DueDate { get; set; }
 
@@ -50,17 +49,13 @@ namespace TaurusSoftware.BillomatNet.Types
 
         public InvoiceStatus Status { get; set; }
 
-        //[JsonProperty("discount_rate")]
-        //public string DiscountRate { get; set; }
+        public float DiscountRate { get; set; }
 
-        //[JsonProperty("discount_date")]
-        //public string DiscountDate { get; set; }
+        public DateTime? DiscountDate { get; set; }
 
-        //[JsonProperty("discount_days")]
-        //public string DiscountDays { get; set; }
+        public int? DiscountDays { get; set; }
 
-        //[JsonProperty("discount_amount")]
-        //public string DiscountAmount { get; set; }
+        public float? DiscountAmount { get; set; }
 
         public string Label { get; set; }
 
@@ -74,22 +69,20 @@ namespace TaurusSoftware.BillomatNet.Types
 
         public string CurrencyCode { get; set; }
 
-        //[JsonProperty("quote")]
-        //public string Quote { get; set; }
+        public float Quote { get; set; }
 
         public NetGrossType NetGross { get; set; }
 
-        //[JsonProperty("reduction")]
-        //public string Reduction { get; set; }
+        public IReduction Reduction { get; set; }
        
         public float TotalGrossUnreduced { get; set; }
 
         public float TotalNetUnreduced { get; set; }
+        public List<string> PaymentTypes { get; set; }
+        public List<InvoiceTax> Taxes { get; set; }
 
-        //[JsonProperty("paid_amount")]
-        //public string PaidAmount { get; set; }
+        public float PaidAmount { get; set; }
 
-        //[JsonProperty("open_amount")]
-        //public string OpenAmount { get; set; }
+        public float OpenAmount { get; set; }
     }
 }

@@ -121,29 +121,10 @@ namespace TaurusSoftware.BillomatNet.Api
         [JsonProperty("template_id")]
         public string TemplateId { get; set; }
 
+        [JsonProperty("payment_types")]
+        public string PaymentTypes { get; set; }
 
-
-
-        //   "payment_types":"",
-        //   "taxes":{  
-        //      "tax":{  
-        //         "name":"Umsatzsteuer",
-        //         "rate":"19",
-        //         "amount":"45.79",
-        //         "amount_plain":"45.79",
-        //         "amount_rounded":"45.79",
-        //         "amount_net":"241.0000",
-        //         "amount_net_plain":"241.0000",
-        //         "amount_net_rounded":"241",
-        //         "amount_gross":"286.7900",
-        //         "amount_gross_plain":"286.7900",
-        //         "amount_gross_rounded":"286.79"
-        //      }
-        //   },
-        //   "invoice_id":"",
-        //   "offer_id":"",
-        //   "confirmation_id":"",
-        //   "recurring_id":"",
-        //   "template_id":""
+        [JsonProperty("taxes")]
+        public InvoiceTaxWrapper Taxes { get; set; }
     }
 }
