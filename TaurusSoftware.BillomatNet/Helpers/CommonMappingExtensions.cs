@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using TagCloudItem = TaurusSoftware.BillomatNet.Types.TagCloudItem;
@@ -25,6 +26,16 @@ namespace TaurusSoftware.BillomatNet.Helpers
             }
 
             return float.Parse(value, CultureInfo.InvariantCulture);
+        }
+
+        public static DateTime? ToOptionalDateTime(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
+            return DateTime.Parse(value, CultureInfo.InvariantCulture);
         }
 
         public static List<string> ToStringList(this string values)
