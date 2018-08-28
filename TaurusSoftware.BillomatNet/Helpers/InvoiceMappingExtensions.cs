@@ -18,6 +18,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return value?.Invoice.ToDomain();
         }
 
+        internal static InvoiceItem ToDomain(this InvoiceItemWrapper value)
+        {
+            return value?.InvoiceItem.ToDomain();
+        }
+
         internal static InvoiceDocument ToDomain(this InvoiceDocumentWrapper value)
         {
             return value?.Pdf.ToDomain();

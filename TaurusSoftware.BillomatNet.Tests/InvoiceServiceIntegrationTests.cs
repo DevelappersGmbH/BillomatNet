@@ -59,6 +59,18 @@ namespace TaurusSoftware.BillomatNet.Tests
         }
 
         [Fact]
+        public async Task GetInvoiceItem()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new InvoiceService(config);
+
+            var result = await service.GetItemByIdAsync(3246680);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public async Task GetInvoiceItems()
         {
             var config = Helpers.GetTestConfiguration();
@@ -71,7 +83,7 @@ namespace TaurusSoftware.BillomatNet.Tests
         }
 
         [Fact]
-        public async Task GetInvoiceItems2()
+        public async Task GetMultipleInvoiceItems()
         {
             var config = Helpers.GetTestConfiguration();
 
