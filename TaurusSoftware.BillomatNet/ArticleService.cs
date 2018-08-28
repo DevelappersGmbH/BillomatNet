@@ -19,17 +19,17 @@ namespace TaurusSoftware.BillomatNet
         {
         }
 
-        public Task<PagedList<Article>> GetListAsync(CancellationToken token = default(CancellationToken))
+        public Task<Types.PagedList<Article>> GetListAsync(CancellationToken token = default(CancellationToken))
         {
             return GetListAsync(null, token);
         }
 
-        public Task<PagedList<ArticleProperty>> GetPropertyListAsync(CancellationToken token = default(CancellationToken))
+        public Task<Types.PagedList<ArticleProperty>> GetPropertyListAsync(CancellationToken token = default(CancellationToken))
         {
             return GetPropertyListAsync(null, token);
         }
 
-        public async Task<PagedList<ArticleProperty>> GetPropertyListAsync(Query<ArticleProperty, ArticlePropertyFilter> query, CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<ArticleProperty>> GetPropertyListAsync(Query<ArticleProperty, ArticlePropertyFilter> query, CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             var httpResponse = await httpClient.GetAsync(new Uri("/api/article-property-values", UriKind.Relative), QueryString.For(query), token);
@@ -37,7 +37,7 @@ namespace TaurusSoftware.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        public async Task<PagedList<Article>> GetListAsync(Query<Article, ArticleFilter> query, CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<Article>> GetListAsync(Query<Article, ArticleFilter> query, CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             var httpResponse = await httpClient.GetAsync(new Uri("/api/articles", UriKind.Relative), QueryString.For(query), token);
@@ -61,7 +61,7 @@ namespace TaurusSoftware.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        public async Task<PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
         {
             // do we need paging possibilities in parameters? 100 items in tagcloud should be enough, shouldn't it?
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
@@ -70,7 +70,7 @@ namespace TaurusSoftware.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        public async Task<PagedList<ArticleTag>> GetTagListAsync(Query<ArticleTag, ArticleTagFilter> query, CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<ArticleTag>> GetTagListAsync(Query<ArticleTag, ArticleTagFilter> query, CancellationToken token = default(CancellationToken))
         {
             if (query?.Filter == null)
             {

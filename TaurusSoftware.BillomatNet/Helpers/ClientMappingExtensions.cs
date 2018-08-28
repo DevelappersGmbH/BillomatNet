@@ -104,19 +104,19 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return value?.Client.ToDomain();
         }
 
-        internal static PagedList<Client> ToDomain(this ClientListWrapper value)
+        internal static Types.PagedList<Client> ToDomain(this ClientListWrapper value)
         {
             return value?.Item.ToDomain();
         }
 
-        internal static PagedList<Client> ToDomain(this ClientList value)
+        internal static Types.PagedList<Client> ToDomain(this ClientList value)
         {
             if (value == null)
             {
                 return null;
             }
 
-            return new PagedList<Client>
+            return new Types.PagedList<Client>
             {
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,

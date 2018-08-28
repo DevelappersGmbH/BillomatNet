@@ -5,6 +5,7 @@ using System.Linq;
 using TaurusSoftware.BillomatNet.Api;
 using TaurusSoftware.BillomatNet.Types;
 using Invoice = TaurusSoftware.BillomatNet.Types.Invoice;
+using InvoiceItem = TaurusSoftware.BillomatNet.Types.InvoiceItem;
 using InvoiceDocument = TaurusSoftware.BillomatNet.Types.InvoiceDocument;
 using InvoiceTax = TaurusSoftware.BillomatNet.Types.InvoiceTax;
 
@@ -15,6 +16,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
         internal static Invoice ToDomain(this InvoiceWrapper value)
         {
             return value?.Invoice.ToDomain();
+        }
+
+        internal static InvoiceItem ToDomain(this InvoiceItemWrapper value)
+        {
+            return value?.InvoiceItem.ToDomain();
         }
 
         internal static InvoiceDocument ToDomain(this InvoiceDocumentWrapper value)
@@ -41,20 +47,40 @@ namespace TaurusSoftware.BillomatNet.Helpers
             };
         }
 
-
-        internal static PagedList<Invoice> ToDomain(this InvoiceListWrapper value)
+        internal static Types.PagedList<Invoice> ToDomain(this InvoiceListWrapper value)
         {
             return value?.Item.ToDomain();
         }
 
-        internal static PagedList<Invoice> ToDomain(this InvoiceList value)
+        internal static Types.PagedList<InvoiceItem> ToDomain(this InvoiceItemListWrapper value)
+        {
+            return value?.Item.ToDomain();
+        }
+
+        internal static Types.PagedList<Invoice> ToDomain(this InvoiceList value)
         {
             if (value == null)
             {
                 return null;
             }
 
-            return new PagedList<Invoice>
+            return new Types.PagedList<Invoice>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(ToDomain).ToList()
+            };
+        }
+
+        internal static Types.PagedList<InvoiceItem> ToDomain(this InvoiceItemList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<InvoiceItem>
             {
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
@@ -209,6 +235,55 @@ namespace TaurusSoftware.BillomatNet.Helpers
                 DiscountAmount = value.DiscountAmount.ToOptionalFloat(),
                 PaidAmount = value.PaidAmount.ToOptionalFloat() ?? 0,
                 OpenAmount = float.Parse(value.OpenAmount, CultureInfo.InvariantCulture)
+            };
+
+        }
+
+
+        private static InvoiceItem ToDomain(this Api.InvoiceItem value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            IReduction reduction = null;
+            if (!string.IsNullOrEmpty(value.Reduction) && value.Reduction != "null")
+            {
+                if (value.Reduction.EndsWith("%"))
+                {
+                    reduction = new PercentReduction
+                    {
+                        Value = float.Parse(value.Reduction.Replace("%", ""), CultureInfo.InvariantCulture)
+                    };
+                }
+                else
+                {
+                    reduction = new AbsoluteReduction
+                    {
+                        Value = float.Parse(value.Reduction, CultureInfo.InvariantCulture)
+                    };
+                }
+            }
+
+            return new InvoiceItem
+            {
+                Id = int.Parse(value.Id, CultureInfo.InvariantCulture),
+                Reduction = reduction,
+                InvoiceId = int.Parse(value.InvoiceId, CultureInfo.InvariantCulture),
+                ArticleId = value.ArticleId.ToOptionalInt(),
+                Description = value.Description,
+                Position = int.Parse(value.Position, CultureInfo.InvariantCulture),
+                Title = value.Title,
+                Unit = value.Unit,
+                TaxName = value.TaxName,
+                TotalNet = float.Parse(value.TotalNet, CultureInfo.InvariantCulture),
+                Quantity = float.Parse(value.Quantity, CultureInfo.InvariantCulture),
+                TotalNetUnreduced = float.Parse(value.TotalNetUnreduced, CultureInfo.InvariantCulture),
+                TotalGross = float.Parse(value.TotalGross, CultureInfo.InvariantCulture),
+                TotalGrossUnreduced = float.Parse(value.TotalGrossUnreduced, CultureInfo.InvariantCulture),
+                UnitPrice = float.Parse(value.UnitPrice, CultureInfo.InvariantCulture),
+                TaxRate = value.TaxRate.ToOptionalFloat()
             };
 
         }

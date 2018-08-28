@@ -11,14 +11,14 @@ namespace TaurusSoftware.BillomatNet.Helpers
 {
     internal static class ArticleMappingExtensions
     {
-        internal static PagedList<TagCloudItem> ToDomain(this ArticleTagCloudItemList value)
+        internal static Types.PagedList<TagCloudItem> ToDomain(this ArticleTagCloudItemList value)
         {
             if (value == null)
             {
                 return null;
             }
 
-            return new PagedList<TagCloudItem>
+            return new Types.PagedList<TagCloudItem>
             {
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
@@ -61,19 +61,19 @@ namespace TaurusSoftware.BillomatNet.Helpers
             };
         }
 
-        internal static PagedList<Article> ToDomain(this ArticleListWrapper value)
+        internal static Types.PagedList<Article> ToDomain(this ArticleListWrapper value)
         {
             return value?.Item.ToDomain();
         }
 
-        internal static PagedList<Article> ToDomain(this ArticleList value)
+        internal static Types.PagedList<Article> ToDomain(this ArticleList value)
         {
             if (value == null)
             {
                 return null;
             }
 
-            return new PagedList<Article>
+            return new Types.PagedList<Article>
             {
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
@@ -129,31 +129,31 @@ namespace TaurusSoftware.BillomatNet.Helpers
             };
         }
 
-        internal static PagedList<ArticleProperty> ToDomain(this ArticlePropertyListWrapper value)
+        internal static Types.PagedList<ArticleProperty> ToDomain(this ArticlePropertyListWrapper value)
         {
             return value?.Item.ToDomain();
 
         }
 
-        internal static PagedList<TagCloudItem> ToDomain(this ArticleTagCloudItemListWrapper value)
+        internal static Types.PagedList<TagCloudItem> ToDomain(this ArticleTagCloudItemListWrapper value)
         {
             return value?.Item.ToDomain();
         }
 
-        internal static PagedList<ArticleTag> ToDomain(this ArticleTagListWrapper value)
+        internal static Types.PagedList<ArticleTag> ToDomain(this ArticleTagListWrapper value)
         {
             return value?.Item.ToDomain();
 
         }
 
-        internal static PagedList<ArticleProperty> ToDomain(this ArticlePropertyList value)
+        internal static Types.PagedList<ArticleProperty> ToDomain(this ArticlePropertyList value)
         {
             if (value == null)
             {
                 return null;
             }
 
-            return new PagedList<ArticleProperty>
+            return new Types.PagedList<ArticleProperty>
             {
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
@@ -162,14 +162,14 @@ namespace TaurusSoftware.BillomatNet.Helpers
             };
         }
 
-        internal static PagedList<ArticleTag> ToDomain(this ArticleTagList value)
+        internal static Types.PagedList<ArticleTag> ToDomain(this ArticleTagList value)
         {
             if (value == null)
             {
                 return null;
             }
 
-            return new PagedList<ArticleTag>
+            return new Types.PagedList<ArticleTag>
             {
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,

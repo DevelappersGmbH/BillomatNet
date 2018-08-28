@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TaurusSoftware.BillomatNet
+namespace TaurusSoftware.BillomatNet.Types
 {
     public class DateSupplyDate : ISupplyDate
     {

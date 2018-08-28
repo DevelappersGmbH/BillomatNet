@@ -1,4 +1,4 @@
-﻿namespace TaurusSoftware.BillomatNet
+﻿namespace TaurusSoftware.BillomatNet.Types
 {
     public class FreeTextSupplyDate : ISupplyDate
     {
