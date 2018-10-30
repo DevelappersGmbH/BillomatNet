@@ -27,7 +27,7 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             var service = new ArticleService(config);
 
-            var result = await service.GetById(154123);
+            var result = await service.GetByIdAsync(154123);
             Assert.NotNull(result);
         }
 
@@ -38,7 +38,7 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             var service = new ArticleService(config);
 
-            var result = await service.GetById(1);
+            var result = await service.GetByIdAsync(1);
             Assert.Null(result);
         }
 
@@ -61,7 +61,7 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             var service = new ArticleService(config);
 
-            var result = await service.GetPropertyById(434532, CancellationToken.None);
+            var result = await service.GetPropertyByIdAsync(434532, CancellationToken.None);
 
             Assert.NotNull(result);
         }
@@ -73,7 +73,7 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             var service = new ArticleService(config);
 
-            var result = await service.GetPropertyById(1, CancellationToken.None);
+            var result = await service.GetPropertyByIdAsync(1, CancellationToken.None);
 
             Assert.Null(result);
         }

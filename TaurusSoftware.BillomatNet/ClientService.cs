@@ -50,7 +50,7 @@ namespace TaurusSoftware.BillomatNet
         /// <param name="token">The cancellation token.</param>
         /// <returns>The client or null if not found.</returns>
         /// <exception cref="NotAuthorizedException">Thrown when the client is not accessible.</exception>
-        public async Task<Client> GetById(int id, CancellationToken token = default(CancellationToken))
+        public async Task<Client> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetItemByIdAsync<ClientWrapper>($"/api/clients/{id}", token);
             return jsonModel.ToDomain();
@@ -62,7 +62,7 @@ namespace TaurusSoftware.BillomatNet
         /// <param name="id">The id of the contact.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The client or null if not found.</returns>
-        public async Task<Contact> GetContactById(int id, CancellationToken token = default(CancellationToken))
+        public async Task<Contact> GetContactByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetItemByIdAsync<ContactWrapper>($"/api/contacts/{id}", token);
             return jsonModel.ToDomain();

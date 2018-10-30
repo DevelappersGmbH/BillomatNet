@@ -43,7 +43,7 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             var service = new ClientService(config);
 
-            var result = await service.GetById(1227912);
+            var result = await service.GetByIdAsync(1227912);
             Assert.NotNull(result);
         }
 
@@ -54,7 +54,7 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             var service = new ClientService(config);
 
-            await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetById(1));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(1));
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             var service = new ClientService(config);
 
-            var result = await service.GetContactById(35641);
+            var result = await service.GetContactByIdAsync(35641);
             Assert.NotNull(result);
         }
 
@@ -87,7 +87,7 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             var service = new ClientService(config);
 
-            var result = await service.GetContactById(1);
+            var result = await service.GetContactByIdAsync(1);
             Assert.Null(result);
         }
 

@@ -45,7 +45,7 @@ namespace TaurusSoftware.BillomatNet
         /// <param name="id">The id of the article.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The article or null if not found.</returns>
-        public async Task<Article> GetById(int id, CancellationToken token = default(CancellationToken))
+        public async Task<Article> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetItemByIdAsync<ArticleWrapper>($"/api/articles/{id}", token);
             return jsonModel.ToDomain();
@@ -57,7 +57,7 @@ namespace TaurusSoftware.BillomatNet
         /// <param name="id">The id of the article property.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The article property or null if not found.</returns>
-        public async Task<ArticleProperty> GetPropertyById(int id, CancellationToken token = default(CancellationToken))
+        public async Task<ArticleProperty> GetPropertyByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetItemByIdAsync<ArticlePropertyWrapper>($"/api/article-property-values/{id}", token);
             return jsonModel.ToDomain();
@@ -87,7 +87,7 @@ namespace TaurusSoftware.BillomatNet
         /// <param name="id">The id of the tag property.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The article tag or null if not found.</returns>
-        public async Task<ArticleTag> GetTagById(int id, CancellationToken token = default(CancellationToken))
+        public async Task<ArticleTag> GetTagByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetItemByIdAsync<ArticleTagWrapper>($"/api/article-tags/{id}", token);
             return jsonModel.ToDomain();
