@@ -74,7 +74,17 @@ namespace TaurusSoftware.BillomatNet
         public async Task<ArticleProperty> GetPropertyById(int id, CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri($"/api/article-property-values/{id}", UriKind.Relative), token);
+            string httpResponse;
+            try
+            {
+                httpResponse = await httpClient.GetAsync(new Uri($"/api/article-property-values/{id}", UriKind.Relative), token);
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
             var jsonModel = JsonConvert.DeserializeObject<ArticlePropertyWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }

@@ -67,6 +67,18 @@ namespace TaurusSoftware.BillomatNet.Tests
         }
 
         [Fact]
+        public async Task GetArticlePropertyByIdWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new ArticleService(config);
+
+            var result = await service.GetPropertyById(1, CancellationToken.None);
+
+            Assert.Null(result);
+        }
+
+        [Fact]
         public async Task GetArticleTagCloud()
         {
             var config = Helpers.GetTestConfiguration();
