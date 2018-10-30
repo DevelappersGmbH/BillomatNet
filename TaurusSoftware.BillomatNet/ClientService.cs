@@ -45,6 +45,7 @@ namespace TaurusSoftware.BillomatNet
         /// <param name="id">The id of the client.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The client or null if not found.</returns>
+        /// <exception cref="NotAuthorizedException">Thrown when the client is not accessible.</exception>
         public async Task<Client> GetById(int id, CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
@@ -57,7 +58,14 @@ namespace TaurusSoftware.BillomatNet
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
             {
+                // NotFound
                 return null;
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                // Unauthorized
+                throw new NotAuthorizedException("You are not authorized to access this customer.", wex);
             }
 
             var jsonModel = JsonConvert.DeserializeObject<ClientWrapper>(httpResponse);

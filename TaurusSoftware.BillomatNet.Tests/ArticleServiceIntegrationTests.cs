@@ -27,8 +27,19 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             var service = new ArticleService(config);
 
-            var result = await service.GetById(434867);
+            var result = await service.GetById(154123);
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task GetArticleByIdWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new ArticleService(config);
+
+            var result = await service.GetById(1);
+            Assert.Null(result);
         }
 
         [Fact]

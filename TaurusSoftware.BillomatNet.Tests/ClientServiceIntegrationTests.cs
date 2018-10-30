@@ -46,5 +46,16 @@ namespace TaurusSoftware.BillomatNet.Tests
             var result = await service.GetById(1227912);
             Assert.NotNull(result);
         }
+
+        [Fact]
+        public async Task GetClientByIdWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new ClientService(config);
+
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetById(1));
+        }
+
     }
 }
