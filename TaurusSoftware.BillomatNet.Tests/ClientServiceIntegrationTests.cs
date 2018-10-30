@@ -69,5 +69,27 @@ namespace TaurusSoftware.BillomatNet.Tests
             Assert.True(result.List.Count > 0);
         }
 
+        [Fact]
+        public async Task GetContactById()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new ClientService(config);
+
+            var result = await service.GetContactById(35641);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task GetContactByIdWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new ClientService(config);
+
+            var result = await service.GetContactById(1);
+            Assert.Null(result);
+        }
+
     }
 }

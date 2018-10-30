@@ -152,6 +152,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return value?.Client.ToDomain();
         }
 
+        internal static Contact ToDomain(this ContactWrapper value)
+        {
+            return value?.Contact.ToDomain();
+        }
+
         private static Client ToDomain(this Api.Client value)
         {
             if (value == null)

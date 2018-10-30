@@ -55,5 +55,17 @@ namespace TaurusSoftware.BillomatNet
             var jsonModel = await GetItemByIdAsync<ClientWrapper>($"/api/clients/{id}", token);
             return jsonModel.ToDomain();
         }
+
+        /// <summary>
+        /// Returns an contact by it's id. 
+        /// </summary>
+        /// <param name="id">The id of the contact.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The client or null if not found.</returns>
+        public async Task<Contact> GetContactById(int id, CancellationToken token = default(CancellationToken))
+        {
+            var jsonModel = await GetItemByIdAsync<ContactWrapper>($"/api/contacts/{id}", token);
+            return jsonModel.ToDomain();
+        }
     }
 }
