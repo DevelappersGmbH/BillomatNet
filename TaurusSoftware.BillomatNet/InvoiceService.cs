@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -27,9 +25,7 @@ namespace TaurusSoftware.BillomatNet
 
         public async Task<Types.PagedList<Invoice>> GetListAsync(Query<Invoice, InvoiceFilter> query, CancellationToken token = default(CancellationToken))
         {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri("/api/invoices", UriKind.Relative), QueryString.For(query), token);
-            var jsonModel = JsonConvert.DeserializeObject<InvoiceListWrapper>(httpResponse);
+            var jsonModel = await GetListAsync<InvoiceListWrapper>("/api/invoices", QueryString.For(query), token);
             return jsonModel.ToDomain();
         }
 
@@ -49,36 +45,19 @@ namespace TaurusSoftware.BillomatNet
         /// <returns>The invoice or null if not found.</returns>
         public async Task<Invoice> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-
-            string httpResponse;
-            try
-            {
-                httpResponse = await httpClient.GetAsync(new Uri($"/api/invoices/{id}", UriKind.Relative), token);
-            }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
-            {
-                return null;
-            }
-
-            var jsonModel = JsonConvert.DeserializeObject<InvoiceWrapper>(httpResponse);
+            var jsonModel = await GetItemByIdAsync<InvoiceWrapper>($"/api/invoices/{id}", token);
             return jsonModel.ToDomain();
         }
 
         public async Task<Types.PagedList<InvoiceItem>> GetItemsAsync(int invoiceId, CancellationToken token = default(CancellationToken))
         {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri($"/api/invoice-items", UriKind.Relative), $"invoice_id={invoiceId}" , token);
-            var jsonModel = JsonConvert.DeserializeObject<InvoiceItemListWrapper>(httpResponse);
+            var jsonModel = await GetListAsync<InvoiceItemListWrapper>("/api/invoice-items", $"invoice_id={invoiceId}", token);
             return jsonModel.ToDomain();
         }
 
         public async Task<InvoiceItem> GetItemByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri($"/api/invoice-items/{id}", UriKind.Relative), token);
-            var jsonModel = JsonConvert.DeserializeObject<InvoiceItemWrapper>(httpResponse);
+            var jsonModel = await GetItemByIdAsync<InvoiceItemWrapper>($"/api/invoice-items/{id}", token);
             return jsonModel.ToDomain();
         }
     }
