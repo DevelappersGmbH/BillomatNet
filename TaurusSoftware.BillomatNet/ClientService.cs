@@ -67,5 +67,11 @@ namespace TaurusSoftware.BillomatNet
             var jsonModel = await GetItemByIdAsync<ContactWrapper>($"/api/contacts/{id}", token);
             return jsonModel.ToDomain();
         }
+
+        public async Task<byte[]> GetContactAvatarByIdAsync(int id, int size, CancellationToken token = default(CancellationToken))
+        {
+            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            return await httpClient.GetBytesAsync(new Uri($"/api/contacts/{id}/avatar?size={size}", UriKind.Relative), token);
+        }
     }
 }

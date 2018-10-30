@@ -81,6 +81,17 @@ namespace TaurusSoftware.BillomatNet.Tests
         }
 
         [Fact]
+        public async Task GetContactAvatarById()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new ClientService(config);
+
+            var result = await service.GetContactAvatarByIdAsync(35641, 100);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public async Task GetContactByIdWhenNotFound()
         {
             var config = Helpers.GetTestConfiguration();
