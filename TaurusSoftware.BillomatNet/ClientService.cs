@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -38,10 +39,27 @@ namespace TaurusSoftware.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        /// <summary>
+        /// Returns an client by it's id. 
+        /// </summary>
+        /// <param name="id">The id of the client.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The client or null if not found.</returns>
         public async Task<Client> GetById(int id, CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri($"/api/clients/{id}", UriKind.Relative), token);
+
+            string httpResponse;
+            try
+            {
+                httpResponse = await httpClient.GetAsync(new Uri($"/api/clients/{id}", UriKind.Relative), token);
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
             var jsonModel = JsonConvert.DeserializeObject<ClientWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }

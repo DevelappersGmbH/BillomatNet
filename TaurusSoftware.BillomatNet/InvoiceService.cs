@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -40,10 +41,27 @@ namespace TaurusSoftware.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        /// <summary>
+        /// Returns an invoice by it's id. 
+        /// </summary>
+        /// <param name="id">The id of the invoice.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The invoice or null if not found.</returns>
         public async Task<Invoice> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri($"/api/invoices/{id}", UriKind.Relative), token);
+
+            string httpResponse;
+            try
+            {
+                httpResponse = await httpClient.GetAsync(new Uri($"/api/invoices/{id}", UriKind.Relative), token);
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+            {
+                return null;
+            }
+
             var jsonModel = JsonConvert.DeserializeObject<InvoiceWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }

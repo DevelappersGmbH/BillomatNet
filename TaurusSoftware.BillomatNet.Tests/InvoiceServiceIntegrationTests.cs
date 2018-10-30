@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -52,7 +53,6 @@ namespace TaurusSoftware.BillomatNet.Tests
             var config = Helpers.GetTestConfiguration();
 
             var service = new InvoiceService(config);
-
             var result = await service.GetByIdAsync(1322705);
 
             Assert.NotNull(result);
