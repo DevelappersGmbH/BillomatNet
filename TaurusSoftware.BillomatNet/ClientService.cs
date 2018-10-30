@@ -8,6 +8,7 @@ using TaurusSoftware.BillomatNet.Helpers;
 using TaurusSoftware.BillomatNet.Queries;
 using Account = TaurusSoftware.BillomatNet.Types.Account;
 using Client = TaurusSoftware.BillomatNet.Types.Client;
+using Contact = TaurusSoftware.BillomatNet.Types.Contact;
 
 namespace TaurusSoftware.BillomatNet
 {
@@ -28,6 +29,12 @@ namespace TaurusSoftware.BillomatNet
         public Task<Types.PagedList<Client>> GetListAsync(CancellationToken token = default(CancellationToken))
         {
             return GetListAsync(null, token);
+        }
+
+        public async Task<Types.PagedList<Contact>> GetContactListAsync(int clientId, CancellationToken token = default(CancellationToken))
+        {
+            var jsonModel = await GetListAsync<ContactListWrapper>("/api/contacts", $"client_id={clientId}", token);
+            return jsonModel.ToDomain();
         }
 
         public async Task<Types.PagedList<Client>> GetListAsync(Query<Client, ClientFilter> query, CancellationToken token = default(CancellationToken))

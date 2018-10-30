@@ -57,5 +57,17 @@ namespace TaurusSoftware.BillomatNet.Tests
             await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetById(1));
         }
 
+        [Fact]
+        public async Task GetContacts()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new ClientService(config);
+
+            var result = await service.GetContactListAsync(1227912, CancellationToken.None);
+
+            Assert.True(result.List.Count > 0);
+        }
+
     }
 }
