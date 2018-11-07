@@ -29,13 +29,13 @@ namespace TaurusSoftware.BillomatNet
 
         public async Task<Types.PagedList<ArticleProperty>> GetPropertyListAsync(Query<ArticleProperty, ArticlePropertyFilter> query, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetListAsync<ArticlePropertyListWrapper>("/api/article-property-values", QueryString.For(query), token);
+            var jsonModel = await GetListAsync<ArticlePropertyListWrapper>("/api/article-property-values", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
         public async Task<Types.PagedList<Article>> GetListAsync(Query<Article, ArticleFilter> query, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetListAsync<ArticleListWrapper>("/api/articles", QueryString.For(query), token);
+            var jsonModel = await GetListAsync<ArticleListWrapper>("/api/articles", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -47,7 +47,7 @@ namespace TaurusSoftware.BillomatNet
         /// <returns>The article or null if not found.</returns>
         public async Task<Article> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetItemByIdAsync<ArticleWrapper>($"/api/articles/{id}", token);
+            var jsonModel = await GetItemByIdAsync<ArticleWrapper>($"/api/articles/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -59,14 +59,14 @@ namespace TaurusSoftware.BillomatNet
         /// <returns>The article property or null if not found.</returns>
         public async Task<ArticleProperty> GetPropertyByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetItemByIdAsync<ArticlePropertyWrapper>($"/api/article-property-values/{id}", token);
+            var jsonModel = await GetItemByIdAsync<ArticlePropertyWrapper>($"/api/article-property-values/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
         public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
         {
             // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
-            var jsonModel = await GetListAsync<ArticleTagCloudItemListWrapper>("/api/article-tags", null, token);
+            var jsonModel = await GetListAsync<ArticleTagCloudItemListWrapper>("/api/article-tags", null, token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -77,7 +77,7 @@ namespace TaurusSoftware.BillomatNet
                 throw new ArgumentException("filter has to be set", nameof(query));
             }
 
-            var jsonModel = await GetListAsync<ArticleTagListWrapper>("/api/article-tags", QueryString.For(query), token);
+            var jsonModel = await GetListAsync<ArticleTagListWrapper>("/api/article-tags", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -89,7 +89,7 @@ namespace TaurusSoftware.BillomatNet
         /// <returns>The article tag or null if not found.</returns>
         public async Task<ArticleTag> GetTagByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetItemByIdAsync<ArticleTagWrapper>($"/api/article-tags/{id}", token);
+            var jsonModel = await GetItemByIdAsync<ArticleTagWrapper>($"/api/article-tags/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
     }

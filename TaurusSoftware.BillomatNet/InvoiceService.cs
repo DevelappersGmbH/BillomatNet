@@ -22,13 +22,13 @@ namespace TaurusSoftware.BillomatNet
 
         public async Task<Types.PagedList<Invoice>> GetListAsync(Query<Invoice, InvoiceFilter> query, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetListAsync<InvoiceListWrapper>("/api/invoices", QueryString.For(query), token);
+            var jsonModel = await GetListAsync<InvoiceListWrapper>("/api/invoices", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
         public async Task<InvoiceDocument> GetPdfAsync(int id, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetItemByIdAsync<InvoiceDocumentWrapper>($"/api/invoices/{id}/pdf", token);
+            var jsonModel = await GetItemByIdAsync<InvoiceDocumentWrapper>($"/api/invoices/{id}/pdf", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -40,19 +40,30 @@ namespace TaurusSoftware.BillomatNet
         /// <returns>The invoice or null if not found.</returns>
         public async Task<Invoice> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetItemByIdAsync<InvoiceWrapper>($"/api/invoices/{id}", token);
+            var jsonModel = await GetItemByIdAsync<InvoiceWrapper>($"/api/invoices/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Deletes an invoice.
+        /// </summary>
+        /// <param name="id">The id of the invoice.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns></returns>
+        public Task DeleteAsync(int id, CancellationToken token = default(CancellationToken))
+        {
+            return DeleteAsync($"/api/invoices/{id}", token);
         }
 
         public async Task<Types.PagedList<InvoiceItem>> GetItemsAsync(int invoiceId, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetListAsync<InvoiceItemListWrapper>("/api/invoice-items", $"invoice_id={invoiceId}", token);
+            var jsonModel = await GetListAsync<InvoiceItemListWrapper>("/api/invoice-items", $"invoice_id={invoiceId}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
         public async Task<InvoiceItem> GetItemByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetItemByIdAsync<InvoiceItemWrapper>($"/api/invoice-items/{id}", token);
+            var jsonModel = await GetItemByIdAsync<InvoiceItemWrapper>($"/api/invoice-items/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
     }

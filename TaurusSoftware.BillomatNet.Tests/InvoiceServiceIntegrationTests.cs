@@ -93,6 +93,45 @@ namespace TaurusSoftware.BillomatNet.Tests
             Assert.True(result.List.Count > 0);
         }
 
+
+        [Fact]
+        public async Task DeleteInvoiceItemNotExisting()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new InvoiceService(config);
+
+            // delete an invoice that doesn't exist
+            await service.DeleteAsync(4447692);
+
+            Assert.True(true);
+        }
+
+        //[Fact]
+        //public async Task DeleteInvoiceItemExisting()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+
+        //    var service = new InvoiceService(config);
+
+        //    // delete an invoice that doesn't exist
+        //    await service.DeleteAsync(4447692);
+
+        //    Assert.True(true);
+        //}
+
+        //[Fact]
+        //public async Task DeleteInvoiceItemOpen()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+
+        //    var service = new InvoiceService(config);
+
+        //    // try to delete an invoice that is open
+        //    await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteAsync(3745041));
+        //}
+        
+
         [Fact]
         public async Task GetMultipleInvoiceItems()
         {

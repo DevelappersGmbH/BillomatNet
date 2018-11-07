@@ -24,7 +24,7 @@ namespace TaurusSoftware.BillomatNet
         /// <param name="token">The cancellation token.</param>
         /// <returns></returns>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        protected async Task<T> GetItemByIdAsync<T>(string resourceUrl, CancellationToken token = default(CancellationToken)) where T : class 
+        protected async Task<T> GetItemByIdAsync<T>(string resourceUrl, CancellationToken token = default(CancellationToken)) where T : class
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             string httpResponse;
@@ -62,6 +62,33 @@ namespace TaurusSoftware.BillomatNet
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             var httpResponse = await httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), query, token);
             return JsonConvert.DeserializeObject<T>(httpResponse);
+        }
+
+        /// <summary>
+        /// Executes an API call to delete an entity.
+        /// </summary>
+        /// <param name="resourceUrl">The relative url.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns></returns>
+        protected async Task DeleteAsync(string resourceUrl, CancellationToken token)
+        {
+            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            try
+            {
+                await httpClient.DeleteAsync(new Uri(resourceUrl, UriKind.Relative), token);
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+            {
+                // NotFound
+                return;
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                // Unauthorized
+                throw new NotAuthorizedException("You are not authorized to delete this item.", wex);
+            }
         }
     }
 }

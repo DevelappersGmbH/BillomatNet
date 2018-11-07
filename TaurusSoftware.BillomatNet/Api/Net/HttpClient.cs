@@ -114,5 +114,42 @@ namespace TaurusSoftware.BillomatNet.Api.Net
 
             return result;
         }
+
+        public async Task<string> DeleteAsync(Uri relativeUri, CancellationToken token)
+        {
+            var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
+            var builder = new UriBuilder(new Uri(baseUri, relativeUri));
+            var uri = builder.ToString();
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
+            httpWebRequest.Method = "DELETE";
+            httpWebRequest.Accept = "application/json";
+            httpWebRequest.Headers.Add(HeaderNameApiKey, ApiKey);
+
+            if (!string.IsNullOrWhiteSpace(AppId))
+            {
+                httpWebRequest.Headers.Add(HeaderNameAppId, AppId);
+            }
+            if (!string.IsNullOrWhiteSpace(AppSecret))
+            {
+                httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
+            }
+
+
+            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
+            var responseStream = httpResponse.GetResponseStream();
+            if (responseStream == null)
+            {
+                throw new IOException("response stream was null!");
+            }
+
+            string result;
+            using (var streamReader = new StreamReader(responseStream))
+            {
+                result = await streamReader.ReadToEndAsync();
+            }
+
+            return result;
+        }
     }
 }

@@ -21,7 +21,7 @@ namespace TaurusSoftware.BillomatNet
         public async Task<Account> MyselfAsync(CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri("/api/clients/myself", UriKind.Relative), token);
+            var httpResponse = await httpClient.GetAsync(new Uri("/api/clients/myself", UriKind.Relative), token).ConfigureAwait(false);
             var jsonModel = JsonConvert.DeserializeObject<AccountWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }
@@ -33,13 +33,13 @@ namespace TaurusSoftware.BillomatNet
 
         public async Task<Types.PagedList<Contact>> GetContactListAsync(int clientId, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetListAsync<ContactListWrapper>("/api/contacts", $"client_id={clientId}", token);
+            var jsonModel = await GetListAsync<ContactListWrapper>("/api/contacts", $"client_id={clientId}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
         public async Task<Types.PagedList<Client>> GetListAsync(Query<Client, ClientFilter> query, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetListAsync<ClientListWrapper>("/api/clients", QueryString.For(query), token);
+            var jsonModel = await GetListAsync<ClientListWrapper>("/api/clients", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -52,7 +52,7 @@ namespace TaurusSoftware.BillomatNet
         /// <exception cref="NotAuthorizedException">Thrown when the client is not accessible.</exception>
         public async Task<Client> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetItemByIdAsync<ClientWrapper>($"/api/clients/{id}", token);
+            var jsonModel = await GetItemByIdAsync<ClientWrapper>($"/api/clients/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -64,14 +64,14 @@ namespace TaurusSoftware.BillomatNet
         /// <returns>The client or null if not found.</returns>
         public async Task<Contact> GetContactByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetItemByIdAsync<ContactWrapper>($"/api/contacts/{id}", token);
+            var jsonModel = await GetItemByIdAsync<ContactWrapper>($"/api/contacts/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
         public async Task<byte[]> GetContactAvatarByIdAsync(int id, int size, CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            return await httpClient.GetBytesAsync(new Uri($"/api/contacts/{id}/avatar?size={size}", UriKind.Relative), token);
+            return await httpClient.GetBytesAsync(new Uri($"/api/contacts/{id}/avatar?size={size}", UriKind.Relative), token).ConfigureAwait(false);
         }
     }
 }
