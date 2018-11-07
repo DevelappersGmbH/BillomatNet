@@ -38,6 +38,7 @@ namespace TaurusSoftware.BillomatNet
             return jsonModel.ToDomain();
         }
 
+
         public async Task<Types.PagedList<Client>> GetListAsync(Query<Client, ClientFilter> query, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetListAsync<ClientListWrapper>("/api/clients", QueryString.For(query), token).ConfigureAwait(false);
@@ -69,6 +70,13 @@ namespace TaurusSoftware.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        /// <summary>
+        /// Retrieves the avatar for a specific contact.
+        /// </summary>
+        /// <param name="id">The id of the contact.</param>
+        /// <param name="size">The size in pixels.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns></returns>
         public async Task<byte[]> GetContactAvatarByIdAsync(int id, int size, CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
