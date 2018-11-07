@@ -63,11 +63,7 @@ namespace TaurusSoftware.BillomatNet
         /// <returns></returns>
         public Task CompleteAsync(int id, CancellationToken token = default(CancellationToken))
         {
-            var model = new CompleteInvoiceWrapper
-            {
-                Parameters = new CompleteInvoiceParameters()
-            };
-            return PutAsync($"/api/invoices/{id}/complete", model, token);
+            return CompleteInternalAsync(id, null, token);
         }
 
         /// <summary>
@@ -77,7 +73,12 @@ namespace TaurusSoftware.BillomatNet
         /// <param name="templateId">The template id.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns></returns>
-        public async Task CompleteAsync(int id, int templateId, CancellationToken token = default(CancellationToken))
+        public Task CompleteAsync(int id, int templateId, CancellationToken token = default(CancellationToken))
+        {
+            return CompleteInternalAsync(id, templateId, token);
+        }
+
+        private async Task CompleteInternalAsync(int id, int? templateId, CancellationToken token)
         {
             var model = new CompleteInvoiceWrapper
             {
