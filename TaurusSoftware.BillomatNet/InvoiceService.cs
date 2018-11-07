@@ -56,6 +56,28 @@ namespace TaurusSoftware.BillomatNet
         }
 
         /// <summary>
+        /// Cancels an invoice.
+        /// </summary>
+        /// <param name="id">The id of the invoice.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns></returns>
+        public Task CancelAsync(int id, CancellationToken token = default(CancellationToken))
+        {
+            return PutAsync<object>($"/api/invoices/{id}/cancel", null, token);
+        }
+
+        /// <summary>
+        /// Reverses the cancellation of an invoice.
+        /// </summary>
+        /// <param name="id">The id of the invoice.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns></returns>
+        public Task UncancelAsync(int id, CancellationToken token = default(CancellationToken))
+        {
+            return PutAsync<object>($"/api/invoices/{id}/uncancel", null, token);
+        }
+
+        /// <summary>
         /// Completes an invoice.
         /// </summary>
         /// <param name="id">The id of the invoice.</param>
