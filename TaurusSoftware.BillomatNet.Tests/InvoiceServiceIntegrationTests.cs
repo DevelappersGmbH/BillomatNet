@@ -107,17 +107,30 @@ namespace TaurusSoftware.BillomatNet.Tests
             Assert.True(true);
         }
 
-        [Fact]
-        public async Task CancelInvoiceItem()
-        {
-            var config = Helpers.GetTestConfiguration();
+        //[Fact]
+        //public async Task CancelInvoiceItem()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
 
-            var service = new InvoiceService(config);
+        //    var service = new InvoiceService(config);
 
-            await service.UncancelAsync(4340407);
+        //    await service.CancelAsync(4340407);
 
-            Assert.True(true);
-        }
+        //    Assert.True(true);
+        //}
+
+        //[Fact]
+        //public async Task UncancelInvoiceItem()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+
+        //    var service = new InvoiceService(config);
+
+        //    await service.UncancelAsync(4340407);
+
+        //    Assert.True(true);
+        //}
+
 
         //[Fact]
         //public async Task CompleteInvoiceItem()
