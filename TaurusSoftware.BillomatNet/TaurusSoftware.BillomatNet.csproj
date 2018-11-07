@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>0.1.1</Version>
+    <Version>0.1.2</Version>
     <Authors>Martin Hey</Authors>
     <Company>Martin Hey</Company>
     <Description>A C# client to access Billomat.</Description>
@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/martinhey/BillomatNet</PackageProjectUrl>
     <RepositoryUrl>https://github.com/martinhey/BillomatNet</RepositoryUrl>
     <PackageIconUrl>https://raw.githubusercontent.com/martinhey/BillomatNet/master/icon.png</PackageIconUrl>
-    <PackageTags>billomat</PackageTags>
+    <PackageTags>billomat invoice accounting</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

@@ -5,7 +5,9 @@ using TaurusSoftware.BillomatNet.Api;
 using TaurusSoftware.BillomatNet.Types;
 using Account = TaurusSoftware.BillomatNet.Types.Account;
 using Client = TaurusSoftware.BillomatNet.Types.Client;
+using Contact = TaurusSoftware.BillomatNet.Types.Contact;
 using Quota = TaurusSoftware.BillomatNet.Types.Quota;
+using TagCloudItem = TaurusSoftware.BillomatNet.Types.TagCloudItem;
 
 namespace TaurusSoftware.BillomatNet.Helpers
 {
@@ -109,6 +111,11 @@ namespace TaurusSoftware.BillomatNet.Helpers
             return value?.Item.ToDomain();
         }
 
+        internal static Types.PagedList<Contact> ToDomain(this ContactListWrapper value)
+        {
+            return value?.Item.ToDomain();
+        }
+
         internal static Types.PagedList<Client> ToDomain(this ClientList value)
         {
             if (value == null)
@@ -125,9 +132,30 @@ namespace TaurusSoftware.BillomatNet.Helpers
             };
         }
 
+        internal static Types.PagedList<Contact> ToDomain(this ContactList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<Contact>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(ToDomain).ToList()
+            };
+        }
+
         internal static Client ToDomain(this ClientWrapper value)
         {
             return value?.Client.ToDomain();
+        }
+
+        internal static Contact ToDomain(this ContactWrapper value)
+        {
+            return value?.Contact.ToDomain();
         }
 
         private static Client ToDomain(this Api.Client value)
@@ -173,6 +201,58 @@ namespace TaurusSoftware.BillomatNet.Helpers
                 VatNumber = value.VatNumber,
                 Web = value.Www,
                 ZipCode = value.Zip
+            };
+        }
+
+        private static Contact ToDomain(this Api.Contact value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Contact
+            {
+                Id = int.Parse(value.Id),
+                ClientId = int.Parse(value.ClientId),
+                City = value.City,
+                CountryCode = value.CountryCode,
+                Email = value.Email,
+                Fax = value.Fax,
+                FirstName = value.FirstName,
+                Label = value.Label,
+                LastName = value.LastName,
+                Mobile = value.Mobile,
+                Phone = value.Phone,
+                Salutation = value.Salutation,
+                State = value.State,
+                Street = value.Street,
+                Web = value.Www,
+                ZipCode = value.ZipCode,
+                Created = value.Created,
+                Updated = value.Updated
+            };
+        }
+
+
+        internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemListWrapper value)
+        {
+            return value?.Item.ToDomain();
+        }
+
+        internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<TagCloudItem>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(x => x.ToDomain()).ToList()
             };
         }
     }

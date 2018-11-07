@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -47,15 +48,25 @@ namespace TaurusSoftware.BillomatNet.Tests
         }
 
         [Fact]
-        public async Task GetInvoice()
+        public async Task GetInvoiceById()
         {
             var config = Helpers.GetTestConfiguration();
 
             var service = new InvoiceService(config);
-
             var result = await service.GetByIdAsync(1322705);
 
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task GetInvoiceByIdWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new InvoiceService(config);
+            var result = await service.GetByIdAsync(1);
+
+            Assert.Null(result);
         }
 
         [Fact]
@@ -81,6 +92,83 @@ namespace TaurusSoftware.BillomatNet.Tests
 
             Assert.True(result.List.Count > 0);
         }
+
+
+        [Fact]
+        public async Task DeleteInvoiceItemNotExisting()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new InvoiceService(config);
+
+            // delete an invoice that doesn't exist
+            await service.DeleteAsync(4447692);
+
+            Assert.True(true);
+        }
+
+        //[Fact]
+        //public async Task CancelInvoiceItem()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+
+        //    var service = new InvoiceService(config);
+
+        //    await service.CancelAsync(4340407);
+
+        //    Assert.True(true);
+        //}
+
+        //[Fact]
+        //public async Task UncancelInvoiceItem()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+
+        //    var service = new InvoiceService(config);
+
+        //    await service.UncancelAsync(4340407);
+
+        //    Assert.True(true);
+        //}
+
+
+        //[Fact]
+        //public async Task CompleteInvoiceItem()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+
+        //    var service = new InvoiceService(config);
+
+        //    // delete an invoice that doesn't exist
+        //    await service.CompleteAsync(4340406);
+
+        //    Assert.True(true);
+        //}
+
+        //[Fact]
+        //public async Task DeleteInvoiceItemExisting()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+
+        //    var service = new InvoiceService(config);
+
+        //    // delete an invoice that doesn't exist
+        //    await service.DeleteAsync(4447692);
+
+        //    Assert.True(true);
+        //}
+
+        //[Fact]
+        //public async Task DeleteInvoiceItemOpen()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+
+        //    var service = new InvoiceService(config);
+
+        //    // try to delete an invoice that is open
+        //    await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteAsync(3745041));
+        //}
+
 
         [Fact]
         public async Task GetMultipleInvoiceItems()

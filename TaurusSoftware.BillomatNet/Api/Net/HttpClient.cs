@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -36,6 +37,38 @@ namespace TaurusSoftware.BillomatNet.Api.Net
 
         public string AppSecret { get; set; }
 
+        public async Task<byte[]> GetBytesAsync(Uri relativeUri, CancellationToken token = default(CancellationToken))
+        {
+            var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
+            var builder = new UriBuilder(new Uri(baseUri, relativeUri));
+            var uri = builder.ToString();
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
+            httpWebRequest.Method = "GET";
+            //httpWebRequest.Accept = "application/json";
+            httpWebRequest.Headers.Add(HeaderNameApiKey, ApiKey);
+
+            if (!string.IsNullOrWhiteSpace(AppId))
+            {
+                httpWebRequest.Headers.Add(HeaderNameAppId, AppId);
+            }
+            if (!string.IsNullOrWhiteSpace(AppSecret))
+            {
+                httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
+            }
+
+
+            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
+            var responseStream = httpResponse.GetResponseStream();
+            if (responseStream == null)
+            {
+                throw new IOException("response stream was null!");
+            }
+           
+            var ms = new MemoryStream();
+            responseStream.CopyTo(ms);
+            return ms.ToArray();
+        }
 
         public Task<string> GetAsync(Uri relativeUri, CancellationToken token = default(CancellationToken))
         {
@@ -66,6 +99,85 @@ namespace TaurusSoftware.BillomatNet.Api.Net
                 httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
             }
 
+
+            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
+            var responseStream = httpResponse.GetResponseStream();
+            if (responseStream == null)
+            {
+                throw new IOException("response stream was null!");
+            }
+
+            string result;
+            using (var streamReader = new StreamReader(responseStream))
+            {
+                result = await streamReader.ReadToEndAsync();
+            }
+
+            return result;
+        }
+
+        public async Task<string> DeleteAsync(Uri relativeUri, CancellationToken token)
+        {
+            var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
+            var builder = new UriBuilder(new Uri(baseUri, relativeUri));
+            var uri = builder.ToString();
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
+            httpWebRequest.Method = "DELETE";
+            httpWebRequest.Accept = "application/json";
+            httpWebRequest.Headers.Add(HeaderNameApiKey, ApiKey);
+
+            if (!string.IsNullOrWhiteSpace(AppId))
+            {
+                httpWebRequest.Headers.Add(HeaderNameAppId, AppId);
+            }
+            if (!string.IsNullOrWhiteSpace(AppSecret))
+            {
+                httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
+            }
+
+
+            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
+            var responseStream = httpResponse.GetResponseStream();
+            if (responseStream == null)
+            {
+                throw new IOException("response stream was null!");
+            }
+
+            string result;
+            using (var streamReader = new StreamReader(responseStream))
+            {
+                result = await streamReader.ReadToEndAsync();
+            }
+
+            return result;
+        }
+
+        public async Task<string> PutAsync(Uri relativeUri, string data, CancellationToken token)
+        {
+            var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
+            var builder = new UriBuilder(new Uri(baseUri, relativeUri));
+            var uri = builder.ToString();
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
+            httpWebRequest.Method = "PUT";
+            httpWebRequest.Accept = "application/json";
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Headers.Add(HeaderNameApiKey, ApiKey);
+
+            if (!string.IsNullOrWhiteSpace(AppId))
+            {
+                httpWebRequest.Headers.Add(HeaderNameAppId, AppId);
+            }
+            if (!string.IsNullOrWhiteSpace(AppSecret))
+            {
+                httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
+            }
+
+            var reqStream = httpWebRequest.GetRequestStream();
+            var bytes = Encoding.UTF8.GetBytes(data);
+            await reqStream.WriteAsync(bytes, 0, bytes.Length, token).ConfigureAwait(false);
+            reqStream.Close();
 
             var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
             var responseStream = httpResponse.GetResponseStream();

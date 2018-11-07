@@ -8,6 +8,8 @@ using TaurusSoftware.BillomatNet.Helpers;
 using TaurusSoftware.BillomatNet.Queries;
 using Account = TaurusSoftware.BillomatNet.Types.Account;
 using Client = TaurusSoftware.BillomatNet.Types.Client;
+using Contact = TaurusSoftware.BillomatNet.Types.Contact;
+using TagCloudItem = TaurusSoftware.BillomatNet.Types.TagCloudItem;
 
 namespace TaurusSoftware.BillomatNet
 {
@@ -20,7 +22,7 @@ namespace TaurusSoftware.BillomatNet
         public async Task<Account> MyselfAsync(CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri("/api/clients/myself", UriKind.Relative), token);
+            var httpResponse = await httpClient.GetAsync(new Uri("/api/clients/myself", UriKind.Relative), token).ConfigureAwait(false);
             var jsonModel = JsonConvert.DeserializeObject<AccountWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }
@@ -30,19 +32,66 @@ namespace TaurusSoftware.BillomatNet
             return GetListAsync(null, token);
         }
 
-        public async Task<Types.PagedList<Client>> GetListAsync(Query<Client, ClientFilter> query, CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<Contact>> GetContactListAsync(int clientId, CancellationToken token = default(CancellationToken))
         {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri("/api/clients", UriKind.Relative), QueryString.For(query), token);
-            var jsonModel = JsonConvert.DeserializeObject<ClientListWrapper>(httpResponse);
+            var jsonModel = await GetListAsync<ContactListWrapper>("/api/contacts", $"client_id={clientId}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
-        public async Task<Client> GetById(int id, CancellationToken token = default(CancellationToken))
+
+        public async Task<Types.PagedList<Client>> GetListAsync(Query<Client, ClientFilter> query, CancellationToken token = default(CancellationToken))
+        {
+            var jsonModel = await GetListAsync<ClientListWrapper>("/api/clients", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Returns an client by it's id. 
+        /// </summary>
+        /// <param name="id">The id of the client.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The client or null if not found.</returns>
+        /// <exception cref="NotAuthorizedException">Thrown when the client is not accessible.</exception>
+        public async Task<Client> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
+        {
+            var jsonModel = await GetItemByIdAsync<ClientWrapper>($"/api/clients/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Returns an contact by it's id. 
+        /// </summary>
+        /// <param name="id">The id of the contact.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The client or null if not found.</returns>
+        public async Task<Contact> GetContactByIdAsync(int id, CancellationToken token = default(CancellationToken))
+        {
+            var jsonModel = await GetItemByIdAsync<ContactWrapper>($"/api/contacts/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Retrieves the avatar for a specific contact.
+        /// </summary>
+        /// <param name="id">The id of the contact.</param>
+        /// <param name="size">The size in pixels.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<byte[]> GetContactAvatarByIdAsync(int id, int size, CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri($"/api/clients/{id}", UriKind.Relative), token);
-            var jsonModel = JsonConvert.DeserializeObject<ClientWrapper>(httpResponse);
+            return await httpClient.GetBytesAsync(new Uri($"/api/contacts/{id}/avatar?size={size}", UriKind.Relative), token).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Retrieves the customer tag cloud.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
+        {
+            // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
+            var jsonModel = await GetListAsync<ClientTagCloudItemListWrapper>("/api/client-tags", null, token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
     }
