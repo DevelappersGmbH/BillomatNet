@@ -14,7 +14,7 @@ namespace TaurusSoftware.BillomatNet.Tests
             var config = Helpers.GetTestConfiguration();
 
             var service = new ClientService(config);
-
+            // ReSharper disable once RedundantArgumentDefaultValue
             var query = new Query<Client, ClientFilter>()
                 .AddFilter(x => x.Name, "Regiofaktur")
                 .AddSort(x => x.City, SortOrder.Ascending);
