@@ -55,6 +55,40 @@ namespace TaurusSoftware.BillomatNet
             return DeleteAsync($"/api/invoices/{id}", token);
         }
 
+        /// <summary>
+        /// Completes an invoice.
+        /// </summary>
+        /// <param name="id">The id of the invoice.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns></returns>
+        public Task CompleteAsync(int id, CancellationToken token = default(CancellationToken))
+        {
+            var model = new CompleteInvoiceWrapper
+            {
+                Parameters = new CompleteInvoiceParameters()
+            };
+            return PutAsync($"/api/invoices/{id}/complete", model, token);
+        }
+
+        /// <summary>
+        /// Completes an invoice.
+        /// </summary>
+        /// <param name="id">The id of the invoice.</param>
+        /// <param name="templateId">The template id.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task CompleteAsync(int id, int templateId, CancellationToken token = default(CancellationToken))
+        {
+            var model = new CompleteInvoiceWrapper
+            {
+                Parameters = new CompleteInvoiceParameters
+                {
+                    TemplateId = templateId
+                }
+            };
+            await PutAsync($"/api/invoices/{id}/complete", model, token).ConfigureAwait(false);
+        }
+
         public async Task<Types.PagedList<InvoiceItem>> GetItemsAsync(int invoiceId, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetListAsync<InvoiceItemListWrapper>("/api/invoice-items", $"invoice_id={invoiceId}", token).ConfigureAwait(false);

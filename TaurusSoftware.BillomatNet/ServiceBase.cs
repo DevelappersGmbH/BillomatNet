@@ -90,5 +90,29 @@ namespace TaurusSoftware.BillomatNet
                 throw new NotAuthorizedException("You are not authorized to delete this item.", wex);
             }
         }
+
+        protected async Task PutAsync<TIn>(string resourceUrl, TIn model, CancellationToken token) 
+            where TIn : class
+        {
+            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+
+            try
+            {
+                var requestData = model == null ? "" : JsonConvert.SerializeObject(model);
+                await httpClient.PutAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token);
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+            {
+                // NotFound
+                return;
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                // Unauthorized
+                throw new NotAuthorizedException("You are not authorized to change this item.", wex);
+            }
+        }
     }
 }

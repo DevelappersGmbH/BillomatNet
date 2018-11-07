@@ -108,6 +108,19 @@ namespace TaurusSoftware.BillomatNet.Tests
         }
 
         //[Fact]
+        //public async Task CompleteInvoiceItem()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+
+        //    var service = new InvoiceService(config);
+
+        //    // delete an invoice that doesn't exist
+        //    await service.CompleteAsync(4340406);
+
+        //    Assert.True(true);
+        //}
+
+        //[Fact]
         //public async Task DeleteInvoiceItemExisting()
         //{
         //    var config = Helpers.GetTestConfiguration();
@@ -130,7 +143,7 @@ namespace TaurusSoftware.BillomatNet.Tests
         //    // try to delete an invoice that is open
         //    await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteAsync(3745041));
         //}
-        
+
 
         [Fact]
         public async Task GetMultipleInvoiceItems()
