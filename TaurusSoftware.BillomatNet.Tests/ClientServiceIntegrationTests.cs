@@ -102,5 +102,17 @@ namespace TaurusSoftware.BillomatNet.Tests
             Assert.Null(result);
         }
 
+        [Fact]
+        public async Task GetClientTagCloud()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new ClientService(config);
+
+            var result = await service.GetTagCloudAsync(CancellationToken.None);
+
+            Assert.True(true);
+        }
+
     }
 }

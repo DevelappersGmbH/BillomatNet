@@ -7,6 +7,7 @@ using Account = TaurusSoftware.BillomatNet.Types.Account;
 using Client = TaurusSoftware.BillomatNet.Types.Client;
 using Contact = TaurusSoftware.BillomatNet.Types.Contact;
 using Quota = TaurusSoftware.BillomatNet.Types.Quota;
+using TagCloudItem = TaurusSoftware.BillomatNet.Types.TagCloudItem;
 
 namespace TaurusSoftware.BillomatNet.Helpers
 {
@@ -230,6 +231,28 @@ namespace TaurusSoftware.BillomatNet.Helpers
                 ZipCode = value.ZipCode,
                 Created = value.Created,
                 Updated = value.Updated
+            };
+        }
+
+
+        internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemListWrapper value)
+        {
+            return value?.Item.ToDomain();
+        }
+
+        internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<TagCloudItem>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(x => x.ToDomain()).ToList()
             };
         }
     }

@@ -9,6 +9,7 @@ using TaurusSoftware.BillomatNet.Queries;
 using Account = TaurusSoftware.BillomatNet.Types.Account;
 using Client = TaurusSoftware.BillomatNet.Types.Client;
 using Contact = TaurusSoftware.BillomatNet.Types.Contact;
+using TagCloudItem = TaurusSoftware.BillomatNet.Types.TagCloudItem;
 
 namespace TaurusSoftware.BillomatNet
 {
@@ -72,6 +73,18 @@ namespace TaurusSoftware.BillomatNet
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             return await httpClient.GetBytesAsync(new Uri($"/api/contacts/{id}/avatar?size={size}", UriKind.Relative), token).ConfigureAwait(false);
+        }
+
+        /// <summary>
+        /// Retrieves the customer tag cloud.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
+        {
+            // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
+            var jsonModel = await GetListAsync<ClientTagCloudItemListWrapper>("/api/client-tags", null, token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
         }
     }
 }
