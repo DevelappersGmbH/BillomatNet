@@ -49,8 +49,8 @@ var client = await service.GetById(435363);
 ## Project Status
 
 The REST-API itself contains a whole bunch of functionality. This wrapper is still under development. New functions will be added 
-successively.
+successively. You can find detailed information about recent changes in [change log](CHANGELOG.md).
 
 ## Contribution
 
-As already mentioned, the API is very powerful and it takes some time to implement all of it. My prio 1 is to implement reading access to clients and invoices. Feel free to contribute if you need more or want to support me.
+Bug reports and pull requests are welcome on [GitHub](https://github.com/martinhey/BillomatNet). Please check the [contribution guide](CONTRIBUTING.md).This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to our [code of conduct](CODE_OF_CONDUCT.md).
