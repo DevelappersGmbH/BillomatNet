@@ -49,7 +49,7 @@ var client = await service.GetById(435363);
 ## Project Status
 
 The REST-API itself contains a whole bunch of functionality. This wrapper is still under development. New functions will be added 
-successively.
+successively. You can find detailed information about recent changes in [change log](CHANGELOG.md).
 
 ## Contribution
 
