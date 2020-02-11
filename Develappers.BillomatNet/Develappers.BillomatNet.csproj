@@ -5,18 +5,27 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Version>0.1.2</Version>
-    <Authors>Martin Hey</Authors>
-    <Company>Martin Hey</Company>
+    <Authors>Develappers GmbH</Authors>
+    <Company>Develappers GmbH</Company>
     <Description>A C# client to access Billomat.</Description>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/martinhey/BillomatNet</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/martinhey/BillomatNet</RepositoryUrl>
-    <PackageIconUrl>https://raw.githubusercontent.com/martinhey/BillomatNet/master/icon.png</PackageIconUrl>
+    <PackageLicenseUrl></PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/DevelappersGmbH/BillomatNet</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/DevelappersGmbH/BillomatNet</RepositoryUrl>
+    <PackageIconUrl></PackageIconUrl>
     <PackageTags>billomat invoice accounting</PackageTags>
+    <PackageIcon>icon.png</PackageIcon>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\icon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
