@@ -4,7 +4,6 @@ This is an API client to access your data in [Billomat](https://www.billomat.com
 
 ## Status
 
-![Build status](https://travis-ci.org/martinhey/BillomatNet.svg?branch=master)
 [![NuGet](https://img.shields.io/nuget/dt/Develappers.BillomatNet.svg)](https://www.nuget.org/packages/Develappers.BillomatNet/)
 
 ## Usage
