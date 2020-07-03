@@ -8,6 +8,8 @@ using Invoice = Develappers.BillomatNet.Types.Invoice;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
 using InvoiceTax = Develappers.BillomatNet.Types.InvoiceTax;
+using System.Security.Cryptography.X509Certificates;
+using System.Security;
 
 namespace Develappers.BillomatNet.Helpers
 {
@@ -100,10 +102,10 @@ namespace Develappers.BillomatNet.Helpers
             switch (value.NetGross.ToLowerInvariant())
             {
                 case "net":
-                    netGrossType = NetGrossType.Net;
+                    netGrossType = NetGrossType.NET;
                     break;
                 case "gross":
-                    netGrossType = NetGrossType.Gross;
+                    netGrossType = NetGrossType.GROSS;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -239,7 +241,6 @@ namespace Develappers.BillomatNet.Helpers
 
         }
 
-
         private static InvoiceItem ToDomain(this Api.InvoiceItem value)
         {
             if (value == null)
@@ -313,6 +314,189 @@ namespace Develappers.BillomatNet.Helpers
                 AmountPlain = float.Parse(value.AmountPlain, CultureInfo.InvariantCulture),
                 AmountRounded = float.Parse(value.AmountRounded, CultureInfo.InvariantCulture),
                 Rate = float.Parse(value.Rate, CultureInfo.InvariantCulture),
+            };
+        }
+
+        internal static Api.Invoice ToApi(this Types.Invoice value)
+        {
+            if (value == null)
+                return null;
+
+            string netGrossType;
+            switch (value.NetGross)
+            {
+                case NetGrossType.NET:
+                    netGrossType = "NET";
+                    break;
+                case NetGrossType.GROSS:
+                    netGrossType = "GROSS";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            string supplyDateType;
+            switch (value.SupplyDateType)
+            {
+                case SupplyDateType.SupplyDate:
+                    supplyDateType = "supply_date";
+                    break;
+                case SupplyDateType.DeliveryDate:
+                    supplyDateType = "delivery_date";
+                    break;
+                case null:
+                    supplyDateType = "";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            string status;
+            switch (value.Status)
+            {
+                case InvoiceStatus.Draft:
+                    status = "draft";
+                    break;
+                case InvoiceStatus.Open:
+                    status = "open";
+                    break;
+                case InvoiceStatus.Overdue:
+                    status = "overdue";
+                    break;
+                case InvoiceStatus.Paid:
+                    status = "paid";
+                    break;
+                case InvoiceStatus.Canceled:
+                    status = "canceled";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            string reduction = "";
+            if (value.Reduction == null)
+            {
+                reduction = "0";
+            }
+            else if (value.Reduction.GetType() == typeof(Types.PercentReduction))
+            {
+                var reductionObj = (PercentReduction)value.Reduction;
+                reduction = $"{reductionObj.Value.ToString()}%";
+            }
+            else if (value.Reduction.GetType() == typeof(AbsoluteReduction))
+            {
+                var reductionObj = (AbsoluteReduction)value.Reduction;
+                reduction = reductionObj.Value.ToString();
+            }
+
+            //Finds out and converts the ISupplyDate to its class and converts it to string if needed
+            var strSupplyDate = "";
+            if (value.SupplyDate == null)
+            {
+                strSupplyDate = "";
+            }
+            else if (value.SupplyDate.GetType() == typeof(Types.DateSupplyDate))
+            {
+                var supplyDate = (Types.DateSupplyDate)value.SupplyDate;
+                strSupplyDate = CommonMappingExtensions.ToFormatStringDate(supplyDate.Date);
+            }
+            else if (value.SupplyDate.GetType() == typeof(Types.FreeTextSupplyDate))
+            {
+                var supplyDate = (Types.FreeTextSupplyDate)value.SupplyDate;
+                strSupplyDate = supplyDate.Text; // Maybe it should be converted to DateTime and with ToFormatStringDate to string again if Format is wrong!
+            }
+
+            var strPaymentTypes = "";
+            foreach (var item in value.PaymentTypes)
+                strPaymentTypes += $"{item.ToString()}, ";
+            var paymentTypes = strPaymentTypes.Remove(strPaymentTypes.Length - 2);
+
+            return new Api.Invoice
+            {
+                Id = value.Id.ToString(),
+                Created = value.Created.ToString(),
+                ContactId = value.ContactId.ToString(),
+                ClientId = value.ClientId.ToString(),
+                InvoiceNumber = value.InvoiceNumber,
+                Number = value.Number.ToString(),
+                NumberPre = value.NumberPre,
+                NumberLength = value.NumberLength.ToString(),
+                Title = value.Title,
+                Date = CommonMappingExtensions.ToFormatStringDate(value.Date),
+                SupplyDate = strSupplyDate,
+                SupplyDateType = supplyDateType,
+                DueDate = CommonMappingExtensions.ToFormatStringDate(value.DueDate),
+                DueDays = value.DueDays.ToString(),
+                Address = value.Address,
+                Status = status,
+                DiscountRate = value.DiscountRate.ToString(),
+                DiscountDate = CommonMappingExtensions.ToFormatStringDate(value.DiscountDate), //difference between DateTime and DateTime?
+                DiscountDays = value.DiscountDays.ToString(),
+                DiscountAmount = value.DiscountAmount.ToString(),
+                Label = value.Label,
+                Intro = value.Intro,
+                Note = value.Note,
+                TotalGross = value.TotalGross.ToString(),
+                TotalNet = value.TotalNet.ToString(),
+                CurrencyCode = value.CurrencyCode,
+                Quote = value.Quote.ToString(),
+                NetGross = netGrossType,
+                Reduction = reduction,
+                TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(),
+                TotalNetUnreduced = value.TotalNetUnreduced.ToString(),
+                PaidAmount = value.PaidAmount.ToString(),
+                OpenAmount = value.OpenAmount.ToString(),
+                CustomerPortalUrl = value.CustomerPortalUrl,
+                InvoiceId = value.InvoiceId.ToString(),
+                OfferId = value.OfferId.ToString(),
+                ConfirmationId = value.ConfirmationId.ToString(),
+                RecurringId = value.RecurringId.ToString(),
+                TemplateId = value.TemplateId.ToString(),
+                PaymentTypes = paymentTypes,
+                Taxes = new InvoiceTaxWrapper()
+            };
+        }
+
+        internal static Api.InvoiceItem ToApi(this InvoiceItem value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            string reduction = "";
+            if (value.Reduction == null)
+            {
+                reduction = "0";
+            }
+            else if (value.Reduction.GetType() == typeof(Types.PercentReduction))
+            {
+                var reductionObj = (PercentReduction)value.Reduction;
+                reduction = $"{reductionObj.Value.ToString()}%";
+            }
+            else if (value.Reduction.GetType() == typeof(AbsoluteReduction))
+            {
+                var reductionObj = (AbsoluteReduction)value.Reduction;
+                reduction = reductionObj.Value.ToString();
+            }
+
+            return new Api.InvoiceItem
+            {
+                ArticleId = value.ArticleId.ToString(),
+                InvoiceId = value.InvoiceId.ToString(),
+                Position = value.Position.ToString(),
+                Unit = value.Unit.ToString(),
+                Quantity = value.Quantity.ToString(),
+                UnitPrice = value.UnitPrice.ToString(),
+                TaxName = value.TaxName,
+                TaxRate = value.TaxRate.ToString(),
+                Title = value.Title,
+                Description = value.Description,
+                TotalGross = value.TotalGross.ToString(),
+                TotalNet = value.TotalNet.ToString(),
+                Reduction = reduction,
+                TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(),
+                TotalNetUnreduced = value.TotalNetUnreduced.ToString()
             };
         }
     }

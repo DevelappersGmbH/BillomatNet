@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO; // new
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -113,6 +114,32 @@ namespace Develappers.BillomatNet
                 // Unauthorized
                 throw new NotAuthorizedException("You are not authorized to change this item.", wex);
             }
+        }
+
+        protected async Task<string> PostAsync<TIn>(string resourceUrl, TIn model, CancellationToken token)
+            where TIn : class
+        {
+            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            string httpResponse;
+
+            try
+            {
+                var requestData = model == null ? "" : JsonConvert.SerializeObject(model);
+                httpResponse = await httpClient.PostAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token);
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+            {
+                // NotFound
+                return "";//maybe return string
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                // Unauthorized
+                throw new NotAuthorizedException("You are not authorized to change this item.", wex);
+            }
+            return httpResponse;
         }
     }
 }

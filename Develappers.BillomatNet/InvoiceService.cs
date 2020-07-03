@@ -6,6 +6,12 @@ using Develappers.BillomatNet.Queries;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
+using System.Reflection;
+using System;
+using System.Globalization;
+using System.Collections.Generic;
+using Develappers.BillomatNet.Types;
+using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet
 {
@@ -122,6 +128,64 @@ namespace Develappers.BillomatNet
         {
             var jsonModel = await GetItemByIdAsync<InvoiceItemWrapper>($"/api/invoice-items/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        public async Task PostItemAsync(int clientId, string title, string clientAdress,
+            DateTime date, ISupplyDate supplyDate, int dueDays, DateTime dueDate, string label, string intro, string note,
+            float totalNet, float totalGross, float totalNetUnreduced, float totalGrossUnreduced,
+            List<string> paymentTypes, float itemQuantity, float itemUnitPrice, string itemUnit, string itemTitle, string itemDescription, CancellationToken token = default(CancellationToken))
+        {
+            var totalBrutto = itemQuantity + itemUnitPrice;
+
+            #region invoice
+            var invoice = new Types.Invoice();
+            invoice.ClientId = clientId;
+            invoice.Title = title;
+            invoice.Date = date;
+            invoice.SupplyDate = supplyDate;
+            invoice.DueDate = dueDate;
+            //invoice.DueDays = dueDays; // maybe dcide between dueDays and due Date
+            invoice.Address = clientAdress;
+            invoice.Label = label;
+            invoice.Intro = intro;
+            invoice.Note = note;
+            //invoice.TotalNet = totalNet;
+            //invoice.TotalGross = totalGross;
+            //invoice.TotalNetUnreduced = totalNetUnreduced;
+            //invoice.TotalGrossUnreduced = totalGrossUnreduced;
+            invoice.CurrencyCode = "EUR";
+            invoice.NetGross = Types.NetGrossType.GROSS;
+            invoice.PaymentTypes = paymentTypes;
+
+            invoice.Quote = 1;
+            #endregion
+
+            var invObj = new Api.InvoiceWrapper { Invoice = Helpers.InvoiceMappingExtensions.ToApi(invoice) };
+            var result = await PostAsync("/api/invoices", invObj, token);
+
+            var newInvoice = JsonConvert.DeserializeObject<Api.InvoiceWrapper>(result);
+
+            #region invoiceItem
+            var invoiceItem = new Types.InvoiceItem();
+            //invoiceItem.ArticleId = ;
+            invoiceItem.InvoiceId = Convert.ToInt32(newInvoice.Invoice.Id);
+            invoiceItem.Position = 1; // needs to be set with variable and not static
+            invoiceItem.Unit = itemUnit;
+            invoiceItem.Quantity = itemQuantity;
+            invoiceItem.UnitPrice = itemUnitPrice;
+            invoiceItem.TaxName = "Umsatzsteuer";
+            invoiceItem.TaxRate = 19;
+            invoiceItem.Title = itemTitle;
+            invoiceItem.Description = itemDescription;
+            //invoiceItem.TotalNet = invoice.TotalNet;
+            //invoiceItem.TotalGross = invoice.TotalGross;
+            //invoiceItem.Reduction = 0; needs to be a object (IReduction / PercentReduction or AbsoluteReduction
+            //invoiceItem.TotalNetUnreduced = invoice.TotalNetUnreduced;
+            //invoiceItem.TotalGrossUnreduced = invoice.TotalGrossUnreduced;
+            #endregion
+            var invItemObj = new Api.InvoiceItemWrapper { InvoiceItem = Helpers.InvoiceMappingExtensions.ToApi(invoiceItem) };
+
+            await PostAsync("/api/invoice-items", invItemObj, token);
         }
     }
 }

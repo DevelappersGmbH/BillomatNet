@@ -194,5 +194,47 @@ namespace Develappers.BillomatNet.Api.Net
 
             return result;
         }
+
+        public async Task<string> PostAsync (Uri relativeUri, string data, CancellationToken token)
+        {
+            var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
+            var builder = new UriBuilder(new Uri(baseUri, relativeUri));
+            var uri = builder.ToString();
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
+            httpWebRequest.Method = "POST";
+            httpWebRequest.Accept = "application/json";
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Headers.Add(HeaderNameApiKey, ApiKey);
+
+            if (!string.IsNullOrWhiteSpace(AppId))
+            {
+                httpWebRequest.Headers.Add(HeaderNameAppId, AppId);
+            }
+            if (!string.IsNullOrWhiteSpace(AppSecret))
+            {
+                httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
+            }
+
+            var reqStream = httpWebRequest.GetRequestStream();
+            var bytes = Encoding.UTF8.GetBytes(data);
+            await reqStream.WriteAsync(bytes, 0, bytes.Length, token).ConfigureAwait(false);
+            reqStream.Close();
+
+            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
+            var responseStream = httpResponse.GetResponseStream();
+            if (responseStream == null)
+            {
+                throw new IOException("response stream was null!");
+            }
+
+            string result;
+            using (var streamReader = new StreamReader(responseStream))
+            {
+                result = await streamReader.ReadToEndAsync();
+            }
+
+            return result;
+        }
     }
 }

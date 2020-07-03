@@ -2,7 +2,7 @@
 
 namespace Develappers.BillomatNet.Api
 {
-    internal class InvoiceWrapper
+    internal class InvoiceWrapper // change to internal
     {
         [JsonProperty("invoice")]
         public Invoice Invoice { get; set; }
