@@ -48,6 +48,11 @@ namespace Develappers.BillomatNet.Helpers
             return value.ToString("yyyy-MM-dd");
         }
 
+        public static bool ToBoolean(this string value)
+        {
+            return value == "1";
+        }
+
         public static List<string> ToStringList(this string values)
         {
             if (values == null)
