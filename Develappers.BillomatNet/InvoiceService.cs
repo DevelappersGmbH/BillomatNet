@@ -141,14 +141,18 @@ namespace Develappers.BillomatNet
                     var conf = new Configuration { ApiKey = "f1882e25f5dbc1f096072e85c7d9a79a", BillomatId = "develappersdev" };
                     var articleService = new ArticleService(conf);
                     var articles = await articleService.GetByIdAsync(Convert.ToInt32(item.ArticleId));
-                    var unitService = new UnitService(conf);
-                    var units = await unitService.GetByIdAsync(Convert.ToInt32(articles.UnitId));
-                    
 
-                    item.UnitPrice = float.Parse(articles.SalesPrice.ToString());
+                    var unitService = new UnitService(conf);
+                    var units = await unitService.GetByIdAsync(articles.UnitId.Value);
+
+                    var taxService = new TaxService(conf);
+                    var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
+
+                    item.UnitPrice = articles.SalesPrice.Value;
                     item.Title = articles.Title;
                     item.Description = articles.Description;
-                    
+                    item.TaxName = taxes.Name;
+                    item.TaxRate = taxes.Rate;
                     item.Unit = units.Name;
                 }
                 var wrappedInvoiceItem = new Api.InvoiceItemWrapper { InvoiceItem = item.ToApi() };

@@ -70,6 +70,14 @@ namespace Develappers.BillomatNet.Helpers
             return values.Split(',').Select(x => int.Parse(x.Trim())).ToList();
         }
 
+        //public static bool ToBoolean (this string value)
+        //{
+        //    if (value == 1)
+        //    {
+
+        //    }
+        //}
+
         internal static TagCloudItem ToDomain(this Api.TagCloudItem value)
         {
             if (value == null)
