@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Api
 {
-    internal class InvoiceTaxWrapper
+    internal class InvoiceTaxWrapper // change to internal
     {
         [JsonProperty("tax")]
         [JsonConverter(typeof(CollectionConverter<InvoiceTax>))]

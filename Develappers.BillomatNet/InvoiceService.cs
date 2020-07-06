@@ -1,11 +1,15 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using Develappers.BillomatNet.Api;
+﻿using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
+using Develappers.BillomatNet.Types;
+using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
-using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
+using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 
 namespace Develappers.BillomatNet
 {
@@ -122,6 +126,19 @@ namespace Develappers.BillomatNet
         {
             var jsonModel = await GetItemByIdAsync<InvoiceItemWrapper>($"/api/invoice-items/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        public async Task PostItemAsync (Invoice invoiceObj,  List<InvoiceItem> invoiceItemList, CancellationToken token = default(CancellationToken))
+        {
+            var wrappedInvoice = new Api.InvoiceWrapper { Invoice = invoiceObj.ToApi() };
+            var result = JsonConvert.DeserializeObject < Api.InvoiceWrapper > (await PostAsync("/api/invoices", wrappedInvoice, token));
+
+            foreach (var item in invoiceItemList)
+            {
+                item.InvoiceId = Convert.ToInt32(result.Invoice.Id);
+                var wrappedInvoiceItem = new Api.InvoiceItemWrapper { InvoiceItem = item.ToApi() };
+                await PostAsync("/api/invoice-items", wrappedInvoiceItem, token);
+            }
         }
     }
 }

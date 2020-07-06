@@ -38,6 +38,16 @@ namespace Develappers.BillomatNet.Helpers
             return DateTime.Parse(value, CultureInfo.InvariantCulture);
         }
 
+        public static string ToApiDate (this DateTime? value)
+        {
+            return value?.ToString("yyyy-MM-dd");
+        }
+
+        public static string ToApiDate(this DateTime value)
+        {
+            return value.ToString("yyyy-MM-dd");
+        }
+
         public static List<string> ToStringList(this string values)
         {
             if (values == null)

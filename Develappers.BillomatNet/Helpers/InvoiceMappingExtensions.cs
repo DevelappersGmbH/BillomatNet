@@ -239,7 +239,6 @@ namespace Develappers.BillomatNet.Helpers
 
         }
 
-
         private static InvoiceItem ToDomain(this Api.InvoiceItem value)
         {
             if (value == null)
@@ -313,6 +312,182 @@ namespace Develappers.BillomatNet.Helpers
                 AmountPlain = float.Parse(value.AmountPlain, CultureInfo.InvariantCulture),
                 AmountRounded = float.Parse(value.AmountRounded, CultureInfo.InvariantCulture),
                 Rate = float.Parse(value.Rate, CultureInfo.InvariantCulture),
+            };
+        }
+
+        internal static Api.Invoice ToApi(this Invoice value)
+        {
+            if (value == null)
+                return null;
+
+            string netGrossType;
+            switch (value.NetGross)
+            {
+                case NetGrossType.Net:
+                    netGrossType = "NET";
+                    break;
+                case NetGrossType.Gross:
+                    netGrossType = "GROSS";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            string supplyDateType;
+            switch (value.SupplyDateType)
+            {
+                case SupplyDateType.SupplyDate:
+                    supplyDateType = "supply_date";
+                    break;
+                case SupplyDateType.DeliveryDate:
+                    supplyDateType = "delivery_date";
+                    break;
+                case null:
+                    supplyDateType = "";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            string status;
+            switch (value.Status)
+            {
+                case InvoiceStatus.Draft:
+                    status = "draft";
+                    break;
+                case InvoiceStatus.Open:
+                    status = "open";
+                    break;
+                case InvoiceStatus.Overdue:
+                    status = "overdue";
+                    break;
+                case InvoiceStatus.Paid:
+                    status = "paid";
+                    break;
+                case InvoiceStatus.Canceled:
+                    status = "canceled";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            // TODO: extract
+            var reduction = "";
+            switch (value.Reduction)
+            {
+                case null:
+                    reduction = "0";
+                    break;
+                case PercentReduction percentReduction:
+                    reduction = $"{percentReduction.Value.ToString(CultureInfo.InvariantCulture)}%";
+                    break;
+                case AbsoluteReduction absoluteReduction:
+                    reduction = absoluteReduction.Value.ToString(CultureInfo.InvariantCulture);
+                    break;
+            }
+
+            //Finds out and converts the ISupplyDate to its class and converts it to string if needed
+            var strSupplyDate = "";
+            switch (value.SupplyDate)
+            {
+                case null:
+                    strSupplyDate = "";
+                    break;
+                case DateSupplyDate dateSupplyDate:
+                    strSupplyDate = dateSupplyDate.Date.ToApiDate();
+                    break;
+                case FreeTextSupplyDate freeTextSupplyDate:
+                    strSupplyDate = freeTextSupplyDate.Text;
+                    break;
+            }
+
+            var paymentTypes = string.Join(",", value.PaymentTypes);
+
+            return new Api.Invoice
+            {
+                Id = value.Id.ToString(),
+                Created = value.Created.ToApiDate(),
+                ContactId = value.ContactId.ToString(),
+                ClientId = value.ClientId.ToString(),
+                InvoiceNumber = value.InvoiceNumber,
+                Number = value.Number.ToString(),
+                NumberPre = value.NumberPre,
+                NumberLength = value.NumberLength.ToString(),
+                Title = value.Title,
+                Date = value.Date.ToApiDate(),
+                SupplyDate = strSupplyDate,
+                SupplyDateType = supplyDateType,
+                DueDate = value.DueDate.ToApiDate(),
+                DueDays = value.DueDays.ToString(),
+                Address = value.Address,
+                Status = status,
+                DiscountRate = value.DiscountRate.ToString(CultureInfo.InvariantCulture),
+                DiscountDate = value.DiscountDate.ToApiDate(),
+                DiscountDays = value.DiscountDays.ToString(),
+                DiscountAmount = value.DiscountAmount.ToString(),
+                Label = value.Label,
+                Intro = value.Intro,
+                Note = value.Note,
+                TotalGross = value.TotalGross.ToString(CultureInfo.InvariantCulture),
+                TotalNet = value.TotalNet.ToString(CultureInfo.InvariantCulture),
+                CurrencyCode = value.CurrencyCode,
+                Quote = value.Quote.ToString(CultureInfo.InvariantCulture),
+                NetGross = netGrossType,
+                Reduction = reduction,
+                TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(CultureInfo.InvariantCulture),
+                TotalNetUnreduced = value.TotalNetUnreduced.ToString(CultureInfo.InvariantCulture),
+                PaidAmount = value.PaidAmount.ToString(CultureInfo.InvariantCulture),
+                OpenAmount = value.OpenAmount.ToString(CultureInfo.InvariantCulture),
+                CustomerPortalUrl = value.CustomerPortalUrl,
+                InvoiceId = value.InvoiceId.ToString(),
+                OfferId = value.OfferId.ToString(),
+                ConfirmationId = value.ConfirmationId.ToString(),
+                RecurringId = value.RecurringId.ToString(),
+                TemplateId = value.TemplateId.ToString(),
+                PaymentTypes = paymentTypes,
+                Taxes = new InvoiceTaxWrapper()
+            };
+        }
+
+        internal static Api.InvoiceItem ToApi(this InvoiceItem value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            // TODO: extract
+            var reduction = "";
+            switch (value.Reduction)
+            {
+                case null:
+                    reduction = "0";
+                    break;
+                case PercentReduction percentReduction:
+                    reduction = $"{percentReduction.Value.ToString(CultureInfo.InvariantCulture)}%";
+                    break;
+                case AbsoluteReduction absoluteReduction:
+                    reduction = absoluteReduction.Value.ToString(CultureInfo.InvariantCulture);
+                    break;
+            }
+
+            return new Api.InvoiceItem
+            {
+                ArticleId = value.ArticleId.ToString(),
+                InvoiceId = value.InvoiceId.ToString(),
+                Position = value.Position.ToString(),
+                Unit = value.Unit,
+                Quantity = value.Quantity.ToString(CultureInfo.InvariantCulture),
+                UnitPrice = value.UnitPrice.ToString(CultureInfo.InvariantCulture),
+                TaxName = value.TaxName,
+                TaxRate = value.TaxRate.ToString(),
+                Title = value.Title,
+                Description = value.Description,
+                TotalGross = value.TotalGross.ToString(CultureInfo.InvariantCulture),
+                TotalNet = value.TotalNet.ToString(CultureInfo.InvariantCulture),
+                Reduction = reduction,
+                TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(CultureInfo.InvariantCulture),
+                TotalNetUnreduced = value.TotalNetUnreduced.ToString(CultureInfo.InvariantCulture)
             };
         }
     }
