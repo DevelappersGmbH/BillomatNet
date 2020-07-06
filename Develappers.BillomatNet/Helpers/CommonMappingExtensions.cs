@@ -38,6 +38,18 @@ namespace Develappers.BillomatNet.Helpers
             return DateTime.Parse(value, CultureInfo.InvariantCulture);
         }
 
+        public static string ToFormatStringDate (this DateTime? value)
+        {
+            if (value == null)
+                return null;
+            var dateValue = Convert.ToDateTime(value);
+            var year = dateValue.Year;
+            var month = dateValue.Month;
+            var day = dateValue.Day;
+
+            return $"{year}-{month}-{day}";
+        }
+
         public static List<string> ToStringList(this string values)
         {
             if (values == null)

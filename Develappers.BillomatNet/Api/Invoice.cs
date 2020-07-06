@@ -2,7 +2,7 @@
 
 namespace Develappers.BillomatNet.Api
 {
-    internal class Invoice
+    internal class Invoice // change to internal
     {
         [JsonProperty("id")]
         public string Id { get; set; }
@@ -125,6 +125,6 @@ namespace Develappers.BillomatNet.Api
         public string PaymentTypes { get; set; }
 
         [JsonProperty("taxes")]
-        public InvoiceTaxWrapper Taxes { get; set; }
+        public InvoiceTaxWrapper Taxes { get; set; } // to internal
     }
 }
