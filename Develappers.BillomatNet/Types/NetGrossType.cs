@@ -4,7 +4,7 @@ namespace Develappers.BillomatNet.Types
 {
     public enum NetGrossType
     {
-        NET,
-        GROSS
+        Net,
+        Gross
     }
 }

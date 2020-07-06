@@ -8,8 +8,6 @@ using Invoice = Develappers.BillomatNet.Types.Invoice;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
 using InvoiceTax = Develappers.BillomatNet.Types.InvoiceTax;
-using System.Security.Cryptography.X509Certificates;
-using System.Security;
 
 namespace Develappers.BillomatNet.Helpers
 {
@@ -102,10 +100,10 @@ namespace Develappers.BillomatNet.Helpers
             switch (value.NetGross.ToLowerInvariant())
             {
                 case "net":
-                    netGrossType = NetGrossType.NET;
+                    netGrossType = NetGrossType.Net;
                     break;
                 case "gross":
-                    netGrossType = NetGrossType.GROSS;
+                    netGrossType = NetGrossType.Gross;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -325,10 +323,10 @@ namespace Develappers.BillomatNet.Helpers
             string netGrossType;
             switch (value.NetGross)
             {
-                case NetGrossType.NET:
+                case NetGrossType.Net:
                     netGrossType = "NET";
                     break;
-                case NetGrossType.GROSS:
+                case NetGrossType.Gross:
                     netGrossType = "GROSS";
                     break;
                 default:
@@ -373,48 +371,42 @@ namespace Develappers.BillomatNet.Helpers
                     throw new ArgumentOutOfRangeException();
             }
 
-            string reduction = "";
-            if (value.Reduction == null)
+            // TODO: extract
+            var reduction = "";
+            switch (value.Reduction)
             {
-                reduction = "0";
-            }
-            else if (value.Reduction.GetType() == typeof(Types.PercentReduction))
-            {
-                var reductionObj = (PercentReduction)value.Reduction;
-                reduction = $"{reductionObj.Value.ToString(CultureInfo.InvariantCulture)}%";
-            }
-            else if (value.Reduction.GetType() == typeof(AbsoluteReduction))
-            {
-                var reductionObj = (AbsoluteReduction)value.Reduction;
-                reduction = reductionObj.Value.ToString(CultureInfo.InvariantCulture);
+                case null:
+                    reduction = "0";
+                    break;
+                case PercentReduction percentReduction:
+                    reduction = $"{percentReduction.Value.ToString(CultureInfo.InvariantCulture)}%";
+                    break;
+                case AbsoluteReduction absoluteReduction:
+                    reduction = absoluteReduction.Value.ToString(CultureInfo.InvariantCulture);
+                    break;
             }
 
             //Finds out and converts the ISupplyDate to its class and converts it to string if needed
             var strSupplyDate = "";
-            if (value.SupplyDate == null)
+            switch (value.SupplyDate)
             {
-                strSupplyDate = "";
-            }
-            else if (value.SupplyDate.GetType() == typeof(Types.DateSupplyDate))
-            {
-                var supplyDate = (Types.DateSupplyDate)value.SupplyDate;
-                strSupplyDate = CommonMappingExtensions.ToFormatStringDate(supplyDate.Date);
-            }
-            else if (value.SupplyDate.GetType() == typeof(Types.FreeTextSupplyDate))
-            {
-                var supplyDate = (Types.FreeTextSupplyDate)value.SupplyDate;
-                strSupplyDate = supplyDate.Text; // Maybe it should be converted to DateTime and with ToFormatStringDate to string again if Format is wrong!
+                case null:
+                    strSupplyDate = "";
+                    break;
+                case DateSupplyDate dateSupplyDate:
+                    strSupplyDate = dateSupplyDate.Date.ToApiDate();
+                    break;
+                case FreeTextSupplyDate freeTextSupplyDate:
+                    strSupplyDate = freeTextSupplyDate.Text;
+                    break;
             }
 
-            var strPaymentTypes = "";
-            foreach (var item in value.PaymentTypes)
-                strPaymentTypes += $"{item.ToString()}, ";
-            var paymentTypes = strPaymentTypes.Remove(strPaymentTypes.Length - 2);
+            var paymentTypes = string.Join(",", value.PaymentTypes);
 
             return new Api.Invoice
             {
                 Id = value.Id.ToString(),
-                Created = value.Created.ToString(),
+                Created = value.Created.ToApiDate(),
                 ContactId = value.ContactId.ToString(),
                 ClientId = value.ClientId.ToString(),
                 InvoiceNumber = value.InvoiceNumber,
@@ -422,30 +414,30 @@ namespace Develappers.BillomatNet.Helpers
                 NumberPre = value.NumberPre,
                 NumberLength = value.NumberLength.ToString(),
                 Title = value.Title,
-                Date = CommonMappingExtensions.ToFormatStringDate(value.Date),
+                Date = value.Date.ToApiDate(),
                 SupplyDate = strSupplyDate,
                 SupplyDateType = supplyDateType,
-                DueDate = CommonMappingExtensions.ToFormatStringDate(value.DueDate),
+                DueDate = value.DueDate.ToApiDate(),
                 DueDays = value.DueDays.ToString(),
                 Address = value.Address,
                 Status = status,
-                DiscountRate = value.DiscountRate.ToString(),
-                DiscountDate = value.DiscountDate.ToFormatStringDate(),
+                DiscountRate = value.DiscountRate.ToString(CultureInfo.InvariantCulture),
+                DiscountDate = value.DiscountDate.ToApiDate(),
                 DiscountDays = value.DiscountDays.ToString(),
                 DiscountAmount = value.DiscountAmount.ToString(),
                 Label = value.Label,
                 Intro = value.Intro,
                 Note = value.Note,
-                TotalGross = value.TotalGross.ToString(),
-                TotalNet = value.TotalNet.ToString(),
+                TotalGross = value.TotalGross.ToString(CultureInfo.InvariantCulture),
+                TotalNet = value.TotalNet.ToString(CultureInfo.InvariantCulture),
                 CurrencyCode = value.CurrencyCode,
-                Quote = value.Quote.ToString(),
+                Quote = value.Quote.ToString(CultureInfo.InvariantCulture),
                 NetGross = netGrossType,
                 Reduction = reduction,
-                TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(),
-                TotalNetUnreduced = value.TotalNetUnreduced.ToString(),
-                PaidAmount = value.PaidAmount.ToString(),
-                OpenAmount = value.OpenAmount.ToString(),
+                TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(CultureInfo.InvariantCulture),
+                TotalNetUnreduced = value.TotalNetUnreduced.ToString(CultureInfo.InvariantCulture),
+                PaidAmount = value.PaidAmount.ToString(CultureInfo.InvariantCulture),
+                OpenAmount = value.OpenAmount.ToString(CultureInfo.InvariantCulture),
                 CustomerPortalUrl = value.CustomerPortalUrl,
                 InvoiceId = value.InvoiceId.ToString(),
                 OfferId = value.OfferId.ToString(),
@@ -464,20 +456,19 @@ namespace Develappers.BillomatNet.Helpers
                 return null;
             }
 
-            string reduction = "";
-            if (value.Reduction == null)
+            // TODO: extract
+            var reduction = "";
+            switch (value.Reduction)
             {
-                reduction = "0";
-            }
-            else if (value.Reduction.GetType() == typeof(Types.PercentReduction))
-            {
-                var reductionObj = (PercentReduction)value.Reduction;
-                reduction = $"{reductionObj.Value.ToString(CultureInfo.InvariantCulture)}%";
-            }
-            else if (value.Reduction.GetType() == typeof(AbsoluteReduction))
-            {
-                var reductionObj = (AbsoluteReduction)value.Reduction;
-                reduction = reductionObj.Value.ToString(CultureInfo.InvariantCulture);
+                case null:
+                    reduction = "0";
+                    break;
+                case PercentReduction percentReduction:
+                    reduction = $"{percentReduction.Value.ToString(CultureInfo.InvariantCulture)}%";
+                    break;
+                case AbsoluteReduction absoluteReduction:
+                    reduction = absoluteReduction.Value.ToString(CultureInfo.InvariantCulture);
+                    break;
             }
 
             return new Api.InvoiceItem
@@ -485,42 +476,19 @@ namespace Develappers.BillomatNet.Helpers
                 ArticleId = value.ArticleId.ToString(),
                 InvoiceId = value.InvoiceId.ToString(),
                 Position = value.Position.ToString(),
-                Unit = value.Unit.ToString(),
-                Quantity = value.Quantity.ToString(),
-                UnitPrice = value.UnitPrice.ToString(),
+                Unit = value.Unit,
+                Quantity = value.Quantity.ToString(CultureInfo.InvariantCulture),
+                UnitPrice = value.UnitPrice.ToString(CultureInfo.InvariantCulture),
                 TaxName = value.TaxName,
                 TaxRate = value.TaxRate.ToString(),
                 Title = value.Title,
                 Description = value.Description,
-                TotalGross = value.TotalGross.ToString(),
-                TotalNet = value.TotalNet.ToString(),
+                TotalGross = value.TotalGross.ToString(CultureInfo.InvariantCulture),
+                TotalNet = value.TotalNet.ToString(CultureInfo.InvariantCulture),
                 Reduction = reduction,
-                TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(),
-                TotalNetUnreduced = value.TotalNetUnreduced.ToString()
+                TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(CultureInfo.InvariantCulture),
+                TotalNetUnreduced = value.TotalNetUnreduced.ToString(CultureInfo.InvariantCulture)
             };
         }
-
-        //internal static IReduction GetReductionAsObject (this string value)
-        //{
-        //    IReduction reduction = null;
-        //    if (!string.IsNullOrEmpty(value) && value != "null")
-        //    {
-        //        if (value.EndsWith("%"))
-        //        {
-        //            reduction = new PercentReduction
-        //            {
-        //                Value = float.Parse(value.Replace("%", ""), CultureInfo.InvariantCulture)
-        //            };
-        //        }
-        //        else
-        //        {
-        //            reduction = new AbsoluteReduction
-        //            {
-        //                Value = float.Parse(value, CultureInfo.InvariantCulture)
-        //            };
-        //        }
-        //    }
-        //    return reduction;
-        //}
     }
 }
