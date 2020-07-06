@@ -131,7 +131,7 @@ namespace Develappers.BillomatNet
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
             {
                 // NotFound
-                return "";//maybe return string
+                return "";
             }
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)

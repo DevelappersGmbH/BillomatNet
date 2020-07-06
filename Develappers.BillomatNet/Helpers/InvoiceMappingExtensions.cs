@@ -317,7 +317,7 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
-        internal static Api.Invoice ToApi(this Types.Invoice value)
+        internal static Api.Invoice ToApi(this Invoice value)
         {
             if (value == null)
                 return null;
@@ -381,12 +381,12 @@ namespace Develappers.BillomatNet.Helpers
             else if (value.Reduction.GetType() == typeof(Types.PercentReduction))
             {
                 var reductionObj = (PercentReduction)value.Reduction;
-                reduction = $"{reductionObj.Value.ToString()}%";
+                reduction = $"{reductionObj.Value.ToString(CultureInfo.InvariantCulture)}%";
             }
             else if (value.Reduction.GetType() == typeof(AbsoluteReduction))
             {
                 var reductionObj = (AbsoluteReduction)value.Reduction;
-                reduction = reductionObj.Value.ToString();
+                reduction = reductionObj.Value.ToString(CultureInfo.InvariantCulture);
             }
 
             //Finds out and converts the ISupplyDate to its class and converts it to string if needed
@@ -430,7 +430,7 @@ namespace Develappers.BillomatNet.Helpers
                 Address = value.Address,
                 Status = status,
                 DiscountRate = value.DiscountRate.ToString(),
-                DiscountDate = CommonMappingExtensions.ToFormatStringDate(value.DiscountDate), //difference between DateTime and DateTime?
+                DiscountDate = value.DiscountDate.ToFormatStringDate(),
                 DiscountDays = value.DiscountDays.ToString(),
                 DiscountAmount = value.DiscountAmount.ToString(),
                 Label = value.Label,
@@ -472,12 +472,12 @@ namespace Develappers.BillomatNet.Helpers
             else if (value.Reduction.GetType() == typeof(Types.PercentReduction))
             {
                 var reductionObj = (PercentReduction)value.Reduction;
-                reduction = $"{reductionObj.Value.ToString()}%";
+                reduction = $"{reductionObj.Value.ToString(CultureInfo.InvariantCulture)}%";
             }
             else if (value.Reduction.GetType() == typeof(AbsoluteReduction))
             {
                 var reductionObj = (AbsoluteReduction)value.Reduction;
-                reduction = reductionObj.Value.ToString();
+                reduction = reductionObj.Value.ToString(CultureInfo.InvariantCulture);
             }
 
             return new Api.InvoiceItem
@@ -499,5 +499,28 @@ namespace Develappers.BillomatNet.Helpers
                 TotalNetUnreduced = value.TotalNetUnreduced.ToString()
             };
         }
+
+        //internal static IReduction GetReductionAsObject (this string value)
+        //{
+        //    IReduction reduction = null;
+        //    if (!string.IsNullOrEmpty(value) && value != "null")
+        //    {
+        //        if (value.EndsWith("%"))
+        //        {
+        //            reduction = new PercentReduction
+        //            {
+        //                Value = float.Parse(value.Replace("%", ""), CultureInfo.InvariantCulture)
+        //            };
+        //        }
+        //        else
+        //        {
+        //            reduction = new AbsoluteReduction
+        //            {
+        //                Value = float.Parse(value, CultureInfo.InvariantCulture)
+        //            };
+        //        }
+        //    }
+        //    return reduction;
+        //}
     }
 }

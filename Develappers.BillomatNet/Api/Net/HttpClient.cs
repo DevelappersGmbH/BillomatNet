@@ -216,10 +216,12 @@ namespace Develappers.BillomatNet.Api.Net
                 httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
             }
 
-            var reqStream = httpWebRequest.GetRequestStream();
-            var bytes = Encoding.UTF8.GetBytes(data);
-            await reqStream.WriteAsync(bytes, 0, bytes.Length, token).ConfigureAwait(false);
-            reqStream.Close();
+            using (var reqStream = httpWebRequest.GetRequestStream())
+            {
+                var bytes = Encoding.UTF8.GetBytes(data);
+                await reqStream.WriteAsync(bytes, 0, bytes.Length, token).ConfigureAwait(false);
+                reqStream.Close();
+            }
 
             var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
             var responseStream = httpResponse.GetResponseStream();
