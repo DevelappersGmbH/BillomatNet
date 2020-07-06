@@ -32,7 +32,7 @@ namespace Develappers.BillomatNet.Helpers
                 Updated = Convert.ToDateTime(value.Updated),
                 Name = value.Name,
                 Rate = float.Parse(value.Rate),
-                IsDefault = Convert.ToBoolean(value.IsDefault)
+                IsDefault = value.IsDefault.ToBoolean()
             };
         }
     }
