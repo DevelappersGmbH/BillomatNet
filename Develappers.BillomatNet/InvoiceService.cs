@@ -136,6 +136,21 @@ namespace Develappers.BillomatNet
             foreach (var item in invoiceItemList)
             {
                 item.InvoiceId = Convert.ToInt32(result.Invoice.Id);
+                if (item.ArticleId != null && item.ArticleId != 0)
+                {
+                    var conf = new Configuration { ApiKey = "f1882e25f5dbc1f096072e85c7d9a79a", BillomatId = "develappersdev" };
+                    var articleService = new ArticleService(conf);
+                    var articles = await articleService.GetByIdAsync(Convert.ToInt32(item.ArticleId));
+                    var unitService = new UnitService(conf);
+                    var units = await unitService.GetByIdAsync(Convert.ToInt32(articles.UnitId));
+                    
+
+                    item.UnitPrice = float.Parse(articles.SalesPrice.ToString());
+                    item.Title = articles.Title;
+                    item.Description = articles.Description;
+                    
+                    item.Unit = units.Name;
+                }
                 var wrappedInvoiceItem = new Api.InvoiceItemWrapper { InvoiceItem = item.ToApi() };
                 await PostAsync("/api/invoice-items", wrappedInvoiceItem, token);
             }

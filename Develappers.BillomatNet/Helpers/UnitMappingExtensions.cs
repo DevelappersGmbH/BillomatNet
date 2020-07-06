@@ -12,10 +12,25 @@ namespace Develappers.BillomatNet.Helpers
 {
     internal static class UnitMappingExtensions
     {
-        //internal static Unit ToDomain(this UnitWrapper value)
-        //{
-        //    return value?.Unit.ToDomain();
-        //}
+        internal static Unit ToDomain(this UnitWrapper value)
+        {
+            return value?.Unit.ToDomain();
+        }
 
+        private static Unit ToDomain(this Api.Unit value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Unit
+            {
+                Id = int.Parse(value.Id, CultureInfo.InvariantCulture),
+                Created = Convert.ToDateTime(value.Created),
+                Updated = Convert.ToDateTime(value.Updated),
+                Name = value.Name
+            };
+        }
     }
 }
