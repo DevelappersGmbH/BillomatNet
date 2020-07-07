@@ -1,6 +1,7 @@
 ﻿using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
+using Newtonsoft.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Unit = Develappers.BillomatNet.Types.Unit;
@@ -27,6 +28,15 @@ namespace Develappers.BillomatNet
         {
             var jsonModel = await GetItemByIdAsync<UnitWrapper>($"/api/units/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        public async Task CreateAsync(Unit unit, CancellationToken token = default(CancellationToken))
+        {
+            var wrappedUnit = new UnitWrapper
+            {
+                Unit = unit.ToApi()
+            };
+            await PostAsync("/api/units", wrappedUnit, token);
         }
     }
 }
