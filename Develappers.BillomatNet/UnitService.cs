@@ -32,7 +32,6 @@ namespace Develappers.BillomatNet
 
         public async Task CreateAsync(Unit unit, CancellationToken token = default(CancellationToken))
         {
-            // TODO: just one call
             var wrappedUnit = new UnitWrapper
             {
                 Unit = unit.ToApi()
