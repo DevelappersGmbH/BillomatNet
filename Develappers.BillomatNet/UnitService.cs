@@ -30,6 +30,11 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        public Task DeleteAsync(int id, CancellationToken token = default(CancellationToken))
+        {
+            return DeleteAsync($"/api/units/{id}", token);
+        }
+
         public async Task EditAsync(int id, Unit unit, CancellationToken token = default(CancellationToken))
         {
             var wrappedUnit = new UnitWrapper
@@ -41,7 +46,6 @@ namespace Develappers.BillomatNet
 
         public async Task CreateAsync(Unit unit, CancellationToken token = default(CancellationToken))
         {
-            // TODO: just one call
             var wrappedUnit = new UnitWrapper
             {
                 Unit = unit.ToApi()
