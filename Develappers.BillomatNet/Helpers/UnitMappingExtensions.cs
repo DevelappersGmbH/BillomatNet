@@ -1,5 +1,6 @@
 ﻿using Develappers.BillomatNet.Api;
 using System.Linq;
+using System.Security;
 using Unit = Develappers.BillomatNet.Types.Unit;
 
 namespace Develappers.BillomatNet.Helpers
@@ -42,6 +43,17 @@ namespace Develappers.BillomatNet.Helpers
             return new Unit
             {
                 Id = int.Parse(value.Id),
+                Created = value.Created,
+                Updated = value.Updated,
+                Name = value.Name
+            };
+        }
+
+        internal static Api.Unit ToApi (this Unit value)
+        {
+            return new Api.Unit
+            {
+                Id = value.Id.ToString(),
                 Created = value.Created,
                 Updated = value.Updated,
                 Name = value.Name
