@@ -30,7 +30,7 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        public async Task EditUnit(int id, Unit unit, CancellationToken token = default(CancellationToken))
+        public async Task EditAsync(int id, Unit unit, CancellationToken token = default(CancellationToken))
         {
             var wrappedUnit = new UnitWrapper
             {
