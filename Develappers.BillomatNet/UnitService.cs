@@ -23,10 +23,10 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        //public async Task<Unit> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
-        //{
-        //    var jsonModel = await GetItemByIdAsync<UnitWrapper>($"/api/units/{id}", token).ConfigureAwait(false);
-        //    return jsonModel.ToDomain();
-        //}
+        public async Task<Unit> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
+        {
+            var jsonModel = await GetItemByIdAsync<UnitWrapper>($"/api/units/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
     }
 }
