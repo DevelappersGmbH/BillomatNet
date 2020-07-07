@@ -18,10 +18,16 @@ namespace Develappers.BillomatNet
         {
             return GetListAsync(null, token);
         }
+
         public async Task<Types.PagedList<Unit>> GetListAsync(Query<Unit, UnitFilter> query, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetListAsync<UnitListWrapper>("/api/units", null, token).ConfigureAwait(false);
+            var jsonModel = await GetListAsync<UnitListWrapper>("/api/units", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        public async Task<Types.PagedList<Unit>> GetFilteredListAsync(Query<Unit, UnitFilter> query, CancellationToken token = default(CancellationToken))
+        {
+            return await GetListAsync(query);
         }
 
         public async Task<Unit> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
