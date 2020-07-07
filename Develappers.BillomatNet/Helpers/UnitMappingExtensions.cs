@@ -53,9 +53,6 @@ namespace Develappers.BillomatNet.Helpers
         {
             return new Api.Unit
             {
-                Id = value.Id.ToString(),
-                Created = value.Created,
-                Updated = value.Updated,
                 Name = value.Name
             };
         }
