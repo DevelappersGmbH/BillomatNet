@@ -10,9 +10,9 @@ namespace Develappers.BillomatNet.Api
         [JsonProperty("id")]
         public string Id { get; set; }
         [JsonProperty("created")]
-        public string Created { get; set; }
+        public DateTime Created { get; set; }
         [JsonProperty("updated")]
-        public string Updated { get; set; }
+        public DateTime Updated { get; set; }
         [JsonProperty("name")]
         public string Name { get; set; }
     }
