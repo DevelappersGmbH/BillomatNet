@@ -27,6 +27,11 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
+        internal static Unit ToDomain(this UnitWrapper value)
+        {
+            return value?.Unit.ToDomain();
+        }
+
         private static Unit ToDomain(this Api.Unit value)
         {
             if (value == null)
@@ -42,12 +47,5 @@ namespace Develappers.BillomatNet.Helpers
                 Name = value.Name
             };
         }
-
-
-        //internal static Unit ToDomain(this UnitWrapper value)
-        //{
-        //    return value?.Unit.ToDomain();
-        //}
-
     }
 }
