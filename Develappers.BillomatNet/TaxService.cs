@@ -55,10 +55,15 @@ namespace Develappers.BillomatNet
             throw new System.NotImplementedException();
         }
 
-        Task<Tax> IEntityService<Tax, TaxFilter>.CreateAsync(Tax model, CancellationToken token = default)
+        public async Task<Tax> CreateAsync(Tax model, CancellationToken token = default)
         {
-            // TODO: implement implicitly and make public
-            throw new System.NotImplementedException();
+            var wrappedTax = new TaxWrapper
+            {
+                Tax = model.ToApi()
+            };
+            var result = await PostAsync("/api/taxes", wrappedTax, token);
+
+            return result.ToDomain();
         }
 
         Task<Tax> IEntityService<Tax, TaxFilter>.EditAsync(Tax model, CancellationToken token = default)
