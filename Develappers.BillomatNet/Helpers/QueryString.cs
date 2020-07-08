@@ -82,7 +82,10 @@ namespace Develappers.BillomatNet.Helpers
 
         internal static string For(Query<Unit, UnitFilter> value)
         {
-            if (value == null) return null;
+            if (value == null)
+            {
+                return null;
+            }
 
             var filter = value.Filter.ToQueryString();
             var sort = value.Sort.ToQueryString();
@@ -90,7 +93,6 @@ namespace Develappers.BillomatNet.Helpers
             return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
         }
         
-
         internal static string ToQueryString<TDomain, TApi>(this List<SortItem<TDomain>> value)
         {
             if (value == null || value.Count == 0)
