@@ -66,8 +66,9 @@ namespace Develappers.BillomatNet
         {
             if (unit.Id < 1)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("invalid unit id", nameof(unit));
             }
+
             var wrappedUnit = new UnitWrapper
             {
                 Unit = unit.ToApi()
