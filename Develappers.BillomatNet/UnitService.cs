@@ -51,20 +51,47 @@ namespace Develappers.BillomatNet
         /// A task that represents the asynchronous operation.
         /// The task result contains the unit.
         /// </returns>
-        public async Task<Unit> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
+        public async Task<Unit> GetByIdAsync(int id, CancellationToken token = default)
         {
             var jsonModel = await GetItemByIdAsync<UnitWrapper>($"/api/units/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
-        public Task DeleteAsync(int id, CancellationToken token = default(CancellationToken))
+        /// <summary>
+        /// Deletes the unit with the given id..
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeleteAsync(int id, CancellationToken token = default)
         {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid unit id", nameof(id));
+            }
             return DeleteAsync($"/api/units/{id}", token);
         }
 
-        public async Task EditAsync(Unit unit, CancellationToken token = default(CancellationToken))
+        /// <summary>
+        /// Updates the specified unit.
+        /// </summary>
+        /// <param name="unit">The unit.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the updated unit.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Unit> EditAsync(Unit unit, CancellationToken token = default(CancellationToken))
         {
-            if (unit.Id < 1)
+            if (unit.Id <= 0)
             {
                 throw new ArgumentException("invalid unit id", nameof(unit));
             }
@@ -73,7 +100,9 @@ namespace Develappers.BillomatNet
             {
                 Unit = unit.ToApi()
             };
-            await PutAsync($"/api/units/{unit.Id}", wrappedUnit, token);
+
+            var jsonModel = await PutAsync($"/api/units/{unit.Id}", wrappedUnit, token);
+            return jsonModel.ToDomain();
         }
 
         /// <summary>
@@ -83,14 +112,24 @@ namespace Develappers.BillomatNet
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
+        /// The task result contains the new unit.
         /// </returns>
-        public async Task CreateAsync(Unit unit, CancellationToken token = default(CancellationToken))
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Unit> CreateAsync(Unit unit, CancellationToken token = default(CancellationToken))
         {
+            if (unit.Id != 0)
+            {
+                throw new ArgumentException("invalid unit id", nameof(unit));
+            }
+
             var wrappedUnit = new UnitWrapper
             {
                 Unit = unit.ToApi()
             };
-            await PostAsync("/api/units", wrappedUnit, token).ConfigureAwait(false);
+            var jsonModel = await PostAsync("/api/units", wrappedUnit, token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
         }
     }
 }
