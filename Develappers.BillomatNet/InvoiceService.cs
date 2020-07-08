@@ -1,7 +1,6 @@
 ﻿using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,11 +10,16 @@ using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 
 namespace Develappers.BillomatNet
 {
-    public class InvoiceService : ServiceBase
+    public class InvoiceService : ServiceBase, IEntityService<Invoice, InvoiceFilter>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InvoiceService"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
         public InvoiceService(Configuration configuration) : base(configuration)
         {
         }
+
 
         public Task<Types.PagedList<Invoice>> GetListAsync(CancellationToken token = default(CancellationToken))
         {
@@ -147,6 +151,18 @@ namespace Develappers.BillomatNet
             var result =  await PostAsync("/api/invoices", wrappedInvoice, token);
 
             return result.ToDomain();
+        }
+
+        Task<Invoice> IEntityService<Invoice, InvoiceFilter>.CreateAsync(Invoice model, CancellationToken token = default)
+        {
+            // TODO: implement implicitly and make public
+            throw new System.NotImplementedException();
+        }
+
+        Task<Invoice> IEntityService<Invoice, InvoiceFilter>.EditAsync(Invoice model, CancellationToken token = default)
+        {
+            // TODO: implement implicitly and make public
+            throw new System.NotImplementedException();
         }
     }
 }
