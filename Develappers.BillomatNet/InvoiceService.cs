@@ -138,28 +138,15 @@ namespace Develappers.BillomatNet
         /// A task that represents the asynchronous operation.
         /// The task result contains the id of the newly created invoice.
         /// </returns>
-        public async Task<int> CreateAsync (Invoice invoice,  List<InvoiceItem> invoiceItems, CancellationToken token = default(CancellationToken))
+        public async Task<Invoice> CreateAsync (Invoice invoice,  List<InvoiceItem> invoiceItems, CancellationToken token = default(CancellationToken))
         {
-            // TODO: zusammenfassen zu einem call
             var wrappedInvoice = new InvoiceWrapper
             {
                 Invoice = invoice.ToApi()
             };
-
             var result =  await PostAsync("/api/invoices", wrappedInvoice, token);
-            var invoiceId = int.Parse(result.Invoice.InvoiceId);
 
-            foreach (var item in invoiceItems)
-            {
-                item.InvoiceId = invoiceId;
-                var wrappedInvoiceItem = new InvoiceItemWrapper
-                {
-                    InvoiceItem = item.ToApi()
-                };
-                await PostAsync("/api/invoice-items", wrappedInvoiceItem, token);
-            }
-
-            return invoiceId;
+            return result.ToDomain();
         }
     }
 }

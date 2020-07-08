@@ -125,6 +125,8 @@ namespace Develappers.BillomatNet.Api
         public string PaymentTypes { get; set; }
 
         [JsonProperty("taxes")]
-        public InvoiceTaxWrapper Taxes { get; set; } // to internal
+        public InvoiceTaxWrapper Taxes { get; set; }
+        [JsonProperty("invoice_items")]
+        public InvoiceItemsWrapper InvoiceItems { get; set; }
     }
 }
