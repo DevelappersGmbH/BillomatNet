@@ -49,5 +49,6 @@ namespace Develappers.BillomatNet.Types
         public List<InvoiceTax> Taxes { get; set; }
         public float PaidAmount { get; set; }
         public float OpenAmount { get; set; }
+        public List<InvoiceItem> InvoiceItems { get; set; }
     }
 }

@@ -403,6 +403,19 @@ namespace Develappers.BillomatNet.Helpers
 
             var paymentTypes = string.Join(",", value.PaymentTypes);
 
+            var apiInvoiceItems = new List<Api.InvoiceItem>();
+            foreach (var item in value.InvoiceItems)
+            {
+                apiInvoiceItems.Add(item.ToApi());
+            }
+
+            //var apiInvoiceItems2 = value.InvoiceItems.Select(x => x.ToApi());
+
+            var itemsWrapper = new InvoiceItemsWrapper
+            {
+                List = apiInvoiceItems
+            };
+
             return new Api.Invoice
             {
                 Id = value.Id.ToString(),
@@ -445,7 +458,8 @@ namespace Develappers.BillomatNet.Helpers
                 RecurringId = value.RecurringId.ToString(),
                 TemplateId = value.TemplateId.ToString(),
                 PaymentTypes = paymentTypes,
-                Taxes = new InvoiceTaxWrapper()
+                Taxes = new InvoiceTaxWrapper(),
+                InvoiceItems = itemsWrapper
             };
         }
 
