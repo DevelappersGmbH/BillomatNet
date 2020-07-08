@@ -49,11 +49,6 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        public async Task<Tax> CreateAsync(Tax tax,  CancellationToken token = default(CancellationToken))
-        {
-
-        }
-
         Task IEntityService<Tax, TaxFilter>.DeleteAsync(int id, CancellationToken token = default)
         {
             // TODO: implement implicitly and make public
