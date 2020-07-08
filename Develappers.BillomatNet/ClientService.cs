@@ -87,7 +87,10 @@ namespace Develappers.BillomatNet
         /// Retrieves the customer tag cloud.
         /// </summary>
         /// <param name="token">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the paged list of tag cloud items.
+        /// </returns>
         public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
         {
             // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
