@@ -96,7 +96,9 @@ namespace Develappers.BillomatNet
         /// <param name="id">The id of the invoice.</param>
         /// <param name="templateId">The template id.</param>
         /// <param name="token">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
         public Task CompleteAsync(int id, int templateId, CancellationToken token = default(CancellationToken))
         {
             return CompleteInternalAsync(id, templateId, token);
@@ -111,7 +113,7 @@ namespace Develappers.BillomatNet
                     TemplateId = templateId
                 }
             };
-            await PutAsync($"/api/invoices/{id}/complete", model, token).ConfigureAwait(false);
+            await PutAsync<object, CompleteInvoiceWrapper>($"/api/invoices/{id}/complete", model, token).ConfigureAwait(false);
         }
 
         public async Task<Types.PagedList<InvoiceItem>> GetItemsAsync(int invoiceId, CancellationToken token = default(CancellationToken))
@@ -126,14 +128,25 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        /// <summary>
+        /// Creates an invoice.
+        /// </summary>
+        /// <param name="invoice">The invoice.</param>
+        /// <param name="invoiceItems">The invoice items.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the id of the newly created invoice.
+        /// </returns>
         public async Task<int> CreateAsync (Invoice invoice,  List<InvoiceItem> invoiceItems, CancellationToken token = default(CancellationToken))
         {
-            // TODO: just one call
+            // TODO: zusammenfassen zu einem call
             var wrappedInvoice = new InvoiceWrapper
             {
                 Invoice = invoice.ToApi()
             };
-            var result = JsonConvert.DeserializeObject<InvoiceWrapper> (await PostAsync("/api/invoices", wrappedInvoice, token));
+
+            var result =  await PostAsync("/api/invoices", wrappedInvoice, token);
             var invoiceId = int.Parse(result.Invoice.InvoiceId);
 
             foreach (var item in invoiceItems)
