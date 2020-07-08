@@ -56,6 +56,14 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        public async Task EditAsync(int id, Unit unit, CancellationToken token = default(CancellationToken))
+        {
+            var wrappedUnit = new UnitWrapper
+            {
+                Unit = unit.ToApi()
+            };
+            await PutAsync($"/api/units/{id}", wrappedUnit, token);
+        }
 
         /// <summary>
         /// Creates a unit.
