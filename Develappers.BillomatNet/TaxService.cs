@@ -57,11 +57,11 @@ namespace Develappers.BillomatNet
 
         public async Task<Tax> CreateAsync(Tax model, CancellationToken token = default)
         {
-            var wrappedTax = new TaxWrapper
+            var wrappedModel = new TaxWrapper
             {
                 Tax = model.ToApi()
             };
-            var result = await PostAsync("/api/taxes", wrappedTax, token);
+            var result = await PostAsync("/api/taxes", wrappedModel, token);
 
             return result.ToDomain();
         }
