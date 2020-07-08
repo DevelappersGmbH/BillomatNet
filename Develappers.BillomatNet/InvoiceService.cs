@@ -142,7 +142,7 @@ namespace Develappers.BillomatNet
         /// A task that represents the asynchronous operation.
         /// The task result contains the id of the newly created invoice.
         /// </returns>
-        public async Task<Invoice> CreateAsync (Invoice invoice,  List<InvoiceItem> invoiceItems, CancellationToken token = default(CancellationToken))
+        public async Task<Invoice> CreateAsync (Invoice invoice, CancellationToken token = default(CancellationToken))
         {
             var wrappedInvoice = new InvoiceWrapper
             {
