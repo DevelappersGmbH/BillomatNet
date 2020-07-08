@@ -1,7 +1,5 @@
 ﻿using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Helpers;
-using Develappers.BillomatNet.Types;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Tax = Develappers.BillomatNet.Types.Tax;
