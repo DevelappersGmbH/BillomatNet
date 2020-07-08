@@ -38,7 +38,7 @@ namespace Develappers.BillomatNet
         /// </returns>
         public async Task<Types.PagedList<Unit>> GetListAsync(Query<Unit, UnitFilter> query, CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetListAsync<UnitListWrapper>("/api/units", null, token).ConfigureAwait(false);
+            var jsonModel = await GetListAsync<UnitListWrapper>("/api/units", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
