@@ -57,6 +57,11 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        public Task DeleteAsync(int id, CancellationToken token = default(CancellationToken))
+        {
+            return DeleteAsync($"/api/units/{id}", token);
+        }
+
         public async Task EditAsync(Unit unit, CancellationToken token = default(CancellationToken))
         {
             if (unit.Id < 1)
