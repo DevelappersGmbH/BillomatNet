@@ -1,6 +1,7 @@
 ﻿using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Unit = Develappers.BillomatNet.Types.Unit;
@@ -56,13 +57,17 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        public async Task EditAsync(int id, Unit unit, CancellationToken token = default(CancellationToken))
+        public async Task EditAsync(Unit unit, CancellationToken token = default(CancellationToken))
         {
+            if (unit.Id < 1)
+            {
+                throw new ArgumentException();
+            }
             var wrappedUnit = new UnitWrapper
             {
                 Unit = unit.ToApi()
             };
-            await PutAsync($"/api/units/{id}", wrappedUnit, token);
+            await PutAsync($"/api/units/{unit.Id}", wrappedUnit, token);
         }
 
         /// <summary>
