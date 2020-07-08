@@ -7,7 +7,7 @@ namespace Develappers.BillomatNet.Api
     internal class InvoiceItemsWrapper
     {
         [JsonProperty("invoice_items")]
-        [JsonConverter(typeof(CollectionConverter<InvoiceTax>))]
+        [JsonConverter(typeof(CollectionConverter<InvoiceItem>))]
         public List<InvoiceItem> List { get; set; }
     }
 }
