@@ -8,8 +8,12 @@ using Unit = Develappers.BillomatNet.Types.Unit;
 
 namespace Develappers.BillomatNet
 {
-    public class UnitService : ServiceBase
+    public class UnitService : ServiceBase, IEntityService<Unit, UnitFilter>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UnitService"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
         public UnitService(Configuration configuration) : base(configuration)
         {
         }
@@ -22,7 +26,7 @@ namespace Develappers.BillomatNet
         /// A task that represents the asynchronous operation.
         /// The task result contains the list of units.
         /// </returns>
-        public Task<Types.PagedList<Unit>> GetListAsync(CancellationToken token = default(CancellationToken))
+        public Task<Types.PagedList<Unit>> GetListAsync(CancellationToken token = default)
         {
             return GetListAsync(null, token);
         }
@@ -36,7 +40,7 @@ namespace Develappers.BillomatNet
         /// A task that represents the asynchronous operation.
         /// The task result contains the list of units.
         /// </returns>
-        public async Task<Types.PagedList<Unit>> GetListAsync(Query<Unit, UnitFilter> query, CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<Unit>> GetListAsync(Query<Unit, UnitFilter> query, CancellationToken token = default)
         {
             var jsonModel = await GetListAsync<UnitListWrapper>("/api/units", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
@@ -89,7 +93,7 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<Unit> EditAsync(Unit unit, CancellationToken token = default(CancellationToken))
+        public async Task<Unit> EditAsync(Unit unit, CancellationToken token = default)
         {
             if (unit.Id <= 0)
             {
@@ -117,7 +121,7 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<Unit> CreateAsync(Unit unit, CancellationToken token = default(CancellationToken))
+        public async Task<Unit> CreateAsync(Unit unit, CancellationToken token = default)
         {
             if (unit.Id != 0)
             {

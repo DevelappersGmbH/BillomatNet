@@ -1,6 +1,4 @@
-﻿using Develappers.BillomatNet.Api.Json;
-using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Api
 {
@@ -9,11 +7,5 @@ namespace Develappers.BillomatNet.Api
         [JsonProperty("taxes")]
         public override TaxList Item { get; set; }
 
-    }
-    internal class TaxList : PagedList<Tax>
-    {
-        [JsonProperty("tax")]
-        [JsonConverter(typeof(CollectionConverter<Tax>))]
-        public override List<Tax> List { get; set; }
     }
 }
