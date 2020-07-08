@@ -14,6 +14,14 @@ namespace Develappers.BillomatNet
         {
         }
 
+        /// <summary>
+        /// Retrieves a list of taxes.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the list of taxes.
+        /// </returns>
         public async Task<Types.PagedList<Tax>> GetListAsync(CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetListAsync<TaxListWrapper>("/api/taxes", null, token).ConfigureAwait(false);
@@ -26,6 +34,15 @@ namespace Develappers.BillomatNet
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Retrieves a tax item by it's id.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the unit.
+        /// </returns>
         public async Task<Tax> GetByIdAsync(int id, CancellationToken token = default)
         {
             var jsonModel = await GetItemByIdAsync<TaxWrapper>($"/api/taxes/{id}", token).ConfigureAwait(false);
