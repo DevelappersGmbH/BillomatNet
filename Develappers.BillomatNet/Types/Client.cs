@@ -72,5 +72,6 @@ namespace Develappers.BillomatNet.Types
         public string BankIban { get; set; }
 
         public string CurrencyCode { get; set; }
+        public NetGrossSettingsType NetGross { get; set; }
     }
 }
