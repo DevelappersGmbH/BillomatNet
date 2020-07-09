@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Develappers.BillomatNet.Types
+namespace Develappers.BillomatNet.Api
 {
-    public class BccAddress
+    internal class BccAddressType
     {
         public string BccAddress { get; set; }
     }
