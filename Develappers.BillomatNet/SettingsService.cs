@@ -1,6 +1,8 @@
 ﻿using Develappers.BillomatNet.Api;
+using Develappers.BillomatNet.Helpers;
 using System.Threading;
 using System.Threading.Tasks;
+using Settings = Develappers.BillomatNet.Types.Settings;
 
 namespace Develappers.BillomatNet
 {
@@ -10,9 +12,9 @@ namespace Develappers.BillomatNet
         {
         }
 
-        public async Task<Settings> GetByIdAsync(CancellationToken token = default(CancellationToken))
+        public async Task<Settings> GetAsync(CancellationToken token = default(CancellationToken))
         {
-            var jsonModel = await GetItemByIdAsync<InvoiceWrapper>($"/api/settings", token).ConfigureAwait(false);
+            var jsonModel = await GetItemByIdAsync<SettingsWrapper>($"/api/settings/", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
     }
