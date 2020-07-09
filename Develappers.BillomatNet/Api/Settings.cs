@@ -16,7 +16,7 @@ namespace Develappers.BillomatNet.Api
         public string BgColor { get; set; }
         [JsonProperty("color1")]
         public string Color1 { get; set; }
-        [JsonProperty("color1")]
+        [JsonProperty("color2")]
         public string Color2 { get; set; }
         [JsonProperty("color3")]
         public string Color3 { get; set; }
