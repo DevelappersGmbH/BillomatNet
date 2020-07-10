@@ -9,7 +9,6 @@ namespace Develappers.BillomatNet.Types
         public int Page { get; set; }
 
         public int ItemsPerPage { get; set; }
-
         public int TotalItems { get; set; }
     }
 }

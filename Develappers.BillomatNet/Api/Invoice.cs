@@ -126,7 +126,5 @@ namespace Develappers.BillomatNet.Api
 
         [JsonProperty("taxes")]
         public InvoiceTaxWrapper Taxes { get; set; }
-        [JsonProperty("invoice_items")]
-        public InvoiceItemsWrapper InvoiceItems { get; set; }
     }
 }

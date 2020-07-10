@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace Develappers.BillomatNet.Types
+﻿namespace Develappers.BillomatNet.Types
 {
     public enum NetGrossType
     {

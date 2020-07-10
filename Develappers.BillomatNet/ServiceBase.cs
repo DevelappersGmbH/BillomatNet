@@ -9,7 +9,7 @@ namespace Develappers.BillomatNet
 {
     public abstract class ServiceBase
     {
-        protected Configuration Configuration { get; }
+        protected Configuration Configuration { get; private set; }
 
         protected ServiceBase(Configuration configuration)
         {
@@ -22,12 +22,8 @@ namespace Develappers.BillomatNet
         /// <typeparam name="T">The type to convert the response to</typeparam>
         /// <param name="resourceUrl">The relative url.</param>
         /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the entity.
-        /// </returns>
+        /// <returns></returns>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         protected async Task<T> GetItemByIdAsync<T>(string resourceUrl, CancellationToken token = default(CancellationToken)) where T : class
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
@@ -35,7 +31,7 @@ namespace Develappers.BillomatNet
 
             try
             {
-                httpResponse = await httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), token).ConfigureAwait(false);
+                httpResponse = await httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), token);
             }
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
@@ -60,14 +56,11 @@ namespace Develappers.BillomatNet
         /// <param name="resourceUrl">The relative url.</param>
         /// <param name="query"></param>
         /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the list of entities.
-        /// </returns>
+        /// <returns></returns>
         protected async Task<T> GetListAsync<T>(string resourceUrl, string query, CancellationToken token)
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), query, token).ConfigureAwait(false);
+            var httpResponse = await httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), query, token);
             return JsonConvert.DeserializeObject<T>(httpResponse);
         }
 
@@ -76,23 +69,19 @@ namespace Develappers.BillomatNet
         /// </summary>
         /// <param name="resourceUrl">The relative url.</param>
         /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// </returns>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        /// <returns></returns>
         protected async Task DeleteAsync(string resourceUrl, CancellationToken token)
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             try
             {
-                await httpClient.DeleteAsync(new Uri(resourceUrl, UriKind.Relative), token).ConfigureAwait(false);
+                await httpClient.DeleteAsync(new Uri(resourceUrl, UriKind.Relative), token);
             }
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
             {
                 // NotFound
-                throw new NotFoundException($"The resource at {resourceUrl} could not be found.", wex);
+                return;
             }
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
@@ -102,115 +91,21 @@ namespace Develappers.BillomatNet
             }
         }
 
-        /// <summary>
-        /// Executes an API call to update an entity.
-        /// </summary>
-        /// <typeparam name="T">The type.</typeparam>
-        /// <param name="resourceUrl">The resource URL.</param>
-        /// <param name="model">The model.</param>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the updated entity.
-        /// </returns>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        protected Task<T> PutAsync<T>(string resourceUrl, T model, CancellationToken token)
-            where T : class
-        {
-            return PutAsync<T, T>(resourceUrl, model, token);
-        }
-
-        /// <summary>
-        /// Executes an API call to update an entity.
-        /// </summary>
-        /// <typeparam name="TOut">The result type.</typeparam>
-        /// <typeparam name="TIn">The input type in.</typeparam>
-        /// <param name="resourceUrl">The resource URL.</param>
-        /// <param name="model">The model.</param>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the result.
-        /// </returns>
-        /// <exception cref="NotFoundException">The resource at {resourceUrl} could not be found.</exception>
-        /// <exception cref="NotAuthorizedException">You are not authorized to change this item.</exception>
-        protected async Task<TOut> PutAsync<TOut, TIn>(string resourceUrl, TIn model, CancellationToken token) 
+        protected async Task PutAsync<TIn>(string resourceUrl, TIn model, CancellationToken token) 
             where TIn : class
-            where TOut : class
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
 
             try
             {
                 var requestData = model == null ? "" : JsonConvert.SerializeObject(model);
-                var result = await httpClient.PutAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token).ConfigureAwait(false);
-                return JsonConvert.DeserializeObject<TOut>(result);
+                await httpClient.PutAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token);
             }
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
             {
-                throw new NotFoundException($"The resource at {resourceUrl} could not be found.", wex);
-            }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
-            {
-                // Unauthorized
-                throw new NotAuthorizedException("You are not authorized to change this item.", wex);
-            }
-        }
-
-
-        /// <summary>
-        /// Creates a new entity
-        /// </summary>
-        /// <typeparam name="T">The type.</typeparam>
-        /// <param name="resourceUrl">The resource URL.</param>
-        /// <param name="model">The model.</param>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the newly created entity.
-        /// </returns>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        protected Task<T> PostAsync<T>(string resourceUrl, T model, CancellationToken token)
-            where T : class
-        {
-            return PostAsync<T, T>(resourceUrl, model, token);
-        }
-
-
-        /// <summary>
-        /// Creates a new entity.
-        /// </summary>
-        /// <typeparam name="TOut">The output type.</typeparam>
-        /// <typeparam name="TIn">The type input type.</typeparam>
-        /// <param name="resourceUrl">The resource URL.</param>
-        /// <param name="model">The model.</param>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the output entity.
-        /// </returns>
-        /// <exception cref="NotFoundException">The resource at {resourceUrl} could not be found.</exception>
-        /// <exception cref="NotAuthorizedException">You are not authorized to change this item.</exception>
-        private async Task<TOut> PostAsync<TOut, TIn>(string resourceUrl, TIn model, CancellationToken token)
-            where TIn : class
-            where TOut : class
-        {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            
-            try
-            {
-                var requestData = model == null ? "" : JsonConvert.SerializeObject(model);
-                var responseData = await httpClient.PostAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token);
-                return JsonConvert.DeserializeObject<TOut>(responseData);
-            }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
-            {
-                throw new NotFoundException($"The resource at {resourceUrl} could not be found.", wex);
+                // NotFound
+                return;
             }
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)

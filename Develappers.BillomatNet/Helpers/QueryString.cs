@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Develappers.BillomatNet.Queries;
@@ -80,19 +79,6 @@ namespace Develappers.BillomatNet.Helpers
             return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
         }
 
-        internal static string For(Query<Unit, UnitFilter> value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            var filter = value.Filter.ToQueryString();
-            var sort = value.Sort.ToQueryString();
-            var paging = value.Paging.ToQueryString();
-            return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
-        }
-        
         internal static string ToQueryString<TDomain, TApi>(this List<SortItem<TDomain>> value)
         {
             if (value == null || value.Count == 0)
@@ -138,26 +124,6 @@ namespace Develappers.BillomatNet.Helpers
         internal static string ToQueryString(this List<SortItem<ArticleTag>> value)
         {
             return ToQueryString<ArticleTag, Api.ArticleTag>(value);
-        }
-        internal static string ToQueryString(this UnitFilter value)
-        {
-            if (value == null)
-            {
-                return string.Empty;
-            }
-
-            var filters = new List<string>();
-            if (!string.IsNullOrEmpty(value.Name))
-            {
-                filters.Add($"?name={HttpUtility.UrlEncode(value.Name)}");
-            }
-
-            return string.Join("&", filters);
-        }
-       
-        internal static string ToQueryString(this List<SortItem<Unit>> value)
-        {
-            return ToQueryString<Unit, Develappers.BillomatNet.Api.Unit>(value);
         }
 
         internal static string ToQueryString(this PagingSettings value)

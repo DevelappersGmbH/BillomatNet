@@ -6,10 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- retrieving of units and taxes
+- nothing
 
 ### Changed
-- write operations throw NotFoundException when the entity was not found 
+- nothing
 
 ### Removed
 - nothing
