@@ -19,7 +19,6 @@ namespace Develappers.BillomatNet.Types
         public NumberRangeModeType NumberRangeMode { get; set; }
         public string ArticleNumberPre { get; set; }
         public int? ArticleNumberLength { get; set; }
-        public int MyProperty { get; set; }
         public int? ArticleNumberNext { get; set; }
         public string PriceGroup2 { get; set; }
         public string PriceGroup3 { get; set; }
