@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Api
 {
-    internal class InvoiceTax // change to internal
+    internal class InvoiceTax
     {
         [JsonProperty("name")]
         public string Name { get; set; }
