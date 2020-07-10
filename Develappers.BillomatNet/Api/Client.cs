@@ -108,5 +108,7 @@ namespace Develappers.BillomatNet.Api
 
         [JsonProperty("currency_code")]
         public string CurrencyCode { get; set; }
+        [JsonProperty("net_gross")]
+        public string NetGross { get; set; }
     }
 }

@@ -165,6 +165,23 @@ namespace Develappers.BillomatNet.Helpers
                 return null;
             }
 
+            NetGrossSettingsType netGrossSettingsType;
+
+            switch (value.NetGross.ToLowerInvariant())
+            {
+                case "net":
+                    netGrossSettingsType = NetGrossSettingsType.Net;
+                    break;
+                case "gross":
+                    netGrossSettingsType = NetGrossSettingsType.Gross;
+                    break;
+                case "settings":
+                    netGrossSettingsType = NetGrossSettingsType.Settings;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
             return new Client
             {
                 Id = int.Parse(value.Id),
@@ -200,7 +217,8 @@ namespace Develappers.BillomatNet.Helpers
                 TaxNumber = value.TaxNumber,
                 VatNumber = value.VatNumber,
                 Web = value.Www,
-                ZipCode = value.Zip
+                ZipCode = value.Zip,
+                NetGross = netGrossSettingsType
             };
         }
 
