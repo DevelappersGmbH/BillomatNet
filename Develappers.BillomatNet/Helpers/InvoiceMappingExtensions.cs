@@ -403,12 +403,11 @@ namespace Develappers.BillomatNet.Helpers
 
             var paymentTypes = string.Join(",", value.PaymentTypes);
 
-            if (value.InvoiceItems == null)
+            var apiInvoiceItems = new List<Api.InvoiceItem>();
+            if (value.InvoiceItems != null)
             {
-                throw new ArgumentException();
+                apiInvoiceItems = value.InvoiceItems.Select(x => x.ToApi()).ToList();
             }
-
-            var apiInvoiceItems = value.InvoiceItems.Select(x => x.ToApi()).ToList();
 
             var itemsWrapper = new InvoiceItemsWrapper
             {
