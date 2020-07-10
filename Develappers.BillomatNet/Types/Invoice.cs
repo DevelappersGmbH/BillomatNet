@@ -40,7 +40,6 @@ namespace Develappers.BillomatNet.Types
         public float TotalNet { get; set; }
         public string CurrencyCode { get; set; }
         public float Quote { get; set; }
-        [JsonConverter(typeof(StringEnumConverter))]
         public NetGrossType NetGross { get; set; }
         public IReduction Reduction { get; set; }
         public float TotalGrossUnreduced { get; set; }

@@ -54,5 +54,20 @@ namespace Develappers.BillomatNet.Helpers
                 IsDefault = value.IsDefault.ToBoolean()
             };
         }
+
+        internal static Api.Tax ToApi(this Tax value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Api.Tax
+            {
+                Name = value.Name,
+                Rate = value.Rate.ToString(CultureInfo.InvariantCulture),
+                IsDefault = value.IsDefault.ToString()
+            };
+        }
     }
 }
