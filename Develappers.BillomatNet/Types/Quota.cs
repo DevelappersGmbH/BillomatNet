@@ -1,5 +1,8 @@
 ﻿namespace Develappers.BillomatNet.Types
 {
+    /// <summary>
+    /// Represents the quota.
+    /// </summary>
     public class Quota
     {
         public QuotaType Entity { get; set; }

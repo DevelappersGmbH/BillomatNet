@@ -2,6 +2,9 @@
 
 namespace Develappers.BillomatNet.Api
 {
+    /// <summary>
+    /// Represents your account.
+    /// </summary>
     internal class Account : Client
     {
         [JsonProperty("plan")]

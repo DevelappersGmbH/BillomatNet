@@ -47,9 +47,9 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Retrieves a unit item by it's id.
+        /// Retrieves a unit item by it's ID.
         /// </summary>
-        /// <param name="id">The id.</param>
+        /// <param name="id">The ID.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -62,9 +62,9 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Deletes the unit with the given id..
+        /// Deletes the unit with the given ID.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="id">The ID.</param>
         /// <param name="token">The token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.

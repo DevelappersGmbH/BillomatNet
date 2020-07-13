@@ -2,6 +2,9 @@
 
 namespace Develappers.BillomatNet.Queries
 {
+    /// <summary>
+    /// Represents the filter for the client.
+    /// </summary>
     public class ClientFilter
     {
         public string Name { get; set; }

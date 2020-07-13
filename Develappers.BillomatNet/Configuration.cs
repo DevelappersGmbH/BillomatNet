@@ -1,5 +1,8 @@
 ﻿namespace Develappers.BillomatNet
 {
+    /// <summary>
+    /// Model for the Configuration data.
+    /// </summary>
     public class Configuration
     {
         public string BillomatId { get; set; }

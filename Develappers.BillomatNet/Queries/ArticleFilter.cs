@@ -2,6 +2,9 @@
 
 namespace Develappers.BillomatNet.Queries
 {
+    /// <summary>
+    /// Represents the filter for the article.
+    /// </summary>
     public class ArticleFilter
     {
         public string Title { get; set; }

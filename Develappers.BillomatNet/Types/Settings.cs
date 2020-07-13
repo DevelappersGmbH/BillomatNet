@@ -4,6 +4,9 @@ using System.Text;
 
 namespace Develappers.BillomatNet.Types
 {
+    /// <summary>
+    /// Represents the settings.
+    /// </summary>
     public class Settings
     {
         public DateTime Created { get; set; }
