@@ -24,10 +24,10 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Returns all informaiton of your account.
+        /// Returns all informaitons of your account.
         /// </summary>
-        /// <param name="token">The cancellation token</param>
-        /// <returns></returns>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The account data.</returns>
         public async Task<Account> MyselfAsync(CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
@@ -51,7 +51,9 @@ namespace Develappers.BillomatNet
         /// </summary>
         /// <param name="clientId">The ID of the client.</param>
         /// <param name="token">The cancellation token.</param>
-        /// <returns>The contact list or null if not found</returns>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the list of contacts </returns>
         public async Task<Types.PagedList<Contact>> GetContactListAsync(int clientId, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetListAsync<ContactListWrapper>("/api/contacts", $"client_id={clientId}", token).ConfigureAwait(false);

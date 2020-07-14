@@ -8,7 +8,7 @@ namespace Develappers.BillomatNet.Api.Json
     internal class CollectionConverter<T> : JsonConverter
     {
         /// <summary>
-        /// Checks if the object is a List
+        /// Checks whether this item can be converted
         /// </summary>
         /// <param name="objectType">The Type of the object</param>
         /// <returns>The boolean, true if List.</returns>
@@ -27,7 +27,7 @@ namespace Develappers.BillomatNet.Api.Json
         public override bool CanWrite => false;
 
         /// <summary>
-        /// Throws an exception.
+        /// Writes the list to json - currently not implemented
         /// </summary>
         /// <param name="writer">The Json Writer</param>
         /// <param name="value">The object.</param>
