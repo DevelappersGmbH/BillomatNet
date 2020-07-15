@@ -57,7 +57,6 @@ namespace Develappers.BillomatNet.Api.Net
                 httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
             }
 
-
             var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
             var responseStream = httpResponse.GetResponseStream();
             if (responseStream == null)
@@ -99,29 +98,20 @@ namespace Develappers.BillomatNet.Api.Net
                 httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
             }
 
-            try
+            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
+            var responseStream = httpResponse.GetResponseStream();
+            if (responseStream == null)
             {
-                var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-                var responseStream = httpResponse.GetResponseStream();
-                if (responseStream == null)
-                {
-                    throw new IOException("response stream was null!");
-                }
-
-                string result;
-                using (var streamReader = new StreamReader(responseStream))
-                {
-                    result = await streamReader.ReadToEndAsync();
-                }
-
-                return result;
-
+                throw new IOException("response stream was null!");
             }
-            catch (Exception)
+
+            string result;
+            using (var streamReader = new StreamReader(responseStream))
             {
-
-                throw;
+                result = await streamReader.ReadToEndAsync();
             }
+
+            return result;
         }
 
         public async Task<string> DeleteAsync(Uri relativeUri, CancellationToken token)
@@ -231,28 +221,20 @@ namespace Develappers.BillomatNet.Api.Net
                 reqStream.Close();
             }
 
-            try
+            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
+            var responseStream = httpResponse.GetResponseStream();
+            if (responseStream == null)
             {
-                var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-                var responseStream = httpResponse.GetResponseStream();
-                if (responseStream == null)
-                {
-                    throw new IOException("response stream was null!");
-                }
-
-                string result;
-                using (var streamReader = new StreamReader(responseStream))
-                {
-                    result = await streamReader.ReadToEndAsync();
-                }
-
-                return result;
+                throw new IOException("response stream was null!");
             }
-            catch (Exception e)
+
+            string result;
+            using (var streamReader = new StreamReader(responseStream))
             {
-
-                throw;
+                result = await streamReader.ReadToEndAsync();
             }
+
+            return result;
         }
     }
 }

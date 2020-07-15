@@ -57,6 +57,15 @@ namespace Develappers.BillomatNet
 
         public async Task<Tax> CreateAsync(Tax model, CancellationToken token = default)
         {
+            if (model == null || model.Name == "" || model.Name == null)
+            {
+                throw new ArgumentException();
+            }
+            if (model.Id != 0)
+            {
+                throw new ArgumentException("invalid unit id", nameof(model));
+            }
+
             var wrappedModel = new TaxWrapper
             {
                 Tax = model.ToApi()

@@ -1,6 +1,5 @@
-﻿using Develappers.BillomatNet;
-using Develappers.BillomatNet.Types;
-using System.IO;
+﻿using Develappers.BillomatNet.Types;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -83,15 +82,15 @@ namespace Develappers.BillomatNet.Tests
             var ex = Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(taxItem));
         }
 
-        //[Fact]
-        //public async Task CreateTaxItemWhenNull()
-        //{
-        //    var config = Helpers.GetTestConfiguration();
-        //    var service = new TaxService(config);
+        [Fact]
+        public async Task CreateTaxItemWhenNull()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new TaxService(config);
 
-        //    var tax = new Tax{};
+            var tax = new Tax { };
 
-        //    var ex = await Assert.ThrowsAsync<IOException>(() => service.CreateAsync(tax));
-        //}
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(tax));
+        }
     }
 }
