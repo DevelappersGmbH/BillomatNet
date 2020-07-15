@@ -1,4 +1,8 @@
-﻿using System.Threading;
+﻿using Develappers.BillomatNet.Types;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -19,6 +23,16 @@ namespace Develappers.BillomatNet.Tests
 
         //    var result = await service.GetListAsync(query, CancellationToken.None);
 
+        //    Assert.True(result.List.Count > 0);
+        //}
+
+        //[Fact]
+        //public async Task GetFilteredInvoices()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+        //    var service = new InvoiceService(config);
+        //    var result = await service.GetListAsync(
+        //        new Query<Invoice, InvoiceFilter>().AddFilter(x => x.Status, InvoiceStatus.Draft));
         //    Assert.True(result.List.Count > 0);
         //}
 
@@ -66,6 +80,15 @@ namespace Develappers.BillomatNet.Tests
             var result = await service.GetByIdAsync(1);
 
             Assert.Null(result);
+        }
+
+        [Fact]
+        public async Task GetInvoiceByIdWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "";
+            var service = new InvoiceService(config);
+            var ex = Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(1));
         }
 
         [Fact]
@@ -166,6 +189,73 @@ namespace Develappers.BillomatNet.Tests
         //    await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteAsync(3745041));
         //}
 
+        [Fact]
+        public async Task DeleteInvoiceItem()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new InvoiceService(config);
+
+            #region Initializing to create
+            var cs = new ClientService(config);
+            var cl = await cs.GetByIdAsync(1506365);
+
+            var articleService = new ArticleService(config);
+            var articles = await articleService.GetByIdAsync(835226);
+
+            var unitService = new UnitService(config);
+            var units = await unitService.GetByIdAsync(articles.UnitId.Value);
+
+            var taxService = new TaxService(config);
+            var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
+
+            var settingsService = new SettingsService(config);
+            var settings = await settingsService.GetAsync();
+
+            var title = "xUnit Test Object";
+
+            var invoiceItemList = new List<InvoiceItem>
+            {
+                new InvoiceItem
+                {
+                    ArticleId = articles.Id,
+                    Unit = units.Name,
+                    Quantity = 300,
+                    UnitPrice = 1.0f,
+                    Title = articles.Title,
+                    Description = articles.Description,
+                    TaxName = taxes.Name,
+                    TaxRate = taxes.Rate,
+                }
+            };
+
+            var inv = new Invoice
+            {
+                ClientId = cl.Id,
+                Address = cl.Address,
+                //Title = "",
+                Date = DateTime.Now.Date,
+                DueDate = DateTime.Now.Date.AddDays(14),
+                DueDays = 20,
+                SupplyDate = new DateSupplyDate(),
+                Label = title,
+                //Intro = "Hiermit stellen wir Ihnen die folgenden Positionen in Rechnung.",
+                //Note = "Netto K/P Programm Test",
+                CurrencyCode = "EUR",
+                NetGross = NetGrossType.Net,
+                Reduction = new AbsoluteReduction { Value = 0 },
+                DiscountRate = 0f,
+                DiscountDate = DateTime.Now.Date.AddDays(0),
+                PaymentTypes = new List<string>(),
+                Quote = 1,
+                InvoiceItems = invoiceItemList
+            };
+            #endregion
+
+            var result = await service.CreateAsync(inv);
+            Assert.Equal(title, result.Label);
+
+            var ex = Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(result.Id));
+        }
 
         [Fact]
         public async Task GetMultipleInvoiceItems()
@@ -182,6 +272,148 @@ namespace Develappers.BillomatNet.Tests
             }
 
             Assert.True(true);
+        }
+
+        [Fact]
+        public async Task CreateInvoiceItem()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new InvoiceService(config);
+
+            #region Initializing to create
+            var cs = new ClientService(config);
+            var cl = await cs.GetByIdAsync(1506365);
+
+            var articleService = new ArticleService(config);
+            var articles = await articleService.GetByIdAsync(835226);
+
+            var unitService = new UnitService(config);
+            var units = await unitService.GetByIdAsync(articles.UnitId.Value);
+
+            var taxService = new TaxService(config);
+            var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
+
+            var settingsService = new SettingsService(config);
+            var settings = await settingsService.GetAsync();
+
+            var title = "xUnit Test Object";
+
+            var invoiceItemList = new List<InvoiceItem>
+            {
+                new InvoiceItem
+                {
+                    ArticleId = articles.Id,
+                    Unit = units.Name,
+                    Quantity = 300,
+                    UnitPrice = 1.0f,
+                    Title = articles.Title,
+                    Description = articles.Description,
+                    TaxName = taxes.Name,
+                    TaxRate = taxes.Rate,
+                }
+            };
+
+            var inv = new Invoice
+            {
+                ClientId = cl.Id,
+                Address = cl.Address,
+                //Title = "",
+                Date = DateTime.Now.Date,
+                DueDate = DateTime.Now.Date.AddDays(14),
+                DueDays = 20,
+                SupplyDate = new DateSupplyDate(),
+                Label = title,
+                //Intro = "Hiermit stellen wir Ihnen die folgenden Positionen in Rechnung.",
+                //Note = "Netto K/P Programm Test",
+                CurrencyCode = "EUR",
+                NetGross = NetGrossType.Net,
+                Reduction = new AbsoluteReduction { Value = 0 },
+                DiscountRate = 0f,
+                DiscountDate = DateTime.Now.Date.AddDays(0),
+                PaymentTypes = new List<string>(),
+                Quote = 1,
+                InvoiceItems = invoiceItemList
+            };
+            #endregion
+
+            var result = await service.CreateAsync(inv);
+            Assert.Equal(title, result.Label);
+            await service.DeleteAsync(result.Id);
+        }
+
+        [Fact]
+        public async Task CreateInvoiceItemWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var config2 = Helpers.GetTestConfiguration();
+            config2.ApiKey = "";
+            var service = new InvoiceService(config2);
+
+            #region Initializing to create
+            var cs = new ClientService(config);
+            var cl = await cs.GetByIdAsync(1506365);
+
+            var articleService = new ArticleService(config);
+            var articles = await articleService.GetByIdAsync(835226);
+
+            var unitService = new UnitService(config);
+            var units = await unitService.GetByIdAsync(articles.UnitId.Value);
+
+            var taxService = new TaxService(config);
+            var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
+
+            var settingsService = new SettingsService(config);
+            var settings = await settingsService.GetAsync();
+
+            var title = "xUnit Test Object";
+
+            var invoiceItemList = new List<InvoiceItem>
+            {
+                new InvoiceItem
+                {
+                    ArticleId = articles.Id,
+                    Unit = units.Name,
+                    Quantity = 300,
+                    UnitPrice = 1.0f,
+                    Title = articles.Title,
+                    Description = articles.Description,
+                    TaxName = taxes.Name,
+                    TaxRate = taxes.Rate,
+                }
+            };
+
+            var inv = new Invoice
+            {
+                ClientId = cl.Id,
+                Address = cl.Address,
+                //Title = "",
+                Date = DateTime.Now.Date,
+                DueDate = DateTime.Now.Date.AddDays(14),
+                DueDays = 20,
+                SupplyDate = new DateSupplyDate(),
+                Label = title,
+                //Intro = "Hiermit stellen wir Ihnen die folgenden Positionen in Rechnung.",
+                //Note = "Netto K/P Programm Test",
+                CurrencyCode = "EUR",
+                NetGross = NetGrossType.Net,
+                Reduction = new AbsoluteReduction { Value = 0 },
+                DiscountRate = 0f,
+                DiscountDate = DateTime.Now.Date.AddDays(0),
+                PaymentTypes = new List<string>(),
+                Quote = 1,
+                InvoiceItems = invoiceItemList
+            };
+            #endregion
+
+            var ex = Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(inv));
+        }
+
+        [Fact]
+        public async Task CreateInvoiceItemWhenNull()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new InvoiceService(config);
+            var ex = Assert.ThrowsAsync<IOException>(() => service.CreateAsync(null));
         }
     }
 }
