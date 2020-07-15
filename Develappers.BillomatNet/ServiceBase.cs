@@ -49,6 +49,10 @@ namespace Develappers.BillomatNet
                 // Unauthorized
                 throw new NotAuthorizedException("You are not authorized to access this item.", wex);
             }
+            catch(Exception e)
+            {
+                throw;
+            }
 
             return JsonConvert.DeserializeObject<T>(httpResponse);
         }

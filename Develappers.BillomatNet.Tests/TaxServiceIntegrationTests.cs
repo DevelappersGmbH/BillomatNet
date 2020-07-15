@@ -32,16 +32,18 @@ namespace Develappers.BillomatNet.Tests
         {
             var config = Helpers.GetTestConfiguration();
             var service = new TaxService(config);
-            var result = Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(1));
+            
+            var result = await service.GetByIdAsync(21285);
+            Assert.Null(result);
         }
 
         [Fact]
         public async Task GetTaxByIdWhenNotAuthorized()
         {
             var config = Helpers.GetTestConfiguration();
-            config.ApiKey = "";
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new TaxService(config);
-            var ex = Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(1));
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(1));
         }
 
         //[Fact]
@@ -67,7 +69,7 @@ namespace Develappers.BillomatNet.Tests
         public async Task CreateTaxItemWhenNotAuthorized()
         {
             var config = Helpers.GetTestConfiguration();
-            config.ApiKey = "";
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new TaxService(config);
 
             var name = "xUnit Test";
@@ -81,14 +83,15 @@ namespace Develappers.BillomatNet.Tests
             var ex = Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(taxItem));
         }
 
-        [Fact]
-        public async Task CreateTaxItemWhenNull()
-        {
-            var config = Helpers.GetTestConfiguration();
-            config.ApiKey = "";
-            var service = new TaxService(config);
+        //[Fact]
+        //public async Task CreateTaxItemWhenNull()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+        //    var service = new TaxService(config);
 
-            var ex = Assert.ThrowsAsync<IOException>(() => service.CreateAsync(null));
-        }
+        //    var tax = new Tax{};
+
+        //    var ex = await Assert.ThrowsAsync<IOException>(() => service.CreateAsync(tax));
+        //}
     }
 }

@@ -99,21 +99,29 @@ namespace Develappers.BillomatNet.Api.Net
                 httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
             }
 
-
-            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            var responseStream = httpResponse.GetResponseStream();
-            if (responseStream == null)
+            try
             {
-                throw new IOException("response stream was null!");
-            }
+                var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
+                var responseStream = httpResponse.GetResponseStream();
+                if (responseStream == null)
+                {
+                    throw new IOException("response stream was null!");
+                }
 
-            string result;
-            using (var streamReader = new StreamReader(responseStream))
+                string result;
+                using (var streamReader = new StreamReader(responseStream))
+                {
+                    result = await streamReader.ReadToEndAsync();
+                }
+
+                return result;
+
+            }
+            catch (Exception)
             {
-                result = await streamReader.ReadToEndAsync();
-            }
 
-            return result;
+                throw;
+            }
         }
 
         public async Task<string> DeleteAsync(Uri relativeUri, CancellationToken token)
@@ -223,20 +231,28 @@ namespace Develappers.BillomatNet.Api.Net
                 reqStream.Close();
             }
 
-            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            var responseStream = httpResponse.GetResponseStream();
-            if (responseStream == null)
+            try
             {
-                throw new IOException("response stream was null!");
-            }
+                var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
+                var responseStream = httpResponse.GetResponseStream();
+                if (responseStream == null)
+                {
+                    throw new IOException("response stream was null!");
+                }
 
-            string result;
-            using (var streamReader = new StreamReader(responseStream))
+                string result;
+                using (var streamReader = new StreamReader(responseStream))
+                {
+                    result = await streamReader.ReadToEndAsync();
+                }
+
+                return result;
+            }
+            catch (Exception e)
             {
-                result = await streamReader.ReadToEndAsync();
-            }
 
-            return result;
+                throw;
+            }
         }
     }
 }
