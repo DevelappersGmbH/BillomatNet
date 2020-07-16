@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
@@ -101,6 +102,54 @@ namespace Develappers.BillomatNet.Tests
                 new Query<ArticleTag, ArticleTagFilter>().AddFilter(x => x.ArticleId, 434867));
 
             Assert.True(true);
+        }
+
+        //[Fact]
+        //public async Task CreateArticleItem()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+        //    var service = new ArticleService(config);
+
+        //    var articleItem = new Article
+        //    {
+        //        Title = "xUnit test",
+        //        SalesPrice = 3.5f,
+        //        UnitId = 20573,
+        //        TaxId = 21281,
+        //        PurchasePrice = 3.0f
+        //    };
+
+        //    var createResult = await service.CreateAsync(articleItem);
+        //    var getResult = await service.GetByIdAsync(createResult.Id);
+        //    Assert.NotNull(getResult);
+        //}
+
+        [Fact]
+        public async Task CreateArticleItemWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var articleItem = new Article
+            {
+                Title = "xUnit test",
+                SalesPrice = 3.5f,
+                UnitId = 20573,
+                TaxId = 21281,
+                PurchasePrice = 3.0f
+            };
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() =>service.CreateAsync(articleItem));
+        }
+
+        [Fact]
+        public async Task CreateArticleItemWhenNull()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(null));
         }
     }
 }
