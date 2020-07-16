@@ -92,5 +92,36 @@ namespace Develappers.BillomatNet.Tests
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(tax));
         }
+
+        //[Fact]
+        //public async Task EditTaxItem()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+        //    var service = new TaxService(config);
+
+        //    var name = "xUnit test";
+
+        //    var taxItem = new Tax
+        //    {
+        //        Name = name
+        //    };
+
+        //    var result = await service.CreateAsync(taxItem);
+
+        //    Assert.Equal(name, result.Name);
+
+        //    var newName = "xUnit test edited";
+
+        //    var editedTaxItem = new Tax
+        //    {
+        //        Id = result.Id,
+        //        Name = newName
+        //    };
+
+        //    var editedResult = await service.EditAsync(editedTaxItem);
+        //    Assert.Equal(newName, editedTaxItem.Name);
+
+        //    //await service.DeleteAsync(editUnitItem.Id);
+        //}
     }
 }
