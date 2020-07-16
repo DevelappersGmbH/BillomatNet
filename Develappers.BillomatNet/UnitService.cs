@@ -123,6 +123,10 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         public async Task<Unit> CreateAsync(Unit unit, CancellationToken token = default)
         {
+            if (unit == null || unit.Name == "" || unit.Name == null)
+            {
+                throw new ArgumentException();
+            }
             if (unit.Id != 0)
             {
                 throw new ArgumentException("invalid unit id", nameof(unit));

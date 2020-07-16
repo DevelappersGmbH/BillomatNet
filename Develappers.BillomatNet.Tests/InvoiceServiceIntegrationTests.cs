@@ -386,13 +386,13 @@ namespace Develappers.BillomatNet.Tests
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(inv));
         }
 
-        //[Fact]
-        //public async Task CreateInvoiceItemWhenNull()
-        //{
-        //    var config = Helpers.GetTestConfiguration();
-        //    var service = new InvoiceService(config);
+        [Fact]
+        public async Task CreateInvoiceItemWhenNull()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new InvoiceService(config);
 
-        //    var ex = await Assert.ThrowsAsync<IOException>(() => service.CreateAsync(null));
-        //}
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(null));
+        }
     }
 }

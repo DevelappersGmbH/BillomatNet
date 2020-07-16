@@ -1,6 +1,7 @@
 ﻿using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -174,6 +175,14 @@ namespace Develappers.BillomatNet
         /// </returns>
         public async Task<Invoice> CreateAsync (Invoice invoice, CancellationToken token = default(CancellationToken))
         {
+            if (invoice == null || invoice.ClientId == 0 || invoice.Quote < 1)
+            {
+                throw new ArgumentException();
+            }
+            if (invoice.Id != 0)
+            {
+                throw new ArgumentException("invalid unit id", nameof(invoice));
+            }
             var wrappedInvoice = new InvoiceWrapper
             {
                 Invoice = invoice.ToApi()

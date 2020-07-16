@@ -1,7 +1,6 @@
-﻿using Develappers.BillomatNet;
-using Develappers.BillomatNet.Queries;
+﻿using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
-using System.IO;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
@@ -206,13 +205,13 @@ namespace Develappers.BillomatNet.Tests
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(unitItem));
         }
 
-        //[Fact]
-        //public async Task CreateUnitItemWhenNull()
-        //{
-        //    var config = Helpers.GetTestConfiguration();
-        //    var service = new UnitService(config);
+        [Fact]
+        public async Task CreateUnitItemWhenNull()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new UnitService(config);
 
-        //    var ex = await Assert.ThrowsAsync<IOException>(() => service.CreateAsync(null));
-        //}
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(null));
+        }
     }
 }
