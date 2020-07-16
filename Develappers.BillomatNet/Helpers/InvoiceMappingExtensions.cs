@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Develappers.BillomatNet.Api;
+using Develappers.BillomatNet.Types;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Types;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
-using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
+using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 using InvoiceTax = Develappers.BillomatNet.Types.InvoiceTax;
 
 namespace Develappers.BillomatNet.Helpers
@@ -401,7 +401,11 @@ namespace Develappers.BillomatNet.Helpers
                     break;
             }
 
-            var paymentTypes = string.Join(",", value.PaymentTypes);
+            var paymentTypes = "";
+            if (value.PaymentTypes != null && value.PaymentTypes.Count != 0)
+            {
+                paymentTypes = string.Join(",", value.PaymentTypes);
+            }
 
             InvoiceItemsWrapper itemsWrapper = null;
             if (value.InvoiceItems != null)
