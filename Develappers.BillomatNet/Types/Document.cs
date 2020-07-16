@@ -2,6 +2,9 @@
 
 namespace Develappers.BillomatNet.Types
 {
+    /// <summary>
+    /// Represents a document.
+    /// </summary>
     public abstract class Document
     {
         public int Id { get; set; }

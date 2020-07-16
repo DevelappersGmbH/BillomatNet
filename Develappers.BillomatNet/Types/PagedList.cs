@@ -2,6 +2,10 @@
 
 namespace Develappers.BillomatNet.Types
 {
+    /// <summary>
+    /// Represents a page of a list.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class PagedList<T>
     {
         public List<T> List { get; set; }

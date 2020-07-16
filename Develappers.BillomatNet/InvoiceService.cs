@@ -20,12 +20,22 @@ namespace Develappers.BillomatNet
         {
         }
 
-
+        /// <summary>
+        /// Retrieves a list of all invoices.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The invoice list or null if not found.</returns>
         public Task<Types.PagedList<Invoice>> GetListAsync(CancellationToken token = default(CancellationToken))
         {
             return GetListAsync(null, token);
         }
 
+        /// <summary>
+        /// Retrieves a list of invoices appropriate to the filter.
+        /// </summary>
+        /// <param name="query">The filter with the property and value</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The invoice list or null if not found.</returns>
         public async Task<Types.PagedList<Invoice>> GetListAsync(Query<Invoice, InvoiceFilter> query, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetListAsync<InvoiceListWrapper>("/api/invoices", QueryString.For(query), token).ConfigureAwait(false);
@@ -39,9 +49,9 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Returns an invoice by it's id. 
+        /// Returns an invoice by it's ID. 
         /// </summary>
-        /// <param name="id">The id of the invoice.</param>
+        /// <param name="id">The ID of the invoice.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The invoice or null if not found.</returns>
         public async Task<Invoice> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
@@ -53,9 +63,11 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Deletes an invoice.
         /// </summary>
-        /// <param name="id">The id of the invoice.</param>
+        /// <param name="id">The ID of the invoice.</param>
         /// <param name="token">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
         public Task DeleteAsync(int id, CancellationToken token = default(CancellationToken))
         {
             return DeleteAsync($"/api/invoices/{id}", token);
@@ -64,9 +76,11 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Cancels an invoice.
         /// </summary>
-        /// <param name="id">The id of the invoice.</param>
+        /// <param name="id">The ID of the invoice.</param>
         /// <param name="token">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
         public Task CancelAsync(int id, CancellationToken token = default(CancellationToken))
         {
             return PutAsync<object>($"/api/invoices/{id}/cancel", null, token);
@@ -75,9 +89,11 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Reverses the cancellation of an invoice.
         /// </summary>
-        /// <param name="id">The id of the invoice.</param>
+        /// <param name="id">The ID of the invoice.</param>
         /// <param name="token">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
         public Task UncancelAsync(int id, CancellationToken token = default(CancellationToken))
         {
             return PutAsync<object>($"/api/invoices/{id}/uncancel", null, token);
@@ -88,7 +104,9 @@ namespace Develappers.BillomatNet
         /// </summary>
         /// <param name="id">The id of the invoice.</param>
         /// <param name="token">The cancellation token.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
         public Task CompleteAsync(int id, CancellationToken token = default(CancellationToken))
         {
             return CompleteInternalAsync(id, null, token);
@@ -97,8 +115,8 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Completes an invoice.
         /// </summary>
-        /// <param name="id">The id of the invoice.</param>
-        /// <param name="templateId">The template id.</param>
+        /// <param name="id">The ID of the invoice.</param>
+        /// <param name="templateId">The template ID.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -120,12 +138,24 @@ namespace Develappers.BillomatNet
             await PutAsync<object, CompleteInvoiceWrapper>($"/api/invoices/{id}/complete", model, token).ConfigureAwait(false);
         }
 
+        /// <summary>
+        /// Retrieves a list of the items (articles) used in the invoice.
+        /// </summary>
+        /// <param name="invoiceId">The ID of the incoice with the items.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The invoice items list or null if not found.</returns>
         public async Task<Types.PagedList<InvoiceItem>> GetItemsAsync(int invoiceId, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetListAsync<InvoiceItemListWrapper>("/api/invoice-items", $"invoice_id={invoiceId}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
+        /// <summary>
+        /// Returns and invoice by it's ID.
+        /// </summary>
+        /// <param name="id">The ID of the invoice.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The invoice or null if not found.</returns>
         public async Task<InvoiceItem> GetItemByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetItemByIdAsync<InvoiceItemWrapper>($"/api/invoice-items/{id}", token).ConfigureAwait(false);
@@ -135,12 +165,12 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates an invoice.
         /// </summary>
-        /// <param name="invoice">The invoice.</param>
-        /// <param name="invoiceItems">The invoice items.</param>
-        /// <param name="token">The token.</param>
+        /// <param name="invoice">The invoice object.</param>
+        /// <param name="invoiceItems">The invoice items (used articles) from the invoice.</param>
+        /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
-        /// The task result contains the id of the newly created invoice.
+        /// The task result returns the newly created invoice with the ID.
         /// </returns>
         public async Task<Invoice> CreateAsync (Invoice invoice, CancellationToken token = default(CancellationToken))
         {
@@ -152,6 +182,7 @@ namespace Develappers.BillomatNet
 
             return result.ToDomain();
         }
+
 
         Task<Invoice> IEntityService<Invoice, InvoiceFilter>.CreateAsync(Invoice model, CancellationToken token = default)
         {

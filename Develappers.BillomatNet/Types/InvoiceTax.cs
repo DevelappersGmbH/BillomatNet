@@ -1,5 +1,8 @@
 ﻿namespace Develappers.BillomatNet.Types
 {
+    /// <summary>
+    /// Represents the tax of an invoice.
+    /// </summary>
     public class InvoiceTax
     {
         public string Name { get; set; }

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Develappers.BillomatNet.Types
 {
+    /// <summary>
+    /// Represents a client.
+    /// </summary>
     public class Client
     {
         public int Id { get; set; }

@@ -5,6 +5,9 @@ using System.Collections.Generic;
 
 namespace Develappers.BillomatNet.Types
 {
+    /// <summary>
+    /// Represents an invoice.
+    /// </summary>
     public class Invoice
     {
         public int Id { get; set; }

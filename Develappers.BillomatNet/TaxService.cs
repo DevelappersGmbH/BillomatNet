@@ -10,6 +10,10 @@ namespace Develappers.BillomatNet
 {
     public class TaxService : ServiceBase, IEntityService<Tax, TaxFilter>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TaxService"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
         public TaxService(Configuration configuration) : base(configuration)
         {
         }
@@ -35,9 +39,9 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Retrieves a tax item by it's id.
+        /// Retrieves a tax item by it's ID.
         /// </summary>
-        /// <param name="id">The id.</param>
+        /// <param name="id">The ID.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -55,6 +59,15 @@ namespace Develappers.BillomatNet
             throw new System.NotImplementedException();
         }
 
+        /// <summary>
+        /// Creates an tax.
+        /// </summary>
+        /// <param name="invoice">The tax object.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the newly created tax with the ID.
+        /// </returns>
         public async Task<Tax> CreateAsync(Tax model, CancellationToken token = default)
         {
             var wrappedModel = new TaxWrapper

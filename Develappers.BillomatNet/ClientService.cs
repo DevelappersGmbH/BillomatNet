@@ -15,10 +15,19 @@ namespace Develappers.BillomatNet
 {
     public class ClientService : ServiceBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientService"/> class.
+        /// </summary>
+        /// <param name="configuration">The configuration.</param>
         public ClientService(Configuration configuration): base(configuration)
         {
         }
 
+        /// <summary>
+        /// Returns all informaitons of your account.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The account data.</returns>
         public async Task<Account> MyselfAsync(CancellationToken token = default(CancellationToken))
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
@@ -27,18 +36,35 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        /// <summary>
+        /// Retrieves a list of all clients.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The client list or null if not found.</returns>
         public Task<Types.PagedList<Client>> GetListAsync(CancellationToken token = default(CancellationToken))
         {
             return GetListAsync(null, token);
         }
 
+        /// <summary>
+        /// Retrieves a list of all contacts from a client.
+        /// </summary>
+        /// <param name="clientId">The ID of the client.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the list of contacts </returns>
         public async Task<Types.PagedList<Contact>> GetContactListAsync(int clientId, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetListAsync<ContactListWrapper>("/api/contacts", $"client_id={clientId}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
-
+        /// <summary>
+        /// Retrieves a list of all clients.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The client list or null if not found.</returns>
         public async Task<Types.PagedList<Client>> GetListAsync(Query<Client, ClientFilter> query, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetListAsync<ClientListWrapper>("/api/clients", QueryString.For(query), token).ConfigureAwait(false);
@@ -46,9 +72,9 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Returns an client by it's id. 
+        /// Returns an client by it's ID. 
         /// </summary>
-        /// <param name="id">The id of the client.</param>
+        /// <param name="id">The ID of the client.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The client or null if not found.</returns>
         /// <exception cref="NotAuthorizedException">Thrown when the client is not accessible.</exception>
@@ -59,9 +85,9 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Returns an contact by it's id. 
+        /// Returns an contact by it's ID. 
         /// </summary>
-        /// <param name="id">The id of the contact.</param>
+        /// <param name="id">The ID of the contact.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The client or null if not found.</returns>
         public async Task<Contact> GetContactByIdAsync(int id, CancellationToken token = default(CancellationToken))

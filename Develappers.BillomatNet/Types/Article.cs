@@ -2,6 +2,9 @@
 
 namespace Develappers.BillomatNet.Types
 {
+    /// <summary>
+    /// Represents an article.
+    /// </summary>
     public class Article
     {
         public int Id { get; set; }

@@ -5,6 +5,13 @@ namespace Develappers.BillomatNet.Helpers
 {
     internal static class MappingHelpers
     {
+        /// <summary>
+        /// Converts the PaymentType enum to string
+        /// </summary>
+        /// <param name="value">The enum</param>
+        /// <returns>
+        /// The string or an exception if the value doesn't match any case
+        /// </returns>
         public static string ToApiValue(PaymentType value)
         {
             switch (value)
@@ -20,6 +27,13 @@ namespace Develappers.BillomatNet.Helpers
             }
         }
 
+        /// <summary>
+        /// Converts the InvoiceStatus enum to string
+        /// </summary>
+        /// <param name="value">The enum</param>
+        /// <returns>
+        /// The string or an exception if the value doesn't match any case
+        /// </returns>
         public static string ToApiValue(InvoiceStatus value)
         {
             switch (value)
@@ -39,6 +53,11 @@ namespace Develappers.BillomatNet.Helpers
             }
         }
 
+        /// <summary>
+        /// Converts the string to PropertyType enum
+        /// </summary>
+        /// <param name="value">The string</param>
+        /// <returns>The enum</returns>
         public static PropertyType ParsePropertyType(string value)
         {
             switch (value)
@@ -52,6 +71,12 @@ namespace Develappers.BillomatNet.Helpers
             }
         }
 
+        /// <summary>
+        /// Checks the PropertyType enum and returns if checked or not.
+        /// </summary>
+        /// <param name="type">The enum</param>
+        /// <param name="value">The string</param>
+        /// <returns>The object boolean</returns>
         public static object ParsePropertyValue(PropertyType type, string value)
         {
             if (type == PropertyType.Checkbox)

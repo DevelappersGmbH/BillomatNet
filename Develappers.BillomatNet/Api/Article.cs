@@ -2,6 +2,9 @@
 
 namespace Develappers.BillomatNet.Api
 {
+    /// <summary>
+    /// Represents an article.
+    /// </summary>
     internal class Article
     {
         [JsonProperty("id")]
