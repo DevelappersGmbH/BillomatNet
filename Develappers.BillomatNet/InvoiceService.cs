@@ -2,13 +2,11 @@
 using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
 using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
-using System.Globalization;
 
 namespace Develappers.BillomatNet
 {
@@ -176,7 +174,7 @@ namespace Develappers.BillomatNet
         /// </returns>
         public async Task<Invoice> CreateAsync (Invoice invoice, CancellationToken token = default(CancellationToken))
         {
-            if (invoice == null || invoice.ClientId == 0 || invoice.Quote < 1 || invoice.Date == null)
+            if (invoice == null || invoice.ClientId == 0 || invoice.Quote < 1 || invoice.Date == DateTime.MinValue)
             {
                 throw new ArgumentException();
             }
