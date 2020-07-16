@@ -110,7 +110,6 @@ namespace Develappers.BillomatNet
             {
                 throw new ArgumentException("invalid unit id", nameof(model));
             }
-
             var wrappedModel = new TaxWrapper
             {
                 Tax = model.ToApi()
