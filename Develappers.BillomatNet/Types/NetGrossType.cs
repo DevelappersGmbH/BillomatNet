@@ -3,7 +3,7 @@
 namespace Develappers.BillomatNet.Types
 {
     /// <summary>
-    /// The type of an article.
+    /// The tax type of an article.
     /// </summary>
     public enum NetGrossType
     {
