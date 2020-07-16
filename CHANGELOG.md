@@ -26,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 - write operations throw NotFoundException when the entity was not found
+- validation check on create
 
 ### Removed
 - nothing
