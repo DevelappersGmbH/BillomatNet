@@ -45,6 +45,31 @@ namespace Develappers.BillomatNet.Tests
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(1));
         }
 
+        [Fact]
+        public async Task DeleteTaxItem()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new TaxService(config);
+
+            #region Initializing to create
+            var name = "xUnit Test";
+
+            var taxItem = new Tax
+            {
+                Name = name,
+                Rate = 1.0f,
+                IsDefault = false
+            };
+            #endregion
+
+            var result = await service.CreateAsync(taxItem);
+            Assert.Equal(name, result.Name);
+
+            await service.DeleteAsync(result.Id);
+            var result2 = await service.GetByIdAsync(result.Id);
+            Assert.Null(result2);
+        }
+
         //[Fact]
         //public async Task CreateTaxItem()
         //{
