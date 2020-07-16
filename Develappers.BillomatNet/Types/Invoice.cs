@@ -25,7 +25,7 @@ namespace Develappers.BillomatNet.Types
         public string NumberPre { get; set; }
         public int NumberLength { get; set; }
         public string Title { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
         public ISupplyDate SupplyDate { get; set; }
         public SupplyDateType? SupplyDateType { get; set; }
         public DateTime DueDate { get; set; }
