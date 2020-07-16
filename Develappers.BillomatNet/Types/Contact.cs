@@ -2,6 +2,9 @@
 
 namespace Develappers.BillomatNet.Types
 {
+    /// <summary>
+    /// Represents a contact
+    /// </summary>
     public class Contact
     {
         public int Id { get; set; }

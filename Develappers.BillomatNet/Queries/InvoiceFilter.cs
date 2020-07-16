@@ -4,6 +4,9 @@ using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Queries
 {
+    /// <summary>
+    /// Represents the filter for the invoice.
+    /// </summary>
     public class InvoiceFilter
     {
         public int? ClientId { get; set; }

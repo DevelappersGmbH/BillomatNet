@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Develappers.BillomatNet.Types
 {
+    /// <summary>
+    /// Represents a client.
+    /// </summary>
     public class Client
     {
         public int Id { get; set; }
@@ -72,5 +75,6 @@ namespace Develappers.BillomatNet.Types
         public string BankIban { get; set; }
 
         public string CurrencyCode { get; set; }
+        public NetGrossSettingsType NetGross { get; set; }
     }
 }

@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>0.1.3</Version>
+    <Version>0.1.4-alpha</Version>
     <Authors>Develappers GmbH</Authors>
     <Company>Develappers GmbH</Company>
     <Description>A C# client to access Billomat.</Description>
@@ -15,7 +15,7 @@
     <PackageTags>billomat invoice accounting</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>0.1.3.0</AssemblyVersion>
+    <AssemblyVersion>0.1.4.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -4,7 +4,8 @@ using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Api
 {
-    internal class ClientList : PagedList<Client>{
+    internal class ClientList : PagedList<Client>
+    {
         [JsonProperty("client")]
         [JsonConverter(typeof(CollectionConverter<Client>))]
         public override List<Client> List { get; set; }

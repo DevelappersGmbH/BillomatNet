@@ -1,5 +1,8 @@
 ﻿namespace Develappers.BillomatNet.Types
 {
+    /// <summary>
+    /// Represents and article property.
+    /// </summary>
     public class ArticleProperty
     {
         public int Id { get; set; }

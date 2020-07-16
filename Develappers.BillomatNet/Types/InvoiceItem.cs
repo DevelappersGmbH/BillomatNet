@@ -1,5 +1,8 @@
 ﻿namespace Develappers.BillomatNet.Types
 {
+    /// <summary>
+    /// Represents an invoice item
+    /// </summary>
     public class InvoiceItem
     {
         public int Id  { get; set; }

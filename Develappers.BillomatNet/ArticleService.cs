@@ -62,9 +62,9 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Returns an article by it's id. 
+        /// Returns an article by it's ID. 
         /// </summary>
-        /// <param name="id">The id of the article.</param>
+        /// <param name="id">The ID of the article.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The article or null if not found.</returns>
         public async Task<Article> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))

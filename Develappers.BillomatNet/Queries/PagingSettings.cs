@@ -1,5 +1,8 @@
 ﻿namespace Develappers.BillomatNet.Queries
 {
+    /// <summary>
+    /// Represents the page settings.
+    /// </summary>
     public class PagingSettings
     {
         public PagingSettings()

@@ -29,6 +29,11 @@ namespace Develappers.BillomatNet.Helpers
             return memberExpr;
         }
 
+        /// <summary>
+        /// Gets the attribute of a property.
+        /// </summary>
+        /// <param name="propertyExpression">The property.</param>
+        /// <returns>The property informations.</returns>
         public static PropertyInfo GetPropertyInfo(Expression propertyExpression)
         {
             return GetMemberExpression(propertyExpression).Member as PropertyInfo;
