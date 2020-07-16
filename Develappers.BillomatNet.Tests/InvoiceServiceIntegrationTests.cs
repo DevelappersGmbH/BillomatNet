@@ -293,29 +293,16 @@ namespace Develappers.BillomatNet.Tests
             var inv = new Invoice
             {
                 ClientId = cl.Id,
-                Address = cl.Address,
-                //Title = "",
-                Date = DateTime.Now.Date,
-                DueDate = DateTime.Now.Date.AddDays(14),
-                DueDays = 20,
-                SupplyDate = new DateSupplyDate(),
+                //Date = DateTime.Now.Date,
                 Label = title,
-                //Intro = "Hiermit stellen wir Ihnen die folgenden Positionen in Rechnung.",
-                //Note = "Netto K/P Programm Test",
-                CurrencyCode = "EUR",
-                NetGross = NetGrossType.Net,
-                Reduction = new AbsoluteReduction { Value = 0 },
-                DiscountRate = 0f,
-                DiscountDate = DateTime.Now.Date.AddDays(0),
-                PaymentTypes = new List<string>(),
                 Quote = 1,
                 InvoiceItems = invoiceItemList
             };
             #endregion
 
             var result = await service.CreateAsync(inv);
-
-            Assert.Equal(title, result.Label);
+            var getInvItem = await service.GetByIdAsync(result.Id);
+            Assert.NotNull(getInvItem);
             await service.DeleteAsync(result.Id);
         }
 
