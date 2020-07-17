@@ -177,35 +177,5 @@ namespace Develappers.BillomatNet.Helpers
                 List = value.List?.Select(x => x.ToDomain()).ToList()
             };
         }
-
-        internal static Api.Article ToApi(this Article value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-            return new Api.Article
-            {
-                Id = value.Id.ToString(),
-                Created = value.Created.ToApiDate(),
-                ArticleNumber = value.ArticleNumber,
-                CurrencyCode = value.CurrencyCode,
-                Description = value.Description,
-                Number = value.Number.ToString(),
-                NumberLength = value.NumberLength,
-                NumberPre = value.NumberPre,
-                PurchasePrice = value.PurchasePrice.ToCultureString(),
-                PurchasePriceNetGross = value.PurchasePriceNetGross,
-                SalesPrice = value.SalesPrice.ToCultureString(),
-                SalesPrice2 = value.SalesPrice2.ToCultureString(),
-                SalesPrice3 = value.SalesPrice3.ToCultureString(),
-                SalesPrice4 = value.SalesPrice4.ToCultureString(),
-                SalesPrice5 = value.SalesPrice5.ToCultureString(),
-                SupplierId = value.SupplierId.ToString(),
-                TaxId = value.TaxId.ToString(),
-                Title = value.Title,
-                UnitId = value.UnitId.ToString()
-            };
-        }
     }
 }
