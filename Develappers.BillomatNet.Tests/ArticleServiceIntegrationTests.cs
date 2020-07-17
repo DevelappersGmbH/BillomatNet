@@ -116,7 +116,7 @@ namespace Develappers.BillomatNet.Tests
         //        SalesPrice = 3.5f,
         //        UnitId = 20573,
         //        TaxId = 21281,
-        //        PurchasePrice = 3.0f
+        //        PurchasePrice = 3.4f
         //    };
 
         //    var createResult = await service.CreateAsync(articleItem);

@@ -129,7 +129,7 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates an article.
         /// </summary>
-        /// <param name="unit">The article to create.</param>
+        /// <param name="model">The article to create.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -142,11 +142,11 @@ namespace Develappers.BillomatNet
         {
             if (model == null)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("article or a value of the article is null", nameof(model));
             }
             if (model.Id != 0)
             {
-                throw new ArgumentException("invalid unit id", nameof(model));
+                throw new ArgumentException("invalid article id", nameof(model));
             }
 
             var wrappedModel = new ArticleWrapper
