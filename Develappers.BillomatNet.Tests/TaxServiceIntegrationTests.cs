@@ -70,24 +70,43 @@ namespace Develappers.BillomatNet.Tests
             Assert.Null(result2);
         }
 
-        //[Fact]
-        //public async Task CreateTaxItem()
-        //{
-        //    var config = Helpers.GetTestConfiguration();
-        //    var service = new TaxService(config);
+        [Fact]
+        public async Task DeleteTaxItemNotExisting()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new TaxService(config);
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(21285));
+        }
 
-        //    var name = "xUnit Test";
+        [Fact]
+        public async Task DeleteTaxItemNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new TaxService(config);
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.DeleteAsync(21285));
+        }
 
-        //    var taxItem = new Tax
-        //    {
-        //        Name = name,
-        //        Rate = 1.0f,
-        //        IsDefault = false
-        //    };
+        [Fact]
+        public async Task CreateTaxItem()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new TaxService(config);
 
-        //    var result = await service.CreateAsync(taxItem);
-        //    Assert.Equal(name, result.Name);
-        //}
+            var name = "xUnit Test";
+
+            var taxItem = new Tax
+            {
+                Name = name,
+                Rate = 1.0f,
+                IsDefault = false
+            };
+
+            var result = await service.CreateAsync(taxItem);
+            Assert.Equal(name, result.Name);
+
+            await service.DeleteAsync(result.Id);
+        }
 
         [Fact]
         public async Task CreateTaxItemWhenNotAuthorized()
@@ -118,35 +137,35 @@ namespace Develappers.BillomatNet.Tests
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(tax));
         }
 
-        //[Fact]
-        //public async Task EditTaxItem()
-        //{
-        //    var config = Helpers.GetTestConfiguration();
-        //    var service = new TaxService(config);
+        [Fact]
+        public async Task EditTaxItem()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new TaxService(config);
 
-        //    var name = "xUnit test";
+            var name = "xUnit test";
 
-        //    var taxItem = new Tax
-        //    {
-        //        Name = name
-        //    };
+            var taxItem = new Tax
+            {
+                Name = name
+            };
 
-        //    var result = await service.CreateAsync(taxItem);
+            var result = await service.CreateAsync(taxItem);
 
-        //    Assert.Equal(name, result.Name);
+            Assert.Equal(name, result.Name);
 
-        //    var newName = "xUnit test edited";
+            var newName = "xUnit test edited";
 
-        //    var editedTaxItem = new Tax
-        //    {
-        //        Id = result.Id,
-        //        Name = newName
-        //    };
+            var editedTaxItem = new Tax
+            {
+                Id = result.Id,
+                Name = newName
+            };
 
-        //    var editedResult = await service.EditAsync(editedTaxItem);
-        //    Assert.Equal(newName, editedTaxItem.Name);
+            var editedResult = await service.EditAsync(editedTaxItem);
+            Assert.Equal(newName, editedTaxItem.Name);
 
-        //    //await service.DeleteAsync(editUnitItem.Id);
-        //}
+            await service.DeleteAsync(editedResult.Id);
+        }
     }
 }
