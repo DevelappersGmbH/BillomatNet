@@ -105,6 +105,110 @@ namespace Develappers.BillomatNet.Tests
         }
 
         //[Fact]
+        //public async Task EditArticleItem()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+        //    var service = new ArticleService(config);
+
+        //    var title = "xUnit test";
+
+        //    var articleItem = new Article
+        //    {
+        //        Title = title,
+        //        SalesPrice = 3.5f,
+        //        UnitId = 20573,
+        //        TaxId = 21281,
+        //        PurchasePrice = 3.4f
+        //    };
+
+        //    var result = await service.CreateAsync(articleItem);
+        //    Assert.Equal(title, result.Title);
+
+        //    var newTitle = "xUnit test edited";
+
+        //    var editedArticleItem = new Article
+        //    {
+        //        Id = result.Id,
+        //        Title = newTitle,
+        //        SalesPrice = result.SalesPrice,
+        //        UnitId = result.UnitId,
+        //        TaxId = result.TaxId,
+        //        PurchasePrice = result.PurchasePrice
+        //    };
+
+        //    var editedResult = await service.EditAsync(editedArticleItem);
+        //    Assert.Equal(newTitle, editedArticleItem.Title);
+
+        //    //await service.DeleteAsync(editedArticleItem.Id);
+        //}
+
+        //[Fact]
+        //public async Task EditArticleItemWhenArgumentException()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+        //    var service = new ArticleService(config);
+
+        //    var title = "xUnit test";
+
+        //    var articleItem = new Article
+        //    {
+        //        Title = title,
+        //        SalesPrice = 3.5f,
+        //        UnitId = 20573,
+        //        TaxId = 21281,
+        //        PurchasePrice = 3.4f
+        //    };
+
+        //    var result = await service.CreateAsync(articleItem);
+        //    Assert.Equal(title, result.Title);
+
+        //    var newTitle = "xUnit test edited";
+
+        //    var editedArticleItem = new Article
+        //    {
+        //        Id = 0,
+        //        Title = newTitle,
+        //        SalesPrice = result.SalesPrice,
+        //        UnitId = result.UnitId,
+        //        TaxId = result.TaxId,
+        //        PurchasePrice = result.PurchasePrice
+        //    };
+
+        //    var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.EditAsync(editedArticleItem));
+
+        //    //await service.DeleteAsync(result.Id);
+        //}
+
+        [Fact]
+        public async Task EditArticleItemWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var editedArticleItem = new Article
+            {
+                Id = 29380,
+            };
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.EditAsync(editedArticleItem));
+        }
+
+        [Fact]
+        public async Task EditArticleItemWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var editedArticleItem = new Article
+            {
+                Id = 1,
+            };
+
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.EditAsync(editedArticleItem));
+        }
+
+        //[Fact]
         //public async Task CreateArticleItem()
         //{
         //    var config = Helpers.GetTestConfiguration();
