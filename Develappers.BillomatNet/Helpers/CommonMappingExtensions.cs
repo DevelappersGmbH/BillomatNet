@@ -129,6 +129,14 @@ namespace Develappers.BillomatNet.Helpers
                 Name = value.Name
             };
         }
-       
+
+        internal static string ToCultureString(this float? value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+            return float.Parse(value.ToString()).ToString(CultureInfo.InvariantCulture);
+        }
     }
 }
