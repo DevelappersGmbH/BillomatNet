@@ -207,34 +207,19 @@ namespace Develappers.BillomatNet.Helpers
                 Title = value.Title,
                 UnitId = value.UnitId.ToString()
             };
+        }
             
-            internal static Api.ArticleProperty ToApi (this ArticleProperty value)
+        internal static Api.ArticleProperty ToApi (this ArticleProperty value)
+        {
+            return new Api.ArticleProperty
             {
-	            var type = "";
-	            switch (value.Type)
-	            {
-	                case Types.PropertyType.Textfield:
-	                    type = "TEXTFIELD";
-	                    break;
-	                case Types.PropertyType.Textarea:
-	                    type = "TEXTAREA";
-	                    break;
-	                case Types.PropertyType.Checkbox:
-	                    type = "CHECKBOX";
-	                    break;
-	                default:
-	                    break;
-	            }
-	
-	            return new Api.ArticleProperty
-	            {
-	                Id = value.Id,
-	                ArticleId = value.ArticleId,
-	                ArticlePropertyId = value.ArticlePropertyId,
-	                Type = type,
-	                Name = value.Name,
-	                Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
-	            };
+                Id = value.Id,
+                ArticleId = value.ArticleId,
+                ArticlePropertyId = value.ArticlePropertyId,
+                Type = MappingHelpers.PropertyTypeToString(value.Type),
+                Name = value.Name,
+                Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
+            };
         }
     }
 }

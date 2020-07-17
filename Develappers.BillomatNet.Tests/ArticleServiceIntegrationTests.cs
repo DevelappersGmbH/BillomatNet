@@ -368,7 +368,6 @@ namespace Develappers.BillomatNet.Tests
         }
         [Fact]
         public async Task EditArticlePropertyWhenNotAuthorized()
-
         {
             var config = Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
@@ -388,6 +387,10 @@ namespace Develappers.BillomatNet.Tests
 
         [Fact]
         public async Task EditArticlePropertyWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
             var value = "xUnit test";
 
             var articlePropItem = new ArticleProperty
@@ -398,6 +401,6 @@ namespace Develappers.BillomatNet.Tests
             };
 
             var result = await Assert.ThrowsAsync<ArgumentException>(() => service.EditArticlePropertyAsync(articlePropItem));
-		}
+        }
     }
 }
