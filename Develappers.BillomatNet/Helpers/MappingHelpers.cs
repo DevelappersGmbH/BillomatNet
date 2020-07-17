@@ -89,15 +89,23 @@ namespace Develappers.BillomatNet.Helpers
 
         public static string ParsePropertyValue(PropertyType type, object value)
         {
-            //if (type == PropertyType.Checkbox)
-            //{
-            //    var b = (bool)value;
-            //    if (b)
-            //    {
-            //        return "1";
-            //    }
-            //    return "0";
-            //}
+            if (type == PropertyType.Checkbox)
+            {
+                try
+                {
+                    var b = (bool)value;
+                    if (b)
+                    {
+                        return "1";
+                    }
+                    return "0";
+                }
+                catch (InvalidCastException)
+                {
+
+                    return "0";
+                }
+            }
             return (string)value;
         }
     }
