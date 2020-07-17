@@ -125,5 +125,65 @@ namespace Develappers.BillomatNet
             var jsonModel = await GetItemByIdAsync<ArticleTagWrapper>($"/api/article-tags/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
+
+
+        /// <summary>
+        /// Updates the specified article.
+        /// </summary>
+        /// <param name="model">The article.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the updated article.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Article> EditAsync(Article model, CancellationToken token = default)
+        {
+            if (model.Id <= 0)
+            {
+                throw new ArgumentException("invalid article id", nameof(model));
+            }
+
+            var wrappedModel = new ArticleWrapper
+            {
+                Article = model.ToApi()
+            };
+
+            var jsonModel = await PutAsync($"/api/articles/{model.Id}", wrappedModel, token);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Creates an article.
+        /// </summary>
+        /// <param name="model">The article to create.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new article.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Article> CreateAsync(Article model, CancellationToken token = default)
+        {
+            if (model == null)
+            {
+                throw new ArgumentException("article or a value of the article is null", nameof(model));
+            }
+            if (model.Id != 0)
+            {
+                throw new ArgumentException("invalid article id", nameof(model));
+            }
+
+            var wrappedModel = new ArticleWrapper
+            {
+                Article = model.ToApi()
+            };
+            var jsonModel = await PostAsync("/api/articles", wrappedModel, token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
     }
 }

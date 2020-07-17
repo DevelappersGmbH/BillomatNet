@@ -53,10 +53,22 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        Task IEntityService<Tax, TaxFilter>.DeleteAsync(int id, CancellationToken token = default)
+        /// <summary>
+        /// Deletes the tax with the given ID.
+        /// </summary>
+        /// <param name="id">The ID.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>A task that represents the asynchronous operation.</returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeleteAsync(int id, CancellationToken token = default)
         {
-            // TODO: implement implicitly and make public
-            throw new System.NotImplementedException();
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid tax id", nameof(id));
+            }
+            return DeleteAsync($"/api/taxes/{id}", token);
         }
 
         /// <summary>
@@ -88,10 +100,35 @@ namespace Develappers.BillomatNet
             return result.ToDomain();
         }
 
-        Task<Tax> IEntityService<Tax, TaxFilter>.EditAsync(Tax model, CancellationToken token = default)
+        /// <summary>
+        /// Updats the specified tax.
+        /// </summary>
+        /// <param name="model">The tax.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the updated tax.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Tax> EditAsync(Tax model, CancellationToken token = default)
         {
-            // TODO: implement implicitly and make public
-            throw new System.NotImplementedException();
+            if (model == null || model.Name == "" || model.Name == null)
+            {
+                throw new ArgumentException();
+            }
+            if (model.Id <= 0)
+            {
+                throw new ArgumentException("invalid unit id", nameof(model));
+            }
+            var wrappedModel = new TaxWrapper
+            {
+                Tax = model.ToApi()
+            };
+            var jsonModel = await PutAsync($"/api/taxes/{model.Id}", wrappedModel, token);
+
+            return jsonModel.ToDomain();
         }
     }
 }
