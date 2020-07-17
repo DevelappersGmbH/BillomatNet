@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
+using Newtonsoft.Json.Schema;
 using Article = Develappers.BillomatNet.Types.Article;
 using ArticleProperty = Develappers.BillomatNet.Types.ArticleProperty;
 using ArticleTag = Develappers.BillomatNet.Types.ArticleTag;
@@ -175,6 +176,40 @@ namespace Develappers.BillomatNet.Helpers
                 ItemsPerPage = value.PerPage,
                 TotalItems = value.Total,
                 List = value.List?.Select(x => x.ToDomain()).ToList()
+            };
+        }
+
+        internal static Api.ArticleProperty ToApi (this ArticleProperty value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var type = "";
+            switch (value.Type)
+            {
+                case Types.PropertyType.Textfield:
+                    type = "TEXTFIELD";
+                    break;
+                case Types.PropertyType.Textarea:
+                    type = "TEXTAREA";
+                    break;
+                case Types.PropertyType.Checkbox:
+                    type = "CHECKBOX";
+                    break;
+                default:
+                    break;
+            }
+
+            return new Api.ArticleProperty
+            {
+                Id = value.Id,
+                ArticleId = value.ArticleId,
+                ArticlePropertyId = value.ArticlePropertyId,
+                Type = type,
+                Name = value.Name,
+                Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
             };
         }
     }

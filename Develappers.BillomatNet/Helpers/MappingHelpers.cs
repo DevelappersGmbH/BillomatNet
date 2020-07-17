@@ -86,5 +86,19 @@ namespace Develappers.BillomatNet.Helpers
 
             return value;
         }
+
+        public static string ParsePropertyValue(PropertyType type, object value)
+        {
+            //if (type == PropertyType.Checkbox)
+            //{
+            //    var b = (bool)value;
+            //    if (b)
+            //    {
+            //        return "1";
+            //    }
+            //    return "0";
+            //}
+            return (string)value;
+        }
     }
 }
