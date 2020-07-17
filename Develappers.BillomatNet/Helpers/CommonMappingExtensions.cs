@@ -130,13 +130,13 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
-        internal static string ToCultureString(this float? value)
+        internal static string ToInvariantString(this float? value)
         {
             if (value == null)
             {
                 return null;
             }
-            return float.Parse(value.ToString()).ToString(CultureInfo.InvariantCulture);
+            return value.Value.ToString(CultureInfo.InvariantCulture);
         }
     }
 }
