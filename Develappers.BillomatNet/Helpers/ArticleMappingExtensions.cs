@@ -179,38 +179,62 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
-        internal static Api.ArticleProperty ToApi (this ArticleProperty value)
+        internal static Api.Article ToApi(this Article value)
         {
             if (value == null)
             {
                 return null;
             }
-
-            var type = "";
-            switch (value.Type)
+            return new Api.Article
             {
-                case Types.PropertyType.Textfield:
-                    type = "TEXTFIELD";
-                    break;
-                case Types.PropertyType.Textarea:
-                    type = "TEXTAREA";
-                    break;
-                case Types.PropertyType.Checkbox:
-                    type = "CHECKBOX";
-                    break;
-                default:
-                    break;
-            }
-
-            return new Api.ArticleProperty
-            {
-                Id = value.Id,
-                ArticleId = value.ArticleId,
-                ArticlePropertyId = value.ArticlePropertyId,
-                Type = type,
-                Name = value.Name,
-                Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
+                Id = value.Id.ToString(),
+                Created = value.Created.ToApiDate(),
+                ArticleNumber = value.ArticleNumber,
+                CurrencyCode = value.CurrencyCode,
+                Description = value.Description,
+                Number = value.Number.ToString(),
+                NumberLength = value.NumberLength,
+                NumberPre = value.NumberPre,
+                PurchasePrice = value.PurchasePrice.ToCultureString(),
+                PurchasePriceNetGross = value.PurchasePriceNetGross,
+                SalesPrice = value.SalesPrice.ToCultureString(),
+                SalesPrice2 = value.SalesPrice2.ToCultureString(),
+                SalesPrice3 = value.SalesPrice3.ToCultureString(),
+                SalesPrice4 = value.SalesPrice4.ToCultureString(),
+                SalesPrice5 = value.SalesPrice5.ToCultureString(),
+                SupplierId = value.SupplierId.ToString(),
+                TaxId = value.TaxId.ToString(),
+                Title = value.Title,
+                UnitId = value.UnitId.ToString()
             };
+            
+            internal static Api.ArticleProperty ToApi (this ArticleProperty value)
+            {
+	            var type = "";
+	            switch (value.Type)
+	            {
+	                case Types.PropertyType.Textfield:
+	                    type = "TEXTFIELD";
+	                    break;
+	                case Types.PropertyType.Textarea:
+	                    type = "TEXTAREA";
+	                    break;
+	                case Types.PropertyType.Checkbox:
+	                    type = "CHECKBOX";
+	                    break;
+	                default:
+	                    break;
+	            }
+	
+	            return new Api.ArticleProperty
+	            {
+	                Id = value.Id,
+	                ArticleId = value.ArticleId,
+	                ArticlePropertyId = value.ArticlePropertyId,
+	                Type = type,
+	                Name = value.Name,
+	                Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
+	            };
         }
     }
 }

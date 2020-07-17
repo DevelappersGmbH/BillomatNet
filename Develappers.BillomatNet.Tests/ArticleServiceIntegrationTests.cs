@@ -105,6 +105,213 @@ namespace Develappers.BillomatNet.Tests
             Assert.True(true);
         }
 
+        [Fact]
+        public async Task DeleteArticleItem()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var title = "xUnit test";
+
+            var articleItem = new Article
+            {
+                Title = title,
+                SalesPrice = 3.5f,
+                UnitId = 20573,
+                TaxId = 21281,
+                PurchasePrice = 3.4f
+            };
+            var result = await service.CreateAsync(articleItem);
+            Assert.Equal(title, result.Title);
+
+            await service.DeleteAsync(result.Id);
+            var delResult = await service.GetByIdAsync(result.Id);
+
+            Assert.Null(delResult);
+        }
+
+        [Fact]
+        public async Task DeleteArticleItemWhenArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteAsync(0));
+        }
+
+        [Fact]
+        public async Task DeleteArticleItemWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.DeleteAsync(198532));
+        }
+
+        [Fact]
+        public async Task DeleteArticleItemWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(1));
+        }
+
+        [Fact]
+        public async Task EditArticleItem()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var title = "xUnit test";
+
+            var articleItem = new Article
+            {
+                Title = title,
+                SalesPrice = 3.5f,
+                UnitId = 20573,
+                TaxId = 21281,
+                PurchasePrice = 3.4f
+            };
+
+            var result = await service.CreateAsync(articleItem);
+            Assert.Equal(title, result.Title);
+
+            var newTitle = "xUnit test edited";
+
+            var editedArticleItem = new Article
+            {
+                Id = result.Id,
+                Title = newTitle,
+                SalesPrice = result.SalesPrice,
+                UnitId = result.UnitId,
+                TaxId = result.TaxId,
+                PurchasePrice = result.PurchasePrice
+            };
+
+            var editedResult = await service.EditAsync(editedArticleItem);
+            Assert.Equal(newTitle, editedArticleItem.Title);
+
+            await service.DeleteAsync(editedArticleItem.Id);
+        }
+
+        [Fact]
+        public async Task EditArticleItemWhenArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var title = "xUnit test";
+
+            var articleItem = new Article
+            {
+                Title = title,
+                SalesPrice = 3.5f,
+                UnitId = 20573,
+                TaxId = 21281,
+                PurchasePrice = 3.4f
+            };
+
+            var result = await service.CreateAsync(articleItem);
+            Assert.Equal(title, result.Title);
+
+            var newTitle = "xUnit test edited";
+
+            var editedArticleItem = new Article
+            {
+                Id = 0,
+                Title = newTitle,
+                SalesPrice = result.SalesPrice,
+                UnitId = result.UnitId,
+                TaxId = result.TaxId,
+                PurchasePrice = result.PurchasePrice
+            };
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.EditAsync(editedArticleItem));
+
+            await service.DeleteAsync(result.Id);
+        }
+
+        [Fact]
+        public async Task EditArticleItemWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var editedArticleItem = new Article
+            {
+                Id = 29380,
+            };
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.EditAsync(editedArticleItem));
+        }
+
+        [Fact]
+        public async Task EditArticleItemWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var editedArticleItem = new Article
+            {
+                Id = 1,
+            };
+
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.EditAsync(editedArticleItem));
+        }
+
+        [Fact]
+        public async Task CreateArticleItem()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var articleItem = new Article
+            {
+                Title = "xUnit test",
+                SalesPrice = 3.5f,
+                UnitId = 20573,
+                TaxId = 21281,
+                PurchasePrice = 3.4f
+            };
+
+            var createResult = await service.CreateAsync(articleItem);
+            var getResult = await service.GetByIdAsync(createResult.Id);
+            Assert.NotNull(getResult);
+
+            await service.DeleteAsync(getResult.Id);
+        }
+
+        [Fact]
+        public async Task CreateArticleItemWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var articleItem = new Article
+            {
+                Title = "xUnit test",
+                SalesPrice = 3.5f,
+                UnitId = 20573,
+                TaxId = 21281,
+                PurchasePrice = 3.0f
+            };
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() =>service.CreateAsync(articleItem));
+        }
+
+        [Fact]
+        public async Task CreateArticleItemWhenNull()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(null));
+        }
+        
         //[Fact]
         //public async Task EditArticlePropertyCheckbox()
         //{
@@ -161,6 +368,7 @@ namespace Develappers.BillomatNet.Tests
         }
         [Fact]
         public async Task EditArticlePropertyWhenNotAuthorized()
+
         {
             var config = Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
@@ -180,10 +388,6 @@ namespace Develappers.BillomatNet.Tests
 
         [Fact]
         public async Task EditArticlePropertyWhenNotFound()
-        {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ArticleService(config);
-
             var value = "xUnit test";
 
             var articlePropItem = new ArticleProperty
@@ -194,6 +398,6 @@ namespace Develappers.BillomatNet.Tests
             };
 
             var result = await Assert.ThrowsAsync<ArgumentException>(() => service.EditArticlePropertyAsync(articlePropItem));
-        }
+		}
     }
 }
