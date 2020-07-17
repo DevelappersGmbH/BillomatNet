@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
+using FakeItEasy.Configuration;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests
@@ -309,6 +310,97 @@ namespace Develappers.BillomatNet.Tests
             var service = new ArticleService(config);
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(null));
+        }
+        
+        //[Fact]
+        //public async Task EditArticlePropertyCheckbox()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+        //    var service = new ArticleService(config);
+
+        //    var value = "1";
+
+        //    var articlePropItem = new ArticleProperty
+        //    {
+        //        ArticleId = 197391,
+        //        ArticlePropertyId = 2490,
+        //        Value = value
+        //    };
+
+        //    var result = await service.EditArticlePropertyAsync(articlePropItem);
+        //    Assert.True((bool)result.Value);
+        //}
+
+        //[Fact]
+        //public async Task EditArticlePropertyText()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+        //    var service = new ArticleService(config);
+
+        //    var value = "xUnit test";
+
+        //    var articlePropItem = new ArticleProperty
+        //    {
+        //        ArticleId = 197391,
+        //        ArticlePropertyId = 2442,
+        //        Value = value
+        //    };
+
+        //    var result = await service.EditArticlePropertyAsync(articlePropItem);
+        //    Assert.Equal(value, result.Value);
+        //}
+
+        [Fact]
+        public async Task EditArticlePropertyWhenArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var value = "xUnit test";
+
+            var articlePropItem = new ArticleProperty
+            {
+                ArticleId = 197391,
+                Value = value
+            };
+
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => service.EditArticlePropertyAsync(articlePropItem));
+        }
+        [Fact]
+        public async Task EditArticlePropertyWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var value = "xUnit test";
+
+            var articlePropItem = new ArticleProperty
+            {
+                ArticleId = 197391,
+                ArticlePropertyId = 2442,
+                Value = value
+            };
+
+            var result = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.EditArticlePropertyAsync(articlePropItem));
+        }
+
+        [Fact]
+        public async Task EditArticlePropertyWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var value = "xUnit test";
+
+            var articlePropItem = new ArticleProperty
+            {
+                ArticleId = 197395,
+                ArticlePropertyId = 3250,
+                Value = value
+            };
+
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => service.EditArticlePropertyAsync(articlePropItem));
         }
     }
 }

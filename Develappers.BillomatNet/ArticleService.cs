@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
@@ -204,5 +205,41 @@ namespace Develappers.BillomatNet
             var jsonModel = await PostAsync("/api/articles", wrappedModel, token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
+        
+        /// <summary>
+        /// Creates / Edits an article property.
+        /// </summary>
+        /// <param name="model">The article property.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new article property.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<ArticleProperty> EditArticlePropertyAsync(ArticleProperty model, CancellationToken token = default)
+        {
+            if (model == null || model.ArticleId <= 0 || model.ArticlePropertyId <= 0 || model.Value == null || model.Type == null)
+            {
+                throw new ArgumentException("any parameter was not set", nameof(model));
+            }
+
+            var wrappedModel = new ArticlePropertyWrapper
+            {
+                ArticleProperty = model.ToApi()
+            };
+            try
+            {
+                var jsonModel = await PostAsync("/api/article-property-values", wrappedModel, token).ConfigureAwait(false);
+                return jsonModel.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException($"wrong input parameter", nameof(model), wex);
+            }
+         }
+
     }
 }

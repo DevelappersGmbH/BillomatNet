@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
+using Newtonsoft.Json.Schema;
 using Article = Develappers.BillomatNet.Types.Article;
 using ArticleProperty = Develappers.BillomatNet.Types.ArticleProperty;
 using ArticleTag = Develappers.BillomatNet.Types.ArticleTag;
@@ -205,6 +206,19 @@ namespace Develappers.BillomatNet.Helpers
                 TaxId = value.TaxId.ToString(),
                 Title = value.Title,
                 UnitId = value.UnitId.ToString()
+            };
+        }
+            
+        internal static Api.ArticleProperty ToApi (this ArticleProperty value)
+        {
+            return new Api.ArticleProperty
+            {
+                Id = value.Id,
+                ArticleId = value.ArticleId,
+                ArticlePropertyId = value.ArticlePropertyId,
+                Type = MappingHelpers.PropertyTypeToString(value.Type),
+                Name = value.Name,
+                Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
             };
         }
     }

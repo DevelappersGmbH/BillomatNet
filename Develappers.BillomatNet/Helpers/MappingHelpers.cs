@@ -71,6 +71,19 @@ namespace Develappers.BillomatNet.Helpers
             }
         }
 
+        public static string PropertyTypeToString(PropertyType value)
+        {
+            switch (value)
+            {
+                case Types.PropertyType.Textarea:
+                    return "TEXTAREA";
+                case Types.PropertyType.Checkbox:
+                    return "CHECKBOX";
+                default:
+                    return "TEXTFIELD";
+            }
+        }
+
         /// <summary>
         /// Checks the PropertyType enum and returns if checked or not.
         /// </summary>
@@ -85,6 +98,28 @@ namespace Develappers.BillomatNet.Helpers
             }
 
             return value;
+        }
+
+        public static string ParsePropertyValue(PropertyType type, object value)
+        {
+            if (type == PropertyType.Checkbox)
+            {
+                try
+                {
+                    var b = (bool)value;
+                    if (b)
+                    {
+                        return "1";
+                    }
+                    return "0";
+                }
+                catch (InvalidCastException)
+                {
+
+                    return "0";
+                }
+            }
+            return (string)value;
         }
     }
 }
