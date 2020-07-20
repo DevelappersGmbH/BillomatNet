@@ -68,8 +68,15 @@ namespace Develappers.BillomatNet
         /// <returns>
         /// A task that represents the asynchronous operation.
         /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         public Task DeleteAsync(int id, CancellationToken token = default(CancellationToken))
         {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid invoice id", nameof(id));
+            }
             return DeleteAsync($"/api/invoices/{id}", token);
         }
 
