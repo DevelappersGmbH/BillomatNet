@@ -271,7 +271,7 @@ namespace Develappers.BillomatNet.Tests
         }
 
         [Fact]
-        public async Task CreateInvoiceItem()
+        public async Task CreateInvoice()
         {
             var config = Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
@@ -292,7 +292,7 @@ namespace Develappers.BillomatNet.Tests
             var settingsService = new SettingsService(config);
             var settings = await settingsService.GetAsync();
 
-            var title = "xUnit Test Object";
+            var label = "xUnit Test Object";
 
             var invoiceItemList = new List<InvoiceItem>
             {
@@ -313,7 +313,7 @@ namespace Develappers.BillomatNet.Tests
             {
                 ClientId = cl.Id,
                 Date = DateTime.Now.Date,
-                Label = title,
+                Label = label,
                 Quote = 1,
                 InvoiceItems = invoiceItemList
             };
@@ -326,7 +326,7 @@ namespace Develappers.BillomatNet.Tests
         }
 
         [Fact]
-        public async Task CreateInvoiceItemWhenNotAuthorized()
+        public async Task CreateInvoiceWhenNotAuthorized()
         {
             var config = Helpers.GetTestConfiguration();
             var config2 = Helpers.GetTestConfiguration();
@@ -393,12 +393,14 @@ namespace Develappers.BillomatNet.Tests
         }
 
         [Fact]
-        public async Task CreateInvoiceItemWhenNull()
+        public async Task CreateInvoiceWhenWhenArgumentException()
         {
             var config = Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(null));
+            var inv = new Invoice();
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(inv));
         }
 
         [Fact]
