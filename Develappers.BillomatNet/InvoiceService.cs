@@ -202,11 +202,42 @@ namespace Develappers.BillomatNet
             return result.ToDomain();
         }
 
-
-        Task<Invoice> IEntityService<Invoice, InvoiceFilter>.CreateAsync(Invoice model, CancellationToken token = default)
+        /// <summary>
+        /// Creates an invoice item.
+        /// </summary>
+        /// <param name="model">The invoice item.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the newly created invoice with the ID.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<InvoiceItem> CreateAsync(InvoiceItem model, CancellationToken token = default)
         {
-            // TODO: implement implicitly and make public
-            throw new System.NotImplementedException();
+            if (model == null || model.InvoiceId <= 0)
+            {
+                throw new ArgumentException("invoice item or a value of the invoice item is null", nameof(model));
+            }
+            if (model.Id != 0)
+            {
+                throw new ArgumentException("invalid invoice item id", nameof(model));
+            }
+            var wrappedModel = new InvoiceItemWrapper
+            {
+                InvoiceItem = model.ToApi()
+            };
+            try
+            {
+                var result = await PostAsync("/api/invoice-items", wrappedModel, token);
+                return result.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException($"wrong input parameter", nameof(model), wex);
+            }
         }
 
         /// <summary>
