@@ -312,7 +312,7 @@ namespace Develappers.BillomatNet.Tests
             var inv = new Invoice
             {
                 ClientId = cl.Id,
-                //Date = DateTime.Now.Date,
+                Date = DateTime.Now.Date,
                 Label = title,
                 Quote = 1,
                 InvoiceItems = invoiceItemList

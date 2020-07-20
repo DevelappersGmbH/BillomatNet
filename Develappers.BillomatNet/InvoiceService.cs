@@ -180,6 +180,9 @@ namespace Develappers.BillomatNet
         /// A task that represents the asynchronous operation.
         /// The task result returns the newly created invoice with the ID.
         /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         public async Task<Invoice> CreateAsync (Invoice invoice, CancellationToken token = default(CancellationToken))
         {
             if (invoice == null || invoice.ClientId == 0 || invoice.Quote < 1 || invoice.Date == DateTime.MinValue)
