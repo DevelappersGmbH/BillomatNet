@@ -174,7 +174,6 @@ namespace Develappers.BillomatNet
         /// Creates an invoice.
         /// </summary>
         /// <param name="model">The invoice object.</param>
-        /// <param name="invoiceItems">The invoice items (used articles) from the invoice.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
