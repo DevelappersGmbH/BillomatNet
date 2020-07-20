@@ -173,7 +173,7 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates an invoice.
         /// </summary>
-        /// <param name="invoice">The invoice object.</param>
+        /// <param name="model">The invoice object.</param>
         /// <param name="invoiceItems">The invoice items (used articles) from the invoice.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
@@ -183,21 +183,21 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<Invoice> CreateAsync (Invoice invoice, CancellationToken token = default(CancellationToken))
+        public async Task<Invoice> CreateAsync(Invoice model, CancellationToken token = default(CancellationToken))
         {
-            if (invoice == null || invoice.ClientId == 0 || invoice.Quote < 1 || invoice.Date == DateTime.MinValue)
+            if (model == null || model.ClientId == 0 || model.Quote < 1 || model.Date == DateTime.MinValue)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("invoice or a value of the invoice is null", nameof(model));
             }
-            if (invoice.Id != 0)
+            if (model.Id != 0)
             {
-                throw new ArgumentException("invalid unit id", nameof(invoice));
+                throw new ArgumentException("invalid invoice id", nameof(model));
             }
-            var wrappedInvoice = new InvoiceWrapper
+            var wrappedModel = new InvoiceWrapper
             {
-                Invoice = invoice.ToApi()
+                Invoice = model.ToApi()
             };
-            var result =  await PostAsync("/api/invoices", wrappedInvoice, token);
+            var result = await PostAsync("/api/invoices", wrappedModel, token);
 
             return result.ToDomain();
         }
