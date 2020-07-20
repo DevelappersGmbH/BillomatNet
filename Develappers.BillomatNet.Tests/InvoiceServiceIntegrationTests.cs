@@ -175,12 +175,31 @@ namespace Develappers.BillomatNet.Tests
         }
 
         [Fact]
-        public async Task DeleteInvoiceItemNotExisting()
+        public async Task DeleteInvoiceItemArgumentException()
         {
-            var config = Develappers.BillomatNet.Tests.Helpers.GetTestConfiguration();
+            var config = Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
-            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(4447692));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteAsync(0));
+        }
+
+        [Fact]
+        public async Task DeleteInvoiceItemNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new InvoiceService(config);
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.DeleteAsync(1));
+        }
+
+        [Fact]
+        public async Task DeleteInvoiceItemNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new InvoiceService(config);
+
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(1));
         }
 
         //[Fact]
