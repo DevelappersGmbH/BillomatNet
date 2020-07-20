@@ -404,6 +404,101 @@ namespace Develappers.BillomatNet.Tests
         }
 
         [Fact]
+        public async Task CreateInvoiceItem()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new InvoiceService(config);
+
+            #region Initializing to create
+            var cs = new ClientService(config);
+            var cl = await cs.GetByIdAsync(1506365);
+
+            var articleService = new ArticleService(config);
+            var articles = await articleService.GetByIdAsync(835226);
+
+            var unitService = new UnitService(config);
+            var units = await unitService.GetByIdAsync(articles.UnitId.Value);
+
+            var taxService = new TaxService(config);
+            var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
+
+            var settingsService = new SettingsService(config);
+            var settings = await settingsService.GetAsync();
+
+            var label = "xUnit Test Object";
+
+            var inv = new Invoice
+            {
+                ClientId = cl.Id,
+                Date = DateTime.Now.Date,
+                Label = label,
+                Quote = 1
+            };
+            #endregion
+
+            var invoiceResult = await service.CreateAsync(inv);
+            Assert.Equal(label, inv.Label);
+
+            var item = new InvoiceItem
+            {
+                InvoiceId = invoiceResult.Id,
+                ArticleId = articles.Id,
+                Unit = units.Name,
+                Quantity = 300,
+                UnitPrice = 1.0f,
+                Title = articles.Title,
+                Description = articles.Description,
+                TaxName = taxes.Name,
+                TaxRate = taxes.Rate,
+            };
+
+            var itemResult = await service.CreateAsync(item);
+            Assert.NotNull(itemResult);
+
+            await service.DeleteAsync(invoiceResult.Id);
+        }
+
+        [Fact]
+        public async Task CreateInvoiceItemWhenArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new InvoiceService(config);
+
+            var item = new InvoiceItem();
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(item));
+        }
+
+        [Fact]
+        public async Task CreateInvoiceItemWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new InvoiceService(config);
+
+            var item = new InvoiceItem
+            {
+                InvoiceId = 7458050
+            };
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(item));
+        }
+
+        [Fact]
+        public async Task CreateInvoiceItemWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new InvoiceService(config);
+
+            var item = new InvoiceItem
+            {
+                InvoiceId = 7458050
+            };
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(item));
+        }
+
+        [Fact]
         public async Task EdiInvoice()
         {
             var config = Helpers.GetTestConfiguration();
