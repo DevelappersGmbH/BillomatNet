@@ -2,6 +2,7 @@
 using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
@@ -205,10 +206,43 @@ namespace Develappers.BillomatNet
             throw new System.NotImplementedException();
         }
 
-        Task<Invoice> IEntityService<Invoice, InvoiceFilter>.EditAsync(Invoice model, CancellationToken token = default)
+        /// <summary>
+        /// Creates / Edits an invoice property.
+        /// </summary>
+        /// <param name="model">The invoice property.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new invoice property.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Invoice> EditAsync(Invoice model, CancellationToken token = default)
         {
-            // TODO: implement implicitly and make public
-            throw new System.NotImplementedException();
+            if (model == null || model.ClientId == 0 || model.Quote < 1 || model.Date == DateTime.MinValue)
+            {
+                throw new ArgumentException("invoice or a value of the invoice is null", nameof(model));
+            }
+            if (model.Id <= 0)
+            {
+                throw new ArgumentException("invalid invoice id", nameof(model));
+            }
+
+            var wrappedModel = new InvoiceWrapper
+            {
+                Invoice = model.ToApi()
+            };
+            try
+            {
+                var jsonModel = await PutAsync($"/api/invoices/{model.Id}", wrappedModel, token).ConfigureAwait(false);
+                return jsonModel.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException($"wrong input parameter", nameof(model), wex);
+            }
         }
     }
 }

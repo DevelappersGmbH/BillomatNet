@@ -400,5 +400,269 @@ namespace Develappers.BillomatNet.Tests
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(null));
         }
+
+        [Fact]
+        public async Task EdiInvoice()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new InvoiceService(config);
+
+            #region Initializing to create
+            var cs = new ClientService(config);
+            var cl = await cs.GetByIdAsync(1506365);
+
+            var articleService = new ArticleService(config);
+            var articles = await articleService.GetByIdAsync(835226);
+
+            var unitService = new UnitService(config);
+            var units = await unitService.GetByIdAsync(articles.UnitId.Value);
+
+            var taxService = new TaxService(config);
+            var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
+
+            var settingsService = new SettingsService(config);
+            var settings = await settingsService.GetAsync();
+
+            var title = "xUnit Test Object";
+
+            var invoiceItemList = new List<InvoiceItem>
+            {
+                new InvoiceItem
+                {
+                    ArticleId = articles.Id,
+                    Unit = units.Name,
+                    Quantity = 300,
+                    UnitPrice = 1.0f,
+                    Title = articles.Title,
+                    Description = articles.Description,
+                    TaxName = taxes.Name,
+                    TaxRate = taxes.Rate,
+                }
+            };
+
+            var inv = new Invoice
+            {
+                ClientId = cl.Id,
+                Date = DateTime.Now.Date,
+                Label = title,
+                Quote = 1,
+                InvoiceItems = invoiceItemList
+            };
+            #endregion
+
+            var result = await service.CreateAsync(inv);
+            Assert.NotNull(result);
+
+            var editedLabel = "xUint Edited";
+
+            var editedInv = new Invoice
+            {
+                Id = result.Id,
+                ClientId = result.ClientId,
+                Date = result.Date,
+                Label = editedLabel,
+                Quote = result.Quote,
+                InvoiceItems = result.InvoiceItems
+            };
+
+            var editedResult = await service.EditAsync(editedInv);
+            Assert.NotNull(await service.GetByIdAsync(editedResult.Id));
+
+            await service.DeleteAsync(editedResult.Id);
+        }
+
+        [Fact]
+        public async Task EdiInvoiceArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new InvoiceService(config);
+
+            #region Initializing to create
+            var cs = new ClientService(config);
+            var cl = await cs.GetByIdAsync(1506365);
+
+            var articleService = new ArticleService(config);
+            var articles = await articleService.GetByIdAsync(835226);
+
+            var unitService = new UnitService(config);
+            var units = await unitService.GetByIdAsync(articles.UnitId.Value);
+
+            var taxService = new TaxService(config);
+            var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
+
+            var settingsService = new SettingsService(config);
+            var settings = await settingsService.GetAsync();
+
+            var title = "xUnit Test Object";
+
+            var invoiceItemList = new List<InvoiceItem>
+            {
+                new InvoiceItem
+                {
+                    ArticleId = articles.Id,
+                    Unit = units.Name,
+                    Quantity = 300,
+                    UnitPrice = 1.0f,
+                    Title = articles.Title,
+                    Description = articles.Description,
+                    TaxName = taxes.Name,
+                    TaxRate = taxes.Rate,
+                }
+            };
+
+            var inv = new Invoice
+            {
+                ClientId = cl.Id,
+                Date = DateTime.Now.Date,
+                Label = title,
+                Quote = 1,
+                InvoiceItems = invoiceItemList
+            };
+            #endregion
+
+            var result = await service.CreateAsync(inv);
+            Assert.NotNull(result);
+
+            var editedLabel = "xUint Edited";
+
+            var editedInv = new Invoice
+            {
+                ClientId = result.ClientId,
+                Date = result.Date,
+                Label = editedLabel,
+                Quote = result.Quote,
+                InvoiceItems = result.InvoiceItems
+            };
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.EditAsync(editedInv));
+
+            await service.DeleteAsync(result.Id);
+        }
+
+        [Fact]
+        public async Task EdiInvoiceArgumentNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new InvoiceService(config);
+
+            #region Initializing to create
+            var cs = new ClientService(config);
+            var cl = await cs.GetByIdAsync(1506365);
+
+            var articleService = new ArticleService(config);
+            var articles = await articleService.GetByIdAsync(835226);
+
+            var unitService = new UnitService(config);
+            var units = await unitService.GetByIdAsync(articles.UnitId.Value);
+
+            var taxService = new TaxService(config);
+            var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
+
+            var settingsService = new SettingsService(config);
+            var settings = await settingsService.GetAsync();
+
+            var title = "xUnit Test Object";
+
+            var invoiceItemList = new List<InvoiceItem>
+            {
+                new InvoiceItem
+                {
+                    ArticleId = articles.Id,
+                    Unit = units.Name,
+                    Quantity = 300,
+                    UnitPrice = 1.0f,
+                    Title = articles.Title,
+                    Description = articles.Description,
+                    TaxName = taxes.Name,
+                    TaxRate = taxes.Rate,
+                }
+            };
+
+            var inv = new Invoice
+            {
+                ClientId = cl.Id,
+                Date = DateTime.Now.Date,
+                Label = title,
+                Quote = 1,
+                InvoiceItems = invoiceItemList
+            };
+            #endregion
+
+            var result = await service.CreateAsync(inv);
+            Assert.NotNull(result);
+
+            var editedLabel = "xUint Edited";
+
+            var editedInv = new Invoice
+            {
+                Id = result.Id,
+                ClientId = result.ClientId,
+                Date = result.Date,
+                Label = editedLabel,
+                Quote = result.Quote,
+                InvoiceItems = result.InvoiceItems
+            };
+
+            var editConf = Helpers.GetTestConfiguration();
+            editConf.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var editService = new InvoiceService(editConf);
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => editService.EditAsync(editedInv));
+
+            await service.DeleteAsync(result.Id);
+        }
+
+        [Fact]
+        public async Task EdiInvoiceNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new InvoiceService(config);
+
+            #region Initializing to create
+            var cs = new ClientService(config);
+            var cl = await cs.GetByIdAsync(1506365);
+
+            var articleService = new ArticleService(config);
+            var articles = await articleService.GetByIdAsync(835226);
+
+            var unitService = new UnitService(config);
+            var units = await unitService.GetByIdAsync(articles.UnitId.Value);
+
+            var taxService = new TaxService(config);
+            var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
+
+            var settingsService = new SettingsService(config);
+            var settings = await settingsService.GetAsync();
+
+            var title = "xUnit Test Object";
+
+            var invoiceItemList = new List<InvoiceItem>
+            {
+                new InvoiceItem
+                {
+                    ArticleId = articles.Id,
+                    Unit = units.Name,
+                    Quantity = 300,
+                    UnitPrice = 1.0f,
+                    Title = articles.Title,
+                    Description = articles.Description,
+                    TaxName = taxes.Name,
+                    TaxRate = taxes.Rate,
+                }
+            };
+
+            var inv = new Invoice
+            {
+                Id = 1,
+                ClientId = cl.Id,
+                Date = DateTime.Now.Date,
+                Label = title,
+                Quote = 1,
+                InvoiceItems = invoiceItemList
+            };
+            #endregion
+
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.EditAsync(inv));
+        }
     }
 }
