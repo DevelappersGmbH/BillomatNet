@@ -271,7 +271,7 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         public async Task<ArticleProperty> EditArticlePropertyAsync(ArticleProperty model, CancellationToken token = default)
         {
-            if (model == null || model.ArticleId <= 0 || model.ArticlePropertyId <= 0 || model.Value == null || model.Type == null)
+            if (model == null || model.ArticleId <= 0 || model.ArticlePropertyId <= 0 || model.Value == null)
             {
                 throw new ArgumentException("any parameter was not set", nameof(model));
             }

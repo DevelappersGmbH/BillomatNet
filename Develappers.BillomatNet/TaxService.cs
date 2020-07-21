@@ -26,7 +26,7 @@ namespace Develappers.BillomatNet
         /// A task that represents the asynchronous operation.
         /// The task result contains the list of taxes.
         /// </returns>
-        public async Task<Types.PagedList<Tax>> GetListAsync(CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<Tax>> GetListAsync(CancellationToken token = default)
         {
             var jsonModel = await GetListAsync<TaxListWrapper>("/api/taxes", null, token).ConfigureAwait(false);
             return jsonModel.ToDomain();

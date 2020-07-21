@@ -3,8 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
-using FakeItEasy.Configuration;
-using Newtonsoft.Json.Serialization;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests
