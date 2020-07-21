@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
+using Newtonsoft.Json.Schema;
 using Article = Develappers.BillomatNet.Types.Article;
 using ArticleProperty = Develappers.BillomatNet.Types.ArticleProperty;
 using ArticleTag = Develappers.BillomatNet.Types.ArticleTag;
@@ -175,6 +176,77 @@ namespace Develappers.BillomatNet.Helpers
                 ItemsPerPage = value.PerPage,
                 TotalItems = value.Total,
                 List = value.List?.Select(x => x.ToDomain()).ToList()
+            };
+        }
+
+        internal static Types.ArticleTag ToDomain(this ArticleTag value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+            return new Types.ArticleTag
+            {
+                Id = value.Id,
+                ArticleId = value.ArticleId,
+                Name = value.Name
+            };
+        }
+
+        internal static Api.Article ToApi(this Article value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+            return new Api.Article
+            {
+                Id = value.Id.ToString(),
+                Created = value.Created.ToApiDate(),
+                ArticleNumber = value.ArticleNumber,
+                CurrencyCode = value.CurrencyCode,
+                Description = value.Description,
+                Number = value.Number.ToString(),
+                NumberLength = value.NumberLength,
+                NumberPre = value.NumberPre,
+                PurchasePrice = value.PurchasePrice.ToInvariantString(),
+                PurchasePriceNetGross = value.PurchasePriceNetGross,
+                SalesPrice = value.SalesPrice.ToInvariantString(),
+                SalesPrice2 = value.SalesPrice2.ToInvariantString(),
+                SalesPrice3 = value.SalesPrice3.ToInvariantString(),
+                SalesPrice4 = value.SalesPrice4.ToInvariantString(),
+                SalesPrice5 = value.SalesPrice5.ToInvariantString(),
+                SupplierId = value.SupplierId.ToString(),
+                TaxId = value.TaxId.ToString(),
+                Title = value.Title,
+                UnitId = value.UnitId.ToString()
+            };
+        }
+            
+        internal static Api.ArticleProperty ToApi (this ArticleProperty value)
+        {
+            return new Api.ArticleProperty
+            {
+                Id = value.Id,
+                ArticleId = value.ArticleId,
+                ArticlePropertyId = value.ArticlePropertyId,
+                Type = MappingHelpers.PropertyTypeToString(value.Type),
+                Name = value.Name,
+                Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
+            };
+        }
+
+        internal static Api.ArticleTag ToApi(this ArticleTag value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+            return new Api.ArticleTag
+            {
+                Id = value.Id,
+                ArticleId = value.ArticleId,
+                Name = value.Name
             };
         }
     }

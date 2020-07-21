@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Types;
@@ -271,6 +272,36 @@ namespace Develappers.BillomatNet.Helpers
                 ItemsPerPage = value.PerPage,
                 TotalItems = value.Total,
                 List = value.List?.Select(x => x.ToDomain()).ToList()
+            };
+        }
+
+        internal static Api.Contact ToApi(this Contact value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Api.Contact
+            {
+                Id = value.Id.ToString(),
+                ClientId = value.ClientId.ToString(),
+                Email = value.Email,
+                Fax = value.Fax,
+                Label = value.Label,
+                Mobile = value.Mobile,
+                Www = value.Web,
+                FirstName = value.FirstName,
+                LastName = value.LastName,
+                Street = value.Street,
+                ZipCode = value.ZipCode,
+                City = value.City,
+                State = value.State,
+                CountryCode = value.CountryCode,
+                Salutation = value.Salutation,
+                Phone = value.Phone,
+                Created = value.Created,
+                Updated = value.Updated
             };
         }
     }

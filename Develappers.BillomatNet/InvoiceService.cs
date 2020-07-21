@@ -2,6 +2,7 @@
 using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
@@ -68,9 +69,36 @@ namespace Develappers.BillomatNet
         /// <returns>
         /// A task that represents the asynchronous operation.
         /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         public Task DeleteAsync(int id, CancellationToken token = default(CancellationToken))
         {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid invoice id", nameof(id));
+            }
             return DeleteAsync($"/api/invoices/{id}", token);
+        }
+
+        /// <summary>
+        /// Deletes an invoice item.
+        /// </summary>
+        /// <param name="id">The ID of the invoice item.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeleteInvoiceItemAsync(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid invoice item id", nameof(id));
+            }
+            return DeleteAsync($"/api/invoice-items/{id}", token);
         }
 
         /// <summary>
@@ -165,43 +193,148 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates an invoice.
         /// </summary>
-        /// <param name="invoice">The invoice object.</param>
-        /// <param name="invoiceItems">The invoice items (used articles) from the invoice.</param>
+        /// <param name="model">The invoice object.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
         /// The task result returns the newly created invoice with the ID.
         /// </returns>
-        public async Task<Invoice> CreateAsync (Invoice invoice, CancellationToken token = default(CancellationToken))
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Invoice> CreateAsync(Invoice model, CancellationToken token = default(CancellationToken))
         {
-            if (invoice == null || invoice.ClientId == 0 || invoice.Quote < 1 || invoice.Date == DateTime.MinValue)
+            if (model == null || model.ClientId == 0 || model.Quote < 1 || model.Date == DateTime.MinValue)
             {
-                throw new ArgumentException();
+                throw new ArgumentException("invoice or a value of the invoice is null", nameof(model));
             }
-            if (invoice.Id != 0)
+            if (model.Id != 0)
             {
-                throw new ArgumentException("invalid unit id", nameof(invoice));
+                throw new ArgumentException("invalid invoice id", nameof(model));
             }
-            var wrappedInvoice = new InvoiceWrapper
+            var wrappedModel = new InvoiceWrapper
             {
-                Invoice = invoice.ToApi()
+                Invoice = model.ToApi()
             };
-            var result =  await PostAsync("/api/invoices", wrappedInvoice, token);
+            var result = await PostAsync("/api/invoices", wrappedModel, token);
 
             return result.ToDomain();
         }
 
-
-        Task<Invoice> IEntityService<Invoice, InvoiceFilter>.CreateAsync(Invoice model, CancellationToken token = default)
+        /// <summary>
+        /// Creates an invoice item.
+        /// </summary>
+        /// <param name="model">The invoice item.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the newly created invoice with the ID.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<InvoiceItem> CreateAsync(InvoiceItem model, CancellationToken token = default)
         {
-            // TODO: implement implicitly and make public
-            throw new System.NotImplementedException();
+            if (model == null || model.InvoiceId <= 0)
+            {
+                throw new ArgumentException("invoice item or a value of the invoice item is null", nameof(model));
+            }
+            if (model.Id != 0)
+            {
+                throw new ArgumentException("invalid invoice item id", nameof(model));
+            }
+            var wrappedModel = new InvoiceItemWrapper
+            {
+                InvoiceItem = model.ToApi()
+            };
+            try
+            {
+                var result = await PostAsync("/api/invoice-items", wrappedModel, token);
+                return result.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException($"wrong input parameter", nameof(model), wex);
+            }
         }
 
-        Task<Invoice> IEntityService<Invoice, InvoiceFilter>.EditAsync(Invoice model, CancellationToken token = default)
+        /// <summary>
+        /// Creates / Edits an invoice property.
+        /// </summary>
+        /// <param name="model">The invoice property.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new invoice property.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Invoice> EditAsync(Invoice model, CancellationToken token = default)
         {
-            // TODO: implement implicitly and make public
-            throw new System.NotImplementedException();
+            if (model == null || model.ClientId == 0 || model.Quote < 1 || model.Date == DateTime.MinValue)
+            {
+                throw new ArgumentException("invoice or a value of the invoice is null", nameof(model));
+            }
+            if (model.Id <= 0)
+            {
+                throw new ArgumentException("invalid invoice id", nameof(model));
+            }
+
+            var wrappedModel = new InvoiceWrapper
+            {
+                Invoice = model.ToApi()
+            };
+            try
+            {
+                var jsonModel = await PutAsync($"/api/invoices/{model.Id}", wrappedModel, token).ConfigureAwait(false);
+                return jsonModel.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException($"wrong input parameter", nameof(model), wex);
+            }
+        }
+
+        /// <summary>
+        /// Edits an invoice item.
+        /// </summary>
+        /// <param name="model">The invoice item.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new invoice item.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<InvoiceItem> EditAsync(InvoiceItem model, CancellationToken token = default)
+        {
+            if (model == null || model.InvoiceId <=0)
+            {
+                throw new ArgumentException("invoice item or a value of the invoice item is null", nameof(model));
+            }
+            if (model.Id <= 0)
+            {
+                throw new ArgumentException("invalid invoice item id", nameof(model));
+            }
+
+            var wrappedModel = new InvoiceItemWrapper
+            {
+                InvoiceItem = model.ToApi()
+            };
+            try
+            {
+                var jsonModel = await PutAsync($"/api/invoice-items/{model.Id}", wrappedModel, token).ConfigureAwait(false);
+                return jsonModel.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException($"wrong input parameter", nameof(model), wex);
+            }
         }
     }
 }

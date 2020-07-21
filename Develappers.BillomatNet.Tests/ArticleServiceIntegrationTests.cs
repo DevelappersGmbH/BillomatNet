@@ -157,6 +157,65 @@ namespace Develappers.BillomatNet.Tests
         }
 
         [Fact]
+        public async Task DeleteArticleTag()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var articleItem = new Article
+            {
+                Title = "xUnit test",
+                SalesPrice = 3.5f,
+                UnitId = 20573,
+                TaxId = 21281,
+                PurchasePrice = 3.4f
+            };
+
+            var articleResult = await service.CreateAsync(articleItem);
+
+            var tag = new ArticleTag
+            {
+                ArticleId = articleResult.Id,
+                Name = "Xunit test"
+            };
+
+            var tagResult = await service.CreateTagAsync(tag);
+
+            await service.DeleteTagAsync(tagResult.Id);
+            Assert.Null(await service.GetTagByIdAsync(tagResult.Id));
+
+            await service.DeleteAsync(articleResult.Id);
+        }
+
+        [Fact]
+        public async Task DeleteArticleTagWhenArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteTagAsync(0));
+        }
+
+        [Fact]
+        public async Task DeleteArticleTagWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.DeleteTagAsync(1));
+        }
+
+        [Fact]
+        public async Task DeleteArticleTagWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteTagAsync(9699));
+        }
+
+        [Fact]
         public async Task EditArticleItem()
         {
             var config = Helpers.GetTestConfiguration();
@@ -308,6 +367,147 @@ namespace Develappers.BillomatNet.Tests
             var service = new ArticleService(config);
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(null));
+        }
+
+        [Fact]
+        public async Task CreateArticleTag()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var name = "Xunit test";
+
+            var tag = new ArticleTag
+            {
+                ArticleId = 835226,
+                Name = name
+            };
+
+            var result = await service.CreateTagAsync(tag);
+            Assert.Equal(name, result.Name);
+
+            await service.DeleteTagAsync(result.Id);
+        }
+
+        [Fact]
+        public async Task CreateArticleTagWhenArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var tag = new ArticleTag { };
+
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateTagAsync(tag));
+        }
+
+        [Fact]
+        public async Task CreateArticleTagWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var name = "Xunit test";
+
+            var tag = new ArticleTag
+            {
+                ArticleId = 835226,
+                Name = name
+            };
+
+            var result = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateTagAsync(tag));
+        }
+
+        //[Fact]
+        //public async Task EditArticlePropertyCheckbox()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+        //    var service = new ArticleService(config);
+
+        //    var value = "1";
+
+        //    var articlePropItem = new ArticleProperty
+        //    {
+        //        ArticleId = 197391,
+        //        ArticlePropertyId = 2490,
+        //        Value = value
+        //    };
+
+        //    var result = await service.EditArticlePropertyAsync(articlePropItem);
+        //    Assert.True((bool)result.Value);
+        //}
+
+        //[Fact]
+        //public async Task EditArticlePropertyText()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+        //    var service = new ArticleService(config);
+
+        //    var value = "xUnit test";
+
+        //    var articlePropItem = new ArticleProperty
+        //    {
+        //        ArticleId = 197391,
+        //        ArticlePropertyId = 2442,
+        //        Value = value
+        //    };
+
+        //    var result = await service.EditArticlePropertyAsync(articlePropItem);
+        //    Assert.Equal(value, result.Value);
+        //}
+
+        [Fact]
+        public async Task EditArticlePropertyWhenArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var value = "xUnit test";
+
+            var articlePropItem = new ArticleProperty
+            {
+                ArticleId = 197391,
+                Value = value
+            };
+
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => service.EditArticlePropertyAsync(articlePropItem));
+        }
+        [Fact]
+        public async Task EditArticlePropertyWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var value = "xUnit test";
+
+            var articlePropItem = new ArticleProperty
+            {
+                ArticleId = 197391,
+                ArticlePropertyId = 2442,
+                Value = value
+            };
+
+            var result = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.EditArticlePropertyAsync(articlePropItem));
+        }
+
+        [Fact]
+        public async Task EditArticlePropertyWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var value = "xUnit test";
+
+            var articlePropItem = new ArticleProperty
+            {
+                ArticleId = 197395,
+                ArticlePropertyId = 3250,
+                Value = value
+            };
+
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => service.EditArticlePropertyAsync(articlePropItem));
         }
     }
 }
