@@ -164,5 +164,43 @@ namespace Develappers.BillomatNet
             }
             
         }
+
+        /// <summary>
+        /// Edits a contact.
+        /// </summary>
+        /// <param name="model">The contact.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the edited contact with the ID.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Contact> EditAsync(Contact model, CancellationToken token = default)
+        {
+            if (model == null || model.ClientId <= 0)
+            {
+                throw new ArgumentException("contact or a value of the contact is null", nameof(model));
+            }
+            if (model.Id <= 0)
+            {
+                throw new ArgumentException("invalid contact id", nameof(model));
+            }
+            var wrappedModel = new ContactWrapper
+            {
+                Contact = model.ToApi()
+            };
+            try
+            {
+                var result = await PutAsync($"api/contacts/{model.Id}", wrappedModel, token);
+                return result.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException($"wrong contact parameter", nameof(model), wex);
+            }
+        }
     }
 }

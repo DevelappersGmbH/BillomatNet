@@ -300,8 +300,8 @@ namespace Develappers.BillomatNet.Helpers
                 CountryCode = value.CountryCode,
                 Salutation = value.Salutation,
                 Phone = value.Phone,
-                Created = Convert.ToDateTime(value.Created, CultureInfo.InvariantCulture),
-                Updated = Convert.ToDateTime(value.Updated, CultureInfo.InvariantCulture)
+                Created = value.Created,
+                Updated = value.Updated
             };
         }
     }
