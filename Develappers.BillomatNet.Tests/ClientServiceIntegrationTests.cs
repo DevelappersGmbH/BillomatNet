@@ -116,7 +116,7 @@ namespace Develappers.BillomatNet.Tests
         }
 
         //[Fact]
-        //public async Task CreateClient()
+        //public async Task CreateContact()
         //{
         //    var config = Helpers.GetTestConfiguration();
         //    var service = new ClientService(config);
@@ -135,7 +135,7 @@ namespace Develappers.BillomatNet.Tests
         //}
 
         [Fact]
-        public async Task CreateClientArgumentException()
+        public async Task CreateContactArgumentException()
         {
             var config = Helpers.GetTestConfiguration();
             var service = new ClientService(config);
@@ -146,7 +146,7 @@ namespace Develappers.BillomatNet.Tests
         }
 
         [Fact]
-        public async Task CreateClientNotAuthorized()
+        public async Task CreateContactNotAuthorized()
         {
             var config = Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
@@ -163,7 +163,7 @@ namespace Develappers.BillomatNet.Tests
         }
 
         [Fact]
-        public async Task CreateClientNotFound()
+        public async Task CreateContactNotFound()
         {
             var config = Helpers.GetTestConfiguration();
             var service = new ClientService(config);
