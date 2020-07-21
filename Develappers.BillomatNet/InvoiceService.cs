@@ -297,5 +297,44 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException($"wrong input parameter", nameof(model), wex);
             }
         }
+
+        /// <summary>
+        /// Edits an invoice item.
+        /// </summary>
+        /// <param name="model">The invoice item.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new invoice item.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<InvoiceItem> EditAsync(InvoiceItem model, CancellationToken token = default)
+        {
+            if (model == null || model.InvoiceId <=0)
+            {
+                throw new ArgumentException("invoice item or a value of the invoice item is null", nameof(model));
+            }
+            if (model.Id <= 0)
+            {
+                throw new ArgumentException("invalid invoice item id", nameof(model));
+            }
+
+            var wrappedModel = new InvoiceItemWrapper
+            {
+                InvoiceItem = model.ToApi()
+            };
+            try
+            {
+                var jsonModel = await PutAsync($"/api/invoice-items/{model.Id}", wrappedModel, token).ConfigureAwait(false);
+                return jsonModel.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException($"wrong input parameter", nameof(model), wex);
+            }
+        }
     }
 }
