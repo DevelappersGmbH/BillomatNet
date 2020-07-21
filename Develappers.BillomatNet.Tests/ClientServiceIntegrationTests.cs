@@ -115,24 +115,74 @@ namespace Develappers.BillomatNet.Tests
             Assert.True(true);
         }
 
-        //[Fact]
-        //public async Task CreateContact()
-        //{
-        //    var config = Helpers.GetTestConfiguration();
-        //    var service = new ClientService(config);
+        [Fact]
+        public async Task DeleteContact()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
 
-        //    var contact = new Contact
-        //    {
-        //        ClientId = 485054,
-        //        FirstName = "Test",
-        //        LastName = "Testermann"
-        //    };
+            var contact = new Contact
+            {
+                ClientId = 485054,
+                FirstName = "Test",
+                LastName = "Testermann"
+            };
 
-        //    var result = await service.CreateAsync(contact);
-        //    Assert.NotNull(await service.GetContactByIdAsync(result.Id));
+            var result = await service.CreateAsync(contact);
+            Assert.NotNull(await service.GetContactByIdAsync(result.Id));
 
-        //    //await service.DeleteContactAsync(result.Id);
-        //}
+            await service.DeleteContactAsync(result.Id);
+
+            var result2 = await service.GetContactByIdAsync(result.Id);
+            Assert.Null(result2);
+        }
+
+        [Fact]
+        public async Task DeleteContactArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteContactAsync(0));
+        }
+
+        [Fact]
+        public async Task DeleteContactNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ClientService(config);
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.DeleteContactAsync(1));
+        }
+
+        [Fact]
+        public async Task DeleteContactNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteContactAsync(1));
+        }
+
+        [Fact]
+        public async Task CreateContact()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var contact = new Contact
+            {
+                ClientId = 485054,
+                FirstName = "Test",
+                LastName = "Testermann"
+            };
+
+            var result = await service.CreateAsync(contact);
+            Assert.NotNull(await service.GetContactByIdAsync(result.Id));
+
+            await service.DeleteContactAsync(result.Id);
+        }
 
         [Fact]
         public async Task CreateContactArgumentException()
@@ -178,34 +228,34 @@ namespace Develappers.BillomatNet.Tests
             var result = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(contact));
         }
 
-        //[Fact]
-        //public async Task EditContact()
-        //{
-        //    var config = Helpers.GetTestConfiguration();
-        //    var service = new ClientService(config);
+        [Fact]
+        public async Task EditContact()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
 
-        //    var contact = new Contact
-        //    {
-        //        ClientId = 485054,
-        //        FirstName = "Testt",
-        //        LastName = "Testermann"
-        //    };
+            var contact = new Contact
+            {
+                ClientId = 485054,
+                FirstName = "Testt",
+                LastName = "Testermann"
+            };
 
-        //    var result = await service.CreateAsync(contact);
-        //    Assert.NotNull(await service.GetContactByIdAsync(result.Id));
+            var result = await service.CreateAsync(contact);
+            Assert.NotNull(await service.GetContactByIdAsync(result.Id));
 
-        //    var editedContact = new Contact
-        //    {
-        //        Id = result.Id,
-        //        ClientId = 485054,
-        //        FirstName = "Test",
-        //        LastName = result.LastName
-        //    };
+            var editedContact = new Contact
+            {
+                Id = result.Id,
+                ClientId = 485054,
+                FirstName = "Test",
+                LastName = result.LastName
+            };
 
-        //    var editedResult = await service.EditAsync(editedContact);
-        //    Assert.Equal(editedContact.FirstName, editedResult.FirstName);
-        //    //await service.DeleteContactAsync(result.Id);
-        //}
+            var editedResult = await service.EditAsync(editedContact);
+            Assert.Equal(editedContact.FirstName, editedResult.FirstName);
+            await service.DeleteContactAsync(result.Id);
+        }
 
         [Fact]
         public async Task EditContactArgumentException()
