@@ -19,7 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.5] - 
 ### Added
-- add and edit one Contact
+- implemented service for CUD operations on one Contact
 
 ### Changed
 - nothing
