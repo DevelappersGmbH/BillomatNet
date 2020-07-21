@@ -177,5 +177,86 @@ namespace Develappers.BillomatNet.Tests
 
             var result = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(contact));
         }
+
+        //[Fact]
+        //public async Task EditClient()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+        //    var service = new ClientService(config);
+
+        //    var contact = new Contact
+        //    {
+        //        ClientId = 485054,
+        //        FirstName = "Testt",
+        //        LastName = "Testermann"
+        //    };
+
+        //    var result = await service.CreateAsync(contact);
+        //    Assert.NotNull(await service.GetContactByIdAsync(result.Id));
+
+        //    var editedContact = new Contact
+        //    {
+        //        Id = result.Id,
+        //        ClientId = 485054,
+        //        FirstName = "Test",
+        //        LastName = result.LastName
+        //    };
+
+        //    var editedResult = await service.EditAsync(editedContact);
+        //    Assert.Equal(editedContact.FirstName, editedResult.FirstName);
+        //    //await service.DeleteContactAsync(result.Id);
+        //}
+
+        [Fact]
+        public async Task EditClientArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var contact = new Contact
+            {
+                Id = 0,
+                ClientId = 485054,
+                FirstName = "Testt",
+                LastName = "Testermann"
+            };
+
+            var editedResult = await Assert.ThrowsAsync<ArgumentException>(() => service.EditAsync(contact));
+        }
+
+        [Fact]
+        public async Task EditClientNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ClientService(config);
+
+            var contact = new Contact
+            {
+                Id = 500,
+                ClientId = 485054,
+                FirstName = "Testt",
+                LastName = "Testermann"
+            };
+
+            var editedResult = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.EditAsync(contact));
+        }
+
+        [Fact]
+        public async Task EditClientNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var contact = new Contact
+            {
+                Id = 1,
+                ClientId = 485054,
+                FirstName = "Testt",
+                LastName = "Testermann"
+            };
+
+            var editedResult = await Assert.ThrowsAsync<NotFoundException>(() => service.EditAsync(contact));
+        }
     }
 }
