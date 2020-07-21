@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - implemented service for CUD operations on one Contact
 - implemented service for C operation on article tag
+- implemented service for U operations on invoice items
 
 ### Changed
 - nothing
