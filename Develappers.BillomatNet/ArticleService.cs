@@ -205,7 +205,38 @@ namespace Develappers.BillomatNet
             var jsonModel = await PostAsync("/api/articles", wrappedModel, token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
-        
+
+        /// <summary>
+        /// Creates an article tag.
+        /// </summary>
+        /// <param name="model">The article tag to create.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new article tag.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<ArticleTag> CreateTagAsync(ArticleTag model, CancellationToken token = default)
+        {
+            if (model == null || model.ArticleId == 0 || model.Name == null)
+            {
+                throw new ArgumentException("article tag or a value of the article tag is null", nameof(model));
+            }
+            if (model.Id != 0)
+            {
+                throw new ArgumentException("invalid article tag id", nameof(model));
+            }
+
+            var wrappedModel = new ArticleTagWrapper
+            {
+                ArticleTag = model.ToApi()
+            };
+            var jsonModel = await PostAsync("/api/article-tags", wrappedModel, token);
+            return jsonModel.ToDomain();
+        }
+
         /// <summary>
         /// Creates / Edits an article property.
         /// </summary>

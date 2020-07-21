@@ -179,6 +179,20 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
+        internal static Types.ArticleTag ToDomain(this ArticleTag value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+            return new Types.ArticleTag
+            {
+                Id = value.Id,
+                ArticleId = value.ArticleId,
+                Name = value.Name
+            };
+        }
+
         internal static Api.Article ToApi(this Article value)
         {
             if (value == null)
@@ -219,6 +233,20 @@ namespace Develappers.BillomatNet.Helpers
                 Type = MappingHelpers.PropertyTypeToString(value.Type),
                 Name = value.Name,
                 Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
+            };
+        }
+
+        internal static Api.ArticleTag ToApi(this ArticleTag value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+            return new Api.ArticleTag
+            {
+                Id = value.Id,
+                ArticleId = value.ArticleId,
+                Name = value.Name
             };
         }
     }

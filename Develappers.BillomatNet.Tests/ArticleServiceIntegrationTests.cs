@@ -311,7 +311,57 @@ namespace Develappers.BillomatNet.Tests
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(null));
         }
-        
+
+        [Fact]
+        public async Task CreateArticleTag()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var name = "Xunit test";
+
+            var tag = new ArticleTag
+            {
+                ArticleId = 835226,
+                Name = name
+            };
+
+            var result = await service.CreateTagAsync(tag);
+            Assert.Equal(name, result.Name);
+
+            // await service.DeleteTagAsync(result.Id);
+        }
+
+        [Fact]
+        public async Task CreateArticleTagWhenArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var tag = new ArticleTag { };
+
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateTagAsync(tag));
+        }
+
+        [Fact]
+        public async Task CreateArticleTagWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var name = "Xunit test";
+
+            var tag = new ArticleTag
+            {
+                ArticleId = 835226,
+                Name = name
+            };
+
+            var result = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateTagAsync(tag));
+        }
+
         //[Fact]
         //public async Task EditArticlePropertyCheckbox()
         //{
