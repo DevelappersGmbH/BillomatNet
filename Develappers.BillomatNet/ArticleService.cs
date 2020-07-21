@@ -148,6 +148,26 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
+        /// Deletes the article tag with the given ID.
+        /// </summary>
+        /// <param name="id">The ID.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeleteTagAsync(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid article tag id", nameof(id));
+            }
+            return DeleteAsync($"/api/article-tags/{id}", token);
+        }
+
+        /// <summary>
         /// Updates the specified article.
         /// </summary>
         /// <param name="model">The article.</param>
