@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 using FakeItEasy.Configuration;
+using Newtonsoft.Json.Serialization;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests
@@ -156,6 +157,65 @@ namespace Develappers.BillomatNet.Tests
             var service = new ArticleService(config);
 
             var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(1));
+        }
+
+        [Fact]
+        public async Task DeleteArticleTag()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var articleItem = new Article
+            {
+                Title = "xUnit test",
+                SalesPrice = 3.5f,
+                UnitId = 20573,
+                TaxId = 21281,
+                PurchasePrice = 3.4f
+            };
+
+            var articleResult = await service.CreateAsync(articleItem);
+
+            var tag = new ArticleTag
+            {
+                ArticleId = articleResult.Id,
+                Name = "Xunit test"
+            };
+
+            var tagResult = await service.CreateTagAsync(tag);
+
+            await service.DeleteTagAsync(tagResult.Id);
+            Assert.Null(await service.GetTagByIdAsync(tagResult.Id));
+
+            await service.DeleteAsync(articleResult.Id);
+        }
+
+        [Fact]
+        public async Task DeleteArticleTagWhenArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteTagAsync(0));
+        }
+
+        [Fact]
+        public async Task DeleteArticleTagWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.DeleteTagAsync(1));
+        }
+
+        [Fact]
+        public async Task DeleteArticleTagWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteTagAsync(9699));
         }
 
         [Fact]
@@ -329,7 +389,7 @@ namespace Develappers.BillomatNet.Tests
             var result = await service.CreateTagAsync(tag);
             Assert.Equal(name, result.Name);
 
-            // await service.DeleteTagAsync(result.Id);
+            await service.DeleteTagAsync(result.Id);
         }
 
         [Fact]
