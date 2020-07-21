@@ -389,7 +389,7 @@ namespace Develappers.BillomatNet.Tests
             var result = await service.CreateTagAsync(tag);
             Assert.Equal(name, result.Name);
 
-            // await service.DeleteTagAsync(result.Id);
+            await service.DeleteTagAsync(result.Id);
         }
 
         [Fact]
