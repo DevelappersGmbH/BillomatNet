@@ -126,6 +126,26 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
+        /// Deletes a contact.
+        /// </summary>
+        /// <param name="id">The ID of the contact.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeleteContactAsync(int id, CancellationToken token = default)
+        {
+            if (id <=0)
+            {
+                throw new ArgumentException("invalid contact id", nameof(id));
+            }
+            return DeleteAsync($"/api/contacts/{id}", token);
+        }
+
+        /// <summary>
         /// Creates a contact.
         /// </summary>
         /// <param name="model">The contact.</param>
