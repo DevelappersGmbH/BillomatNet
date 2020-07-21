@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
@@ -122,6 +123,46 @@ namespace Develappers.BillomatNet
             // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
             var jsonModel = await GetListAsync<ClientTagCloudItemListWrapper>("/api/client-tags", null, token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Creates a contact.
+        /// </summary>
+        /// <param name="model">The contact.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the newly created contact with the ID.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Contact> CreateAsync(Contact model, CancellationToken token = default)
+        {
+            if (model == null || model.ClientId <= 0)
+            {
+                throw new ArgumentException("contact or a value of the contact is null", nameof(model));
+            }
+            if (model.Id != 0)
+            {
+                throw new ArgumentException("invalid contact id", nameof(model));
+            }
+
+            var wrappedModel = new ContactWrapper
+            {
+                Contact = model.ToApi()
+            };
+            try
+            {
+                var result = await PostAsync("api/contacts", wrappedModel, token);
+                return result.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException($"wrong contact parameter", nameof(model), wex);
+            }
+            
         }
     }
 }
