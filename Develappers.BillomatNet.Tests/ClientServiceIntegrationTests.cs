@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
@@ -114,5 +115,67 @@ namespace Develappers.BillomatNet.Tests
             Assert.True(true);
         }
 
+        //[Fact]
+        //public async Task CreateClient()
+        //{
+        //    var config = Helpers.GetTestConfiguration();
+        //    var service = new ClientService(config);
+
+        //    var contact = new Contact
+        //    {
+        //        ClientId = 485054,
+        //        FirstName = "Test",
+        //        LastName = "Testermann"
+        //    };
+
+        //    var result = await service.CreateAsync(contact);
+        //    Assert.NotNull(await service.GetContactByIdAsync(result.Id));
+
+        //    //await service.DeleteContactAsync(result.Id);
+        //}
+
+        [Fact]
+        public async Task CreateClientArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var contact = new Contact{};
+
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(contact));
+        }
+
+        [Fact]
+        public async Task CreateClientNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ClientService(config);
+
+            var contact = new Contact
+            {
+                ClientId = 485054,
+                FirstName = "Test",
+                LastName = "Testermann"
+            };
+
+            var result = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(contact));
+        }
+
+        [Fact]
+        public async Task CreateClientNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var contact = new Contact
+            {
+                ClientId = 1,
+                FirstName = "Test",
+                LastName = "Testermann"
+            };
+
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(contact));
+        }
     }
 }
