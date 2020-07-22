@@ -15,105 +15,9 @@ namespace Develappers.BillomatNet.Helpers
 {
     internal static class ClientMappingExtensions
     {
-        private static Account ToDomain(this Develappers.BillomatNet.Api.Account value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Account
-            {
-                Id = int.Parse(value.Id),
-                Number = value.Number,
-                CountryCode = value.CountryCode,
-                Email = value.Email,
-                FirstName = value.FirstName,
-                LastName = value.LastName,
-                Note = value.Note,
-                Tags = value.Tags.ToStringList(),
-                InvoiceIds = value.InvoiceId.ToIntList(),
-                CreatedAt = value.Created,
-                IsArchived = value.Archived != "0",
-                NumberPrefix = value.NumberPre,
-                NumberLength = int.Parse(value.NumberLength),
-                Address = value.Address,
-                ClientNumber = value.ClientNumber,
-                BankAccountNumber = value.BankAccountNumber,
-                BankAccountOwner = value.BankAccountOwner,
-                BankIban = value.BankIban,
-                BankName = value.BankName,
-                BankNumber = value.BankNumber,
-                BankSwift = value.BankSwift,
-                City = value.City,
-                CurrencyCode = value.CurrencyCode,
-                Fax = value.Fax,
-                Mobile = value.Mobile,
-                Name = value.Name,
-                Phone = value.Phone,
-                Salutation = value.Salutation,
-                State = value.State,
-                Street = value.Street,
-                TaxNumber = value.TaxNumber,
-                VatNumber = value.VatNumber,
-                Web = value.Www,
-                ZipCode = value.Zip,
-                Plan = value.Plan,
-                Quotas = value.Quotas.ToDomain()
-            };
-        }
-
-        private static Quota ToDomain(this Api.Quota value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            QuotaType type;
-            switch (value.Entity.ToLowerInvariant())
-            {
-                case "documents":
-                    type = QuotaType.Documents;
-                    break;
-                case "clients":
-                    type = QuotaType.Clients;
-                    break;
-                case "articles":
-                    type = QuotaType.Articles;
-                    break;
-                case "storage":
-                    type = QuotaType.Storage;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-
-            }
-
-            return new Quota
-            {
-                Available = int.Parse(value.Available),
-                Used = int.Parse(value.Used),
-                Entity = type
-            };
-        }
-
-        private static List<Quota> ToDomain(this QuotaWrapper value)
-        {
-            return value?.Quota?.Select(x => x.ToDomain()).ToList();
-        }
-
-        internal static Account ToDomain(this AccountWrapper value)
-        {
-            return value?.Client.ToDomain();
-        }
+        #region Client
 
         internal static Types.PagedList<Client> ToDomain(this ClientListWrapper value)
-        {
-            return value?.Item.ToDomain();
-        }
-
-        internal static Types.PagedList<Contact> ToDomain(this ContactListWrapper value)
         {
             return value?.Item.ToDomain();
         }
@@ -130,74 +34,13 @@ namespace Develappers.BillomatNet.Helpers
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
                 TotalItems = value.Total,
-                List = value.List?.Select(x => ToDomain((Api.Client) x)).ToList()
-            };
-        }
-
-        internal static Types.PagedList<Contact> ToDomain(this ContactList value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Types.PagedList<Contact>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(ToDomain).ToList()
+                List = value.List?.Select(x => ToDomain((Api.Client)x)).ToList()
             };
         }
 
         internal static Client ToDomain(this ClientWrapper value)
         {
             return value?.Client.ToDomain();
-        }
-
-        internal static Types.PagedList<ClientProperty> ToDomain(this ClientPropertyListWrapper value)
-        {
-            return value?.Item.ToDomain();
-        }
-
-        private static ClientProperty ToDomain(this Api.ClientProperty value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            var type = MappingHelpers.ParsePropertyType(value.Type);
-            return new ClientProperty
-            {
-                Id = value.Id,
-                ClientPropertyId = value.ClientPropertyId,
-                Type = type,
-                ClientId = value.ClientId,
-                Name = value.Name,
-                Value = MappingHelpers.ParsePropertyValue(type, value.Value)
-            };
-        }
-
-        internal static Types.PagedList<ClientProperty> ToDomain(this ClientPropertyList value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Types.PagedList<ClientProperty>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(x => x.ToDomain()).ToList()
-            };
-        }
-
-        internal static Contact ToDomain(this ContactWrapper value)
-        {
-            return value?.Contact.ToDomain();
         }
 
         private static Client ToDomain(this Api.Client value)
@@ -264,6 +107,105 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
+        #endregion
+
+        #region Property
+
+        internal static Types.PagedList<ClientProperty> ToDomain(this ClientPropertyListWrapper value)
+        {
+            return value?.Item.ToDomain();
+        }
+
+        internal static Types.PagedList<ClientProperty> ToDomain(this ClientPropertyList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<ClientProperty>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(x => x.ToDomain()).ToList()
+            };
+        }
+
+        private static ClientProperty ToDomain(this Api.ClientProperty value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var type = MappingHelpers.ParsePropertyType(value.Type);
+            return new ClientProperty
+            {
+                Id = value.Id,
+                ClientPropertyId = value.ClientPropertyId,
+                Type = type,
+                ClientId = value.ClientId,
+                Name = value.Name,
+                Value = MappingHelpers.ParsePropertyValue(type, value.Value)
+            };
+        }
+
+        #endregion
+
+        #region Tag
+
+        internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemListWrapper value)
+        {
+            return value?.Item.ToDomain();
+        }
+
+        internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<TagCloudItem>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(x => x.ToDomain()).ToList()
+            };
+        }
+
+        #endregion
+
+        #region Contact
+
+        internal static Types.PagedList<Contact> ToDomain(this ContactListWrapper value)
+        {
+            return value?.Item.ToDomain();
+        }
+
+        internal static Types.PagedList<Contact> ToDomain(this ContactList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<Contact>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(ToDomain).ToList()
+            };
+        }
+
+        internal static Contact ToDomain(this ContactWrapper value)
+        {
+            return value?.Contact.ToDomain();
+        }
+
         private static Contact ToDomain(this Api.Contact value)
         {
             if (value == null)
@@ -291,28 +233,6 @@ namespace Develappers.BillomatNet.Helpers
                 ZipCode = value.ZipCode,
                 Created = value.Created,
                 Updated = value.Updated
-            };
-        }
-
-
-        internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemListWrapper value)
-        {
-            return value?.Item.ToDomain();
-        }
-
-        internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemList value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Types.PagedList<TagCloudItem>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(x => x.ToDomain()).ToList()
             };
         }
 
@@ -345,5 +265,108 @@ namespace Develappers.BillomatNet.Helpers
                 Updated = value.Updated
             };
         }
+
+        #endregion
+
+        #region Account
+
+        internal static Account ToDomain(this AccountWrapper value)
+        {
+            return value?.Client.ToDomain();
+        }
+
+        private static Account ToDomain(this Develappers.BillomatNet.Api.Account value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Account
+            {
+                Id = int.Parse(value.Id),
+                Number = value.Number,
+                CountryCode = value.CountryCode,
+                Email = value.Email,
+                FirstName = value.FirstName,
+                LastName = value.LastName,
+                Note = value.Note,
+                Tags = value.Tags.ToStringList(),
+                InvoiceIds = value.InvoiceId.ToIntList(),
+                CreatedAt = value.Created,
+                IsArchived = value.Archived != "0",
+                NumberPrefix = value.NumberPre,
+                NumberLength = int.Parse(value.NumberLength),
+                Address = value.Address,
+                ClientNumber = value.ClientNumber,
+                BankAccountNumber = value.BankAccountNumber,
+                BankAccountOwner = value.BankAccountOwner,
+                BankIban = value.BankIban,
+                BankName = value.BankName,
+                BankNumber = value.BankNumber,
+                BankSwift = value.BankSwift,
+                City = value.City,
+                CurrencyCode = value.CurrencyCode,
+                Fax = value.Fax,
+                Mobile = value.Mobile,
+                Name = value.Name,
+                Phone = value.Phone,
+                Salutation = value.Salutation,
+                State = value.State,
+                Street = value.Street,
+                TaxNumber = value.TaxNumber,
+                VatNumber = value.VatNumber,
+                Web = value.Www,
+                ZipCode = value.Zip,
+                Plan = value.Plan,
+                Quotas = value.Quotas.ToDomain()
+            };
+        }
+
+        #endregion
+
+        #region Quota
+
+        private static Quota ToDomain(this Api.Quota value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            QuotaType type;
+            switch (value.Entity.ToLowerInvariant())
+            {
+                case "documents":
+                    type = QuotaType.Documents;
+                    break;
+                case "clients":
+                    type = QuotaType.Clients;
+                    break;
+                case "articles":
+                    type = QuotaType.Articles;
+                    break;
+                case "storage":
+                    type = QuotaType.Storage;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+
+            }
+
+            return new Quota
+            {
+                Available = int.Parse(value.Available),
+                Used = int.Parse(value.Used),
+                Entity = type
+            };
+        }
+
+        private static List<Quota> ToDomain(this QuotaWrapper value)
+        {
+            return value?.Quota?.Select(x => x.ToDomain()).ToList();
+        }
+
+        #endregion
     }
 }

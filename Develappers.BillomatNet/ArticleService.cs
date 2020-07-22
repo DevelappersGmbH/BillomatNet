@@ -18,6 +18,8 @@ namespace Develappers.BillomatNet
         {
         }
 
+        #region Article
+
         /// <summary>
         /// Retrieves a list of articles.
         /// </summary>
@@ -26,28 +28,6 @@ namespace Develappers.BillomatNet
         public Task<Types.PagedList<Article>> GetListAsync(CancellationToken token = default(CancellationToken))
         {
             return GetListAsync(null, token);
-        }
-
-        /// <summary>
-        /// Retrieves a list of all properties.
-        /// </summary>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns></returns>
-        public Task<Types.PagedList<ArticleProperty>> GetPropertyListAsync(CancellationToken token = default(CancellationToken))
-        {
-            return GetPropertyListAsync(null, token);
-        }
-
-        /// <summary>
-        /// Retrieves a list of all properties.
-        /// </summary>
-        /// <param name="query">The filter and sort options.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns></returns>
-        public async Task<Types.PagedList<ArticleProperty>> GetPropertyListAsync(Query<ArticleProperty, ArticlePropertyFilter> query, CancellationToken token = default(CancellationToken))
-        {
-            var jsonModel = await GetListAsync<ArticlePropertyListWrapper>("/api/article-property-values", QueryString.For(query), token).ConfigureAwait(false);
-            return jsonModel.ToDomain();
         }
 
         /// <summary>
@@ -75,6 +55,111 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
+        /// Creates an article.
+        /// </summary>
+        /// <param name="model">The article to create.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new article.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Article> CreateAsync(Article model, CancellationToken token = default)
+        {
+            if (model == null)
+            {
+                throw new ArgumentException("article or a value of the article is null", nameof(model));
+            }
+            if (model.Id != 0)
+            {
+                throw new ArgumentException("invalid article id", nameof(model));
+            }
+
+            var wrappedModel = new ArticleWrapper
+            {
+                Article = model.ToApi()
+            };
+            var jsonModel = await PostAsync("/api/articles", wrappedModel, token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Updates the specified article.
+        /// </summary>
+        /// <param name="model">The article.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the updated article.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Article> EditAsync(Article model, CancellationToken token = default)
+        {
+            if (model.Id <= 0)
+            {
+                throw new ArgumentException("invalid article id", nameof(model));
+            }
+
+            var wrappedModel = new ArticleWrapper
+            {
+                Article = model.ToApi()
+            };
+
+            var jsonModel = await PutAsync($"/api/articles/{model.Id}", wrappedModel, token);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Deletes the article with the given ID.
+        /// </summary>
+        /// <param name="id">The ID.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeleteAsync(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid article id", nameof(id));
+            }
+            return DeleteAsync($"/api/articles/{id}", token);
+        }
+
+        #endregion
+
+        #region Property
+
+        /// <summary>
+        /// Retrieves a list of all properties.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns></returns>
+        public Task<Types.PagedList<ArticleProperty>> GetPropertyListAsync(CancellationToken token = default(CancellationToken))
+        {
+            return GetPropertyListAsync(null, token);
+        }
+
+        /// <summary>
+        /// Retrieves a list of all properties.
+        /// </summary>
+        /// <param name="query">The filter and sort options.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns></returns>
+        public async Task<Types.PagedList<ArticleProperty>> GetPropertyListAsync(Query<ArticleProperty, ArticlePropertyFilter> query, CancellationToken token = default(CancellationToken))
+        {
+            var jsonModel = await GetListAsync<ArticlePropertyListWrapper>("/api/article-property-values", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
         /// Returns an article property by it's id. 
         /// </summary>
         /// <param name="id">The id of the article property.</param>
@@ -85,6 +170,45 @@ namespace Develappers.BillomatNet
             var jsonModel = await GetItemByIdAsync<ArticlePropertyWrapper>($"/api/article-property-values/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
+
+        /// <summary>
+        /// Creates / Edits an article property.
+        /// </summary>
+        /// <param name="model">The article property.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new article property.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<ArticleProperty> EditArticlePropertyAsync(ArticleProperty model, CancellationToken token = default)
+        {
+            if (model == null || model.ArticleId <= 0 || model.ArticlePropertyId <= 0 || model.Value == null)
+            {
+                throw new ArgumentException("any parameter was not set", nameof(model));
+            }
+
+            var wrappedModel = new ArticlePropertyWrapper
+            {
+                ArticleProperty = model.ToApi()
+            };
+            try
+            {
+                var jsonModel = await PostAsync("/api/article-property-values", wrappedModel, token).ConfigureAwait(false);
+                return jsonModel.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException($"wrong input parameter", nameof(model), wex);
+            }
+        }
+
+        #endregion
+
+        #region Tag
 
         /// <summary>
         /// Retrieves the article tag cloud.
@@ -128,26 +252,6 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Deletes the article with the given ID.
-        /// </summary>
-        /// <param name="id">The ID.</param>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public Task DeleteAsync(int id, CancellationToken token = default)
-        {
-            if (id <= 0)
-            {
-                throw new ArgumentException("invalid article id", nameof(id));
-            }
-            return DeleteAsync($"/api/articles/{id}", token);
-        }
-
-        /// <summary>
         /// Deletes the article tag with the given ID.
         /// </summary>
         /// <param name="id">The ID.</param>
@@ -165,65 +269,6 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid article tag id", nameof(id));
             }
             return DeleteAsync($"/api/article-tags/{id}", token);
-        }
-
-        /// <summary>
-        /// Updates the specified article.
-        /// </summary>
-        /// <param name="model">The article.</param>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the updated article.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<Article> EditAsync(Article model, CancellationToken token = default)
-        {
-            if (model.Id <= 0)
-            {
-                throw new ArgumentException("invalid article id", nameof(model));
-            }
-
-            var wrappedModel = new ArticleWrapper
-            {
-                Article = model.ToApi()
-            };
-
-            var jsonModel = await PutAsync($"/api/articles/{model.Id}", wrappedModel, token);
-            return jsonModel.ToDomain();
-        }
-
-        /// <summary>
-        /// Creates an article.
-        /// </summary>
-        /// <param name="model">The article to create.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the new article.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<Article> CreateAsync(Article model, CancellationToken token = default)
-        {
-            if (model == null)
-            {
-                throw new ArgumentException("article or a value of the article is null", nameof(model));
-            }
-            if (model.Id != 0)
-            {
-                throw new ArgumentException("invalid article id", nameof(model));
-            }
-
-            var wrappedModel = new ArticleWrapper
-            {
-                Article = model.ToApi()
-            };
-            var jsonModel = await PostAsync("/api/articles", wrappedModel, token).ConfigureAwait(false);
-            return jsonModel.ToDomain();
         }
 
         /// <summary>
@@ -257,40 +302,6 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        /// <summary>
-        /// Creates / Edits an article property.
-        /// </summary>
-        /// <param name="model">The article property.</param>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the new article property.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<ArticleProperty> EditArticlePropertyAsync(ArticleProperty model, CancellationToken token = default)
-        {
-            if (model == null || model.ArticleId <= 0 || model.ArticlePropertyId <= 0 || model.Value == null)
-            {
-                throw new ArgumentException("any parameter was not set", nameof(model));
-            }
-
-            var wrappedModel = new ArticlePropertyWrapper
-            {
-                ArticleProperty = model.ToApi()
-            };
-            try
-            {
-                var jsonModel = await PostAsync("/api/article-property-values", wrappedModel, token).ConfigureAwait(false);
-                return jsonModel.ToDomain();
-            }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
-            {
-                throw new ArgumentException($"wrong input parameter", nameof(model), wex);
-            }
-         }
-
+        #endregion
     }
 }

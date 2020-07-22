@@ -21,6 +21,8 @@ namespace Develappers.BillomatNet
         {
         }
 
+        #region Invoice
+
         /// <summary>
         /// Retrieves a list of all invoices.
         /// </summary>
@@ -43,12 +45,6 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        public async Task<InvoiceDocument> GetPdfAsync(int id, CancellationToken token = default(CancellationToken))
-        {
-            var jsonModel = await GetItemByIdAsync<InvoiceDocumentWrapper>($"/api/invoices/{id}/pdf", token).ConfigureAwait(false);
-            return jsonModel.ToDomain();
-        }
-
         /// <summary>
         /// Returns an invoice by it's ID. 
         /// </summary>
@@ -62,43 +58,85 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Deletes an invoice.
+        /// Returns and invoice by it's ID.
         /// </summary>
         /// <param name="id">The ID of the invoice.</param>
         /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public Task DeleteAsync(int id, CancellationToken token = default(CancellationToken))
+        /// <returns>The invoice or null if not found.</returns>
+        public async Task<InvoiceItem> GetItemByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
-            if (id <= 0)
-            {
-                throw new ArgumentException("invalid invoice id", nameof(id));
-            }
-            return DeleteAsync($"/api/invoices/{id}", token);
+            var jsonModel = await GetItemByIdAsync<InvoiceItemWrapper>($"/api/invoice-items/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
         }
 
         /// <summary>
-        /// Deletes an invoice item.
+        /// Creates an invoice.
         /// </summary>
-        /// <param name="id">The ID of the invoice item.</param>
+        /// <param name="model">The invoice object.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
+        /// The task result returns the newly created invoice with the ID.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public Task DeleteInvoiceItemAsync(int id, CancellationToken token = default)
+        public async Task<Invoice> CreateAsync(Invoice model, CancellationToken token = default(CancellationToken))
         {
-            if (id <= 0)
+            if (model == null || model.ClientId == 0 || model.Quote < 1 || model.Date == DateTime.MinValue)
             {
-                throw new ArgumentException("invalid invoice item id", nameof(id));
+                throw new ArgumentException("invoice or a value of the invoice is null", nameof(model));
             }
-            return DeleteAsync($"/api/invoice-items/{id}", token);
+            if (model.Id != 0)
+            {
+                throw new ArgumentException("invalid invoice id", nameof(model));
+            }
+            var wrappedModel = new InvoiceWrapper
+            {
+                Invoice = model.ToApi()
+            };
+            var result = await PostAsync("/api/invoices", wrappedModel, token);
+
+            return result.ToDomain();
+        }
+
+        /// <summary>
+        /// Creates / Edits an invoice property.
+        /// </summary>
+        /// <param name="model">The invoice property.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new invoice property.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Invoice> EditAsync(Invoice model, CancellationToken token = default)
+        {
+            if (model == null || model.ClientId == 0 || model.Quote < 1 || model.Date == DateTime.MinValue)
+            {
+                throw new ArgumentException("invoice or a value of the invoice is null", nameof(model));
+            }
+            if (model.Id <= 0)
+            {
+                throw new ArgumentException("invalid invoice id", nameof(model));
+            }
+
+            var wrappedModel = new InvoiceWrapper
+            {
+                Invoice = model.ToApi()
+            };
+            try
+            {
+                var jsonModel = await PutAsync($"/api/invoices/{model.Id}", wrappedModel, token).ConfigureAwait(false);
+                return jsonModel.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException($"wrong input parameter", nameof(model), wex);
+            }
         }
 
         /// <summary>
@@ -167,6 +205,30 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
+        /// Deletes an invoice.
+        /// </summary>
+        /// <param name="id">The ID of the invoice.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeleteAsync(int id, CancellationToken token = default(CancellationToken))
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid invoice id", nameof(id));
+            }
+            return DeleteAsync($"/api/invoices/{id}", token);
+        }
+
+        #endregion
+
+        #region Item
+
+        /// <summary>
         /// Retrieves a list of the items (articles) used in the invoice.
         /// </summary>
         /// <param name="invoiceId">The ID of the incoice with the items.</param>
@@ -176,49 +238,6 @@ namespace Develappers.BillomatNet
         {
             var jsonModel = await GetListAsync<InvoiceItemListWrapper>("/api/invoice-items", $"invoice_id={invoiceId}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
-        }
-
-        /// <summary>
-        /// Returns and invoice by it's ID.
-        /// </summary>
-        /// <param name="id">The ID of the invoice.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>The invoice or null if not found.</returns>
-        public async Task<InvoiceItem> GetItemByIdAsync(int id, CancellationToken token = default(CancellationToken))
-        {
-            var jsonModel = await GetItemByIdAsync<InvoiceItemWrapper>($"/api/invoice-items/{id}", token).ConfigureAwait(false);
-            return jsonModel.ToDomain();
-        }
-
-        /// <summary>
-        /// Creates an invoice.
-        /// </summary>
-        /// <param name="model">The invoice object.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result returns the newly created invoice with the ID.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<Invoice> CreateAsync(Invoice model, CancellationToken token = default(CancellationToken))
-        {
-            if (model == null || model.ClientId == 0 || model.Quote < 1 || model.Date == DateTime.MinValue)
-            {
-                throw new ArgumentException("invoice or a value of the invoice is null", nameof(model));
-            }
-            if (model.Id != 0)
-            {
-                throw new ArgumentException("invalid invoice id", nameof(model));
-            }
-            var wrappedModel = new InvoiceWrapper
-            {
-                Invoice = model.ToApi()
-            };
-            var result = await PostAsync("/api/invoices", wrappedModel, token);
-
-            return result.ToDomain();
         }
 
         /// <summary>
@@ -260,45 +279,6 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Creates / Edits an invoice property.
-        /// </summary>
-        /// <param name="model">The invoice property.</param>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the new invoice property.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<Invoice> EditAsync(Invoice model, CancellationToken token = default)
-        {
-            if (model == null || model.ClientId == 0 || model.Quote < 1 || model.Date == DateTime.MinValue)
-            {
-                throw new ArgumentException("invoice or a value of the invoice is null", nameof(model));
-            }
-            if (model.Id <= 0)
-            {
-                throw new ArgumentException("invalid invoice id", nameof(model));
-            }
-
-            var wrappedModel = new InvoiceWrapper
-            {
-                Invoice = model.ToApi()
-            };
-            try
-            {
-                var jsonModel = await PutAsync($"/api/invoices/{model.Id}", wrappedModel, token).ConfigureAwait(false);
-                return jsonModel.ToDomain();
-            }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
-            {
-                throw new ArgumentException($"wrong input parameter", nameof(model), wex);
-            }
-        }
-
-        /// <summary>
         /// Edits an invoice item.
         /// </summary>
         /// <param name="model">The invoice item.</param>
@@ -312,7 +292,7 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         public async Task<InvoiceItem> EditAsync(InvoiceItem model, CancellationToken token = default)
         {
-            if (model == null || model.InvoiceId <=0)
+            if (model == null || model.InvoiceId <= 0)
             {
                 throw new ArgumentException("invoice item or a value of the invoice item is null", nameof(model));
             }
@@ -336,5 +316,34 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException($"wrong input parameter", nameof(model), wex);
             }
         }
+
+        /// <summary>
+        /// Deletes an invoice item.
+        /// </summary>
+        /// <param name="id">The ID of the invoice item.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeleteInvoiceItemAsync(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid invoice item id", nameof(id));
+            }
+            return DeleteAsync($"/api/invoice-items/{id}", token);
+        }
+
+        #endregion
+
+        public async Task<InvoiceDocument> GetPdfAsync(int id, CancellationToken token = default(CancellationToken))
+        {
+            var jsonModel = await GetItemByIdAsync<InvoiceDocumentWrapper>($"/api/invoices/{id}/pdf", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
     }
 }
