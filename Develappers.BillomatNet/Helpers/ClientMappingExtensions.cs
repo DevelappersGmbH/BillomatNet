@@ -6,6 +6,7 @@ using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Types;
 using Account = Develappers.BillomatNet.Types.Account;
 using Client = Develappers.BillomatNet.Types.Client;
+using ClientProperty = Develappers.BillomatNet.Types.ClientProperty;
 using Contact = Develappers.BillomatNet.Types.Contact;
 using Quota = Develappers.BillomatNet.Types.Quota;
 using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
@@ -152,6 +153,46 @@ namespace Develappers.BillomatNet.Helpers
         internal static Client ToDomain(this ClientWrapper value)
         {
             return value?.Client.ToDomain();
+        }
+
+        internal static Types.PagedList<ClientProperty> ToDomain(this ClientPropertyListWrapper value)
+        {
+            return value?.Item.ToDomain();
+        }
+
+        private static ClientProperty ToDomain(this Api.ClientProperty value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var type = MappingHelpers.ParsePropertyType(value.Type);
+            return new ClientProperty
+            {
+                Id = value.Id,
+                ClientPropertyId = value.ClientPropertyId,
+                Type = type,
+                ClientId = value.ClientId,
+                Name = value.Name,
+                Value = MappingHelpers.ParsePropertyValue(type, value.Value)
+            };
+        }
+
+        internal static Types.PagedList<ClientProperty> ToDomain(this ClientPropertyList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<ClientProperty>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(x => x.ToDomain()).ToList()
+            };
         }
 
         internal static Contact ToDomain(this ContactWrapper value)

@@ -59,6 +59,16 @@ namespace Develappers.BillomatNet.Tests
         }
 
         [Fact]
+        public async Task GetClientPropertyList()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var result = await service.GetPropertyListAsync();
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public async Task GetContacts()
         {
             var config = Helpers.GetTestConfiguration();

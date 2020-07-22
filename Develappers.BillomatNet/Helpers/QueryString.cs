@@ -24,6 +24,20 @@ namespace Develappers.BillomatNet.Helpers
             return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
         }
 
+        internal static string For(Query<ClientProperty, ClientPropertyFilter> value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var filter = value.Filter.ToQueryString();
+            var sort = value.Sort.ToQueryString();
+            var paging = value.Paging.ToQueryString();
+
+            return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
+        }
+
         internal static string For(Query<ArticleTag, ArticleTagFilter> value)
         {
             if (value == null)
@@ -120,6 +134,11 @@ namespace Develappers.BillomatNet.Helpers
             return ToQueryString<Client, Api.Client>(value);
         }
 
+        internal static string ToQueryString(this List<SortItem<ClientProperty>> value)
+        {
+            return ToQueryString<ClientProperty, Develappers.BillomatNet.Api.ClientProperty>(value);
+        }
+
         internal static string ToQueryString(this List<SortItem<Invoice>> value)
         {
             return ToQueryString<Invoice, Api.Invoice>(value);
@@ -211,6 +230,42 @@ namespace Develappers.BillomatNet.Helpers
             if ((value.Tags?.Count ?? 0) > 0)
             {
                 filters.Add($"tags={string.Join(",", value.Tags.Select(HttpUtility.UrlEncode))}");
+            }
+
+            return string.Join("&", filters);
+        }
+
+        internal static string ToQueryString(this ClientPropertyFilter value)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
+            var filters = new List<string>();
+            if (value.ClientId.HasValue)
+            {
+                filters.Add($"article_id={value.ClientId.Value}");
+            }
+
+            if (value.ClientPropertyId.HasValue)
+            {
+                filters.Add($"article_property_id={value.ClientPropertyId.Value}");
+            }
+
+            if (value.Value != null)
+            {
+                string val;
+                if (value.Value is bool)
+                {
+                    val = value.Value.ToString();
+                }
+                else
+                {
+                    val = (string)value.Value;
+                }
+
+                filters.Add($"value={HttpUtility.UrlEncode(val)}");
             }
 
             return string.Join("&", filters);

@@ -6,9 +6,11 @@ using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
+using Develappers.BillomatNet.Types;
 using Newtonsoft.Json;
 using Account = Develappers.BillomatNet.Types.Account;
 using Client = Develappers.BillomatNet.Types.Client;
+using ClientProperty = Develappers.BillomatNet.Types.ClientProperty;
 using Contact = Develappers.BillomatNet.Types.Contact;
 using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
@@ -69,6 +71,35 @@ namespace Develappers.BillomatNet
         public async Task<Types.PagedList<Client>> GetListAsync(Query<Client, ClientFilter> query, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetListAsync<ClientListWrapper>("/api/clients", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Retrieves a list of all properties.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the client property list.
+        /// </returns>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        public Task<Types.PagedList<ClientProperty>> GetPropertyListAsync(CancellationToken token = default)
+        {
+            return GetPropertyListAsync(null, token);
+        }
+
+        /// <summary>
+        /// Retrieves a list of all properties.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the client property list.
+        /// </returns>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        public async Task<Types.PagedList<ClientProperty>> GetPropertyListAsync(Query<ClientProperty, ClientPropertyFilter> query, CancellationToken token = default)
+        {
+            var jsonModel = await GetListAsync<ClientPropertyListWrapper>("/api/client-property-values", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
