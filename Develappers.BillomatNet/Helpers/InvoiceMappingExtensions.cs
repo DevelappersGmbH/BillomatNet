@@ -13,46 +13,14 @@ namespace Develappers.BillomatNet.Helpers
 {
     internal static class InvoiceMappingExtensions
     {
+        #region Invoice
+
         internal static Invoice ToDomain(this InvoiceWrapper value)
         {
             return value?.Invoice.ToDomain();
         }
 
-        internal static InvoiceItem ToDomain(this InvoiceItemWrapper value)
-        {
-            return value?.InvoiceItem.ToDomain();
-        }
-
-        internal static InvoiceDocument ToDomain(this InvoiceDocumentWrapper value)
-        {
-            return value?.Pdf.ToDomain();
-        }
-
-        private static InvoiceDocument ToDomain(this Api.InvoiceDocument value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new InvoiceDocument
-            {
-                Id = int.Parse(value.Id),
-                Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
-                FileName = value.FileName,
-                FileSize = int.Parse(value.FileSize, CultureInfo.InvariantCulture),
-                InvoiceId = int.Parse(value.InvoiceId, CultureInfo.InvariantCulture),
-                MimeType = value.MimeType,
-                Bytes = Convert.FromBase64String(value.Base64File)
-            };
-        }
-
         internal static Types.PagedList<Invoice> ToDomain(this InvoiceListWrapper value)
-        {
-            return value?.Item.ToDomain();
-        }
-
-        internal static Types.PagedList<InvoiceItem> ToDomain(this InvoiceItemListWrapper value)
         {
             return value?.Item.ToDomain();
         }
@@ -65,22 +33,6 @@ namespace Develappers.BillomatNet.Helpers
             }
 
             return new Types.PagedList<Invoice>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(ToDomain).ToList()
-            };
-        }
-
-        internal static Types.PagedList<InvoiceItem> ToDomain(this InvoiceItemList value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Types.PagedList<InvoiceItem>
             {
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
@@ -239,82 +191,6 @@ namespace Develappers.BillomatNet.Helpers
 
         }
 
-        private static InvoiceItem ToDomain(this Api.InvoiceItem value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            IReduction reduction = null;
-            if (!string.IsNullOrEmpty(value.Reduction) && value.Reduction != "null")
-            {
-                if (value.Reduction.EndsWith("%"))
-                {
-                    reduction = new PercentReduction
-                    {
-                        Value = float.Parse(value.Reduction.Replace("%", ""), CultureInfo.InvariantCulture)
-                    };
-                }
-                else
-                {
-                    reduction = new AbsoluteReduction
-                    {
-                        Value = float.Parse(value.Reduction, CultureInfo.InvariantCulture)
-                    };
-                }
-            }
-
-            return new InvoiceItem
-            {
-                Id = int.Parse(value.Id, CultureInfo.InvariantCulture),
-                Reduction = reduction,
-                InvoiceId = int.Parse(value.InvoiceId, CultureInfo.InvariantCulture),
-                ArticleId = value.ArticleId.ToOptionalInt(),
-                Description = value.Description,
-                Position = int.Parse(value.Position, CultureInfo.InvariantCulture),
-                Title = value.Title,
-                Unit = value.Unit,
-                TaxName = value.TaxName,
-                TotalNet = float.Parse(value.TotalNet, CultureInfo.InvariantCulture),
-                Quantity = float.Parse(value.Quantity, CultureInfo.InvariantCulture),
-                TotalNetUnreduced = float.Parse(value.TotalNetUnreduced, CultureInfo.InvariantCulture),
-                TotalGross = float.Parse(value.TotalGross, CultureInfo.InvariantCulture),
-                TotalGrossUnreduced = float.Parse(value.TotalGrossUnreduced, CultureInfo.InvariantCulture),
-                UnitPrice = float.Parse(value.UnitPrice, CultureInfo.InvariantCulture),
-                TaxRate = value.TaxRate.ToOptionalFloat()
-            };
-
-        }
-
-        private static List<InvoiceTax> ToDomain(this InvoiceTaxWrapper value)
-        {
-            return value?.List?.Select(ToDomain).ToList();
-        }
-
-        private static InvoiceTax ToDomain(this Api.InvoiceTax value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new InvoiceTax
-            {
-                Name = value.Name,
-                Amount = float.Parse(value.Amount, CultureInfo.InvariantCulture),
-                AmountGross = float.Parse(value.AmountGross, CultureInfo.InvariantCulture),
-                AmountGrossPlain = float.Parse(value.AmountGrossPlain, CultureInfo.InvariantCulture),
-                AmountGrossRounded = float.Parse(value.AmountGrossRounded, CultureInfo.InvariantCulture),
-                AmountNet = float.Parse(value.AmountNet, CultureInfo.InvariantCulture),
-                AmountNetPlain = float.Parse(value.AmountNetPlain, CultureInfo.InvariantCulture),
-                AmountNetRounded = float.Parse(value.AmountNetRounded, CultureInfo.InvariantCulture),
-                AmountPlain = float.Parse(value.AmountPlain, CultureInfo.InvariantCulture),
-                AmountRounded = float.Parse(value.AmountRounded, CultureInfo.InvariantCulture),
-                Rate = float.Parse(value.Rate, CultureInfo.InvariantCulture),
-            };
-        }
-
         internal static Api.Invoice ToApi(this Invoice value)
         {
             if (value == null)
@@ -463,6 +339,84 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
+        #endregion
+
+        #region Item
+
+        internal static InvoiceItem ToDomain(this InvoiceItemWrapper value)
+        {
+            return value?.InvoiceItem.ToDomain();
+        }
+
+        internal static Types.PagedList<InvoiceItem> ToDomain(this InvoiceItemListWrapper value)
+        {
+            return value?.Item.ToDomain();
+        }
+
+        internal static Types.PagedList<InvoiceItem> ToDomain(this InvoiceItemList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<InvoiceItem>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(ToDomain).ToList()
+            };
+        }
+
+        private static InvoiceItem ToDomain(this Api.InvoiceItem value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            IReduction reduction = null;
+            if (!string.IsNullOrEmpty(value.Reduction) && value.Reduction != "null")
+            {
+                if (value.Reduction.EndsWith("%"))
+                {
+                    reduction = new PercentReduction
+                    {
+                        Value = float.Parse(value.Reduction.Replace("%", ""), CultureInfo.InvariantCulture)
+                    };
+                }
+                else
+                {
+                    reduction = new AbsoluteReduction
+                    {
+                        Value = float.Parse(value.Reduction, CultureInfo.InvariantCulture)
+                    };
+                }
+            }
+
+            return new InvoiceItem
+            {
+                Id = int.Parse(value.Id, CultureInfo.InvariantCulture),
+                Reduction = reduction,
+                InvoiceId = int.Parse(value.InvoiceId, CultureInfo.InvariantCulture),
+                ArticleId = value.ArticleId.ToOptionalInt(),
+                Description = value.Description,
+                Position = int.Parse(value.Position, CultureInfo.InvariantCulture),
+                Title = value.Title,
+                Unit = value.Unit,
+                TaxName = value.TaxName,
+                TotalNet = float.Parse(value.TotalNet, CultureInfo.InvariantCulture),
+                Quantity = float.Parse(value.Quantity, CultureInfo.InvariantCulture),
+                TotalNetUnreduced = float.Parse(value.TotalNetUnreduced, CultureInfo.InvariantCulture),
+                TotalGross = float.Parse(value.TotalGross, CultureInfo.InvariantCulture),
+                TotalGrossUnreduced = float.Parse(value.TotalGrossUnreduced, CultureInfo.InvariantCulture),
+                UnitPrice = float.Parse(value.UnitPrice, CultureInfo.InvariantCulture),
+                TaxRate = value.TaxRate.ToOptionalFloat()
+            };
+
+        }
+
         internal static Api.InvoiceItem ToApi(this InvoiceItem value)
         {
             if (value == null)
@@ -504,5 +458,68 @@ namespace Develappers.BillomatNet.Helpers
                 TotalNetUnreduced = value.TotalNetUnreduced.ToString(CultureInfo.InvariantCulture)
             };
         }
+
+        #endregion
+
+        #region Document
+
+        internal static InvoiceDocument ToDomain(this InvoiceDocumentWrapper value)
+        {
+            return value?.Pdf.ToDomain();
+        }
+
+        private static InvoiceDocument ToDomain(this Api.InvoiceDocument value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new InvoiceDocument
+            {
+                Id = int.Parse(value.Id),
+                Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
+                FileName = value.FileName,
+                FileSize = int.Parse(value.FileSize, CultureInfo.InvariantCulture),
+                InvoiceId = int.Parse(value.InvoiceId, CultureInfo.InvariantCulture),
+                MimeType = value.MimeType,
+                Bytes = Convert.FromBase64String(value.Base64File)
+            };
+        }
+
+
+        #endregion
+
+        #region Tax
+
+        private static List<InvoiceTax> ToDomain(this InvoiceTaxWrapper value)
+        {
+            return value?.List?.Select(ToDomain).ToList();
+        }
+
+        private static InvoiceTax ToDomain(this Api.InvoiceTax value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new InvoiceTax
+            {
+                Name = value.Name,
+                Amount = float.Parse(value.Amount, CultureInfo.InvariantCulture),
+                AmountGross = float.Parse(value.AmountGross, CultureInfo.InvariantCulture),
+                AmountGrossPlain = float.Parse(value.AmountGrossPlain, CultureInfo.InvariantCulture),
+                AmountGrossRounded = float.Parse(value.AmountGrossRounded, CultureInfo.InvariantCulture),
+                AmountNet = float.Parse(value.AmountNet, CultureInfo.InvariantCulture),
+                AmountNetPlain = float.Parse(value.AmountNetPlain, CultureInfo.InvariantCulture),
+                AmountNetRounded = float.Parse(value.AmountNetRounded, CultureInfo.InvariantCulture),
+                AmountPlain = float.Parse(value.AmountPlain, CultureInfo.InvariantCulture),
+                AmountRounded = float.Parse(value.AmountRounded, CultureInfo.InvariantCulture),
+                Rate = float.Parse(value.Rate, CultureInfo.InvariantCulture),
+            };
+        }
+
+        #endregion
     }
 }
