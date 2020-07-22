@@ -80,6 +80,36 @@ namespace Develappers.BillomatNet.Tests
         }
 
         [Fact]
+        public async Task GetArticleTagById()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var result = await service.GetTagByIdAsync(9700);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task GetArticleTagByIdWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetTagByIdAsync(9700));
+        }
+
+        [Fact]
+        public async Task GetArticleTagByIdWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var result = await service.GetTagByIdAsync(9699);
+            Assert.Null(result);
+        }
+
+        [Fact]
         public async Task GetArticleTagCloud()
         {
             var config = Helpers.GetTestConfiguration();
