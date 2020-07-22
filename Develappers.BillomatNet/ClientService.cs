@@ -81,6 +81,58 @@ namespace Develappers.BillomatNet
 
         #endregion
 
+        #region Property
+
+        /// <summary>
+        /// Retrieves a list of all properties.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the client property list.
+        /// </returns>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        public Task<Types.PagedList<ClientProperty>> GetPropertyListAsync(CancellationToken token = default)
+        {
+            return GetPropertyListAsync(null, token);
+        }
+
+        /// <summary>
+        /// Retrieves a list of all properties.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the client property list.
+        /// </returns>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        public async Task<Types.PagedList<ClientProperty>> GetPropertyListAsync(Query<ClientProperty, ClientPropertyFilter> query, CancellationToken token = default)
+        {
+            var jsonModel = await GetListAsync<ClientPropertyListWrapper>("/api/client-property-values", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        #endregion
+
+        #region Tag
+
+        /// <summary>
+        /// Retrieves the customer tag cloud.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the paged list of tag cloud items.
+        /// </returns>
+        public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
+        {
+            // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
+            var jsonModel = await GetListAsync<ClientTagCloudItemListWrapper>("/api/client-tags", null, token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        #endregion
+
         #region Contact
 
         /// <summary>
@@ -222,56 +274,6 @@ namespace Develappers.BillomatNet
 
         #endregion
 
-        #region ClientProperty
-
-        /// <summary>
-        /// Retrieves a list of all properties.
-        /// </summary>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result returns the client property list.
-        /// </returns>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        public Task<Types.PagedList<ClientProperty>> GetPropertyListAsync(CancellationToken token = default)
-        {
-            return GetPropertyListAsync(null, token);
-        }
-
-        /// <summary>
-        /// Retrieves a list of all properties.
-        /// </summary>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result returns the client property list.
-        /// </returns>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        public async Task<Types.PagedList<ClientProperty>> GetPropertyListAsync(Query<ClientProperty, ClientPropertyFilter> query, CancellationToken token = default)
-        {
-            var jsonModel = await GetListAsync<ClientPropertyListWrapper>("/api/client-property-values", QueryString.For(query), token).ConfigureAwait(false);
-            return jsonModel.ToDomain();
-        }
-
-        #endregion
-
-        #region Tag
-
-        /// <summary>
-        /// Retrieves the customer tag cloud.
-        /// </summary>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the paged list of tag cloud items.
-        /// </returns>
-        public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
-        {
-            // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
-            var jsonModel = await GetListAsync<ClientTagCloudItemListWrapper>("/api/client-tags", null, token).ConfigureAwait(false);
-            return jsonModel.ToDomain();
-        }
-
-        #endregion
+        
     }
 }

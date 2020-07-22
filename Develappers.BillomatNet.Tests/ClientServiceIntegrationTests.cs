@@ -9,6 +9,8 @@ namespace Develappers.BillomatNet.Tests
 {
     public class ClientServiceIntegrationTests
     {
+        #region Client
+
         [Fact]
         public async Task GetClientsByName()
         {
@@ -58,6 +60,10 @@ namespace Develappers.BillomatNet.Tests
             await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(1));
         }
 
+        #endregion
+
+        #region Property
+
         [Fact]
         public async Task GetClientPropertyList()
         {
@@ -67,6 +73,26 @@ namespace Develappers.BillomatNet.Tests
             var result = await service.GetPropertyListAsync();
             Assert.NotNull(result);
         }
+
+        #endregion
+
+        #region Tag
+
+        [Fact]
+        public async Task GetClientTagCloud()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            var service = new ClientService(config);
+
+            var result = await service.GetTagCloudAsync(CancellationToken.None);
+
+            Assert.True(true);
+        }
+
+        #endregion
+
+        #region Contact
 
         [Fact]
         public async Task GetContacts()
@@ -111,18 +137,6 @@ namespace Develappers.BillomatNet.Tests
 
             var result = await service.GetContactByIdAsync(1);
             Assert.Null(result);
-        }
-
-        [Fact]
-        public async Task GetClientTagCloud()
-        {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ClientService(config);
-
-            var result = await service.GetTagCloudAsync(CancellationToken.None);
-
-            Assert.True(true);
         }
 
         [Fact]
@@ -200,7 +214,7 @@ namespace Develappers.BillomatNet.Tests
             var config = Helpers.GetTestConfiguration();
             var service = new ClientService(config);
 
-            var contact = new Contact{};
+            var contact = new Contact { };
 
             var result = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(contact));
         }
@@ -318,5 +332,7 @@ namespace Develappers.BillomatNet.Tests
 
             var editedResult = await Assert.ThrowsAsync<NotFoundException>(() => service.EditAsync(contact));
         }
+
+        #endregion
     }
 }

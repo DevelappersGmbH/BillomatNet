@@ -109,7 +109,7 @@ namespace Develappers.BillomatNet.Helpers
 
         #endregion
 
-        #region ClientProperty
+        #region Property
 
         internal static Types.PagedList<ClientProperty> ToDomain(this ClientPropertyListWrapper value)
         {
@@ -148,6 +148,31 @@ namespace Develappers.BillomatNet.Helpers
                 ClientId = value.ClientId,
                 Name = value.Name,
                 Value = MappingHelpers.ParsePropertyValue(type, value.Value)
+            };
+        }
+
+        #endregion
+
+        #region Tag
+
+        internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemListWrapper value)
+        {
+            return value?.Item.ToDomain();
+        }
+
+        internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<TagCloudItem>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(x => x.ToDomain()).ToList()
             };
         }
 
@@ -340,31 +365,6 @@ namespace Develappers.BillomatNet.Helpers
         private static List<Quota> ToDomain(this QuotaWrapper value)
         {
             return value?.Quota?.Select(x => x.ToDomain()).ToList();
-        }
-
-        #endregion
-
-        #region Tag
-
-        internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemListWrapper value)
-        {
-            return value?.Item.ToDomain();
-        }
-
-        internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemList value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Types.PagedList<TagCloudItem>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(x => x.ToDomain()).ToList()
-            };
         }
 
         #endregion
