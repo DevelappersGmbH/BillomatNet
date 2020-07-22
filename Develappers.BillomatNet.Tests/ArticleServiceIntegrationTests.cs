@@ -46,97 +46,6 @@ namespace Develappers.BillomatNet.Tests
         }
 
         [Fact]
-        public async Task GetArticlePropertyList()
-        {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ArticleService(config);
-
-            var result = await service.GetPropertyListAsync(CancellationToken.None);
-
-            Assert.True(result.List.Count > 0);
-        }
-
-        [Fact]
-        public async Task GetArticlePropertyById()
-        {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ArticleService(config);
-
-            var result = await service.GetPropertyByIdAsync(434532, CancellationToken.None);
-
-            Assert.NotNull(result);
-        }
-
-        [Fact]
-        public async Task GetArticlePropertyByIdWhenNotFound()
-        {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ArticleService(config);
-
-            var result = await service.GetPropertyByIdAsync(1, CancellationToken.None);
-
-            Assert.Null(result);
-        }
-
-        [Fact]
-        public async Task GetArticleTagById()
-        {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ArticleService(config);
-
-            var result = await service.GetTagByIdAsync(9700);
-            Assert.NotNull(result);
-        }
-
-        [Fact]
-        public async Task GetArticleTagByIdWhenNotAuthorized()
-        {
-            var config = Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new ArticleService(config);
-
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetTagByIdAsync(9700));
-        }
-
-        [Fact]
-        public async Task GetArticleTagByIdWhenNotFound()
-        {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ArticleService(config);
-
-            var result = await service.GetTagByIdAsync(9699);
-            Assert.Null(result);
-        }
-
-        [Fact]
-        public async Task GetArticleTagCloud()
-        {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ArticleService(config);
-
-            var result = await service.GetTagCloudAsync(CancellationToken.None);
-
-            Assert.True(result.List.Count > 0);
-        }
-
-        [Fact]
-        public async Task GetArticleTagsById()
-        {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ArticleService(config);
-
-            var result = await service.GetTagListAsync(
-                new Query<ArticleTag, ArticleTagFilter>().AddFilter(x => x.ArticleId, 434867));
-
-            Assert.True(true);
-        }
-
-        [Fact]
         public async Task DeleteArticleItem()
         {
             var config = Helpers.GetTestConfiguration();
@@ -488,6 +397,36 @@ namespace Develappers.BillomatNet.Tests
             var result = await service.GetTagCloudAsync(CancellationToken.None);
 
             Assert.True(result.List.Count > 0);
+        }
+
+        [Fact]
+        public async Task GetArticleTagById()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var result = await service.GetTagByIdAsync(9700);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task GetArticleTagByIdWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ArticleService(config);
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetTagByIdAsync(9700));
+        }
+
+        [Fact]
+        public async Task GetArticleTagByIdWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ArticleService(config);
+
+            var result = await service.GetTagByIdAsync(9699);
+            Assert.Null(result);
         }
 
         [Fact]
