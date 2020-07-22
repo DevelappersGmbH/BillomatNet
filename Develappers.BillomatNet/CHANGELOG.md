@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - implemented service for CD operation on article tag
 - implemented service for U operations on invoice items
 - implemented service for R operations on client properties
+- implemented service for R operations on client property
 
 ### Changed
 - nothing
