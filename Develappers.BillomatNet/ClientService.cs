@@ -26,6 +26,8 @@ namespace Develappers.BillomatNet
         {
         }
 
+        #region Account
+
         /// <summary>
         /// Returns all informaitons of your account.
         /// </summary>
@@ -39,6 +41,10 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        #endregion
+
+        #region Client
+
         /// <summary>
         /// Retrieves a list of all clients.
         /// </summary>
@@ -47,20 +53,6 @@ namespace Develappers.BillomatNet
         public Task<Types.PagedList<Client>> GetListAsync(CancellationToken token = default(CancellationToken))
         {
             return GetListAsync(null, token);
-        }
-
-        /// <summary>
-        /// Retrieves a list of all contacts from a client.
-        /// </summary>
-        /// <param name="clientId">The ID of the client.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the list of contacts </returns>
-        public async Task<Types.PagedList<Contact>> GetContactListAsync(int clientId, CancellationToken token = default(CancellationToken))
-        {
-            var jsonModel = await GetListAsync<ContactListWrapper>("/api/contacts", $"client_id={clientId}", token).ConfigureAwait(false);
-            return jsonModel.ToDomain();
         }
 
         /// <summary>
@@ -75,35 +67,6 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Retrieves a list of all properties.
-        /// </summary>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result returns the client property list.
-        /// </returns>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        public Task<Types.PagedList<ClientProperty>> GetPropertyListAsync(CancellationToken token = default)
-        {
-            return GetPropertyListAsync(null, token);
-        }
-
-        /// <summary>
-        /// Retrieves a list of all properties.
-        /// </summary>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result returns the client property list.
-        /// </returns>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        public async Task<Types.PagedList<ClientProperty>> GetPropertyListAsync(Query<ClientProperty, ClientPropertyFilter> query, CancellationToken token = default)
-        {
-            var jsonModel = await GetListAsync<ClientPropertyListWrapper>("/api/client-property-values", QueryString.For(query), token).ConfigureAwait(false);
-            return jsonModel.ToDomain();
-        }
-
-        /// <summary>
         /// Returns an client by it's ID. 
         /// </summary>
         /// <param name="id">The ID of the client.</param>
@@ -113,6 +76,24 @@ namespace Develappers.BillomatNet
         public async Task<Client> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
         {
             var jsonModel = await GetItemByIdAsync<ClientWrapper>($"/api/clients/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        #endregion
+
+        #region Contact
+
+        /// <summary>
+        /// Retrieves a list of all contacts from a client.
+        /// </summary>
+        /// <param name="clientId">The ID of the client.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the list of contacts </returns>
+        public async Task<Types.PagedList<Contact>> GetContactListAsync(int clientId, CancellationToken token = default(CancellationToken))
+        {
+            var jsonModel = await GetListAsync<ContactListWrapper>("/api/contacts", $"client_id={clientId}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -140,42 +121,7 @@ namespace Develappers.BillomatNet
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             return await httpClient.GetBytesAsync(new Uri($"/api/contacts/{id}/avatar?size={size}", UriKind.Relative), token).ConfigureAwait(false);
         }
-
-        /// <summary>
-        /// Retrieves the customer tag cloud.
-        /// </summary>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the paged list of tag cloud items.
-        /// </returns>
-        public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
-        {
-            // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
-            var jsonModel = await GetListAsync<ClientTagCloudItemListWrapper>("/api/client-tags", null, token).ConfigureAwait(false);
-            return jsonModel.ToDomain();
-        }
-
-        /// <summary>
-        /// Deletes a contact.
-        /// </summary>
-        /// <param name="id">The ID of the contact.</param>
-        /// <param name="token">The token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// </returns>
-        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
-        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
-        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public Task DeleteContactAsync(int id, CancellationToken token = default)
-        {
-            if (id <=0)
-            {
-                throw new ArgumentException("invalid contact id", nameof(id));
-            }
-            return DeleteAsync($"/api/contacts/{id}", token);
-        }
-
+        
         /// <summary>
         /// Creates a contact.
         /// </summary>
@@ -213,7 +159,7 @@ namespace Develappers.BillomatNet
             {
                 throw new ArgumentException($"wrong contact parameter", nameof(model), wex);
             }
-            
+
         }
 
         /// <summary>
@@ -253,5 +199,79 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException($"wrong contact parameter", nameof(model), wex);
             }
         }
+
+        /// <summary>
+        /// Deletes a contact.
+        /// </summary>
+        /// <param name="id">The ID of the contact.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeleteContactAsync(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid contact id", nameof(id));
+            }
+            return DeleteAsync($"/api/contacts/{id}", token);
+        }
+
+        #endregion
+
+        #region ClientProperty
+
+        /// <summary>
+        /// Retrieves a list of all properties.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the client property list.
+        /// </returns>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        public Task<Types.PagedList<ClientProperty>> GetPropertyListAsync(CancellationToken token = default)
+        {
+            return GetPropertyListAsync(null, token);
+        }
+
+        /// <summary>
+        /// Retrieves a list of all properties.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the client property list.
+        /// </returns>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        public async Task<Types.PagedList<ClientProperty>> GetPropertyListAsync(Query<ClientProperty, ClientPropertyFilter> query, CancellationToken token = default)
+        {
+            var jsonModel = await GetListAsync<ClientPropertyListWrapper>("/api/client-property-values", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        #endregion
+
+        #region Tag
+
+        /// <summary>
+        /// Retrieves the customer tag cloud.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the paged list of tag cloud items.
+        /// </returns>
+        public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
+        {
+            // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
+            var jsonModel = await GetListAsync<ClientTagCloudItemListWrapper>("/api/client-tags", null, token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        #endregion
     }
 }
