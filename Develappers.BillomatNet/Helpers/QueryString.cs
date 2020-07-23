@@ -4,6 +4,7 @@ using System.Web;
 using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 using Newtonsoft.Json;
+using CommonMappingExtensions = Develappers.BillomatNet.Helpers.CommonMappingExtensions;
 
 namespace Develappers.BillomatNet.Helpers
 {
@@ -376,12 +377,12 @@ namespace Develappers.BillomatNet.Helpers
 
             if ((value.Status?.Count ?? 0) > 0)
             {
-                filters.Add($"status={string.Join(",", value.Status.Select(MappingHelpers.ToApiValue))}");
+                filters.Add($"status={string.Join(",", value.Status.Select(CommonMappingExtensions.ToApiValue))}");
             }
 
             if ((value.PaymentType?.Count ?? 0) > 0)
             {
-                filters.Add($"payment_type={string.Join(",", value.PaymentType.Select(MappingHelpers.ToApiValue))}");
+                filters.Add($"payment_type={string.Join(",", value.PaymentType.Select(CommonMappingExtensions.ToApiValue))}");
             }
 
             if (value.From.HasValue)

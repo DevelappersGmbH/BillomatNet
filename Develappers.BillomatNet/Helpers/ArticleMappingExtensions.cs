@@ -6,6 +6,7 @@ using Article = Develappers.BillomatNet.Types.Article;
 
 namespace Develappers.BillomatNet.Helpers
 {
+
     internal static class ArticleMappingExtensions
     {
         internal static Types.PagedList<Article> ToDomain(this ArticleListWrapper value)
@@ -34,7 +35,7 @@ namespace Develappers.BillomatNet.Helpers
             return value?.Article.ToDomain();
         }
 
-        private static Article ToDomain(this Develappers.BillomatNet.Api.Article value)
+        private static Article ToDomain(this Api.Article value)
         {
             if (value == null)
             {
@@ -45,14 +46,15 @@ namespace Develappers.BillomatNet.Helpers
             {
                 Id = int.Parse(value.Id, CultureInfo.InvariantCulture),
                 Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
+                Updated = DateTime.Parse(value.Updated, CultureInfo.InvariantCulture),
                 ArticleNumber = value.ArticleNumber,
                 CurrencyCode = value.CurrencyCode,
                 Description = value.Description,
                 Number = int.Parse(value.Number),
-                NumberLength = value.NumberLength,
+                NumberLength = int.Parse(value.NumberLength),
                 NumberPre = value.NumberPre,
                 PurchasePrice = value.PurchasePrice.ToOptionalFloat(),
-                PurchasePriceNetGross = value.PurchasePriceNetGross,
+                PurchasePriceNetGross = value.PurchasePriceNetGross.ToNetGrossType(),
                 SalesPrice = value.SalesPrice.ToOptionalFloat(),
                 SalesPrice2 = value.SalesPrice2.ToOptionalFloat(),
                 SalesPrice3 = value.SalesPrice3.ToOptionalFloat(),
@@ -80,10 +82,10 @@ namespace Develappers.BillomatNet.Helpers
                 CurrencyCode = value.CurrencyCode,
                 Description = value.Description,
                 Number = value.Number.ToString(),
-                NumberLength = value.NumberLength,
+                NumberLength = value.NumberLength.ToString(),
                 NumberPre = value.NumberPre,
                 PurchasePrice = value.PurchasePrice.ToInvariantString(),
-                PurchasePriceNetGross = value.PurchasePriceNetGross,
+                PurchasePriceNetGross = value.PurchasePriceNetGross.ToApiValue(),
                 SalesPrice = value.SalesPrice.ToInvariantString(),
                 SalesPrice2 = value.SalesPrice2.ToInvariantString(),
                 SalesPrice3 = value.SalesPrice3.ToInvariantString(),

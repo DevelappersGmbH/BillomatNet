@@ -2,12 +2,12 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
+using Develappers.BillomatNet.Types;
 using FakeItEasy;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
-    
     [Trait(TraitNames.Category, CategoryNames.UnitTest)]
     public class ArticleServiceTests
     {
@@ -27,7 +27,27 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             var sut = new ArticleService(() => http);
             var result = await sut.GetByIdAsync(id);
 
-            Assert.Equal(8, result.Id);
+            Assert.Equal(id, result.Id);
+            Assert.Equal(new DateTime(2015,5,28,7,38,7, DateTimeKind.Utc),result.Created.ToUniversalTime());
+            Assert.Equal(new DateTime(2020, 7, 10, 10, 20, 36, DateTimeKind.Utc), result.Updated.ToUniversalTime());
+            //Assert.Equal(false, result.Archived);
+            Assert.Equal(20574, result.UnitId);
+            Assert.Equal("ART3", result.ArticleNumber);
+            Assert.Equal(3, result.Number);
+            Assert.Equal("ART", result.NumberPre);
+            Assert.Equal(0, result.NumberLength);
+            Assert.Equal("Tomaten", result.Title);
+            Assert.Equal("Rot und saftig\r\nDas Schengener Abkommen gehört zu den großen Errungenschaften der Europäischen Integration. Seit Mitte der neunziger Jahre steht der Begriff für die Abschaffung der Personenkontrollen an den Binnengrenzen und damit für Reisefreiheit und ein \"Europa ohne Schranken\".", result.Description);
+            Assert.Equal(2f, result.SalesPrice);
+            Assert.Equal(1.2f, result.SalesPrice2);
+            Assert.Equal(0.99f, result.SalesPrice3);
+            Assert.Equal(0f, result.SalesPrice4);
+            Assert.Equal(0f, result.SalesPrice5);
+            Assert.Equal("EUR", result.CurrencyCode);
+            //Assert.Equal("", result.RevenueAccountNumber);
+            //Assert.Equal("", result.CostCenter);
+            Assert.Equal(1.2f, result.PurchasePrice);
+            Assert.Equal(NetGrossType.Gross, result.PurchasePriceNetGross);
         }
     }
 }

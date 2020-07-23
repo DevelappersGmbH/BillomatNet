@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Develappers.BillomatNet.Api;
 using ClientProperty = Develappers.BillomatNet.Types.ClientProperty;
+using CommonMappingExtensions = Develappers.BillomatNet.Helpers.CommonMappingExtensions;
 
 namespace Develappers.BillomatNet.Helpers
 {
@@ -39,7 +40,7 @@ namespace Develappers.BillomatNet.Helpers
                 return null;
             }
 
-            var type = MappingHelpers.ParsePropertyType(value.Type);
+            var type = CommonMappingExtensions.ToPropertyType(value.Type);
             return new ClientProperty
             {
                 Id = value.Id,
@@ -62,7 +63,7 @@ namespace Develappers.BillomatNet.Helpers
                 Id = value.Id,
                 ClientId = value.ClientId,
                 ClientPropertyId = value.ClientPropertyId,
-                Type = MappingHelpers.PropertyTypeToString(value.Type),
+                Type = CommonMappingExtensions.ToApiValue(value.Type),
                 Name = value.Name,
                 Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
             };
