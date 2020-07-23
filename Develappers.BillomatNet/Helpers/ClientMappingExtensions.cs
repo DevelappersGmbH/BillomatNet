@@ -132,6 +132,11 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
+        internal static ClientProperty ToDomain(this ClientPropertyWrapper value)
+        {
+            return value?.ClientProperty.ToDomain();
+        }
+
         private static ClientProperty ToDomain(this Api.ClientProperty value)
         {
             if (value == null)

@@ -74,6 +74,36 @@ namespace Develappers.BillomatNet.Tests
             Assert.NotNull(result);
         }
 
+        [Fact]
+        public async Task GetClientPropertyById()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var result = await service.GetPropertyById(3075686);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task GetClientPropertyByIdWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ClientService(config);
+
+            var result = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetPropertyById(3075686));
+        }
+
+        [Fact]
+        public async Task GetClientPropertyByIdWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var result = await service.GetPropertyById(3000000);
+            Assert.Null(result);
+        }
+
         #endregion
 
         #region Tag

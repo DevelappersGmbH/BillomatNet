@@ -82,6 +82,26 @@ namespace Develappers.BillomatNet
         #endregion
 
         #region Property
+        /// <summary>
+        /// Returns a client property by it's ID.
+        /// </summary>
+        /// <param name="id">The ID.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the client property.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        public async Task<ClientProperty> GetPropertyById(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid client property id", nameof(id));
+            }
+            var jsonModel = await GetItemByIdAsync<ClientPropertyWrapper>($"/api/client-property-values/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
 
         /// <summary>
         /// Retrieves a list of all properties.
