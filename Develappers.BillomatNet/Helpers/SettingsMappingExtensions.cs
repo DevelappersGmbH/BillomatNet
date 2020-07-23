@@ -2,7 +2,6 @@
 using Develappers.BillomatNet.Types;
 using System;
 using System.Linq;
-using System.Security;
 using Settings = Develappers.BillomatNet.Types.Settings;
 
 namespace Develappers.BillomatNet.Helpers

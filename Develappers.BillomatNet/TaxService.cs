@@ -74,7 +74,7 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates an tax.
         /// </summary>
-        /// <param name="invoice">The tax object.</param>
+        /// <param name="model">The tax object.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.

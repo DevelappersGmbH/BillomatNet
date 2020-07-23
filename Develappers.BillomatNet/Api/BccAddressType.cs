@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Develappers.BillomatNet.Api
+﻿namespace Develappers.BillomatNet.Api
 {
     internal class BccAddressType
     {

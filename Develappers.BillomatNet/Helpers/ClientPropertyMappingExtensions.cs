@@ -23,7 +23,7 @@ namespace Develappers.BillomatNet.Helpers
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
                 TotalItems = value.Total,
-                List = value.List?.Select(x => ToDomain((Api.ClientProperty) x)).ToList()
+                List = value.List?.Select(ToDomain).ToList()
             };
         }
 

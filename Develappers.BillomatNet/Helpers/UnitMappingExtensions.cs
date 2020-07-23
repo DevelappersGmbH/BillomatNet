@@ -1,6 +1,5 @@
 ﻿using Develappers.BillomatNet.Api;
 using System.Linq;
-using System.Security;
 using Unit = Develappers.BillomatNet.Types.Unit;
 
 namespace Develappers.BillomatNet.Helpers
@@ -24,7 +23,7 @@ namespace Develappers.BillomatNet.Helpers
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
                 TotalItems = value.Total,
-                List = value.List?.Select(x => ToDomain((Api.Unit)x)).ToList()
+                List = value.List?.Select(ToDomain).ToList()
             };
         }
 

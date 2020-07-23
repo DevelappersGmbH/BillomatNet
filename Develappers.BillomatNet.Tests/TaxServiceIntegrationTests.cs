@@ -123,7 +123,7 @@ namespace Develappers.BillomatNet.Tests
                 Rate = 1.0f,
                 IsDefault = false
             };
-            var ex = Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(taxItem));
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(taxItem));
         }
 
         [Fact]

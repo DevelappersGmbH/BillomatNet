@@ -28,7 +28,7 @@ namespace Develappers.BillomatNet
         /// </returns>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        protected async Task<T> GetItemByIdAsync<T>(string resourceUrl, CancellationToken token = default(CancellationToken)) where T : class
+        protected async Task<T> GetItemByIdAsync<T>(string resourceUrl, CancellationToken token = default) where T : class
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             string httpResponse;
@@ -48,10 +48,6 @@ namespace Develappers.BillomatNet
             {
                 // Unauthorized
                 throw new NotAuthorizedException("You are not authorized to access this item.", wex);
-            }
-            catch(Exception e)
-            {
-                throw;
             }
 
             return JsonConvert.DeserializeObject<T>(httpResponse);
