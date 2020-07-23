@@ -51,5 +51,22 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
+        internal static Api.ClientProperty ToApi(this ClientProperty value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+            return new Api.ClientProperty
+            {
+                Id = value.Id,
+                ClientId = value.ClientId,
+                ClientPropertyId = value.ClientPropertyId,
+                Type = MappingHelpers.PropertyTypeToString(value.Type),
+                Name = value.Name,
+                Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
+            };
+        }
+
     }
 }
