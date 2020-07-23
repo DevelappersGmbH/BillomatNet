@@ -64,10 +64,21 @@ namespace Develappers.BillomatNet
         /// A task that represents the asynchronous operation.
         /// The task result contains the list of entities.
         /// </returns>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         protected async Task<T> GetListAsync<T>(string resourceUrl, string query, CancellationToken token)
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            var httpResponse = await httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), query, token).ConfigureAwait(false);
+            var httpResponse = "";
+            try
+            {
+                httpResponse = await httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), query, token).ConfigureAwait(false);
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                // Unauthorized
+                throw new NotAuthorizedException("You are not authorized to delete this item.", wex);
+            }
             return JsonConvert.DeserializeObject<T>(httpResponse);
         }
 

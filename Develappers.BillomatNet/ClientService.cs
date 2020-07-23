@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Account = Develappers.BillomatNet.Types.Account;
 using Client = Develappers.BillomatNet.Types.Client;
 using ClientProperty = Develappers.BillomatNet.Types.ClientProperty;
+using ClientTag = Develappers.BillomatNet.Types.ClientTag;
 using Contact = Develappers.BillomatNet.Types.Contact;
 using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
@@ -177,6 +178,47 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        /// <summary>
+        /// Retrieves the tag list for specific clients.
+        /// </summary>
+        /// <param name="query">The filter and sort options.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the paged list of client tags.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        public async Task<Types.PagedList<ClientTag>> GetTagListAsync(Query<ClientTag, ClientTagFilter> query, CancellationToken token = default)
+        {
+            if (query?.Filter == null)
+            {
+                throw new ArgumentException("filter has to be set", nameof(query));
+            }
+
+            var jsonModel = await GetListAsync<ClientTagListWrapper>("/api/client-tags", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Returns an client tag by it's id. 
+        /// </summary>
+        /// <param name="id">The id of the tag property.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the client tag.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        public async Task<ClientTag> GetTagById(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid client tag id", nameof(id));
+            }
+            var jsonModel = await GetItemByIdAsync<ClientTagWrapper>($"/api/client-tags/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
 
         /// <summary>
         /// Retrieves a list of all contacts from a client.
