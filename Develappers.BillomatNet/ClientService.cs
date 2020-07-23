@@ -6,7 +6,6 @@ using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
-using Develappers.BillomatNet.Types;
 using Newtonsoft.Json;
 using Account = Develappers.BillomatNet.Types.Account;
 using Client = Develappers.BillomatNet.Types.Client;
@@ -26,14 +25,12 @@ namespace Develappers.BillomatNet
         {
         }
 
-        #region Account
-
         /// <summary>
-        /// Returns all informaitons of your account.
+        /// Returns all information of your account.
         /// </summary>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The account data.</returns>
-        public async Task<Account> MyselfAsync(CancellationToken token = default(CancellationToken))
+        public async Task<Account> MyselfAsync(CancellationToken token = default)
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             var httpResponse = await httpClient.GetAsync(new Uri("/api/clients/myself", UriKind.Relative), token).ConfigureAwait(false);
@@ -41,16 +38,12 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        #endregion
-
-        #region Client
-
         /// <summary>
         /// Retrieves a list of all clients.
         /// </summary>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The client list or null if not found.</returns>
-        public Task<Types.PagedList<Client>> GetListAsync(CancellationToken token = default(CancellationToken))
+        public Task<Types.PagedList<Client>> GetListAsync(CancellationToken token = default)
         {
             return GetListAsync(null, token);
         }
@@ -58,9 +51,10 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Retrieves a list of all clients.
         /// </summary>
+        /// <param name="query">The query.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The client list or null if not found.</returns>
-        public async Task<Types.PagedList<Client>> GetListAsync(Query<Client, ClientFilter> query, CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<Client>> GetListAsync(Query<Client, ClientFilter> query, CancellationToken token = default)
         {
             var jsonModel = await GetListAsync<ClientListWrapper>("/api/clients", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
@@ -73,15 +67,12 @@ namespace Develappers.BillomatNet
         /// <param name="token">The cancellation token.</param>
         /// <returns>The client or null if not found.</returns>
         /// <exception cref="NotAuthorizedException">Thrown when the client is not accessible.</exception>
-        public async Task<Client> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
+        public async Task<Client> GetByIdAsync(int id, CancellationToken token = default)
         {
             var jsonModel = await GetItemByIdAsync<ClientWrapper>($"/api/clients/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
-        #endregion
-
-        #region Property
         /// <summary>
         /// Returns a client property by it's ID.
         /// </summary>
@@ -120,6 +111,7 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Retrieves a list of all properties.
         /// </summary>
+        /// <param name="query">The query.</param>
         /// <param name="token">The token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -132,10 +124,7 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        #endregion
-
-        #region Tag
-
+ 
         /// <summary>
         /// Retrieves the customer tag cloud.
         /// </summary>
@@ -144,16 +133,13 @@ namespace Develappers.BillomatNet
         /// A task that represents the asynchronous operation.
         /// The task result contains the paged list of tag cloud items.
         /// </returns>
-        public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default)
         {
             // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
             var jsonModel = await GetListAsync<ClientTagCloudItemListWrapper>("/api/client-tags", null, token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
-        #endregion
-
-        #region Contact
 
         /// <summary>
         /// Retrieves a list of all contacts from a client.
@@ -163,7 +149,7 @@ namespace Develappers.BillomatNet
         /// <returns>
         /// A task that represents the asynchronous operation.
         /// The task result contains the list of contacts </returns>
-        public async Task<Types.PagedList<Contact>> GetContactListAsync(int clientId, CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<Contact>> GetContactListAsync(int clientId, CancellationToken token = default)
         {
             var jsonModel = await GetListAsync<ContactListWrapper>("/api/contacts", $"client_id={clientId}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
@@ -175,7 +161,7 @@ namespace Develappers.BillomatNet
         /// <param name="id">The ID of the contact.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The client or null if not found.</returns>
-        public async Task<Contact> GetContactByIdAsync(int id, CancellationToken token = default(CancellationToken))
+        public async Task<Contact> GetContactByIdAsync(int id, CancellationToken token = default)
         {
             var jsonModel = await GetItemByIdAsync<ContactWrapper>($"/api/contacts/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
@@ -188,7 +174,7 @@ namespace Develappers.BillomatNet
         /// <param name="size">The size in pixels.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns></returns>
-        public async Task<byte[]> GetContactAvatarByIdAsync(int id, int size, CancellationToken token = default(CancellationToken))
+        public async Task<byte[]> GetContactAvatarByIdAsync(int id, int size, CancellationToken token = default)
         {
             var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
             return await httpClient.GetBytesAsync(new Uri($"/api/contacts/{id}/avatar?size={size}", UriKind.Relative), token).ConfigureAwait(false);
@@ -229,7 +215,7 @@ namespace Develappers.BillomatNet
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
             {
-                throw new ArgumentException($"wrong contact parameter", nameof(model), wex);
+                throw new ArgumentException("wrong contact parameter", nameof(model), wex);
             }
 
         }
@@ -268,7 +254,7 @@ namespace Develappers.BillomatNet
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
             {
-                throw new ArgumentException($"wrong contact parameter", nameof(model), wex);
+                throw new ArgumentException("wrong contact parameter", nameof(model), wex);
             }
         }
 
@@ -291,9 +277,5 @@ namespace Develappers.BillomatNet
             }
             return DeleteAsync($"/api/contacts/{id}", token);
         }
-
-        #endregion
-
-        
     }
 }
