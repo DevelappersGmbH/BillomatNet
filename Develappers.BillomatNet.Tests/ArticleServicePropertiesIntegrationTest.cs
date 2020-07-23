@@ -8,6 +8,7 @@ using Xunit;
 namespace Develappers.BillomatNet.Tests
 {
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
+    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
     public class ArticleServicePropertiesIntegrationTest : TestBase<ArticleService>
     {
 
