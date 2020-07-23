@@ -200,6 +200,25 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        /// <summary>
+        /// Returns an client tag by it's id. 
+        /// </summary>
+        /// <param name="id">The id of the tag property.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the client tag.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        public async Task<ClientTag> GetTagById(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid client tag id", nameof(id));
+            }
+            var jsonModel = await GetItemByIdAsync<ClientTagWrapper>($"/api/client-tags/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
 
         /// <summary>
         /// Retrieves a list of all contacts from a client.

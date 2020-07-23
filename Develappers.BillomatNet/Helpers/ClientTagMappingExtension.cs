@@ -49,6 +49,11 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
+        internal static ClientTag ToDomain(this ClientTagWrapper value)
+        {
+            return value?.ClientTag.ToDomain();
+        }
+
         private static ClientTag ToDomain(this Api.ClientTag value)
         {
             if (value == null)
