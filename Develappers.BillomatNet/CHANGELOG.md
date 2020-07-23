@@ -24,9 +24,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - implemented service for U operations on invoice items
 - implemented service for R operations on client properties
 - implemented service for CR operations on client property
+- implemented service for R operations on client tags
+- implemented service for R operations on one client tag
 
 ### Changed
-- nothing
+- GetList can throw an exception when not authorized now
 
 ### Removed
 - nothing
