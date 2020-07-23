@@ -48,19 +48,6 @@ namespace Develappers.BillomatNet.Helpers
                 return null;
             }
 
-            NetGrossType netGrossType;
-            switch (value.NetGross.ToLowerInvariant())
-            {
-                case "net":
-                    netGrossType = NetGrossType.Net;
-                    break;
-                case "gross":
-                    netGrossType = NetGrossType.Gross;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
             SupplyDateType? supplyDateType;
             ISupplyDate supplyDate;
             switch (value.SupplyDateType.ToLowerInvariant())
@@ -173,7 +160,7 @@ namespace Develappers.BillomatNet.Helpers
                 Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
                 DueDate = DateTime.Parse(value.DueDate, CultureInfo.InvariantCulture),
                 DueDays = int.Parse(value.DueDays, CultureInfo.InvariantCulture),
-                NetGross = netGrossType,
+                NetGross = value.NetGross.ToNetGrossType(),
                 SupplyDate = supplyDate,
                 SupplyDateType = supplyDateType,
                 Status = status,
@@ -194,19 +181,8 @@ namespace Develappers.BillomatNet.Helpers
         internal static Api.Invoice ToApi(this Invoice value)
         {
             if (value == null)
-                return null;
-
-            string netGrossType;
-            switch (value.NetGross)
             {
-                case NetGrossType.Net:
-                    netGrossType = "NET";
-                    break;
-                case NetGrossType.Gross:
-                    netGrossType = "GROSS";
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                return null;
             }
 
             string supplyDateType;
@@ -321,7 +297,7 @@ namespace Develappers.BillomatNet.Helpers
                 TotalNet = value.TotalNet.ToString(CultureInfo.InvariantCulture),
                 CurrencyCode = value.CurrencyCode,
                 Quote = value.Quote.ToString(CultureInfo.InvariantCulture),
-                NetGross = netGrossType,
+                NetGross = value.NetGross.ToApiValue(),
                 Reduction = reduction,
                 TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(CultureInfo.InvariantCulture),
                 TotalNetUnreduced = value.TotalNetUnreduced.ToString(CultureInfo.InvariantCulture),
