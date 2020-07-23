@@ -33,7 +33,7 @@ namespace Develappers.BillomatNet
         /// <returns>The account data.</returns>
         public async Task<Account> MyselfAsync(CancellationToken token = default)
         {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            var httpClient = HttpClientFactory.Invoke();
             var httpResponse = await httpClient.GetAsync(new Uri("/api/clients/myself", UriKind.Relative), token).ConfigureAwait(false);
             var jsonModel = JsonConvert.DeserializeObject<AccountWrapper>(httpResponse);
             return jsonModel.ToDomain();
@@ -255,7 +255,7 @@ namespace Develappers.BillomatNet
         /// <returns></returns>
         public async Task<byte[]> GetContactAvatarByIdAsync(int id, int size, CancellationToken token = default)
         {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            var httpClient = HttpClientFactory.Invoke();
             return await httpClient.GetBytesAsync(new Uri($"/api/contacts/{id}/avatar?size={size}", UriKind.Relative), token).ConfigureAwait(false);
         }
         
