@@ -60,7 +60,6 @@ namespace Develappers.BillomatNet.Helpers
         /// <returns>The string.</returns>
         public static string ToApiDate (this DateTime? value)
         {
-            //TODO: return null if value is null
             return value?.ToString("yyyy-MM-dd");
         }
 
@@ -71,8 +70,7 @@ namespace Develappers.BillomatNet.Helpers
         /// <returns>The string.</returns>
         public static string ToApiDate(this DateTime value)
         {
-            //TODO: return null if value is null
-            return value.ToString("yyyy-MM-dd");
+            return ((DateTime?)value).ToApiDate();
         }
 
         /// <summary>
@@ -90,14 +88,14 @@ namespace Develappers.BillomatNet.Helpers
         /// </summary>
         /// <param name="value">The string which gets converted</param>
         /// <returns>The the list of strings</returns>
-        public static List<string> ToStringList(this string values)
+        public static List<string> ToStringList(this string value)
         {
-            if (values == null)
+            if (value == null)
             {
                 return new List<string>();
             }
 
-            return values.Split(',').Select(x => x.Trim()).ToList();
+            return value.Split(',').Select(x => x.Trim()).ToList();
         }
 
         /// <summary>
@@ -105,14 +103,14 @@ namespace Develappers.BillomatNet.Helpers
         /// </summary>
         /// <param name="value">The string which gets converted</param>
         /// <returns>The the list of integer</returns>
-        public static List<int> ToIntList(this string values)
+        public static List<int> ToIntList(this string value)
         {
-            if (values == null)
+            if (value == null)
             {
                 return new List<int>();
             }
 
-            return values.Split(',').Select(x => int.Parse(x.Trim())).ToList();
+            return value.Split(',').Select(x => int.Parse(x.Trim())).ToList();
         }
 
         internal static TagCloudItem ToDomain(this Api.TagCloudItem value)

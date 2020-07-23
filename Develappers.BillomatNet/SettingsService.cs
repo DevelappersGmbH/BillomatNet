@@ -21,9 +21,9 @@ namespace Develappers.BillomatNet
         /// </summary>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The settings or null if not found.</returns>
-        public async Task<Settings> GetAsync(CancellationToken token = default(CancellationToken))
+        public async Task<Settings> GetAsync(CancellationToken token = default)
         {
-            var jsonModel = await GetItemByIdAsync<SettingsWrapper>($"/api/settings/", token).ConfigureAwait(false);
+            var jsonModel = await GetItemByIdAsync<SettingsWrapper>("/api/settings/", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
     }

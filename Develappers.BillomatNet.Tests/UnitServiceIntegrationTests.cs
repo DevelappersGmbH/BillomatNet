@@ -44,7 +44,7 @@ namespace Develappers.BillomatNet.Tests
             var config = Helpers.GetTestConfiguration();
             config.ApiKey = "";
             var service = new UnitService(config);
-            var ex = Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetListAsync(
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetListAsync(
                 new Query<Unit, UnitFilter>().AddFilter(x => x.Name, "Stunde")));
         }
 

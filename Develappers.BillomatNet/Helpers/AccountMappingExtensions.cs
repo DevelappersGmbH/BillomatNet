@@ -1,64 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Types;
-using Client = Develappers.BillomatNet.Types.Client;
+using Account = Develappers.BillomatNet.Types.Account;
+using Quota = Develappers.BillomatNet.Types.Quota;
 
 namespace Develappers.BillomatNet.Helpers
 {
-    internal static class ClientMappingExtensions
+    internal static class AccountMappingExtensions
     {
-        internal static Types.PagedList<Client> ToDomain(this ClientListWrapper value)
-        {
-            return value?.Item.ToDomain();
-        }
 
-        internal static Types.PagedList<Client> ToDomain(this ClientList value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Types.PagedList<Client>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(ToDomain).ToList()
-            };
-        }
-
-        internal static Client ToDomain(this ClientWrapper value)
+        internal static Account ToDomain(this AccountWrapper value)
         {
             return value?.Client.ToDomain();
         }
 
-        private static Client ToDomain(this Api.Client value)
+        private static Account ToDomain(this Develappers.BillomatNet.Api.Account value)
         {
             if (value == null)
             {
                 return null;
             }
 
-            NetGrossSettingsType netGrossSettingsType;
-
-            switch (value.NetGross.ToLowerInvariant())
-            {
-                case "net":
-                    netGrossSettingsType = NetGrossSettingsType.Net;
-                    break;
-                case "gross":
-                    netGrossSettingsType = NetGrossSettingsType.Gross;
-                    break;
-                case "settings":
-                    netGrossSettingsType = NetGrossSettingsType.Settings;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            return new Client
+            return new Account
             {
                 Id = int.Parse(value.Id),
                 Number = value.Number,
@@ -94,9 +59,49 @@ namespace Develappers.BillomatNet.Helpers
                 VatNumber = value.VatNumber,
                 Web = value.Www,
                 ZipCode = value.Zip,
-                NetGross = netGrossSettingsType
+                Plan = value.Plan,
+                Quotas = value.Quotas.ToDomain()
             };
         }
 
+        private static Quota ToDomain(this Api.Quota value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            QuotaType type;
+            switch (value.Entity.ToLowerInvariant())
+            {
+                case "documents":
+                    type = QuotaType.Documents;
+                    break;
+                case "clients":
+                    type = QuotaType.Clients;
+                    break;
+                case "articles":
+                    type = QuotaType.Articles;
+                    break;
+                case "storage":
+                    type = QuotaType.Storage;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+
+            }
+
+            return new Quota
+            {
+                Available = int.Parse(value.Available),
+                Used = int.Parse(value.Used),
+                Entity = type
+            };
+        }
+
+        private static List<Quota> ToDomain(this QuotaWrapper value)
+        {
+            return value?.Quota?.Select(ToDomain).ToList();
+        }
     }
 }

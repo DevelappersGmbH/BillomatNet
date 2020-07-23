@@ -75,9 +75,9 @@ namespace Develappers.BillomatNet.Helpers
         {
             switch (value)
             {
-                case Types.PropertyType.Textarea:
+                case PropertyType.Textarea:
                     return "TEXTAREA";
-                case Types.PropertyType.Checkbox:
+                case PropertyType.Checkbox:
                     return "CHECKBOX";
                 default:
                     return "TEXTFIELD";
