@@ -5,7 +5,7 @@ using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 using Xunit;
 
-namespace Develappers.BillomatNet.Tests.Integration
+namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
     public class ClientServiceIntegrationTests

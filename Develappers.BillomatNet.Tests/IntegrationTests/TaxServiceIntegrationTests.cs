@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Develappers.BillomatNet.Types;
 using Xunit;
 
-namespace Develappers.BillomatNet.Tests.Integration
+namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
     public class TaxServiceIntegrationTests
@@ -12,7 +12,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task GetListOfTaxes()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new TaxService(config);
             var result = await service.GetListAsync(CancellationToken.None);
             Assert.True(result.List.Count > 0);
@@ -21,7 +21,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task GetByIdTax()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new TaxService(config);
             var result = await service.GetByIdAsync(21281);
             Assert.NotNull(result);
@@ -30,7 +30,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task GetTaxByIdWhenNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new TaxService(config);
             
             var result = await service.GetByIdAsync(21285);
@@ -40,7 +40,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task GetTaxByIdWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new TaxService(config);
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(1));
@@ -68,7 +68,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task CreateTaxItemWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new TaxService(config);
 
@@ -86,7 +86,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task CreateTaxItemWhenNull()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new TaxService(config);
 
             var tax = new Tax { };

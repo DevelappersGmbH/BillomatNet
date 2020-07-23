@@ -5,7 +5,7 @@ using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 using Xunit;
 
-namespace Develappers.BillomatNet.Tests.Integration
+namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
     public class UnitServiceIntegrationTests
@@ -13,7 +13,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task GetListOfUnits()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new UnitService(config);
             var result = await service.GetListAsync(CancellationToken.None);
             Assert.True(result.List.Count > 0);
@@ -22,7 +22,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task GetFilteredUnits()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new UnitService(config);
             var result = await service.GetListAsync(
                 new Query<Unit, UnitFilter>().AddFilter(x => x.Name, "Stunde"));
@@ -32,7 +32,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task GetFilteredUnitsNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new UnitService(config);
             var result = await service.GetListAsync(
                 new Query<Unit, UnitFilter>().AddFilter(x => x.Name, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
@@ -42,7 +42,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task GetFilteredUnitsNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             config.ApiKey = "";
             var service = new UnitService(config);
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetListAsync(
@@ -52,7 +52,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task GetByIdUnits()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new UnitService(config);
             var result = await service.GetByIdAsync(20573);
             Assert.NotNull(result);
@@ -61,7 +61,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task GetByIdUnitsWhenNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new UnitService(config);
             var result = await service.GetByIdAsync(1);
             Assert.Null(result);
@@ -70,7 +70,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task GetByIdunitsWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new UnitService(config);
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(20573));
@@ -79,7 +79,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task DeleteUnitItem()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new UnitService(config);
 
             var name = "xUnit test";
@@ -100,7 +100,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task DeleteUnitItemNotExisting()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new UnitService(config);
             var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(1));
         }
@@ -108,7 +108,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task DeleteUnitItemNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new UnitService(config);
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.DeleteAsync(1));
@@ -117,7 +117,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task EditUnitItem()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new UnitService(config);
 
             var name = "xUnit test";
@@ -148,7 +148,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task EditUnitItemWhenNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new UnitService(config);
             var unitItem = new Unit
             {
@@ -160,7 +160,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task EditUnitItemWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new UnitService(config);
             var unitItem = new Unit
@@ -173,7 +173,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task CreateUnitItem()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new UnitService(config);
 
             var name = "xUnit test";
@@ -192,7 +192,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task CreateTaxItemWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new UnitService(config);
 
@@ -209,7 +209,7 @@ namespace Develappers.BillomatNet.Tests.Integration
         [Fact]
         public async Task CreateUnitItemWhenNull()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new UnitService(config);
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(null));
