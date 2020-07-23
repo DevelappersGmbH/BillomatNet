@@ -78,8 +78,8 @@ namespace Develappers.BillomatNet.Helpers
             {
                 Id = value.Id.ToString(),
                 Created = value.Created.ToApiDate(),
-                ArticleNumber = value.ArticleNumber,
                 CurrencyCode = value.CurrencyCode,
+                ArticleNumber = value.ArticleNumber,
                 Description = value.Description,
                 Number = value.Number.ToString(),
                 NumberLength = value.NumberLength.ToString(),
