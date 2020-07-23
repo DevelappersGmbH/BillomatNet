@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json;
-
-namespace Develappers.BillomatNet.Types
+﻿namespace Develappers.BillomatNet.Types
 {
     /// <summary>
     /// The type of the number prefix.

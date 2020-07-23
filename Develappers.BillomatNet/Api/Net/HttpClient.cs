@@ -34,9 +34,9 @@ namespace Develappers.BillomatNet.Api.Net
             ApiKey = apiKey;
         }
 
-        public string ApiKey { get; private set; }
+        public string ApiKey { get; }
 
-        public string BillomatId { get; private set; }
+        public string BillomatId { get; }
 
         public string AppId { get; set; }
 
@@ -52,7 +52,7 @@ namespace Develappers.BillomatNet.Api.Net
         /// The task result contains the request result from the stream.
         /// </returns>
         /// <exception cref="IOException"> Throws when the response was null.</exception>
-        public async Task<byte[]> GetBytesAsync(Uri relativeUri, CancellationToken token = default(CancellationToken))
+        public async Task<byte[]> GetBytesAsync(Uri relativeUri, CancellationToken token = default)
         {
             var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
             var builder = new UriBuilder(new Uri(baseUri, relativeUri));
@@ -60,7 +60,6 @@ namespace Develappers.BillomatNet.Api.Net
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpWebRequest.Method = "GET";
-            //httpWebRequest.Accept = "application/json";
             httpWebRequest.Headers.Add(HeaderNameApiKey, ApiKey);
 
             if (!string.IsNullOrWhiteSpace(AppId))
@@ -80,7 +79,7 @@ namespace Develappers.BillomatNet.Api.Net
             }
            
             var ms = new MemoryStream();
-            responseStream.CopyTo(ms);
+            await responseStream.CopyToAsync(ms);
             return ms.ToArray();
         }
 
@@ -93,13 +92,13 @@ namespace Develappers.BillomatNet.Api.Net
         /// A task that represents the asynchronous operation.
         /// The task result contains the request result from the stream.
         /// </returns>
-        public Task<string> GetAsync(Uri relativeUri, CancellationToken token = default(CancellationToken))
+        public Task<string> GetAsync(Uri relativeUri, CancellationToken token = default)
         {
             return GetAsync(relativeUri, null, token);
         }
 
         /// <summary>
-        /// Makes GET web request with filter to speciic URL
+        /// Makes GET web request with filter to specific URL
         /// </summary>
         /// <param name="relativeUri">The specific URI.</param>
         /// <param name="query">The filter.</param>
@@ -109,7 +108,7 @@ namespace Develappers.BillomatNet.Api.Net
         /// The task result contains the request result from the stream.
         /// </returns>
         /// <exception cref="IOException"> Throws when the response was null.</exception>
-        public async Task<string> GetAsync(Uri relativeUri, string query, CancellationToken token = default(CancellationToken))
+        public async Task<string> GetAsync(Uri relativeUri, string query, CancellationToken token = default)
         {
             var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
             var builder = new UriBuilder(new Uri(baseUri, relativeUri));
@@ -200,6 +199,7 @@ namespace Develappers.BillomatNet.Api.Net
         /// Makes PUT web request.
         /// </summary>
         /// <param name="relativeUri">The specific URI.</param>
+        /// <param name="data">The data to be sent to the server.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -252,6 +252,7 @@ namespace Develappers.BillomatNet.Api.Net
         /// Makes POST web request.
         /// </summary>
         /// <param name="relativeUri">The specific URI.</param>
+        /// <param name="data">The data to be sent to the server.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Develappers.BillomatNet.Queries;
@@ -277,12 +276,12 @@ namespace Develappers.BillomatNet.Helpers
             var filters = new List<string>();
             if (value.ClientId.HasValue)
             {
-                filters.Add($"article_id={value.ClientId.Value}");
+                filters.Add($"client_id={value.ClientId.Value}");
             }
 
             if (value.ClientPropertyId.HasValue)
             {
-                filters.Add($"article_property_id={value.ClientPropertyId.Value}");
+                filters.Add($"client_property_id={value.ClientPropertyId.Value}");
             }
 
             if (value.Value != null)

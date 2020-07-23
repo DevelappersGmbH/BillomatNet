@@ -9,7 +9,7 @@ namespace Develappers.BillomatNet.Helpers
         private static MemberExpression GetMemberExpression(Expression method)
         {
             if (!(method is LambdaExpression lambda))
-                throw new ArgumentNullException("method");
+                throw new ArgumentNullException(nameof(method));
 
             MemberExpression memberExpr = null;
 
@@ -33,7 +33,7 @@ namespace Develappers.BillomatNet.Helpers
         /// Gets the attribute of a property.
         /// </summary>
         /// <param name="propertyExpression">The property.</param>
-        /// <returns>The property informations.</returns>
+        /// <returns>The property information.</returns>
         public static PropertyInfo GetPropertyInfo(Expression propertyExpression)
         {
             return GetMemberExpression(propertyExpression).Member as PropertyInfo;

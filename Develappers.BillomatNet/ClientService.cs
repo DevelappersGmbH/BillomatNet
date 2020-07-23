@@ -125,6 +125,43 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        /// <summary>
+        /// Creates / Edits a client property.
+        /// </summary>
+        /// <param name="model">The client property.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new client propery.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<ClientProperty> EditAsync(ClientProperty model, CancellationToken token = default)
+        {
+            if (model.ClientId == 0 || model.ClientPropertyId == 0 || model.Value == null)
+            {
+                throw new ArgumentException("client or a value of the client is null", nameof(model));
+            }
+            if (model.Id != 0)
+            {
+                throw new ArgumentException("invalid client id", nameof(model));
+            }
+            var wrappedModel = new ClientPropertyWrapper
+            {
+                ClientProperty = model.ToApi()
+            };
+            try
+            {
+                var jsonModel = await PostAsync("/api/client-property-values", wrappedModel, token).ConfigureAwait(false);
+                return jsonModel.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException("wrong input parameter", nameof(model), wex);
+            }
+        }
  
         /// <summary>
         /// Retrieves the customer tag cloud.

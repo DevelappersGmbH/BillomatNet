@@ -23,7 +23,7 @@ namespace Develappers.BillomatNet.Helpers
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
                 TotalItems = value.Total,
-                List = value.List?.Select(x => ToDomain((Api.ClientProperty) x)).ToList()
+                List = value.List?.Select(ToDomain).ToList()
             };
         }
 
@@ -48,6 +48,23 @@ namespace Develappers.BillomatNet.Helpers
                 ClientId = value.ClientId,
                 Name = value.Name,
                 Value = MappingHelpers.ParsePropertyValue(type, value.Value)
+            };
+        }
+
+        internal static Api.ClientProperty ToApi(this ClientProperty value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+            return new Api.ClientProperty
+            {
+                Id = value.Id,
+                ClientId = value.ClientId,
+                ClientPropertyId = value.ClientPropertyId,
+                Type = MappingHelpers.PropertyTypeToString(value.Type),
+                Name = value.Name,
+                Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
             };
         }
 

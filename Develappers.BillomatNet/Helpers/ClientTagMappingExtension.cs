@@ -24,7 +24,7 @@ namespace Develappers.BillomatNet.Helpers
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
                 TotalItems = value.Total,
-                List = value.List?.Select(x => CommonMappingExtensions.ToDomain(x)).ToList()
+                List = value.List?.Select(x => x.ToDomain()).ToList()
             };
         }
 
