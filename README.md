@@ -4,7 +4,8 @@ This is an API client to access your data in [Billomat](https://www.billomat.com
 
 ## Status
 
-![Build and Test](https://github.com/DevelappersGmbH/BillomatNet/workflows/CI%20Build%20and%20Test/badge.svg)
+![Build and Test](https://github.com/DevelappersGmbH/BillomatNet/workflows/build%20and%20test/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/DevelappersGmbH/BillomatNet/badge.svg?branch=master)](https://coveralls.io/github/DevelappersGmbH/BillomatNet?branch=master)
 [![NuGet](https://img.shields.io/nuget/dt/Develappers.BillomatNet.svg)](https://www.nuget.org/packages/Develappers.BillomatNet/)
 
 ## Usage
