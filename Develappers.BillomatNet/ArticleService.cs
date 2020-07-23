@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
+using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
 using Article = Develappers.BillomatNet.Types.Article;
@@ -15,6 +17,10 @@ namespace Develappers.BillomatNet
     public class ArticleService : ServiceBase, IEntityService<Article, ArticleFilter>
     {
         public ArticleService(Configuration configuration) : base(configuration)
+        {
+        }
+
+        internal ArticleService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }
 

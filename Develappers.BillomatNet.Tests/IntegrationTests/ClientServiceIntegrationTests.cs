@@ -1,11 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 using Xunit;
 
-namespace Develappers.BillomatNet.Tests
+namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
     public class ClientServiceIntegrationTests
@@ -203,6 +205,94 @@ namespace Develappers.BillomatNet.Tests
             var result = await service.GetTagCloudAsync(CancellationToken.None);
 
             Assert.True(true);
+        }
+
+        [Fact]
+        public async Task GetTagListAsync()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var query = new Query<ClientTag, ClientTagFilter>()
+                .AddFilter(x => x.ClientId, 796659);
+
+            var result = await service.GetTagListAsync(query);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task GetTagListAsyncWhenArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.GetTagListAsync(null));
+        }
+
+        [Fact]
+        public async Task GetTagListAsyncWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ClientService(config);
+
+            var query = new Query<ClientTag, ClientTagFilter>()
+                .AddFilter(x => x.ClientId, 796659);
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetTagListAsync(query));
+        }
+
+        [Fact]
+        public async Task GetTagListAsyncWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var query = new Query<ClientTag, ClientTagFilter>()
+                .AddFilter(x => x.ClientId, 1);
+
+            var result = await service.GetTagListAsync(query);
+            Assert.Null(result.List);
+        }
+
+        [Fact]
+        public async Task GetTagById()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var result = await service.GetTagById(188156);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task GetTagByIdWhenArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.GetTagById(0));
+        }
+
+        [Fact]
+        public async Task GetTagByIdWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ClientService(config);
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetTagById(188156));
+        }
+
+        [Fact]
+        public async Task GetTagByIdWhenNotFound()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var result = await service.GetTagById(100000);
+            Assert.Null(result);
         }
 
         #endregion

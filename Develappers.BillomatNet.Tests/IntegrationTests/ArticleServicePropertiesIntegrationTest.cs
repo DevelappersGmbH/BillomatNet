@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using Develappers.BillomatNet.Types;
 using Xunit;
 
-namespace Develappers.BillomatNet.Tests
+namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
-    public class ArticleServicePropertiesIntegrationTest : TestBase<ArticleService>
+    public class ArticleServicePropertiesIntegrationTest : IntegrationTestBase<ArticleService>
     {
 
         public ArticleServicePropertiesIntegrationTest() : base(c => new ArticleService(c))

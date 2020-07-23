@@ -6,11 +6,11 @@ using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 using Xunit;
 
-namespace Develappers.BillomatNet.Tests
+namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
-    public class ArticleServiceTagsIntegrationTests : TestBase<ArticleService>
+    public class ArticleServiceTagsIntegrationTests : IntegrationTestBase<ArticleService>
     {
         public ArticleServiceTagsIntegrationTests() : base(c => new ArticleService(c))
         {
