@@ -2,18 +2,12 @@
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
-using Newtonsoft.Json.Schema;
 using Article = Develappers.BillomatNet.Types.Article;
-using ArticleProperty = Develappers.BillomatNet.Types.ArticleProperty;
-using ArticleTag = Develappers.BillomatNet.Types.ArticleTag;
-using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
 namespace Develappers.BillomatNet.Helpers
 {
     internal static class ArticleMappingExtensions
     {
-        #region Article
-
         internal static Types.PagedList<Article> ToDomain(this ArticleListWrapper value)
         {
             return value?.Item.ToDomain();
@@ -101,162 +95,5 @@ namespace Develappers.BillomatNet.Helpers
                 UnitId = value.UnitId.ToString()
             };
         }
-
-        #endregion
-
-        #region Property
-
-        private static ArticleProperty ToDomain(this Develappers.BillomatNet.Api.ArticleProperty value)
-                {
-                    if (value == null)
-                    {
-                        return null;
-                    }
-
-                    var type = MappingHelpers.ParsePropertyType(value.Type);
-                    return new ArticleProperty
-                    {
-                        Id = value.Id,
-                        ArticlePropertyId = value.ArticlePropertyId,
-                        Type = type,
-                        ArticleId = value.ArticleId,
-                        Name = value.Name,
-                        Value = MappingHelpers.ParsePropertyValue(type, value.Value)
-                    };
-                }
-
-        internal static ArticleProperty ToDomain(this ArticlePropertyWrapper value)
-        {
-            return value?.ArticleProperty.ToDomain();
-        }
-
-        internal static Types.PagedList<ArticleProperty> ToDomain(this ArticlePropertyListWrapper value)
-        {
-            return value?.Item.ToDomain();
-
-        }
-
-        internal static Types.PagedList<ArticleProperty> ToDomain(this ArticlePropertyList value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Types.PagedList<ArticleProperty>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(x => x.ToDomain()).ToList()
-            };
-        }
-
-        internal static Api.ArticleProperty ToApi(this ArticleProperty value)
-        {
-            return new Api.ArticleProperty
-            {
-                Id = value.Id,
-                ArticleId = value.ArticleId,
-                ArticlePropertyId = value.ArticlePropertyId,
-                Type = MappingHelpers.PropertyTypeToString(value.Type),
-                Name = value.Name,
-                Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
-            };
-        }
-
-        #endregion
-
-        #region Tag
-        internal static Types.PagedList<TagCloudItem> ToDomain(this ArticleTagCloudItemList value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Types.PagedList<TagCloudItem>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(x => x.ToDomain()).ToList()
-            };
-        }
-        private static ArticleTag ToDomain(this Api.ArticleTag value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new ArticleTag
-            {
-                Id = value.Id,
-                ArticleId = value.ArticleId,
-                Name = value.Name
-            };
-        }
-
-        internal static ArticleTag ToDomain(this ArticleTagWrapper value)
-        {
-            return value?.ArticleTag.ToDomain();
-        }
-
-        internal static Types.PagedList<TagCloudItem> ToDomain(this ArticleTagCloudItemListWrapper value)
-        {
-            return value?.Item.ToDomain();
-        }
-
-        internal static Types.PagedList<ArticleTag> ToDomain(this ArticleTagListWrapper value)
-        {
-            return value?.Item.ToDomain();
-
-        }
-
-        internal static Types.PagedList<ArticleTag> ToDomain(this ArticleTagList value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Types.PagedList<ArticleTag>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(x => x.ToDomain()).ToList()
-            };
-        }
-
-        internal static Types.ArticleTag ToDomain(this ArticleTag value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-            return new Types.ArticleTag
-            {
-                Id = value.Id,
-                ArticleId = value.ArticleId,
-                Name = value.Name
-            };
-        }
-        internal static Api.ArticleTag ToApi(this ArticleTag value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-            return new Api.ArticleTag
-            {
-                Id = value.Id,
-                ArticleId = value.ArticleId,
-                Name = value.Name
-            };
-        }
-
-        #endregion
     }
 }
