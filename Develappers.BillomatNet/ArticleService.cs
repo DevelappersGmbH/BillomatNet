@@ -54,8 +54,10 @@ namespace Develappers.BillomatNet
         /// <returns>The article or null if not found.</returns>
         public async Task<Article> GetByIdAsync(int id, CancellationToken token = default)
         {
+            #region test
             var jsonModel = await GetItemByIdAsync<ArticleWrapper>($"/api/articles/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+#endregion
         }
 
         /// <summary>
