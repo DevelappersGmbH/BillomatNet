@@ -1,12 +1,11 @@
-﻿using Develappers.BillomatNet.Types;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Types;
 using Xunit;
 
-namespace Develappers.BillomatNet.Tests
+namespace Develappers.BillomatNet.Tests.Integration
 {
     [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
     public class InvoiceServiceIntegrationTests

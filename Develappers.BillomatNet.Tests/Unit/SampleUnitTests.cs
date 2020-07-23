@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace Develappers.BillomatNet.Tests
+namespace Develappers.BillomatNet.Tests.Unit
 {
     
     [Trait(TraitNames.Category, CategoryNames.UnitTest)]

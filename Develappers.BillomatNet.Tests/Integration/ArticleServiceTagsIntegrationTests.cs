@@ -6,7 +6,7 @@ using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 using Xunit;
 
-namespace Develappers.BillomatNet.Tests
+namespace Develappers.BillomatNet.Tests.Integration
 {
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
