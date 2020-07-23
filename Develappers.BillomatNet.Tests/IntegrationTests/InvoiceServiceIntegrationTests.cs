@@ -1,12 +1,11 @@
-﻿using Develappers.BillomatNet.Types;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Types;
 using Xunit;
 
-namespace Develappers.BillomatNet.Tests
+namespace Develappers.BillomatNet.Tests.Integration
 {
     [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
     public class InvoiceServiceIntegrationTests
@@ -26,7 +25,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task GetInvoices()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
             var result = await service.GetListAsync(CancellationToken.None);
 
@@ -36,7 +35,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task GetInvoiceById()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
             var result = await service.GetByIdAsync(1322705);
 
@@ -46,7 +45,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task GetInvoiceByIdWhenNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
             var result = await service.GetByIdAsync(1);
 
@@ -56,7 +55,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task GetInvoiceByIdWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new InvoiceService(config);
 
@@ -66,7 +65,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task CreateInvoice()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             #region Initializing to create
@@ -121,8 +120,8 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task CreateInvoiceWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
-            var config2 = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
+            var config2 = IntegrationTests.Helpers.GetTestConfiguration();
             config2.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new InvoiceService(config2);
 
@@ -188,7 +187,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task CreateInvoiceWhenWhenArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             var inv = new Invoice();
@@ -199,7 +198,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task EdiInvoice()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             #region Initializing to create
@@ -269,7 +268,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task EdiInvoiceArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             #region Initializing to create
@@ -337,7 +336,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task EdiInvoiceArgumentNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             #region Initializing to create
@@ -398,7 +397,7 @@ namespace Develappers.BillomatNet.Tests
                 InvoiceItems = result.InvoiceItems
             };
 
-            var editConf = Helpers.GetTestConfiguration();
+            var editConf = IntegrationTests.Helpers.GetTestConfiguration();
             editConf.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var editService = new InvoiceService(editConf);
 
@@ -410,7 +409,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task EdiInvoiceNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             #region Initializing to create
@@ -463,7 +462,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task DeleteInvoice()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             #region Initializing to create
@@ -531,7 +530,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task DeleteInvoiceArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteAsync(0));
@@ -540,7 +539,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task DeleteInvoiceNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new InvoiceService(config);
 
@@ -550,7 +549,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task DeleteInvoiceNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(1));
@@ -616,7 +615,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task GetInvoiceItem()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
             var result = await service.GetItemByIdAsync(3246680);
 
@@ -626,7 +625,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task GetInvoiceItems()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
             var result = await service.GetItemsAsync(1322705, CancellationToken.None);
 
@@ -636,7 +635,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task CreateInvoiceItem()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             #region Initializing to create
@@ -691,7 +690,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task GetMultipleInvoiceItems()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
             var list = await service.GetListAsync(CancellationToken.None);
 
@@ -706,7 +705,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task CreateInvoiceItemWhenArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             var item = new InvoiceItem();
@@ -717,7 +716,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task CreateInvoiceItemWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new InvoiceService(config);
 
@@ -732,7 +731,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task CreateInvoiceItemWhenNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             var item = new InvoiceItem
@@ -746,7 +745,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task EditInvoiceItem()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             #region Initializing to create
@@ -818,7 +817,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task EditInvoiceItemArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             var item = new InvoiceItem { };
@@ -829,7 +828,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task EditInvoiceItemWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new InvoiceService(config);
 
@@ -845,7 +844,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task EditInvoiceItemWhenNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             var item = new InvoiceItem
@@ -860,7 +859,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task DeleteInvoiceItem()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             #region Initializing to create
@@ -926,7 +925,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task DeleteInvoiceItemArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteInvoiceItemAsync(0));
@@ -935,7 +934,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task DeleteInvoiceItemNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             config.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var service = new InvoiceService(config);
 
@@ -945,7 +944,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task DeleteInvoiceItemNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
 
             var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteInvoiceItemAsync(1));
@@ -958,7 +957,7 @@ namespace Develappers.BillomatNet.Tests
         [Fact]
         public async Task GetInvoicePdf()
         {
-            var config = Helpers.GetTestConfiguration();
+            var config = IntegrationTests.Helpers.GetTestConfiguration();
             var service = new InvoiceService(config);
             var result = await service.GetPdfAsync(1322705);
 

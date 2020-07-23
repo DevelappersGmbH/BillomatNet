@@ -4,10 +4,10 @@ using System.Threading.Tasks;
 using Develappers.BillomatNet.Types;
 using Xunit;
 
-namespace Develappers.BillomatNet.Tests
+namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
-    public class ArticleServiceIntegrationTests : TestBase<ArticleService>
+    public class ArticleServiceIntegrationTests : IntegrationTestBase<ArticleService>
     {
         public ArticleServiceIntegrationTests() : base(c => new ArticleService(c))
         {
