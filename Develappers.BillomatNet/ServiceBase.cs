@@ -9,11 +9,25 @@ namespace Develappers.BillomatNet
 {
     public abstract class ServiceBase
     {
-        protected Configuration Configuration { get; }
+        protected readonly Func<IHttpClient> HttpClientFactory;
 
-        protected ServiceBase(Configuration configuration)
+        protected ServiceBase(Configuration configuration) : this(() => 
+            new HttpClient(configuration.BillomatId, configuration.ApiKey)
+            {
+                AppId = configuration.AppId, 
+                AppSecret = configuration.AppSecret
+            })
         {
-            Configuration = configuration;
+        }
+
+        protected ServiceBase(Func<IHttpClient> httpClientFactory)
+        {
+            if (httpClientFactory == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            HttpClientFactory = httpClientFactory;
         }
 
         /// <summary>
@@ -30,7 +44,7 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         protected async Task<T> GetItemByIdAsync<T>(string resourceUrl, CancellationToken token = default) where T : class
         {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            var httpClient = HttpClientFactory.Invoke();
             string httpResponse;
 
             try
@@ -66,7 +80,7 @@ namespace Develappers.BillomatNet
         /// </returns>
         protected async Task<T> GetListAsync<T>(string resourceUrl, string query, CancellationToken token)
         {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            var httpClient = HttpClientFactory.Invoke();
             var httpResponse = await httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), query, token).ConfigureAwait(false);
             return JsonConvert.DeserializeObject<T>(httpResponse);
         }
@@ -83,7 +97,7 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         protected async Task DeleteAsync(string resourceUrl, CancellationToken token)
         {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            var httpClient = HttpClientFactory.Invoke();
             try
             {
                 await httpClient.DeleteAsync(new Uri(resourceUrl, UriKind.Relative), token).ConfigureAwait(false);
@@ -139,7 +153,7 @@ namespace Develappers.BillomatNet
             where TIn : class
             where TOut : class
         {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
+            var httpClient = HttpClientFactory.Invoke();
 
             try
             {
@@ -199,8 +213,8 @@ namespace Develappers.BillomatNet
             where TIn : class
             where TOut : class
         {
-            var httpClient = new HttpClient(Configuration.BillomatId, Configuration.ApiKey);
-            
+            var httpClient = HttpClientFactory.Invoke();
+
             try
             {
                 var requestData = model == null ? "" : JsonConvert.SerializeObject(model);
