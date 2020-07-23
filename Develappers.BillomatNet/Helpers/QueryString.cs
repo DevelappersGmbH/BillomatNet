@@ -24,6 +24,20 @@ namespace Develappers.BillomatNet.Helpers
             return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
         }
 
+        internal static string For(Query<ClientTag, ClientTagFilter> value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            var filter = value.Filter.ToQueryString();
+            var sort = value.Sort.ToQueryString();
+            var paging = value.Paging.ToQueryString();
+
+            return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
+        }
+
         internal static string For(Query<ClientProperty, ClientPropertyFilter> value)
         {
             if (value == null)
@@ -134,6 +148,11 @@ namespace Develappers.BillomatNet.Helpers
             return ToQueryString<Client, Api.Client>(value);
         }
 
+        internal static string ToQueryString(this List<SortItem<ClientTag>> value)
+        {
+            return ToQueryString<ClientTag, Api.ClientTag>(value);
+        }
+
         internal static string ToQueryString(this List<SortItem<ClientProperty>> value)
         {
             return ToQueryString<ClientProperty, Develappers.BillomatNet.Api.ClientProperty>(value);
@@ -231,6 +250,19 @@ namespace Develappers.BillomatNet.Helpers
             {
                 filters.Add($"tags={string.Join(",", value.Tags.Select(HttpUtility.UrlEncode))}");
             }
+
+            return string.Join("&", filters);
+        }
+
+        internal static string ToQueryString(this ClientTagFilter value)
+        {
+            if (value == null)
+            {
+                return string.Empty;
+            }
+
+            var filters = new List<string>();
+            filters.Add($"client_id={value.ClientId}");
 
             return string.Join("&", filters);
         }

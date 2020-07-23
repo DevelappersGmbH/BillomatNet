@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Account = Develappers.BillomatNet.Types.Account;
 using Client = Develappers.BillomatNet.Types.Client;
 using ClientProperty = Develappers.BillomatNet.Types.ClientProperty;
+using ClientTag = Develappers.BillomatNet.Types.ClientTag;
 using Contact = Develappers.BillomatNet.Types.Contact;
 using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
@@ -137,6 +138,28 @@ namespace Develappers.BillomatNet
         {
             // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
             var jsonModel = await GetListAsync<ClientTagCloudItemListWrapper>("/api/client-tags", null, token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Retrieves the tag list for specific clients.
+        /// </summary>
+        /// <param name="query">The filter and sort options.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the paged list of client tags.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        public async Task<Types.PagedList<ClientTag>> GetTagListAsync(Query<ClientTag, ClientTagFilter> query, CancellationToken token = default)
+        {
+            if (query?.Filter == null)
+            {
+                throw new ArgumentException("filter has to be set", nameof(query));
+            }
+
+            var jsonModel = await GetListAsync<ClientTagListWrapper>("/api/client-tags", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
