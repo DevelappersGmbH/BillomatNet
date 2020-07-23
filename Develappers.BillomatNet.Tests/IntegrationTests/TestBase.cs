@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace Develappers.BillomatNet.Tests
+namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
-    public abstract class TestBase<T>
+    public abstract class IntegrationTestBase<T>
     {
         private readonly Func<Configuration, T> _sutFactoryMethod;
 
-        protected TestBase(Func<Configuration, T> sutFactoryMethod)
+        protected IntegrationTestBase(Func<Configuration, T> sutFactoryMethod)
         {
             _sutFactoryMethod = sutFactoryMethod;
             Configuration = Helpers.GetTestConfiguration();

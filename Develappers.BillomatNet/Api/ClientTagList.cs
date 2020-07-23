@@ -7,7 +7,7 @@ namespace Develappers.BillomatNet.Api
     internal class ClientTagList : PagedList<ClientTag>
     {
         [JsonProperty("client-tags")]
-        [JsonConverter(typeof(CollectionConverter<ArticleTag>))]
+        [JsonConverter(typeof(CollectionConverter<ClientTag>))]
         public override List<ClientTag> List { get; set; }
     }
 }
