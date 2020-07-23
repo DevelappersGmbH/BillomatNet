@@ -12,20 +12,18 @@ using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
 namespace Develappers.BillomatNet
 {
-    public class ArticleService : ServiceBase
+    public class ArticleService : ServiceBase, IEntityService<Article, ArticleFilter>
     {
         public ArticleService(Configuration configuration) : base(configuration)
         {
         }
-
-        #region Article
 
         /// <summary>
         /// Retrieves a list of articles.
         /// </summary>
         /// <param name="token">The cancellation token.</param>
         /// <returns></returns>
-        public Task<Types.PagedList<Article>> GetListAsync(CancellationToken token = default(CancellationToken))
+        public Task<Types.PagedList<Article>> GetListAsync(CancellationToken token = default)
         {
             return GetListAsync(null, token);
         }
@@ -36,7 +34,7 @@ namespace Develappers.BillomatNet
         /// <param name="query">The filter and sort options.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns></returns>
-        public async Task<Types.PagedList<Article>> GetListAsync(Query<Article, ArticleFilter> query, CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<Article>> GetListAsync(Query<Article, ArticleFilter> query, CancellationToken token = default)
         {
             var jsonModel = await GetListAsync<ArticleListWrapper>("/api/articles", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
@@ -48,7 +46,7 @@ namespace Develappers.BillomatNet
         /// <param name="id">The ID of the article.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The article or null if not found.</returns>
-        public async Task<Article> GetByIdAsync(int id, CancellationToken token = default(CancellationToken))
+        public async Task<Article> GetByIdAsync(int id, CancellationToken token = default)
         {
             var jsonModel = await GetItemByIdAsync<ArticleWrapper>($"/api/articles/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
@@ -133,16 +131,13 @@ namespace Develappers.BillomatNet
             return DeleteAsync($"/api/articles/{id}", token);
         }
 
-        #endregion
-
-        #region Property
 
         /// <summary>
         /// Retrieves a list of all properties.
         /// </summary>
         /// <param name="token">The cancellation token.</param>
         /// <returns></returns>
-        public Task<Types.PagedList<ArticleProperty>> GetPropertyListAsync(CancellationToken token = default(CancellationToken))
+        public Task<Types.PagedList<ArticleProperty>> GetPropertyListAsync(CancellationToken token = default)
         {
             return GetPropertyListAsync(null, token);
         }
@@ -153,7 +148,7 @@ namespace Develappers.BillomatNet
         /// <param name="query">The filter and sort options.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns></returns>
-        public async Task<Types.PagedList<ArticleProperty>> GetPropertyListAsync(Query<ArticleProperty, ArticlePropertyFilter> query, CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<ArticleProperty>> GetPropertyListAsync(Query<ArticleProperty, ArticlePropertyFilter> query, CancellationToken token = default)
         {
             var jsonModel = await GetListAsync<ArticlePropertyListWrapper>("/api/article-property-values", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
@@ -165,7 +160,7 @@ namespace Develappers.BillomatNet
         /// <param name="id">The id of the article property.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The article property or null if not found.</returns>
-        public async Task<ArticleProperty> GetPropertyByIdAsync(int id, CancellationToken token = default(CancellationToken))
+        public async Task<ArticleProperty> GetPropertyByIdAsync(int id, CancellationToken token = default)
         {
             var jsonModel = await GetItemByIdAsync<ArticlePropertyWrapper>($"/api/article-property-values/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
@@ -202,20 +197,16 @@ namespace Develappers.BillomatNet
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
             {
-                throw new ArgumentException($"wrong input parameter", nameof(model), wex);
+                throw new ArgumentException("wrong input parameter", nameof(model), wex);
             }
         }
-
-        #endregion
-
-        #region Tag
 
         /// <summary>
         /// Retrieves the article tag cloud.
         /// </summary>
         /// <param name="token">The cancellation token.</param>
         /// <returns></returns>
-        public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default)
         {
             // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
             var jsonModel = await GetListAsync<ArticleTagCloudItemListWrapper>("/api/article-tags", null, token).ConfigureAwait(false);
@@ -228,7 +219,7 @@ namespace Develappers.BillomatNet
         /// <param name="query">The filter and sort options.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns></returns>
-        public async Task<Types.PagedList<ArticleTag>> GetTagListAsync(Query<ArticleTag, ArticleTagFilter> query, CancellationToken token = default(CancellationToken))
+        public async Task<Types.PagedList<ArticleTag>> GetTagListAsync(Query<ArticleTag, ArticleTagFilter> query, CancellationToken token = default)
         {
             if (query?.Filter == null)
             {
@@ -245,7 +236,7 @@ namespace Develappers.BillomatNet
         /// <param name="id">The id of the tag property.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The article tag or null if not found.</returns>
-        public async Task<ArticleTag> GetTagByIdAsync(int id, CancellationToken token = default(CancellationToken))
+        public async Task<ArticleTag> GetTagByIdAsync(int id, CancellationToken token = default)
         {
             var jsonModel = await GetItemByIdAsync<ArticleTagWrapper>($"/api/article-tags/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
@@ -301,7 +292,5 @@ namespace Develappers.BillomatNet
             var jsonModel = await PostAsync("/api/article-tags", wrappedModel, token);
             return jsonModel.ToDomain();
         }
-
-        #endregion
     }
 }
