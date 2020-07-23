@@ -6,6 +6,12 @@ This is an API client to access your data in [Billomat](https://www.billomat.com
 
 ![Build and Test](https://github.com/DevelappersGmbH/BillomatNet/workflows/build%20and%20test/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/DevelappersGmbH/BillomatNet/badge.svg?branch=master)](https://coveralls.io/github/DevelappersGmbH/BillomatNet?branch=master)
+![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/DevelappersGmbH/BillomatNet)
+
+![GitHub issues](https://img.shields.io/github/issues/DevelappersGmbH/BillomatNet)
+
+![GitHub Release Date](https://img.shields.io/github/release-date/DevelappersGmbH/BillomatNet)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![NuGet](https://img.shields.io/nuget/dt/Develappers.BillomatNet.svg)](https://www.nuget.org/packages/Develappers.BillomatNet/)
 
 ## Usage
