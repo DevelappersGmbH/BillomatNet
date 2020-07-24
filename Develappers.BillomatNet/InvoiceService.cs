@@ -12,7 +12,8 @@ using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 
 namespace Develappers.BillomatNet
 {
-    public class InvoiceService : ServiceBase, IEntityService<Invoice, InvoiceFilter>
+    public class InvoiceService : ServiceBase,
+        IEntityService<Invoice, InvoiceFilter>
     {
         /// <summary>
         /// Creates a new instance of <see cref="InvoiceService"/>.

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Develappers.BillomatNet.Api.Net
 {
-    public class HttpClient : IHttpClient
+    public sealed class HttpClient : IHttpClient
     {
         private const string HeaderNameApiKey = "X-BillomatApiKey";
         private const string HeaderNameAppId = "X-AppId";

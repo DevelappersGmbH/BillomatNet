@@ -1,4 +1,8 @@
-﻿using Develappers.BillomatNet.Types;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using Develappers.BillomatNet.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -9,15 +13,16 @@ using Xunit;
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
-    [Trait(Traits.Category, Traits.Categories.IntegrationTest)]
-    public class InvoiceServiceItemsIntegrationTests
+    public class InvoiceServiceItemsIntegrationTests : IntegrationTestBase<InvoiceService>
     {
+        public InvoiceServiceItemsIntegrationTests() : base(c => new InvoiceService(c))
+        {
+        }
+
         [Fact]
         public async Task GetInvoiceItem()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
-            var result = await service.GetItemByIdAsync(3246680);
+            var result = await SystemUnderTest.GetItemByIdAsync(3246680);
 
             Assert.NotNull(result);
         }
@@ -25,9 +30,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetInvoiceItems()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
-            var result = await service.GetItemsAsync(1322705, CancellationToken.None);
+            var result = await SystemUnderTest.GetItemsAsync(1322705, CancellationToken.None);
 
             Assert.True(result.List.Count > 0);
         }
@@ -35,23 +38,18 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task CreateInvoiceItem()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
+            var cl = await SystemUnderTest.GetByIdAsync(1506365);
 
-            #region Initializing to create
-            var cs = new ClientService(config);
-            var cl = await cs.GetByIdAsync(1506365);
-
-            var articleService = new ArticleService(config);
+            var articleService = new ArticleService(Configuration);
             var articles = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(config);
+            var unitService = new UnitService(Configuration);
             var units = await unitService.GetByIdAsync(articles.UnitId.Value);
 
-            var taxService = new TaxService(config);
+            var taxService = new TaxService(Configuration);
             var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
 
-            var settingsService = new SettingsService(config);
+            var settingsService = new SettingsService(Configuration);
             var settings = await settingsService.GetAsync();
 
             var label = "xUnit Test Object";
@@ -63,9 +61,8 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Label = label,
                 Quote = 1
             };
-            #endregion
 
-            var invoiceResult = await service.CreateAsync(inv);
+            var invoiceResult = await SystemUnderTest.CreateAsync(inv);
             Assert.Equal(label, inv.Label);
 
             var item = new InvoiceItem
@@ -81,22 +78,19 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 TaxRate = taxes.Rate,
             };
 
-            var itemResult = await service.CreateAsync(item);
+            var itemResult = await SystemUnderTest.CreateAsync(item);
             Assert.NotNull(itemResult);
 
-            await service.DeleteAsync(invoiceResult.Id);
+            await SystemUnderTest.DeleteAsync(invoiceResult.Id);
         }
 
         [Fact]
         public async Task GetMultipleInvoiceItems()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
-            var list = await service.GetListAsync(CancellationToken.None);
-
+            var list = await SystemUnderTest.GetListAsync(CancellationToken.None);
             foreach (var invoice in list.List)
             {
-                var result = await service.GetItemsAsync(invoice.Id, CancellationToken.None);
+                var result = await SystemUnderTest.GetItemsAsync(invoice.Id, CancellationToken.None);
             }
 
             Assert.True(true);
@@ -105,63 +99,50 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task CreateInvoiceItemWhenArgumentException()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
-
             var item = new InvoiceItem();
-
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(item));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(item));
         }
 
         [Fact]
         public async Task CreateInvoiceItemWhenNotAuthorized()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new InvoiceService(config);
-
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var item = new InvoiceItem
             {
                 InvoiceId = 7458050
             };
 
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(item));
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.CreateAsync(item));
         }
 
         [Fact]
         public async Task CreateInvoiceItemWhenNotFound()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
-
             var item = new InvoiceItem
             {
                 InvoiceId = 7458050
             };
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(item));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(item));
         }
 
         [Fact]
         public async Task EditInvoiceItem()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
-
             #region Initializing to create
-            var cs = new ClientService(config);
+            var cs = new ClientService(Configuration);
             var cl = await cs.GetByIdAsync(1506365);
 
-            var articleService = new ArticleService(config);
+            var articleService = new ArticleService(Configuration);
             var articles = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(config);
+            var unitService = new UnitService(Configuration);
             var units = await unitService.GetByIdAsync(articles.UnitId.Value);
 
-            var taxService = new TaxService(config);
+            var taxService = new TaxService(Configuration);
             var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
 
-            var settingsService = new SettingsService(config);
+            var settingsService = new SettingsService(Configuration);
             var settings = await settingsService.GetAsync();
 
             var label = "xUnit Test Object";
@@ -175,7 +156,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             };
             #endregion
 
-            var invoiceResult = await service.CreateAsync(inv);
+            var invoiceResult = await SystemUnderTest.CreateAsync(inv);
             Assert.Equal(label, inv.Label);
 
             var item = new InvoiceItem
@@ -191,7 +172,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 TaxRate = taxes.Rate,
             };
 
-            var itemResult = await service.CreateAsync(item);
+            var itemResult = await SystemUnderTest.CreateAsync(item);
             Assert.NotNull(itemResult);
 
             var editedItem = new InvoiceItem
@@ -208,29 +189,24 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 TaxRate = taxes.Rate,
             };
 
-            var editedItemResult = await service.EditAsync(editedItem);
+            var editedItemResult = await SystemUnderTest.EditAsync(editedItem);
             Assert.Equal(2.0f, editedItemResult.UnitPrice);
 
-            await service.DeleteAsync(invoiceResult.Id);
+            await SystemUnderTest.DeleteAsync(invoiceResult.Id);
         }
 
         [Fact]
         public async Task EditInvoiceItemArgumentException()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
-
             var item = new InvoiceItem { };
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.EditAsync(item));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditAsync(item));
         }
 
         [Fact]
         public async Task EditInvoiceItemWhenNotAuthorized()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new InvoiceService(config);
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
 
             var item = new InvoiceItem
             {
@@ -238,44 +214,39 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 InvoiceId = 1
             };
 
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.EditAsync(item));
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditAsync(item));
         }
 
         [Fact]
         public async Task EditInvoiceItemWhenNotFound()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
-
             var item = new InvoiceItem
             {
                 Id = 1,
                 InvoiceId = 1
             };
 
-            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.EditAsync(item));
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.EditAsync(item));
         }
 
         [Fact]
         public async Task DeleteInvoiceItem()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
 
             #region Initializing to create
-            var cs = new ClientService(config);
+            var cs = new ClientService(Configuration);
             var cl = await cs.GetByIdAsync(1506365);
 
-            var articleService = new ArticleService(config);
+            var articleService = new ArticleService(Configuration);
             var articles = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(config);
+            var unitService = new UnitService(Configuration);
             var units = await unitService.GetByIdAsync(articles.UnitId.Value);
 
-            var taxService = new TaxService(config);
+            var taxService = new TaxService(Configuration);
             var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
 
-            var settingsService = new SettingsService(config);
+            var settingsService = new SettingsService(Configuration);
             var settings = await settingsService.GetAsync();
 
             var title = "xUnit Test Object";
@@ -299,7 +270,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             };
             #endregion
 
-            var invResult = await service.CreateAsync(inv);
+            var invResult = await SystemUnderTest.CreateAsync(inv);
 
             var invoiceItem = new InvoiceItem
             {
@@ -314,40 +285,31 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 TaxRate = taxes.Rate,
             };
 
-            var invItemResult = await service.CreateAsync(invoiceItem);
+            var invItemResult = await SystemUnderTest.CreateAsync(invoiceItem);
 
-            await service.DeleteInvoiceItemAsync(invItemResult.Id);
-            Assert.Null(await service.GetItemByIdAsync(invItemResult.Id));
+            await SystemUnderTest.DeleteInvoiceItemAsync(invItemResult.Id);
+            Assert.Null(await SystemUnderTest.GetItemByIdAsync(invItemResult.Id));
 
-            await service.DeleteAsync(invResult.Id);
+            await SystemUnderTest.DeleteAsync(invResult.Id);
         }
 
         [Fact]
         public async Task DeleteInvoiceItemArgumentException()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
-
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteInvoiceItemAsync(0));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.DeleteInvoiceItemAsync(0));
         }
 
         [Fact]
         public async Task DeleteInvoiceItemNotAuthorized()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new InvoiceService(config);
-
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.DeleteInvoiceItemAsync(1));
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.DeleteInvoiceItemAsync(1));
         }
 
         [Fact]
         public async Task DeleteInvoiceItemNotFound()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
-
-            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteInvoiceItemAsync(1));
+            await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.DeleteInvoiceItemAsync(1));
         }
     }
 }

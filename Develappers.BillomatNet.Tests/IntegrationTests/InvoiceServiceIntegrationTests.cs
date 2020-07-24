@@ -1,13 +1,16 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Types;
 using Xunit;
 
-namespace Develappers.BillomatNet.Tests.Integration
+namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
-    [Trait(Traits.Category, Traits.Categories.IntegrationTest)]
     public class InvoiceServiceIntegrationTests
     {
         //[Fact]
