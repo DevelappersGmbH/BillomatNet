@@ -84,7 +84,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Value = value
             };
 
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditArticlePropertyAsync(articlePropItem));
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditPropertyAsync(articlePropItem));
         }
         [Fact]
         public async Task EditArticlePropertyWhenNotAuthorized()
@@ -100,7 +100,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Value = value
             };
 
-            var result = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditArticlePropertyAsync(articlePropItem));
+            var result = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditPropertyAsync(articlePropItem));
         }
 
         [Fact]
@@ -115,7 +115,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Value = value
             };
 
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditArticlePropertyAsync(articlePropItem));
+            var result = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditPropertyAsync(articlePropItem));
         }
     }
 }
