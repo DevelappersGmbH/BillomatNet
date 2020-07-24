@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
-    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
+    [Trait(Traits.Category, Traits.Categories.IntegrationTest)]
     public class ArticleServiceIntegrationTests : IntegrationTestBase<ArticleService>
     {
         public ArticleServiceIntegrationTests() : base(c => new ArticleService(c))

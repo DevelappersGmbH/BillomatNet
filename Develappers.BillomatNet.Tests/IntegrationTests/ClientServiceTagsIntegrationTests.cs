@@ -9,7 +9,7 @@ using Xunit;
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
-    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
+    [Trait(Traits.Category, Traits.Categories.IntegrationTest)]
     public class ClientServiceTagsIntegrationTests : IntegrationTestBase<ClientService>
     {
         public ClientServiceTagsIntegrationTests() : base(c => new ClientService(c))
