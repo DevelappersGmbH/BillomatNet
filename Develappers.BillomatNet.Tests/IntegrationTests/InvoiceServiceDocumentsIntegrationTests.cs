@@ -17,5 +17,11 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
 
             Assert.NotNull(result);
         }
+
+        [Fact]
+        public async Task SendInvoiceEmail()
+        {
+
+        }
     }
 }
