@@ -11,23 +11,26 @@ namespace Develappers.BillomatNet
     {
         protected readonly Func<IHttpClient> HttpClientFactory;
 
-        protected ServiceBase(Configuration configuration) : this(() => 
+        protected ServiceBase(Configuration configuration) : this(() =>
             new HttpClient(configuration.BillomatId, configuration.ApiKey)
             {
-                AppId = configuration.AppId, 
+                AppId = configuration.AppId,
                 AppSecret = configuration.AppSecret
             })
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceBase" /> class.
+        /// </summary>
+        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
+        /// <remarks>
+        /// Used to create a new instance for tests. Should be exposed as internal constructor to create unit tests.
+        /// </remarks>
         protected ServiceBase(Func<IHttpClient> httpClientFactory)
         {
-            if (httpClientFactory == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            HttpClientFactory = httpClientFactory;
+            HttpClientFactory = httpClientFactory ?? throw new ArgumentNullException();
         }
 
         /// <summary>
@@ -82,16 +85,22 @@ namespace Develappers.BillomatNet
         protected async Task<T> GetListAsync<T>(string resourceUrl, string query, CancellationToken token)
         {
             var httpClient = HttpClientFactory.Invoke();
-            var httpResponse = "";
+            string httpResponse;
             try
             {
                 httpResponse = await httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), query, token).ConfigureAwait(false);
             }
             catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+            {
+                // NotFound
+                throw new NotFoundException($"The resource at {resourceUrl} could not be found.", wex);
+            }
+            catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
             {
                 // Unauthorized
-                throw new NotAuthorizedException("You are not authorized to delete this item.", wex);
+                throw new NotAuthorizedException("You are not authorized to access this item.", wex);
             }
             return JsonConvert.DeserializeObject<T>(httpResponse);
         }
@@ -184,7 +193,6 @@ namespace Develappers.BillomatNet
                 throw new NotAuthorizedException("You are not authorized to change this item.", wex);
             }
         }
-
 
         /// <summary>
         /// Creates a new entity

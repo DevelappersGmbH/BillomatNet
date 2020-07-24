@@ -19,10 +19,19 @@ namespace Develappers.BillomatNet
     public class ClientService : ServiceBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientService"/> class.
+        /// Creates a new instance of <see cref="ClientService"/>.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        public ClientService(Configuration configuration): base(configuration)
+        /// <param name="configuration">The service configuration.</param>
+        public ClientService(Configuration configuration) : base(configuration)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="ClientService"/> for unit tests.
+        /// </summary>
+        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
+        internal ClientService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }
 
@@ -217,6 +226,36 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid client tag id", nameof(id));
             }
             var jsonModel = await GetItemByIdAsync<ClientTagWrapper>($"/api/client-tags/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Creates an client tag.
+        /// </summary>
+        /// <param name="model">The client tag to create.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new client tag.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<ClientTag> CreateAsync(ClientTag model, CancellationToken token = default)
+        {
+            if (model.ClientId == 0 || model.Name == null)
+            {
+                throw new ArgumentException("client tag or a value of the client tag is null", nameof(model));
+            }
+            if (model.Id != 0)
+            {
+                throw new ArgumentException("invalid model id", nameof(model));
+            }
+            var wrappedModel = new ClientTagWrapper
+            {
+                ClientTag = model.ToApi()
+            };
+            var jsonModel = await PostAsync("/api/client-tags", wrappedModel, token);
             return jsonModel.ToDomain();
         }
 

@@ -3,6 +3,7 @@ using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Helpers;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Queries;
 using Tax = Develappers.BillomatNet.Types.Tax;
 
@@ -11,10 +12,19 @@ namespace Develappers.BillomatNet
     public class TaxService : ServiceBase, IEntityService<Tax, TaxFilter>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="TaxService"/> class.
+        /// Creates a new instance of <see cref="TaxService"/>.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
+        /// <param name="configuration">The service configuration.</param>
         public TaxService(Configuration configuration) : base(configuration)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="TaxService"/> for unit tests.
+        /// </summary>
+        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
+        internal TaxService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }
 
@@ -32,7 +42,7 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        Task<Types.PagedList<Tax>> IEntityService<Tax, TaxFilter>.GetListAsync(Query<Tax, TaxFilter> query, CancellationToken token = default)
+        Task<Types.PagedList<Tax>> IEntityService<Tax, TaxFilter>.GetListAsync(Query<Tax, TaxFilter> query, CancellationToken token)
         {
             // TODO: implement implicitly and make public
             throw new NotImplementedException();
@@ -53,7 +63,7 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        Task IEntityService<Tax, TaxFilter>.DeleteAsync(int id, CancellationToken token = default)
+        Task IEntityService<Tax, TaxFilter>.DeleteAsync(int id, CancellationToken token)
         {
             // TODO: implement implicitly and make public
             throw new System.NotImplementedException();
@@ -76,7 +86,7 @@ namespace Develappers.BillomatNet
             }
             if (model.Id != 0)
             {
-                throw new ArgumentException("invalid unit id", nameof(model));
+                throw new ArgumentException("invalid tax id", nameof(model));
             }
 
             var wrappedModel = new TaxWrapper
@@ -88,7 +98,7 @@ namespace Develappers.BillomatNet
             return result.ToDomain();
         }
 
-        Task<Tax> IEntityService<Tax, TaxFilter>.EditAsync(Tax model, CancellationToken token = default)
+        Task<Tax> IEntityService<Tax, TaxFilter>.EditAsync(Tax model, CancellationToken token)
         {
             // TODO: implement implicitly and make public
             throw new System.NotImplementedException();

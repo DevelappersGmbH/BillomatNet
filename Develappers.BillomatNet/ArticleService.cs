@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
@@ -16,10 +15,19 @@ namespace Develappers.BillomatNet
 {
     public class ArticleService : ServiceBase, IEntityService<Article, ArticleFilter>
     {
+        /// <summary>
+        /// Creates a new instance of <see cref="ArticleService"/>.
+        /// </summary>
+        /// <param name="configuration">The service configuration.</param>
         public ArticleService(Configuration configuration) : base(configuration)
         {
         }
 
+        /// <summary>
+        /// Creates a new instance of <see cref="ArticleService"/> for unit tests.
+        /// </summary>
+        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
         internal ArticleService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }
