@@ -68,5 +68,19 @@ namespace Develappers.BillomatNet.Helpers
                 Name = value.Name
             };
         }
+
+        internal static Api.ClientTag ToApi(this ClientTag value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+            return new Api.ClientTag
+            {
+                Id = value.Id,
+                ClientId = value.ClientId,
+                Name = value.Name
+            };
+        }
     }
 }

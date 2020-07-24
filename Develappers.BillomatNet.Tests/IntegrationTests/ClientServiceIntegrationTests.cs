@@ -295,6 +295,50 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.Null(result);
         }
 
+        [Fact]
+        public async Task CreateTagAsync()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var tag = new ClientTag
+            {
+                ClientId = 796659,
+                Name = "Testag"
+            };
+
+            var result = await service.CreateAsync(tag);
+            Assert.NotNull(result);
+            //await service.DeleteTagAsync(result.Id);
+        }
+
+        [Fact]
+        public async Task CreateTagAsyncWhenArgumentException()
+        {
+            var config = Helpers.GetTestConfiguration();
+            var service = new ClientService(config);
+
+            var tag = new ClientTag{};
+
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(tag));
+        }
+
+        [Fact]
+        public async Task CreateTagAsyncWhenNotAuthorized()
+        {
+            var config = Helpers.GetTestConfiguration();
+            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new ClientService(config);
+
+            var tag = new ClientTag
+            {
+                ClientId = 796659,
+                Name = "Testag"
+            };
+
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(tag));
+        }
+
         #endregion
 
         #region Contact
