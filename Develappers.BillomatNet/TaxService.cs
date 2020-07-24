@@ -32,7 +32,7 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        Task<Types.PagedList<Tax>> IEntityService<Tax, TaxFilter>.GetListAsync(Query<Tax, TaxFilter> query, CancellationToken token = default)
+        Task<Types.PagedList<Tax>> IEntityService<Tax, TaxFilter>.GetListAsync(Query<Tax, TaxFilter> query, CancellationToken token)
         {
             // TODO: implement implicitly and make public
             throw new NotImplementedException();
@@ -53,7 +53,7 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        Task IEntityService<Tax, TaxFilter>.DeleteAsync(int id, CancellationToken token = default)
+        Task IEntityService<Tax, TaxFilter>.DeleteAsync(int id, CancellationToken token)
         {
             // TODO: implement implicitly and make public
             throw new System.NotImplementedException();
@@ -88,7 +88,7 @@ namespace Develappers.BillomatNet
             return result.ToDomain();
         }
 
-        Task<Tax> IEntityService<Tax, TaxFilter>.EditAsync(Tax model, CancellationToken token = default)
+        Task<Tax> IEntityService<Tax, TaxFilter>.EditAsync(Tax model, CancellationToken token)
         {
             // TODO: implement implicitly and make public
             throw new System.NotImplementedException();
