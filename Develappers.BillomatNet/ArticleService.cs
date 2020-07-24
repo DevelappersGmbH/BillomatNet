@@ -13,7 +13,10 @@ using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
 namespace Develappers.BillomatNet
 {
-    public class ArticleService : ServiceBase, IEntityService<Article, ArticleFilter>
+    public class ArticleService : ServiceBase,
+        IEntityService<Article, ArticleFilter>,
+        IEntityPropertyService<ArticleProperty, ArticlePropertyFilter>,
+        IEntityTagService<ArticleTag, ArticleTagFilter>
     {
         /// <summary>
         /// Creates a new instance of <see cref="ArticleService"/>.
@@ -192,7 +195,7 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<ArticleProperty> EditArticlePropertyAsync(ArticleProperty model, CancellationToken token = default)
+        public async Task<ArticleProperty> EditPropertyAsync(ArticleProperty model, CancellationToken token = default)
         {
             if (model == null || model.ArticleId <= 0 || model.ArticlePropertyId <= 0 || model.Value == null)
             {

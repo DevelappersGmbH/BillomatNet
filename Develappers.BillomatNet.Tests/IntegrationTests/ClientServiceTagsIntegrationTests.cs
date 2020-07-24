@@ -9,9 +9,12 @@ using Xunit;
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
-    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
-    public class ClientServiceTagsIntegrationTests
+    [Trait(Traits.Category, Traits.Categories.IntegrationTest)]
+    public class ClientServiceTagsIntegrationTests : IntegrationTestBase<ClientService>
     {
+        public ClientServiceTagsIntegrationTests() : base(c => new ClientService(c))
+        {
+        }
         [Fact]
         public async Task GetClientTagCloud()
         {
@@ -154,6 +157,41 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             };
 
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(tag));
+        }
+
+        [Fact]
+        public async Task DeleteClientTag()
+        {
+            var tag = new ClientTag
+            {
+                ClientId = 796659,
+                Name = "Testag"
+            };
+
+            var result = await SystemUnderTest.CreateAsync(tag);
+            Assert.NotNull(await SystemUnderTest.GetTagById(result.Id));
+
+            await SystemUnderTest.DeleteTagAsync(result.Id);
+            Assert.Null(await SystemUnderTest.GetTagById(result.Id));
+        }
+
+        [Fact]
+        public async Task DeleteClientTagWhenArgumentException()
+        {
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.DeleteTagAsync(0));
+        }
+
+        [Fact]
+        public async Task DeleteClientTagWhenNotAuthorized()
+        {
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.DeleteTagAsync(1));
+        }
+
+        [Fact]
+        public async Task DeleteClientTagWhenNotFound()
+        {
+            await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.DeleteTagAsync(100000));
         }
     }
 }

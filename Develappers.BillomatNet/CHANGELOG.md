@@ -25,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - implemented service for R operations on client properties
 - implemented service for CR operations on client property
 - implemented service for R operations on client tags
-- implemented service for CR operations on one client tag
+- implemented service for CRD operations on one client tag
 
 ### Changed
 - GetList can throw an exception when not authorized now
