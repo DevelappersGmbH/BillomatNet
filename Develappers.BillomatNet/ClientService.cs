@@ -8,6 +8,7 @@ using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
 using Newtonsoft.Json;
 using Account = Develappers.BillomatNet.Types.Account;
+using ArticleTag = Develappers.BillomatNet.Types.ArticleTag;
 using Client = Develappers.BillomatNet.Types.Client;
 using ClientProperty = Develappers.BillomatNet.Types.ClientProperty;
 using ClientTag = Develappers.BillomatNet.Types.ClientTag;
@@ -16,7 +17,10 @@ using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
 namespace Develappers.BillomatNet
 {
-    public class ClientService : ServiceBase
+    public class ClientService : ServiceBase,
+        IEntityService<Client, ClientFilter>,
+        IEntityPropertyService<ClientProperty, ClientPropertyFilter>,
+        IEntityTagService<ClientTag, ClientTagFilter>
     {
         /// <summary>
         /// Creates a new instance of <see cref="ClientService"/>.
@@ -83,6 +87,21 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        Task IEntityService<Client, ClientFilter>.DeleteAsync(int id, CancellationToken token)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Client> IEntityService<Client, ClientFilter>.CreateAsync(Client model, CancellationToken token)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<Client> IEntityService<Client, ClientFilter>.EditAsync(Client model, CancellationToken token)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Returns a client property by it's ID.
         /// </summary>
@@ -102,6 +121,11 @@ namespace Develappers.BillomatNet
             }
             var jsonModel = await GetItemByIdAsync<ClientPropertyWrapper>($"/api/client-property-values/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        Task<ClientProperty> IEntityPropertyService<ClientProperty, ClientPropertyFilter>.GetPropertyByIdAsync(int id, CancellationToken token)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -132,6 +156,11 @@ namespace Develappers.BillomatNet
         {
             var jsonModel = await GetListAsync<ClientPropertyListWrapper>("/api/client-property-values", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        Task<ClientProperty> IEntityPropertyService<ClientProperty, ClientPropertyFilter>.EditPropertyAsync(ClientProperty model, CancellationToken token)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -209,6 +238,11 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        Task<ClientTag> IEntityTagService<ClientTag, ClientTagFilter>.GetTagByIdAsync(int id, CancellationToken token)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Returns an client tag by it's id. 
         /// </summary>
@@ -277,6 +311,11 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid client tag id", nameof(id));
             }
             return DeleteAsync($"/api/client-tags/{id}", token);
+        }
+
+        Task<ClientTag> IEntityTagService<ClientTag, ClientTagFilter>.CreateTagAsync(ArticleTag model, CancellationToken token)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
