@@ -230,6 +230,36 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
+        /// Creates an client tag.
+        /// </summary>
+        /// <param name="model">The client tag to create.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the new client tag.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<ClientTag> CreateAsync(ClientTag model, CancellationToken token = default)
+        {
+            if (model.ClientId == 0 || model.Name == null)
+            {
+                throw new ArgumentException("client tag or a value of the client tag is null", nameof(model));
+            }
+            if (model.Id != 0)
+            {
+                throw new ArgumentException("invalid model id", nameof(model));
+            }
+            var wrappedModel = new ClientTagWrapper
+            {
+                ClientTag = model.ToApi()
+            };
+            var jsonModel = await PostAsync("/api/client-tags", wrappedModel, token);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
         /// Retrieves a list of all contacts from a client.
         /// </summary>
         /// <param name="clientId">The ID of the client.</param>
