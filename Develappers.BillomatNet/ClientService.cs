@@ -19,10 +19,19 @@ namespace Develappers.BillomatNet
     public class ClientService : ServiceBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClientService"/> class.
+        /// Creates a new instance of <see cref="ClientService"/>.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
-        public ClientService(Configuration configuration): base(configuration)
+        /// <param name="configuration">The service configuration.</param>
+        public ClientService(Configuration configuration) : base(configuration)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="ClientService"/> for unit tests.
+        /// </summary>
+        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
+        internal ClientService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }
 

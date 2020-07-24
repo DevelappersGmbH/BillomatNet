@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Api.Net;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
@@ -14,10 +15,19 @@ namespace Develappers.BillomatNet
     public class InvoiceService : ServiceBase, IEntityService<Invoice, InvoiceFilter>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="InvoiceService"/> class.
+        /// Creates a new instance of <see cref="InvoiceService"/>.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
+        /// <param name="configuration">The service configuration.</param>
         public InvoiceService(Configuration configuration) : base(configuration)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="InvoiceService"/> for unit tests.
+        /// </summary>
+        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
+        internal InvoiceService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }
 

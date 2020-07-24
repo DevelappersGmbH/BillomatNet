@@ -4,6 +4,7 @@ using Develappers.BillomatNet.Queries;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Api.Net;
 using Unit = Develappers.BillomatNet.Types.Unit;
 
 namespace Develappers.BillomatNet
@@ -11,10 +12,19 @@ namespace Develappers.BillomatNet
     public class UnitService : ServiceBase, IEntityService<Unit, UnitFilter>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnitService"/> class.
+        /// Creates a new instance of <see cref="UnitService"/>.
         /// </summary>
-        /// <param name="configuration">The configuration.</param>
+        /// <param name="configuration">The service configuration.</param>
         public UnitService(Configuration configuration) : base(configuration)
+        {
+        }
+
+        /// <summary>
+        /// Creates a new instance of <see cref="UnitService"/> for unit tests.
+        /// </summary>
+        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
+        internal UnitService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }
 
