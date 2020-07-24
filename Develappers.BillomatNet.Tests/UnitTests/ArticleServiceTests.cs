@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
-    [Trait(TraitNames.Category, CategoryNames.UnitTest)]
+    [Trait(Traits.Category, Traits.Categories.UnitTest)]
     public class ArticleServiceTests
     {
         [Fact]

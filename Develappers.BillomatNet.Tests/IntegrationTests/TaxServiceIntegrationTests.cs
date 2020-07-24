@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
-    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
+    [Trait(Traits.Category, Traits.Categories.IntegrationTest)]
     public class TaxServiceIntegrationTests
     {
         [Fact]

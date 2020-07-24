@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.Integration
 {
-    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
+    [Trait(Traits.Category, Traits.Categories.IntegrationTest)]
     public class InvoiceServiceIntegrationTests
     {
         //[Fact]
