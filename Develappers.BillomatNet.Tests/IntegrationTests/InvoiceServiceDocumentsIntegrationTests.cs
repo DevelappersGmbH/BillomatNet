@@ -7,14 +7,16 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
-    public class InvoiceServiceDocumentsIntegrationTests
+    public class InvoiceServiceDocumentsIntegrationTests : IntegrationTestBase<InvoiceService>
     {
+        public InvoiceServiceDocumentsIntegrationTests() : base(c => new InvoiceService(c))
+        {
+        }
+
         [Fact]
         public async Task GetInvoicePdf()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new InvoiceService(config);
-            var result = await service.GetPdfAsync(1322705);
+            var result = await SystemUnderTest.GetPdfAsync(1322705);
 
             Assert.NotNull(result);
         }
