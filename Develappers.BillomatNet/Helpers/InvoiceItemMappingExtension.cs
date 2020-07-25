@@ -83,7 +83,6 @@ namespace Develappers.BillomatNet.Helpers
                 UnitPrice = float.Parse(value.UnitPrice, CultureInfo.InvariantCulture),
                 TaxRate = value.TaxRate.ToOptionalFloat()
             };
-
         }
 
         internal static Api.InvoiceItem ToApi(this InvoiceItem value)
