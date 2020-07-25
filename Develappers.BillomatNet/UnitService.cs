@@ -1,7 +1,12 @@
-﻿using Develappers.BillomatNet.Api;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Queries;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
@@ -24,6 +29,7 @@ namespace Develappers.BillomatNet
         /// </summary>
         /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
         /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal UnitService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }

@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -169,7 +173,7 @@ namespace Develappers.BillomatNet
         /// </returns>
         /// <exception cref="NotFoundException">The resource at {resourceUrl} could not be found.</exception>
         /// <exception cref="NotAuthorizedException">You are not authorized to change this item.</exception>
-        protected async Task<TOut> PutAsync<TOut, TIn>(string resourceUrl, TIn model, CancellationToken token) 
+        protected async Task<TOut> PutAsync<TOut, TIn>(string resourceUrl, TIn model, CancellationToken token)
             where TIn : class
             where TOut : class
         {
