@@ -1,4 +1,8 @@
-﻿using Develappers.BillomatNet.Api;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Types;
 using System;
 using System.Linq;
@@ -116,13 +120,8 @@ namespace Develappers.BillomatNet.Helpers
                 TemplateEngine = value.TemplateEngine,
                 PrintVersion = value.PrintVersion.ToOptionalInt(),
                 DefaultEmailSender = value.DefaultEmailSender,
-                BccAddresses = value.BccAddresses.Select(x => x.ToDomain()).ToList()
+                BccAddresses = value.BccAddresses.Select(x => x.BccAddress).ToList()
             };
-        }
-
-        internal static Types.BccAddressType ToDomain(this Api.BccAddressType value)
-        {
-            return new Types.BccAddressType { BccAddress = value.BccAddress };
         }
     }
 }

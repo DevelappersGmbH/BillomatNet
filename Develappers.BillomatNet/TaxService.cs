@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Helpers;
 using System.Threading;
@@ -24,6 +29,7 @@ namespace Develappers.BillomatNet
         /// </summary>
         /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
         /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal TaxService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }
@@ -66,7 +72,7 @@ namespace Develappers.BillomatNet
         Task IEntityService<Tax, TaxFilter>.DeleteAsync(int id, CancellationToken token)
         {
             // TODO: implement implicitly and make public
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -101,7 +107,7 @@ namespace Develappers.BillomatNet
         Task<Tax> IEntityService<Tax, TaxFilter>.EditAsync(Tax model, CancellationToken token)
         {
             // TODO: implement implicitly and make public
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

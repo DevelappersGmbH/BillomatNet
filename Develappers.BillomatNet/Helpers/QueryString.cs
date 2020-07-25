@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 using Newtonsoft.Json;
-using CommonMappingExtensions = Develappers.BillomatNet.Helpers.CommonMappingExtensions;
 
 namespace Develappers.BillomatNet.Helpers
 {
@@ -120,7 +123,7 @@ namespace Develappers.BillomatNet.Helpers
             var paging = value.Paging.ToQueryString();
             return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
         }
-        
+
         internal static string ToQueryString<TDomain, TApi>(this List<SortItem<TDomain>> value)
         {
             if (value == null || value.Count == 0)
@@ -348,7 +351,7 @@ namespace Develappers.BillomatNet.Helpers
 
             var filters = new List<string>();
             filters.Add($"article_id={value.ArticleId}");
-            
+
             return string.Join("&", filters);
         }
 
