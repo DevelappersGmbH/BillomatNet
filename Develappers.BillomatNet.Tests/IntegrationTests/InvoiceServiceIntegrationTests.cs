@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Types;
@@ -11,6 +12,7 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class InvoiceServiceIntegrationTests : IntegrationTestBase<InvoiceService>
     {
         public InvoiceServiceIntegrationTests() : base(c => new InvoiceService(c))
@@ -27,7 +29,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
 
         [Fact]
         public async Task GetInvoices()
-        { ;
+        {
             var result = await SystemUnderTest.GetListAsync(CancellationToken.None);
 
             Assert.True(result.List.Count > 0);
@@ -59,8 +61,6 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task CreateInvoice()
         {
-
-            #region Initializing to create
             var cs = new ClientService(Configuration);
             var cl = await cs.GetByIdAsync(1506365);
 
@@ -101,7 +101,6 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Quote = 1,
                 InvoiceItems = invoiceItemList
             };
-            #endregion
 
             var result = await SystemUnderTest.CreateAsync(inv);
             var getInvItem = await SystemUnderTest.GetByIdAsync(result.Id);
@@ -182,7 +181,6 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task EditInvoice()
         {
-            #region Initializing to create
             var cs = new ClientService(Configuration);
             var cl = await cs.GetByIdAsync(1506365);
 
@@ -223,7 +221,6 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Quote = 1,
                 InvoiceItems = invoiceItemList
             };
-            #endregion
 
             var result = await SystemUnderTest.CreateAsync(inv);
             Assert.NotNull(result);
