@@ -21,7 +21,7 @@ namespace Develappers.BillomatNet.Types
 
         public int? Number { get; set; }
 
-        public string NumberPre { get; set; }
+        public string NumberPrefix { get; set; }
 
         public int NumberLength { get; set; }
 

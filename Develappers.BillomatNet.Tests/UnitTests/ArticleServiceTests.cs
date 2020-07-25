@@ -59,7 +59,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             Assert.Equal(20574, result.UnitId);
             Assert.Equal("ART3", result.ArticleNumber);
             Assert.Equal(3, result.Number);
-            Assert.Equal("ART", result.NumberPre);
+            Assert.Equal("ART", result.NumberPrefix);
             Assert.Equal(0, result.NumberLength);
             Assert.Equal("Tomaten", result.Title);
             Assert.Equal("Rot und saftig\r\nDas Schengener Abkommen gehört zu den großen Errungenschaften der Europäischen Integration. Seit Mitte der neunziger Jahre steht der Begriff für die Abschaffung der Personenkontrollen an den Binnengrenzen und damit für Reisefreiheit und ein \"Europa ohne Schranken\".", result.Description);
