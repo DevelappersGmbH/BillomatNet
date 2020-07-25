@@ -1,4 +1,7 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 using System.Linq;
 using Develappers.BillomatNet.Api;
 using Contact = Develappers.BillomatNet.Types.Contact;
@@ -42,8 +45,8 @@ namespace Develappers.BillomatNet.Helpers
 
             return new Contact
             {
-                Id = Int32.Parse(value.Id),
-                ClientId = Int32.Parse(value.ClientId),
+                Id = int.Parse(value.Id),
+                ClientId = int.Parse(value.ClientId),
                 City = value.City,
                 CountryCode = value.CountryCode,
                 Email = value.Email,

@@ -1,7 +1,10 @@
-﻿using System.Linq;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System.Linq;
 using Develappers.BillomatNet.Api;
 using ClientProperty = Develappers.BillomatNet.Types.ClientProperty;
-using CommonMappingExtensions = Develappers.BillomatNet.Helpers.CommonMappingExtensions;
 
 namespace Develappers.BillomatNet.Helpers
 {
@@ -40,7 +43,7 @@ namespace Develappers.BillomatNet.Helpers
                 return null;
             }
 
-            var type = CommonMappingExtensions.ToPropertyType(value.Type);
+            var type = value.Type.ToPropertyType();
             return new ClientProperty
             {
                 Id = value.Id,
@@ -63,7 +66,7 @@ namespace Develappers.BillomatNet.Helpers
                 Id = value.Id,
                 ClientId = value.ClientId,
                 ClientPropertyId = value.ClientPropertyId,
-                Type = CommonMappingExtensions.ToApiValue(value.Type),
+                Type = value.Type.ToApiValue(),
                 Name = value.Name,
                 Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
             };

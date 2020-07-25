@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -21,7 +25,7 @@ namespace Develappers.BillomatNet.Helpers
                 return null;
             }
 
-            return Int32.Parse(value, CultureInfo.InvariantCulture);
+            return int.Parse(value, CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -31,12 +35,12 @@ namespace Develappers.BillomatNet.Helpers
         /// <returns>The nullable float or null if not found</returns>
         internal static float? ToOptionalFloat(this string value)
         {
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
                 return null;
             }
 
-            return Single.Parse(value, CultureInfo.InvariantCulture);
+            return float.Parse(value, CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -46,7 +50,7 @@ namespace Develappers.BillomatNet.Helpers
         /// <returns>The nullable DateTime or null if not found</returns>
         internal static DateTime? ToOptionalDateTime(this string value)
         {
-            if (String.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
                 return null;
             }
@@ -111,7 +115,7 @@ namespace Develappers.BillomatNet.Helpers
                 return new List<int>();
             }
 
-            return value.Split(',').Select(x => Int32.Parse(x.Trim())).ToList();
+            return value.Split(',').Select(x => int.Parse(x.Trim())).ToList();
         }
 
         internal static TagCloudItem ToDomain(this Api.TagCloudItem value)
