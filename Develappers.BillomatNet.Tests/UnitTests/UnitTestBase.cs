@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Reflection;
 using Develappers.BillomatNet.Api.Net;
 using Xunit;
 
@@ -19,7 +20,12 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             }
 
             Func<IHttpClient> httpClientFactory = () => httpClient;
-            return (T)Activator.CreateInstance(typeof(T), httpClientFactory);
+
+            // call internal constructor using reflection
+            return (T)Activator.CreateInstance(typeof(T),
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
+                null,
+                new object[] { httpClientFactory }, null);
         }
     }
 }
