@@ -41,13 +41,13 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             var cl = await SystemUnderTest.GetByIdAsync(1506365);
 
             var articleService = new ArticleService(Configuration);
-            var articles = await articleService.GetByIdAsync(835226);
+            var article = await articleService.GetByIdAsync(835226);
 
             var unitService = new UnitService(Configuration);
-            var units = await unitService.GetByIdAsync(articles.UnitId.Value);
+            var units = await unitService.GetByIdAsync(article.UnitId.Value);
 
             var taxService = new TaxService(Configuration);
-            var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
+            var taxes = await taxService.GetByIdAsync(article.TaxId.Value);
 
             var settingsService = new SettingsService(Configuration);
             var settings = await settingsService.GetAsync();
@@ -68,12 +68,12 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             var item = new InvoiceItem
             {
                 InvoiceId = invoiceResult.Id,
-                ArticleId = articles.Id,
+                ArticleId = article.Id,
                 Unit = units.Name,
                 Quantity = 300,
                 UnitPrice = 1.0f,
-                Title = articles.Title,
-                Description = articles.Description,
+                Title = article.Title,
+                Description = article.Description,
                 TaxName = taxes.Name,
                 TaxRate = taxes.Rate,
             };

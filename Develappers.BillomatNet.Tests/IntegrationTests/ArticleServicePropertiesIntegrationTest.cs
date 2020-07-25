@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,13 +12,11 @@ using Xunit;
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
-    [Trait(Traits.Category, Traits.Categories.IntegrationTest)]
     public class ArticleServicePropertiesIntegrationTest : IntegrationTestBase<ArticleService>
     {
 
         public ArticleServicePropertiesIntegrationTest() : base(c => new ArticleService(c))
         {
-           
         }
 
         [Fact]
@@ -76,7 +78,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task EditArticlePropertyWhenArgumentException()
         {
-            var value = "xUnit test";
+            const string value = "xUnit test";
 
             var articlePropItem = new ArticleProperty
             {
@@ -84,14 +86,15 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Value = value
             };
 
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditPropertyAsync(articlePropItem));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditPropertyAsync(articlePropItem));
         }
+
         [Fact]
         public async Task EditArticlePropertyWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
 
-            var value = "xUnit test";
+            const string value = "xUnit test";
 
             var articlePropItem = new ArticleProperty
             {
@@ -100,13 +103,13 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Value = value
             };
 
-            var result = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditPropertyAsync(articlePropItem));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditPropertyAsync(articlePropItem));
         }
 
         [Fact]
         public async Task EditArticlePropertyWhenNotFound()
         {
-            var value = "xUnit test";
+            const string value = "xUnit test";
 
             var articlePropItem = new ArticleProperty
             {
@@ -115,7 +118,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Value = value
             };
 
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditPropertyAsync(articlePropItem));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditPropertyAsync(articlePropItem));
         }
     }
 }
