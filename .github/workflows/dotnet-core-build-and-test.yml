@@ -33,4 +33,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: package
-        path: ./Develappers.BillomatNet/**/Develappers.BillomatNet.*.nupkg
+        path: ./Develappers.BillomatNet/bin/Release/Develappers.BillomatNet.*.nupkg

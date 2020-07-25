@@ -12,8 +12,7 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
-    [Trait(Traits.Category, Traits.Categories.UnitTest)]
-    public class ArticleServiceTests
+    public class ArticleServiceTests : UnitTestBase<ArticleService>
     {
         [Fact]
         public async Task DeleteArticle()
@@ -26,7 +25,8 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
                 .Returns(Task.FromResult(string.Empty));
 
-            var sut = new ArticleService(() => http);
+            var sut = GetSystemUnderTest(http);
+
             await sut.DeleteAsync(id);
 
             A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
@@ -46,7 +46,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
                 .Returns(Task.FromResult(httpResult));
 
-            var sut = new ArticleService(() => http);
+            var sut = GetSystemUnderTest(http);
             var result = await sut.GetByIdAsync(id);
 
             A.CallTo(() => http.GetAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))

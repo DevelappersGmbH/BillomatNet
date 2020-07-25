@@ -8,7 +8,7 @@ using Xunit;
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [Trait(Traits.Category, Traits.Categories.IntegrationTest)]
-    public abstract class IntegrationTestBase<T>
+    public abstract class IntegrationTestBase<T> where T : ServiceBase
     {
         private readonly Func<Configuration, T> _sutFactoryMethod;
 
