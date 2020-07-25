@@ -76,6 +76,6 @@ namespace Develappers.BillomatNet.Types
         public string TemplateEngine { get; set; }
         public int? PrintVersion { get; set; }
         public string DefaultEmailSender { get; set; }
-        public List<BccAddressType> BccAddresses { get; set; }
+        public List<string> BccAddresses { get; set; }
     }
 }

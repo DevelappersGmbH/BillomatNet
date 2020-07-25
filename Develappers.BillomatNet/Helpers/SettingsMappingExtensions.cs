@@ -120,13 +120,8 @@ namespace Develappers.BillomatNet.Helpers
                 TemplateEngine = value.TemplateEngine,
                 PrintVersion = value.PrintVersion.ToOptionalInt(),
                 DefaultEmailSender = value.DefaultEmailSender,
-                BccAddresses = value.BccAddresses.Select(x => x.ToDomain()).ToList()
+                BccAddresses = value.BccAddresses.Select(x => x.BccAddress).ToList()
             };
-        }
-
-        internal static Types.BccAddressType ToDomain(this Api.BccAddressType value)
-        {
-            return new Types.BccAddressType { BccAddress = value.BccAddress };
         }
     }
 }
