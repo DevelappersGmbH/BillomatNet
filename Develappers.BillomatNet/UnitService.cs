@@ -10,6 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
+using Develappers.BillomatNet.Mapping;
 using Unit = Develappers.BillomatNet.Types.Unit;
 
 namespace Develappers.BillomatNet

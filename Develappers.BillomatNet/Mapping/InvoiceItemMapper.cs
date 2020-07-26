@@ -5,40 +5,15 @@
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
+using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Types;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 
-namespace Develappers.BillomatNet.Helpers
+namespace Develappers.BillomatNet.Mapping
 {
-    internal static class InvoiceItemMappingExtension
+    internal class InvoiceItemMapper : IMapper<Api.InvoiceItem, InvoiceItem>
     {
-        internal static InvoiceItem ToDomain(this InvoiceItemWrapper value)
-        {
-            return value?.InvoiceItem.ToDomain();
-        }
-
-        internal static Types.PagedList<InvoiceItem> ToDomain(this InvoiceItemListWrapper value)
-        {
-            return value?.Item.ToDomain();
-        }
-
-        internal static Types.PagedList<InvoiceItem> ToDomain(this InvoiceItemList value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Types.PagedList<InvoiceItem>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(ToDomain).ToList()
-            };
-        }
-
-        private static InvoiceItem ToDomain(this Api.InvoiceItem value)
+        public InvoiceItem ApiToDomain(Api.InvoiceItem value)
         {
             if (value == null)
             {
@@ -85,7 +60,7 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
-        internal static Api.InvoiceItem ToApi(this InvoiceItem value)
+        public Api.InvoiceItem DomainToApi(InvoiceItem value)
         {
             if (value == null)
             {
@@ -125,6 +100,32 @@ namespace Develappers.BillomatNet.Helpers
                 TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(CultureInfo.InvariantCulture),
                 TotalNetUnreduced = value.TotalNetUnreduced.ToString(CultureInfo.InvariantCulture)
             };
+        }
+
+        public Types.PagedList<InvoiceItem> ApiToDomain(InvoiceItemList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<InvoiceItem>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(ApiToDomain).ToList()
+            };
+        }
+
+        public Types.PagedList<InvoiceItem> ApiToDomain(InvoiceItemListWrapper value)
+        {
+            return ApiToDomain(value?.Item);
+        }
+
+        public InvoiceItem ApiToDomain(InvoiceItemWrapper value)
+        {
+            return ApiToDomain(value?.InvoiceItem);
         }
     }
 }

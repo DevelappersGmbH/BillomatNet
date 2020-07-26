@@ -3,66 +3,22 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Linq;
 using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Types;
-using Client = Develappers.BillomatNet.Types.Client;
+using Develappers.BillomatNet.Helpers;
+using Account = Develappers.BillomatNet.Types.Account;
 
-namespace Develappers.BillomatNet.Helpers
+namespace Develappers.BillomatNet.Mapping
 {
-    internal static class ClientMappingExtensions
+    internal class AccountMapper : IMapper<Api.Account, Account>
     {
-        internal static Types.PagedList<Client> ToDomain(this ClientListWrapper value)
-        {
-            return value?.Item.ToDomain();
-        }
-
-        internal static Types.PagedList<Client> ToDomain(this ClientList value)
+        public Account ApiToDomain(Api.Account value)
         {
             if (value == null)
             {
                 return null;
             }
 
-            return new Types.PagedList<Client>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(ToDomain).ToList()
-            };
-        }
-
-        internal static Client ToDomain(this ClientWrapper value)
-        {
-            return value?.Client.ToDomain();
-        }
-
-        private static Client ToDomain(this Api.Client value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            NetGrossSettingsType netGrossSettingsType;
-
-            switch (value.NetGross.ToLowerInvariant())
-            {
-                case "net":
-                    netGrossSettingsType = NetGrossSettingsType.Net;
-                    break;
-                case "gross":
-                    netGrossSettingsType = NetGrossSettingsType.Gross;
-                    break;
-                case "settings":
-                    netGrossSettingsType = NetGrossSettingsType.Settings;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            return new Client
+            return new Account
             {
                 Id = int.Parse(value.Id),
                 Number = value.Number,
@@ -98,9 +54,19 @@ namespace Develappers.BillomatNet.Helpers
                 VatNumber = value.VatNumber,
                 Web = value.Www,
                 ZipCode = value.Zip,
-                NetGross = netGrossSettingsType
+                Plan = value.Plan,
+                Quotas = new QuotaMapper().ApiToDomain(value.Quotas)
             };
         }
 
+        public Api.Account DomainToApi(Account value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Account ApiToDomain(AccountWrapper value)
+        {
+            return ApiToDomain(value?.Client);
+        }
     }
 }

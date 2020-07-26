@@ -9,6 +9,7 @@ using Develappers.BillomatNet.Helpers;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
+using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Queries;
 using Tax = Develappers.BillomatNet.Types.Tax;
 
