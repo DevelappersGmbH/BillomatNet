@@ -220,23 +220,12 @@ namespace Develappers.BillomatNet.Mapping
             return s_clientTagMapper.DomainToApi(value);
         }
 
-
         internal static Types.PagedList<ClientProperty> ToDomain(this ClientPropertyListWrapper value)
         {
             return s_clientPropertyMapper.ApiToDomain(value);
         }
 
-        internal static Types.PagedList<ClientProperty> ToDomain(this ClientPropertyList value)
-        {
-            return s_clientPropertyMapper.ApiToDomain(value);
-        }
-
         internal static ClientProperty ToDomain(this ClientPropertyWrapper value)
-        {
-            return s_clientPropertyMapper.ApiToDomain(value);
-        }
-
-        private static ClientProperty ToDomain(this Api.ClientProperty value)
         {
             return s_clientPropertyMapper.ApiToDomain(value);
         }

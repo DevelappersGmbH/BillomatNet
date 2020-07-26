@@ -5,7 +5,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Develappers.BillomatNet.Helpers;
+using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Queries
@@ -37,12 +37,12 @@ namespace Develappers.BillomatNet.Queries
 
             if ((filter.Status?.Count ?? 0) > 0)
             {
-                filters.Add($"status={string.Join(",", filter.Status.Select(CommonMappingExtensions.ToApiValue))}");
+                filters.Add($"status={string.Join(",", filter.Status.Select(MappingHelpers.ToApiValue))}");
             }
 
             if ((filter.PaymentType?.Count ?? 0) > 0)
             {
-                filters.Add($"payment_type={string.Join(",", filter.PaymentType.Select(CommonMappingExtensions.ToApiValue))}");
+                filters.Add($"payment_type={string.Join(",", filter.PaymentType.Select(MappingHelpers.ToApiValue))}");
             }
 
             if (filter.From.HasValue)
