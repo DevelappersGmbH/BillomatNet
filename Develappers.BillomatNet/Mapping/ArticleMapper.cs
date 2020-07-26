@@ -6,7 +6,6 @@ using System;
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Helpers;
 using Article = Develappers.BillomatNet.Types.Article;
 
 namespace Develappers.BillomatNet.Mapping

@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Helpers;
 using ClientProperty = Develappers.BillomatNet.Types.ClientProperty;
 
 namespace Develappers.BillomatNet.Mapping

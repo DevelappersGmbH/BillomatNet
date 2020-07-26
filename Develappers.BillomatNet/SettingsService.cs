@@ -4,9 +4,9 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
-using Develappers.BillomatNet.Api;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Mapping;
 using Settings = Develappers.BillomatNet.Types.Settings;

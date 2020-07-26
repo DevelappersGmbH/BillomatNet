@@ -5,7 +5,6 @@
 using System;
 using System.Linq;
 using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Types;
 using Settings = Develappers.BillomatNet.Types.Settings;
 

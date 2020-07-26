@@ -53,7 +53,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .MustHaveHappenedOnceExactly();
 
             Assert.Equal(id, result.Id);
-            Assert.Equal(new DateTime(2015,5,28,7,38,7, DateTimeKind.Utc),result.Created.ToUniversalTime());
+            Assert.Equal(new DateTime(2015, 5, 28, 7, 38, 7, DateTimeKind.Utc), result.Created.ToUniversalTime());
             Assert.Equal(new DateTime(2020, 7, 10, 10, 20, 36, DateTimeKind.Utc), result.Updated.ToUniversalTime());
             //Assert.Equal(false, result.Archived);
             Assert.Equal(20574, result.UnitId);

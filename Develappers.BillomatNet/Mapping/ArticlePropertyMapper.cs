@@ -4,7 +4,6 @@
 
 using System.Linq;
 using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Helpers;
 using ArticleProperty = Develappers.BillomatNet.Types.ArticleProperty;
 
 namespace Develappers.BillomatNet.Mapping

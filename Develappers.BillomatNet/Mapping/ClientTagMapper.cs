@@ -4,7 +4,6 @@
 
 using System.Linq;
 using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Helpers;
 using ClientTag = Develappers.BillomatNet.Types.ClientTag;
 using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 

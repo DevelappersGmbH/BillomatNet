@@ -2,12 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Develappers.BillomatNet.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Types;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests

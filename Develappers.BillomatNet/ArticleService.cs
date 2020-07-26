@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
-using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Queries;
 using Article = Develappers.BillomatNet.Types.Article;

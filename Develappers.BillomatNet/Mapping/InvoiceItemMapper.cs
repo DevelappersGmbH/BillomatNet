@@ -5,7 +5,6 @@
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Types;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 

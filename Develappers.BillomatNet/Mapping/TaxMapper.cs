@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Helpers;
 using Tax = Develappers.BillomatNet.Types.Tax;
 
 namespace Develappers.BillomatNet.Mapping
