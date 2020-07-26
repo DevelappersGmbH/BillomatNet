@@ -7,32 +7,26 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
+    /// <summary>
+    /// Base class for all integration tests.
+    /// </summary>
+    /// <typeparam name="T">The service to test.</typeparam>
+    /// <remarks>
+    /// This kind of tests establishes a real connection to Billomat. So be sure to what you do before you execute them. 
+    /// </remarks>
     [Trait(Traits.Category, Traits.Categories.IntegrationTest)]
     public abstract class IntegrationTestBase<T> where T : ServiceBase
     {
-        private readonly Func<Configuration, T> _sutFactoryMethod;
-
         protected IntegrationTestBase(Func<Configuration, T> sutFactoryMethod)
         {
-            _sutFactoryMethod = sutFactoryMethod;
             Configuration = Helpers.GetTestConfiguration();
+            _sut = new Lazy<T>(sutFactoryMethod.Invoke(Configuration));
         }
 
-        private T _sut;
+        private readonly Lazy<T> _sut;
 
         protected Configuration Configuration { get; }
 
-        protected T SystemUnderTest
-        {
-            get
-            {
-                if (_sut == null)
-                {
-                    _sut = _sutFactoryMethod.Invoke(Configuration);
-                }
-
-                return _sut;
-            }
-        }
+        protected T SystemUnderTest => _sut.Value;
     }
 }

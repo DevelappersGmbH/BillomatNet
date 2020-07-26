@@ -244,7 +244,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         }
 
         [Fact]
-        public async Task EdiInvoiceArgumentException()
+        public async Task EditInvoiceArgumentException()
         {
             var cs = new ClientService(Configuration);
             var cl = await cs.GetByIdAsync(1506365);
