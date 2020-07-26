@@ -11,7 +11,6 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
-    [Trait(Traits.Category, Traits.Categories.IntegrationTest)]
     public class UnitServiceIntegrationTests : IntegrationTestBase<UnitService>
     {
         public UnitServiceIntegrationTests() : base(c => new UnitService(c))
@@ -21,9 +20,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetListOfUnits()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
-            var result = await service.GetListAsync(CancellationToken.None);
+            var result = await SystemUnderTest.GetListAsync(CancellationToken.None);
             Assert.True(result.List.Count > 0);
         }
 
@@ -214,13 +211,10 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(unitItem));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateUnitItemWhenNull()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
-
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(null));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(null));
         }
     }
 }

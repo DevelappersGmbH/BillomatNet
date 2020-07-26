@@ -128,7 +128,7 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates a unit.
         /// </summary>
-        /// <param name="unit">The unit to create.</param>
+        /// <param name="value">The unit to create.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -137,20 +137,20 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<Unit> CreateAsync(Unit unit, CancellationToken token = default)
+        public async Task<Unit> CreateAsync(Unit value, CancellationToken token = default)
         {
-            if (unit == null || unit.Name == "" || unit.Name == null)
+            if (value == null)
             {
-                throw new ArgumentException();
+                throw new ArgumentNullException(nameof(value));
             }
-            if (unit.Id != 0)
+            if (string.IsNullOrEmpty(value.Name) || value.Id != 0)
             {
-                throw new ArgumentException("invalid unit id", nameof(unit));
+                throw new ArgumentException("invalid property values for unit", nameof(value));
             }
 
             var wrappedUnit = new UnitWrapper
             {
-                Unit = unit.ToApi()
+                Unit = value.ToApi()
             };
             var jsonModel = await PostAsync("/api/units", wrappedUnit, token).ConfigureAwait(false);
             return jsonModel.ToDomain();

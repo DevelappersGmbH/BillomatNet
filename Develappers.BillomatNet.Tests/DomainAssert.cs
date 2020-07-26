@@ -9,6 +9,24 @@ namespace Develappers.BillomatNet.Tests
 {
     public class DomainAssert
     {
+        public static void Equal(Unit expected, Unit actual)
+        {
+            if (expected == null && actual == null)
+            {
+                return;
+            }
+
+            if (expected == null || actual == null)
+            {
+                Assert.True(false, "one of the items is null");
+            }
+
+            Assert.Equal(expected.Id, actual.Id);
+            Assert.Equal(expected.Name, actual.Name);
+            Assert.Equal(expected.Created, actual.Created);
+            Assert.Equal(expected.Updated, actual.Updated);
+        }
+
         public static void Equal(Tax expected, Tax actual)
         {
             if (expected == null && actual == null)

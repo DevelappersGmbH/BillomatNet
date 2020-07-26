@@ -85,26 +85,26 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates an tax.
         /// </summary>
-        /// <param name="model">The tax object.</param>
+        /// <param name="value">The tax object.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
         /// The task result returns the newly created tax with the ID.
         /// </returns>
-        public async Task<Tax> CreateAsync(Tax model, CancellationToken token = default)
+        public async Task<Tax> CreateAsync(Tax value, CancellationToken token = default)
         {
-            if (model == null)
+            if (value == null)
             {
-                throw new ArgumentNullException(nameof(model));
+                throw new ArgumentNullException(nameof(value));
             }
-            if (string.IsNullOrEmpty(model.Name) || model.Id != 0)
+            if (string.IsNullOrEmpty(value.Name) || value.Id != 0)
             {
-                throw new ArgumentException("invalid property values for tax", nameof(model));
+                throw new ArgumentException("invalid property values for tax", nameof(value));
             }
 
             var wrappedModel = new TaxWrapper
             {
-                Tax = model.ToApi()
+                Tax = value.ToApi()
             };
             var result = await PostAsync("/api/taxes", wrappedModel, token);
 
