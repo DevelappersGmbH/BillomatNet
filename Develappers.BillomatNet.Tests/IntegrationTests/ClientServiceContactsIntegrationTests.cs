@@ -43,7 +43,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.Null(result);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteContact()
         {
             var contact = new Contact
@@ -62,26 +62,26 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.Null(result2);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteContactArgumentException()
         {
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.DeleteContactAsync(0));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteContactNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.DeleteContactAsync(1));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteContactNotFound()
         {
             await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.DeleteContactAsync(1));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateContact()
         {
             var contact = new Contact
@@ -97,7 +97,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await SystemUnderTest.DeleteContactAsync(result.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateContactArgumentException()
         {
             var contact = new Contact();
@@ -105,7 +105,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(contact));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateContactNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
@@ -120,7 +120,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.CreateAsync(contact));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateContactNotFound()
         {
             var contact = new Contact
@@ -133,7 +133,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(contact));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditContact()
         {
             var contact = new Contact
@@ -159,7 +159,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await SystemUnderTest.DeleteContactAsync(result.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditContactArgumentException()
         {
             var contact = new Contact
@@ -173,7 +173,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditAsync(contact));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditContactNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
@@ -188,7 +188,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditAsync(contact));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditContactNotFound()
         {
             var contact = new Contact

@@ -43,39 +43,39 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.Null(result);
         }
 
-        //[Fact]
-        //public async Task EditArticlePropertyCheckbox()
-        //{
-        //    var value = "1";
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
+        public async Task EditArticlePropertyCheckbox()
+        {
+            var value = "1";
 
-        //    var articlePropItem = new ArticleProperty
-        //    {
-        //        ArticleId = 197391,
-        //        ArticlePropertyId = 2490,
-        //        Value = value
-        //    };
+            var articlePropItem = new ArticleProperty
+            {
+                ArticleId = 197391,
+                ArticlePropertyId = 2490,
+                Value = value
+            };
 
-        //    var result = await SystemUnderTest.EditArticlePropertyAsync(articlePropItem);
-        //    Assert.True((bool)result.Value);
-        //}
+            var result = await SystemUnderTest.EditPropertyAsync(articlePropItem);
+            Assert.True((bool)result.Value);
+        }
 
-        //[Fact]
-        //public async Task EditArticlePropertyText()
-        //{
-        //    var value = "xUnit test";
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
+        public async Task EditArticlePropertyText()
+        {
+            var value = "xUnit test";
 
-        //    var articlePropItem = new ArticleProperty
-        //    {
-        //        ArticleId = 197391,
-        //        ArticlePropertyId = 2442,
-        //        Value = value
-        //    };
+            var articlePropItem = new ArticleProperty
+            {
+                ArticleId = 197391,
+                ArticlePropertyId = 2442,
+                Value = value
+            };
 
-        //    var result = await SystemUnderTest.EditArticlePropertyAsync(articlePropItem);
-        //    Assert.Equal(value, result.Value);
-        //}
+            var result = await SystemUnderTest.EditPropertyAsync(articlePropItem);
+            Assert.Equal(value, result.Value);
+        }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditArticlePropertyWhenArgumentException()
         {
             const string value = "xUnit test";
@@ -89,7 +89,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditPropertyAsync(articlePropItem));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditArticlePropertyWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
@@ -106,7 +106,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditPropertyAsync(articlePropItem));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditArticlePropertyWhenNotFound()
         {
             const string value = "xUnit test";
