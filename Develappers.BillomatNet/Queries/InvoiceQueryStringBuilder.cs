@@ -37,12 +37,12 @@ namespace Develappers.BillomatNet.Queries
 
             if ((filter.Status?.Count ?? 0) > 0)
             {
-                filters.Add($"status={string.Join((string) ",", (IEnumerable<string>) filter.Status.Select(CommonMappingExtensions.ToApiValue))}");
+                filters.Add($"status={string.Join(",", filter.Status.Select(CommonMappingExtensions.ToApiValue))}");
             }
 
             if ((filter.PaymentType?.Count ?? 0) > 0)
             {
-                filters.Add($"payment_type={string.Join((string) ",", (IEnumerable<string>) filter.PaymentType.Select(CommonMappingExtensions.ToApiValue))}");
+                filters.Add($"payment_type={string.Join(",", filter.PaymentType.Select(CommonMappingExtensions.ToApiValue))}");
             }
 
             if (filter.From.HasValue)
