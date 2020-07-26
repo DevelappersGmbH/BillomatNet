@@ -1,8 +1,8 @@
-﻿using Develappers.BillomatNet.Types;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Types;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
@@ -177,7 +177,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         public async Task EditContactNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
-             var contact = new Contact
+            var contact = new Contact
             {
                 Id = 500,
                 ClientId = 485054,

@@ -2,15 +2,14 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Helpers;
-using Develappers.BillomatNet.Queries;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Mapping;
+using Develappers.BillomatNet.Queries;
 using Unit = Develappers.BillomatNet.Types.Unit;
 
 namespace Develappers.BillomatNet

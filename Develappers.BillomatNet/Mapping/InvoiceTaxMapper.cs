@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using Develappers.BillomatNet.Api;
 using InvoiceTax = Develappers.BillomatNet.Types.InvoiceTax;
 

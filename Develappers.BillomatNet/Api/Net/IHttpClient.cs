@@ -83,6 +83,6 @@ namespace Develappers.BillomatNet.Api.Net
         /// The task result contains the request result from the stream.
         /// </returns>
         /// <exception cref="IOException"> Throws when the response was null.</exception>
-        Task<string> PostAsync (Uri relativeUri, string data, CancellationToken token);
+        Task<string> PostAsync(Uri relativeUri, string data, CancellationToken token);
     }
 }

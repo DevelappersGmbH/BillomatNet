@@ -8,8 +8,8 @@ using System.Linq.Expressions;
 using Develappers.BillomatNet.Helpers;
 
 namespace Develappers.BillomatNet.Queries
-{ 
-    public class Query<TBase, TFilter> where TFilter: new()
+{
+    public class Query<TBase, TFilter> where TFilter : new()
     {
         public Query()
         {
@@ -39,13 +39,13 @@ namespace Develappers.BillomatNet.Queries
         public Query<TBase, TFilter> AddFilter(Expression<Func<TFilter, object>> property, object value)
         {
             var propertyInfo = ReflectionHelper.GetPropertyInfo(property);
-            propertyInfo.GetSetMethod().Invoke(this.Filter, new[] {value});
+            propertyInfo.GetSetMethod().Invoke(this.Filter, new[] { value });
             return this;
         }
 
         public Query<TBase, TFilter> AddSort(Expression<Func<TBase, object>> property, SortOrder order = SortOrder.Ascending)
         {
-            Sort.Add(new SortItem<TBase>{Order = order, Property = property});
+            Sort.Add(new SortItem<TBase> { Order = order, Property = property });
             return this;
         }
 

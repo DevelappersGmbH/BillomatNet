@@ -5,19 +5,19 @@
 using Develappers.BillomatNet.Api;
 using Account = Develappers.BillomatNet.Types.Account;
 using Article = Develappers.BillomatNet.Types.Article;
-using Tax = Develappers.BillomatNet.Types.Tax;
-using Unit = Develappers.BillomatNet.Types.Unit;
-using Invoice = Develappers.BillomatNet.Types.Invoice;
-using Settings = Develappers.BillomatNet.Types.Settings;
-using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
-using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
-using Contact = Develappers.BillomatNet.Types.Contact;
 using ArticleProperty = Develappers.BillomatNet.Types.ArticleProperty;
 using ArticleTag = Develappers.BillomatNet.Types.ArticleTag;
-using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 using Client = Develappers.BillomatNet.Types.Client;
-using ClientTag = Develappers.BillomatNet.Types.ClientTag;
 using ClientProperty = Develappers.BillomatNet.Types.ClientProperty;
+using ClientTag = Develappers.BillomatNet.Types.ClientTag;
+using Contact = Develappers.BillomatNet.Types.Contact;
+using Invoice = Develappers.BillomatNet.Types.Invoice;
+using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
+using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
+using Settings = Develappers.BillomatNet.Types.Settings;
+using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
+using Tax = Develappers.BillomatNet.Types.Tax;
+using Unit = Develappers.BillomatNet.Types.Unit;
 
 namespace Develappers.BillomatNet.Mapping
 {
@@ -220,23 +220,12 @@ namespace Develappers.BillomatNet.Mapping
             return s_clientTagMapper.DomainToApi(value);
         }
 
-
         internal static Types.PagedList<ClientProperty> ToDomain(this ClientPropertyListWrapper value)
         {
             return s_clientPropertyMapper.ApiToDomain(value);
         }
 
-        internal static Types.PagedList<ClientProperty> ToDomain(this ClientPropertyList value)
-        {
-            return s_clientPropertyMapper.ApiToDomain(value);
-        }
-
         internal static ClientProperty ToDomain(this ClientPropertyWrapper value)
-        {
-            return s_clientPropertyMapper.ApiToDomain(value);
-        }
-
-        private static ClientProperty ToDomain(this Api.ClientProperty value)
         {
             return s_clientPropertyMapper.ApiToDomain(value);
         }

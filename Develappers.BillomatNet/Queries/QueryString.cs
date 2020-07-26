@@ -2,10 +2,9 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 
-namespace Develappers.BillomatNet.Helpers
+namespace Develappers.BillomatNet.Queries
 {
     internal static class QueryString
     {

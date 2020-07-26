@@ -4,7 +4,6 @@
 
 using System;
 using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Helpers;
 using Account = Develappers.BillomatNet.Types.Account;
 
 namespace Develappers.BillomatNet.Mapping

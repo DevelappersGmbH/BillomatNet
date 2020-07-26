@@ -9,7 +9,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
-using Develappers.BillomatNet.Helpers;
 using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Queries;
 using Newtonsoft.Json;
@@ -207,7 +206,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("wrong input parameter", nameof(model), wex);
             }
         }
- 
+
         /// <summary>
         /// Retrieves the customer tag cloud.
         /// </summary>
@@ -363,7 +362,7 @@ namespace Develappers.BillomatNet
             var httpClient = HttpClientFactory.Invoke();
             return await httpClient.GetBytesAsync(new Uri($"/api/contacts/{id}/avatar?size={size}", UriKind.Relative), token).ConfigureAwait(false);
         }
-        
+
         /// <summary>
         /// Creates a contact.
         /// </summary>
