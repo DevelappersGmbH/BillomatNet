@@ -60,4 +60,4 @@ successively. You can find detailed information about recent changes in [change 
 
 ## Contribution
 
-Bug reports and pull requests are welcome on [GitHub](https://github.com/martinhey/BillomatNet). Please check the [contribution guide](CONTRIBUTING.md).This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to our [code of conduct](CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on [GitHub](https://github.com/DevelappersGmbH/BillomatNet). Please check the [contribution guide](CONTRIBUTING.md).This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to our [code of conduct](CODE_OF_CONDUCT.md).

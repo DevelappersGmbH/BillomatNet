@@ -8,7 +8,7 @@ But please notice that all of your interactions in the project are expected to f
 
 #### Reporting Issues
 
-Please make sure your issue wasn't already reported or even fixed by searching through our [issues](https://github.com/martinhey/BillomatNet/issues).
+Please make sure your issue wasn't already reported or even fixed by searching through our [issues](https://github.com/DevelappersGmbH/BillomatNet/issues).
 
 Otherwise create a new one, but add a proper title and a clear description. If you report a bug, please include as much information as you can provide. If you report a feature request, please add some use cases for what that feature could be used, so we can elaborate better about it.
 
