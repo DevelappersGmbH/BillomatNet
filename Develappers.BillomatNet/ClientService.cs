@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Helpers;
+using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Queries;
 using Newtonsoft.Json;
 using Account = Develappers.BillomatNet.Types.Account;

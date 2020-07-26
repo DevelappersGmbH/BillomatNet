@@ -9,6 +9,7 @@ using Develappers.BillomatNet.Helpers;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
+using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Queries;
 using Tax = Develappers.BillomatNet.Types.Tax;
 
@@ -61,7 +62,7 @@ namespace Develappers.BillomatNet
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
-        /// The task result contains the unit.
+        /// The task result contains the tax.
         /// </returns>
         public async Task<Tax> GetByIdAsync(int id, CancellationToken token = default)
         {
@@ -69,35 +70,42 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        Task IEntityService<Tax, TaxFilter>.DeleteAsync(int id, CancellationToken token)
+        /// <summary>
+        /// Deletes a tax.
+        /// </summary>
+        /// <param name="id">The ID.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        public async Task DeleteAsync(int id, CancellationToken token = default)
         {
-            // TODO: implement implicitly and make public
-            throw new NotImplementedException();
+            await DeleteAsync($"/api/taxes/{id}", token).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Creates an tax.
         /// </summary>
-        /// <param name="model">The tax object.</param>
+        /// <param name="value">The tax object.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
         /// The task result returns the newly created tax with the ID.
         /// </returns>
-        public async Task<Tax> CreateAsync(Tax model, CancellationToken token = default)
+        public async Task<Tax> CreateAsync(Tax value, CancellationToken token = default)
         {
-            if (model == null || model.Name == "" || model.Name == null)
+            if (value == null)
             {
-                throw new ArgumentException();
+                throw new ArgumentNullException(nameof(value));
             }
-            if (model.Id != 0)
+            if (string.IsNullOrEmpty(value.Name) || value.Id != 0)
             {
-                throw new ArgumentException("invalid tax id", nameof(model));
+                throw new ArgumentException("invalid property values for tax", nameof(value));
             }
 
             var wrappedModel = new TaxWrapper
             {
-                Tax = model.ToApi()
+                Tax = value.ToApi()
             };
             var result = await PostAsync("/api/taxes", wrappedModel, token);
 

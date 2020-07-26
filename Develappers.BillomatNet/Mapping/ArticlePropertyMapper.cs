@@ -4,13 +4,14 @@
 
 using System.Linq;
 using Develappers.BillomatNet.Api;
+using Develappers.BillomatNet.Helpers;
 using ArticleProperty = Develappers.BillomatNet.Types.ArticleProperty;
 
-namespace Develappers.BillomatNet.Helpers
+namespace Develappers.BillomatNet.Mapping
 {
-    internal static class ArticlePropertyMappingExtensions
+    internal class ArticlePropertyMapper : IMapper<Api.ArticleProperty, ArticleProperty>
     {
-        private static ArticleProperty ToDomain(this Api.ArticleProperty value)
+        public ArticleProperty ApiToDomain(Api.ArticleProperty value)
         {
             if (value == null)
             {
@@ -29,18 +30,30 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
-        internal static ArticleProperty ToDomain(this ArticlePropertyWrapper value)
+        public Api.ArticleProperty DomainToApi(ArticleProperty value)
         {
-            return value?.ArticleProperty.ToDomain();
+            return new Api.ArticleProperty
+            {
+                Id = value.Id,
+                ArticleId = value.ArticleId,
+                ArticlePropertyId = value.ArticlePropertyId,
+                Type = value.Type.ToApiValue(),
+                Name = value.Name,
+                Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
+            };
         }
 
-        internal static Types.PagedList<ArticleProperty> ToDomain(this ArticlePropertyListWrapper value)
+        public ArticleProperty ApiToDomain(ArticlePropertyWrapper value)
         {
-            return value?.Item.ToDomain();
-
+            return ApiToDomain(value?.ArticleProperty);
         }
 
-        internal static Types.PagedList<ArticleProperty> ToDomain(this ArticlePropertyList value)
+        public Types.PagedList<ArticleProperty> ApiToDomain(ArticlePropertyListWrapper value)
+        {
+            return ApiToDomain(value?.Item);
+        }
+
+        private Types.PagedList<ArticleProperty> ApiToDomain(ArticlePropertyList value)
         {
             if (value == null)
             {
@@ -52,20 +65,7 @@ namespace Develappers.BillomatNet.Helpers
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
                 TotalItems = value.Total,
-                List = value.List?.Select(ToDomain).ToList()
-            };
-        }
-
-        internal static Api.ArticleProperty ToApi(this ArticleProperty value)
-        {
-            return new Api.ArticleProperty
-            {
-                Id = value.Id,
-                ArticleId = value.ArticleId,
-                ArticlePropertyId = value.ArticlePropertyId,
-                Type = value.Type.ToApiValue(),
-                Name = value.Name,
-                Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
+                List = value.List?.Select(ApiToDomain).ToList()
             };
         }
     }

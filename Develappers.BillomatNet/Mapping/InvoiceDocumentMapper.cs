@@ -7,16 +7,11 @@ using System.Globalization;
 using Develappers.BillomatNet.Api;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
 
-namespace Develappers.BillomatNet.Helpers
+namespace Develappers.BillomatNet.Mapping
 {
-    internal static class InvoiceDocumentMappingExtensions
+    internal class InvoiceDocumentMapper : IMapper<Api.InvoiceDocument, InvoiceDocument>
     {
-        internal static InvoiceDocument ToDomain(this InvoiceDocumentWrapper value)
-        {
-            return value?.Pdf.ToDomain();
-        }
-
-        private static InvoiceDocument ToDomain(this Api.InvoiceDocument value)
+        public InvoiceDocument ApiToDomain(Api.InvoiceDocument value)
         {
             if (value == null)
             {
@@ -33,6 +28,16 @@ namespace Develappers.BillomatNet.Helpers
                 MimeType = value.MimeType,
                 Bytes = Convert.FromBase64String(value.Base64File)
             };
+        }
+
+        public Api.InvoiceDocument DomainToApi(InvoiceDocument value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public InvoiceDocument ApiToDomain(InvoiceDocumentWrapper value)
+        {
+            return ApiToDomain(value?.Pdf);
         }
     }
 }

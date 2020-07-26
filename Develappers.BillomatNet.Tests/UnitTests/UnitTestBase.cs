@@ -23,7 +23,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
             // call internal constructor using reflection
             return (T)Activator.CreateInstance(typeof(T),
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance, 
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
                 null,
                 new object[] { httpClientFactory }, null);
         }

@@ -6,19 +6,19 @@ using System;
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
+using Develappers.BillomatNet.Helpers;
 using Article = Develappers.BillomatNet.Types.Article;
 
-namespace Develappers.BillomatNet.Helpers
+namespace Develappers.BillomatNet.Mapping
 {
-
-    internal static class ArticleMappingExtensions
+    internal class ArticleMapper : IMapper<Api.Article, Article>
     {
-        internal static Types.PagedList<Article> ToDomain(this ArticleListWrapper value)
+        public Types.PagedList<Article> ApiToDomain(ArticleListWrapper value)
         {
-            return value?.Item.ToDomain();
+            return ApiToDomain(value?.Item);
         }
 
-        internal static Types.PagedList<Article> ToDomain(this ArticleList value)
+        public Types.PagedList<Article> ApiToDomain(ArticleList value)
         {
             if (value == null)
             {
@@ -30,16 +30,11 @@ namespace Develappers.BillomatNet.Helpers
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
                 TotalItems = value.Total,
-                List = value.List?.Select(x => x.ToDomain()).ToList()
+                List = value.List?.Select(ApiToDomain).ToList()
             };
         }
 
-        internal static Article ToDomain(this ArticleWrapper value)
-        {
-            return value?.Article.ToDomain();
-        }
-
-        private static Article ToDomain(this Api.Article value)
+        public Article ApiToDomain(Api.Article value)
         {
             if (value == null)
             {
@@ -72,7 +67,7 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
-        internal static Api.Article ToApi(this Article value)
+        public Api.Article DomainToApi(Article value)
         {
             if (value == null)
             {
@@ -100,6 +95,11 @@ namespace Develappers.BillomatNet.Helpers
                 Title = value.Title,
                 UnitId = value.UnitId.ToString()
             };
+        }
+
+        public Article ApiToDomain(ArticleWrapper value)
+        {
+            return ApiToDomain(value?.Article);
         }
     }
 }

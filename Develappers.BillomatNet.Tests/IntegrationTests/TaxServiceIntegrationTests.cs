@@ -26,7 +26,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         }
 
         [Fact]
-        public async Task GetByIdTax()
+        public async Task GetTaxById()
         {
             var result = await SystemUnderTest.GetByIdAsync(21281);
             Assert.NotNull(result);
@@ -46,23 +46,23 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetByIdAsync(1));
         }
 
-        //[Fact]
-        //public async Task CreateTaxItem()
-        //{
-        //    var name = "xUnit Test";
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
+        public async Task CreateTaxItem()
+        {
+            const string name = "xUnit Test";
 
-        //    var taxItem = new Tax
-        //    {
-        //        Name = name,
-        //        Rate = 1.0f,
-        //        IsDefault = false
-        //    };
+            var taxItem = new Tax
+            {
+                Name = name,
+                Rate = 1.0f,
+                IsDefault = false
+            };
 
-        //    var result = await SystemUnderTest.CreateAsync(taxItem);
-        //    Assert.Equal(name, result.Name);
-        //}
+            var result = await SystemUnderTest.CreateAsync(taxItem);
+            Assert.Equal(name, result.Name);
+        }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateTaxItemWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
@@ -78,7 +78,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.CreateAsync(taxItem));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateTaxItemWhenNull()
         {
             var tax = new Tax();
