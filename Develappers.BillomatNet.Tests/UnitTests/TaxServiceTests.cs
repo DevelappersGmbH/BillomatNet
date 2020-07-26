@@ -39,7 +39,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             var result = await sut.CreateAsync(taxItem);
 
             // assert
-            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+            A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
             Assert.Equal(name, result.Name);
