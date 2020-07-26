@@ -61,7 +61,7 @@ namespace Develappers.BillomatNet
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
-        /// The task result contains the unit.
+        /// The task result contains the tax.
         /// </returns>
         public async Task<Tax> GetByIdAsync(int id, CancellationToken token = default)
         {
@@ -69,10 +69,17 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        Task IEntityService<Tax, TaxFilter>.DeleteAsync(int id, CancellationToken token)
+        /// <summary>
+        /// Deletes a tax.
+        /// </summary>
+        /// <param name="id">The ID.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        public async Task DeleteAsync(int id, CancellationToken token = default)
         {
-            // TODO: implement implicitly and make public
-            throw new NotImplementedException();
+            await DeleteAsync($"/api/taxes/{id}", token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -86,13 +93,13 @@ namespace Develappers.BillomatNet
         /// </returns>
         public async Task<Tax> CreateAsync(Tax model, CancellationToken token = default)
         {
-            if (model == null || model.Name == "" || model.Name == null)
+            if (model == null)
             {
-                throw new ArgumentException();
+                throw new ArgumentNullException(nameof(model));
             }
-            if (model.Id != 0)
+            if (string.IsNullOrEmpty(model.Name) || model.Id != 0)
             {
-                throw new ArgumentException("invalid tax id", nameof(model));
+                throw new ArgumentException("invalid property values for tax", nameof(model));
             }
 
             var wrappedModel = new TaxWrapper
