@@ -376,7 +376,7 @@ namespace Develappers.BillomatNet
             {
                 InvoiceMail = model.ToApi()
             };
-            return PostAsync($"/api/invoice/{id}/email", wrappedModel, token);
+            return PostAsync($"/api/invoices/{id}/email", wrappedModel, token);
         }
     }
 }

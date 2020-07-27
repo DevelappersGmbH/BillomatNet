@@ -6,7 +6,7 @@ namespace Develappers.BillomatNet.Api
 {
     internal class AttachmentsWrapper
     {
-        [JsonProperty("attachments")]
+        [JsonProperty("attachment")]
         [JsonConverter(typeof(CollectionConverter<Attachment>))]
         public List<Attachment> List { get; set; }
     }
