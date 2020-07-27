@@ -1,24 +1,23 @@
-﻿using Develappers.BillomatNet.Types;
-using System;
+﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Types;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
-    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
-    public class ClientServiceContactsIntegrationTests
+    public class ClientServiceContactsIntegrationTests : IntegrationTestBase<ClientService>
     {
+        public ClientServiceContactsIntegrationTests() : base(c => new ClientService(c))
+        {
+        }
+
         [Fact]
         public async Task GetContacts()
         {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ClientService(config);
-
-            var result = await service.GetContactListAsync(1227912, CancellationToken.None);
+            var result = await SystemUnderTest.GetContactListAsync(1227912, CancellationToken.None);
 
             Assert.True(result.List.Count > 0);
         }
@@ -26,42 +25,27 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetContactById()
         {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ClientService(config);
-
-            var result = await service.GetContactByIdAsync(35641);
+            var result = await SystemUnderTest.GetContactByIdAsync(35641);
             Assert.NotNull(result);
         }
 
         [Fact]
         public async Task GetContactAvatarById()
         {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ClientService(config);
-
-            var result = await service.GetContactAvatarByIdAsync(35641, 100);
+            var result = await SystemUnderTest.GetContactAvatarByIdAsync(35641, 100);
             Assert.NotNull(result);
         }
 
         [Fact]
         public async Task GetContactByIdWhenNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ClientService(config);
-
-            var result = await service.GetContactByIdAsync(1);
+            var result = await SystemUnderTest.GetContactByIdAsync(1);
             Assert.Null(result);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteContact()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
             var contact = new Contact
             {
                 ClientId = 485054,
@@ -69,49 +53,37 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 LastName = "Testermann"
             };
 
-            var result = await service.CreateAsync(contact);
-            Assert.NotNull(await service.GetContactByIdAsync(result.Id));
+            var result = await SystemUnderTest.CreateAsync(contact);
+            Assert.NotNull(await SystemUnderTest.GetContactByIdAsync(result.Id));
 
-            await service.DeleteContactAsync(result.Id);
+            await SystemUnderTest.DeleteContactAsync(result.Id);
 
-            var result2 = await service.GetContactByIdAsync(result.Id);
+            var result2 = await SystemUnderTest.GetContactByIdAsync(result.Id);
             Assert.Null(result2);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteContactArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.DeleteContactAsync(0));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.DeleteContactAsync(0));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteContactNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new ClientService(config);
-
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.DeleteContactAsync(1));
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.DeleteContactAsync(1));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteContactNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
-            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteContactAsync(1));
+            await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.DeleteContactAsync(1));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateContact()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
             var contact = new Contact
             {
                 ClientId = 485054,
@@ -119,29 +91,24 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 LastName = "Testermann"
             };
 
-            var result = await service.CreateAsync(contact);
-            Assert.NotNull(await service.GetContactByIdAsync(result.Id));
+            var result = await SystemUnderTest.CreateAsync(contact);
+            Assert.NotNull(await SystemUnderTest.GetContactByIdAsync(result.Id));
 
-            await service.DeleteContactAsync(result.Id);
+            await SystemUnderTest.DeleteContactAsync(result.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateContactArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
+            var contact = new Contact();
 
-            var contact = new Contact { };
-
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(contact));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(contact));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateContactNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new ClientService(config);
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
 
             var contact = new Contact
             {
@@ -150,15 +117,12 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 LastName = "Testermann"
             };
 
-            var result = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(contact));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.CreateAsync(contact));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateContactNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
             var contact = new Contact
             {
                 ClientId = 1,
@@ -166,15 +130,12 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 LastName = "Testermann"
             };
 
-            var result = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(contact));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(contact));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditContact()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
             var contact = new Contact
             {
                 ClientId = 485054,
@@ -182,8 +143,8 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 LastName = "Testermann"
             };
 
-            var result = await service.CreateAsync(contact);
-            Assert.NotNull(await service.GetContactByIdAsync(result.Id));
+            var result = await SystemUnderTest.CreateAsync(contact);
+            Assert.NotNull(await SystemUnderTest.GetContactByIdAsync(result.Id));
 
             var editedContact = new Contact
             {
@@ -193,17 +154,14 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 LastName = result.LastName
             };
 
-            var editedResult = await service.EditAsync(editedContact);
+            var editedResult = await SystemUnderTest.EditAsync(editedContact);
             Assert.Equal(editedContact.FirstName, editedResult.FirstName);
-            await service.DeleteContactAsync(result.Id);
+            await SystemUnderTest.DeleteContactAsync(result.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditContactArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
             var contact = new Contact
             {
                 Id = 0,
@@ -212,16 +170,13 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 LastName = "Testermann"
             };
 
-            var editedResult = await Assert.ThrowsAsync<ArgumentException>(() => service.EditAsync(contact));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditAsync(contact));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditContactNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new ClientService(config);
-
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var contact = new Contact
             {
                 Id = 500,
@@ -230,15 +185,12 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 LastName = "Testermann"
             };
 
-            var editedResult = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.EditAsync(contact));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditAsync(contact));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditContactNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
             var contact = new Contact
             {
                 Id = 1,
@@ -247,7 +199,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 LastName = "Testermann"
             };
 
-            var editedResult = await Assert.ThrowsAsync<NotFoundException>(() => service.EditAsync(contact));
+            await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.EditAsync(contact));
         }
     }
 }

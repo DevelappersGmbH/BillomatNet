@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Queries;
@@ -7,24 +12,24 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
-    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
-    public class UnitServiceIntegrationTests
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
+    public class UnitServiceIntegrationTests : IntegrationTestBase<UnitService>
     {
+        public UnitServiceIntegrationTests() : base(c => new UnitService(c))
+        {
+        }
+
         [Fact]
         public async Task GetListOfUnits()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
-            var result = await service.GetListAsync(CancellationToken.None);
+            var result = await SystemUnderTest.GetListAsync(CancellationToken.None);
             Assert.True(result.List.Count > 0);
         }
 
         [Fact]
         public async Task GetFilteredUnits()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
-            var result = await service.GetListAsync(
+            var result = await SystemUnderTest.GetListAsync(
                 new Query<Unit, UnitFilter>().AddFilter(x => x.Name, "Stunde"));
             Assert.True(result.List.Count > 0);
         }
@@ -32,9 +37,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetFilteredUnitsNotFound()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
-            var result = await service.GetListAsync(
+            var result = await SystemUnderTest.GetListAsync(
                 new Query<Unit, UnitFilter>().AddFilter(x => x.Name, "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
             Assert.True(result.TotalItems == 0);
         }
@@ -42,140 +45,92 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetFilteredUnitsNotAuthorized()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            config.ApiKey = "";
-            var service = new UnitService(config);
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetListAsync(
+            Configuration.ApiKey = "";
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetListAsync(
                 new Query<Unit, UnitFilter>().AddFilter(x => x.Name, "Stunde")));
         }
 
         [Fact]
-        public async Task GetByIdUnits()
+        public async Task GetUnitById()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
-            var result = await service.GetByIdAsync(20573);
+            var result = await SystemUnderTest.GetByIdAsync(20573);
             Assert.NotNull(result);
         }
 
         [Fact]
-        public async Task GetByIdUnitsWhenNotFound()
+        public async Task GetUnitByIdWhenNotFound()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
-            var result = await service.GetByIdAsync(1);
+            var result = await SystemUnderTest.GetByIdAsync(1);
             Assert.Null(result);
         }
 
         [Fact]
-        public async Task GetByIdunitsWhenNotAuthorized()
+        public async Task GetUnitByIdWhenNotAuthorized()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new UnitService(config);
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(20573));
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            var service = new UnitService(Configuration);
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(20573));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteUnitItem()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
-
-            var name = "xUnit test";
-
-            var unitItem = new Unit
-            {
-                Name = name
-            };
-
-            var result = await service.CreateAsync(unitItem);
-            Assert.Equal(name, result.Name);
-
-            await service.DeleteAsync(result.Id);
-
-            var ex = Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(result.Id));
+            await SystemUnderTest.DeleteAsync(356634);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteUnitItemNotExisting()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
-            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(1));
+            await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.DeleteAsync(1));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteUnitItemNotAuthorized()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new UnitService(config);
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.DeleteAsync(1));
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.DeleteAsync(1));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditUnitItem()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
-
-            var name = "xUnit test";
-
-            var unitItem = new Unit
-            {
-                Name = name
-            };
-
-            var result = await service.CreateAsync(unitItem);
-
-            Assert.Equal(name, result.Name);
-
+            var id = 1231231231;
             var newName = "xUnit test edited";
 
             var editedUnitItem = new Unit
             {
-                Id = result.Id,
+                Id = id,
                 Name = newName,
             };
 
-            var editedResult = await service.EditAsync(editedUnitItem);
-            Assert.Equal(newName, editedUnitItem.Name);
-
-            await service.DeleteAsync(editedUnitItem.Id);
+            var editedResult = await SystemUnderTest.EditAsync(editedUnitItem);
+            Assert.Equal(newName, editedResult.Name);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditUnitItemWhenNotFound()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
             var unitItem = new Unit
             {
                 Id = 1
             };
-            var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.EditAsync(unitItem));
+            await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.EditAsync(unitItem));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditUnitItemWhenNotAuthorized()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new UnitService(config);
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var unitItem = new Unit
             {
                 Id = 20573
             };
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.EditAsync(unitItem));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditAsync(unitItem));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateUnitItem()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
-
             var name = "xUnit test";
 
             var unitItem = new Unit
@@ -183,18 +138,14 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Name = name
             };
 
-            var result = await service.CreateAsync(unitItem);
+            var result = await SystemUnderTest.CreateAsync(unitItem);
             Assert.Equal(name, result.Name);
-
-            await service.DeleteAsync(result.Id);
         }
 
-        [Fact]
-        public async Task CreateTaxItemWhenNotAuthorized()
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
+        public async Task CreateUnitItemWhenNotAuthorized()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new UnitService(config);
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
 
             var name = "xUnit test";
 
@@ -203,16 +154,13 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Name = name
             };
 
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(unitItem));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.CreateAsync(unitItem));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateUnitItemWhenNull()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new UnitService(config);
-
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(null));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(null));
         }
     }
 }

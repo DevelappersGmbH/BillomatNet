@@ -1,39 +1,16 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 using System.Linq;
 using Develappers.BillomatNet.Api;
 using Contact = Develappers.BillomatNet.Types.Contact;
 
-namespace Develappers.BillomatNet.Helpers
+namespace Develappers.BillomatNet.Mapping
 {
-    internal static class ContactMappingExtensions
+    internal class ContactMapper : IMapper<Api.Contact, Contact>
     {
-        internal static Types.PagedList<Contact> ToDomain(this ContactListWrapper value)
-        {
-            return ToDomain(value?.Item);
-        }
-
-        internal static Types.PagedList<Contact> ToDomain(this ContactList value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Types.PagedList<Contact>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(ToDomain).ToList()
-            };
-        }
-
-        internal static Contact ToDomain(this ContactWrapper value)
-        {
-            return ToDomain(value?.Contact);
-        }
-
-        private static Contact ToDomain(this Api.Contact value)
+        public Contact ApiToDomain(Api.Contact value)
         {
             if (value == null)
             {
@@ -42,8 +19,8 @@ namespace Develappers.BillomatNet.Helpers
 
             return new Contact
             {
-                Id = Int32.Parse(value.Id),
-                ClientId = Int32.Parse(value.ClientId),
+                Id = int.Parse(value.Id),
+                ClientId = int.Parse(value.ClientId),
                 City = value.City,
                 CountryCode = value.CountryCode,
                 Email = value.Email,
@@ -63,7 +40,7 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
-        internal static Api.Contact ToApi(this Contact value)
+        public Api.Contact DomainToApi(Contact value)
         {
             if (value == null)
             {
@@ -91,6 +68,32 @@ namespace Develappers.BillomatNet.Helpers
                 Created = value.Created,
                 Updated = value.Updated
             };
+        }
+
+        internal Types.PagedList<Contact> ApiToDomain(ContactList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<Contact>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(ApiToDomain).ToList()
+            };
+        }
+
+        public Types.PagedList<Contact> ApiToDomain(ContactListWrapper value)
+        {
+            return ApiToDomain(value?.Item);
+        }
+
+        public Contact ApiToDomain(ContactWrapper value)
+        {
+            return ApiToDomain(value?.Contact);
         }
     }
 }

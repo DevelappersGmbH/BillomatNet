@@ -1,11 +1,15 @@
-﻿using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Helpers;
-using Develappers.BillomatNet.Queries;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 using System;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
+using Develappers.BillomatNet.Mapping;
+using Develappers.BillomatNet.Queries;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
@@ -13,7 +17,8 @@ using InvoiceMail = Develappers.BillomatNet.Types.InvoiceMail;
 
 namespace Develappers.BillomatNet
 {
-    public class InvoiceService : ServiceBase, IEntityService<Invoice, InvoiceFilter>
+    public class InvoiceService : ServiceBase,
+        IEntityService<Invoice, InvoiceFilter>
     {
         /// <summary>
         /// Creates a new instance of <see cref="InvoiceService"/>.

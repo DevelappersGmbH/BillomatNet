@@ -1,20 +1,23 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
 using Article = Develappers.BillomatNet.Types.Article;
 
-namespace Develappers.BillomatNet.Helpers
+namespace Develappers.BillomatNet.Mapping
 {
-
-    internal static class ArticleMappingExtensions
+    internal class ArticleMapper : IMapper<Api.Article, Article>
     {
-        internal static Types.PagedList<Article> ToDomain(this ArticleListWrapper value)
+        public Types.PagedList<Article> ApiToDomain(ArticleListWrapper value)
         {
-            return value?.Item.ToDomain();
+            return ApiToDomain(value?.Item);
         }
 
-        internal static Types.PagedList<Article> ToDomain(this ArticleList value)
+        public Types.PagedList<Article> ApiToDomain(ArticleList value)
         {
             if (value == null)
             {
@@ -26,16 +29,11 @@ namespace Develappers.BillomatNet.Helpers
                 Page = value.Page,
                 ItemsPerPage = value.PerPage,
                 TotalItems = value.Total,
-                List = value.List?.Select(x => x.ToDomain()).ToList()
+                List = value.List?.Select(ApiToDomain).ToList()
             };
         }
 
-        internal static Article ToDomain(this ArticleWrapper value)
-        {
-            return value?.Article.ToDomain();
-        }
-
-        private static Article ToDomain(this Api.Article value)
+        public Article ApiToDomain(Api.Article value)
         {
             if (value == null)
             {
@@ -52,7 +50,7 @@ namespace Develappers.BillomatNet.Helpers
                 Description = value.Description,
                 Number = int.Parse(value.Number),
                 NumberLength = int.Parse(value.NumberLength),
-                NumberPre = value.NumberPre,
+                NumberPrefix = value.NumberPre,
                 PurchasePrice = value.PurchasePrice.ToOptionalFloat(),
                 PurchasePriceNetGross = value.PurchasePriceNetGross.ToNetGrossType(),
                 SalesPrice = value.SalesPrice.ToOptionalFloat(),
@@ -68,7 +66,7 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
-        internal static Api.Article ToApi(this Article value)
+        public Api.Article DomainToApi(Article value)
         {
             if (value == null)
             {
@@ -83,7 +81,7 @@ namespace Develappers.BillomatNet.Helpers
                 Description = value.Description,
                 Number = value.Number.ToString(),
                 NumberLength = value.NumberLength.ToString(),
-                NumberPre = value.NumberPre,
+                NumberPre = value.NumberPrefix,
                 PurchasePrice = value.PurchasePrice.ToInvariantString(),
                 PurchasePriceNetGross = value.PurchasePriceNetGross.ToApiValue(),
                 SalesPrice = value.SalesPrice.ToInvariantString(),
@@ -96,6 +94,11 @@ namespace Develappers.BillomatNet.Helpers
                 Title = value.Title,
                 UnitId = value.UnitId.ToString()
             };
+        }
+
+        public Article ApiToDomain(ArticleWrapper value)
+        {
+            return ApiToDomain(value?.Article);
         }
     }
 }

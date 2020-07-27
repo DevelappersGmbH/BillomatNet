@@ -1,11 +1,15 @@
-﻿namespace Develappers.BillomatNet.Types
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+namespace Develappers.BillomatNet.Types
 {
     /// <summary>
     /// Represents an invoice item
     /// </summary>
     public class InvoiceItem
     {
-        public int Id  { get; set; }
+        public int Id { get; set; }
         public int? ArticleId { get; set; }
 
         public int InvoiceId { get; set; }

@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Types;
@@ -6,13 +11,12 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
-    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class ArticleServiceIntegrationTests : IntegrationTestBase<ArticleService>
     {
         public ArticleServiceIntegrationTests() : base(c => new ArticleService(c))
         {
         }
-
 
         [Fact]
         public async Task GetArticles()
@@ -36,7 +40,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.Null(result);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteArticleItem()
         {
             var title = "xUnit test";
@@ -58,13 +62,13 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.Null(delResult);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteArticleItemWhenArgumentException()
         {
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.DeleteAsync(0));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteArticleItemWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
@@ -72,13 +76,13 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.DeleteAsync(198532));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteArticleItemWhenNotFound()
         {
             await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.DeleteAsync(1));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditArticleItem()
         {
             var title = "xUnit test";
@@ -113,7 +117,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await SystemUnderTest.DeleteAsync(editedArticleItem.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditArticleItemWhenArgumentException()
         {
             var title = "xUnit test";
@@ -147,7 +151,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await SystemUnderTest.DeleteAsync(result.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditArticleItemWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
@@ -160,7 +164,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditAsync(editedArticleItem));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditArticleItemWhenNotFound()
         {
             var editedArticleItem = new Article
@@ -171,7 +175,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.EditAsync(editedArticleItem));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateArticleItem()
         {
             var articleItem = new Article
@@ -190,7 +194,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await SystemUnderTest.DeleteAsync(getResult.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateArticleItemWhenNotAuthorized()
         {
             var articleItem = new Article
@@ -205,7 +209,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.CreateAsync(articleItem));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateArticleItemWhenNull()
         {
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(null));

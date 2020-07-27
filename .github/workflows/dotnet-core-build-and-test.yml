@@ -29,4 +29,8 @@ jobs:
       uses: coverallsapp/github-action@v1.0.1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
-        path-to-lcov: ./Develappers.BillomatNet.Tests/TestResults/coverage.info  
+        path-to-lcov: ./Develappers.BillomatNet.Tests/TestResults/coverage.info 
+    - uses: actions/upload-artifact@v2
+      with:
+        name: package
+        path: ./Develappers.BillomatNet/bin/Release/Develappers.BillomatNet.*.nupkg

@@ -1,26 +1,30 @@
-﻿using Develappers.BillomatNet.Queries;
-using Develappers.BillomatNet.Types;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Queries;
+using Develappers.BillomatNet.Types;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
-    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
-    public class ClientServiceIntegrationTests
+    public class ClientServiceIntegrationTests : IntegrationTestBase<ClientService>
     {
+        public ClientServiceIntegrationTests() : base(c => new ClientService(c))
+        {
+        }
+
         [Fact]
         public async Task GetClientsByName()
         {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ClientService(config);
             // ReSharper disable once RedundantArgumentDefaultValue
             var query = new Query<Client, ClientFilter>()
                 .AddFilter(x => x.Name, "Regiofaktur")
                 .AddSort(x => x.City, SortOrder.Ascending);
 
-            var result = await service.GetListAsync(query, CancellationToken.None);
+            var result = await SystemUnderTest.GetListAsync(query, CancellationToken.None);
 
             Assert.True(result.List.Count > 0);
         }
@@ -28,11 +32,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetClients()
         {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ClientService(config);
-
-            var result = await service.GetListAsync(CancellationToken.None);
+            var result = await SystemUnderTest.GetListAsync(CancellationToken.None);
 
             Assert.True(result.List.Count > 0);
         }
@@ -40,22 +40,14 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetClientById()
         {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ClientService(config);
-
-            var result = await service.GetByIdAsync(1227912);
+            var result = await SystemUnderTest.GetByIdAsync(1227912);
             Assert.NotNull(result);
         }
 
         [Fact]
         public async Task GetClientByIdWhenNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ClientService(config);
-
-            await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(1));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetByIdAsync(1));
         }
     }
 }

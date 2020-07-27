@@ -6,12 +6,12 @@ This is an API client to access your data in [Billomat](https://www.billomat.com
 
 ![Build and Test](https://github.com/DevelappersGmbH/BillomatNet/workflows/build%20and%20test/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/DevelappersGmbH/BillomatNet/badge.svg?branch=master)](https://coveralls.io/github/DevelappersGmbH/BillomatNet?branch=master)
-![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/DevelappersGmbH/BillomatNet)
+[![Code Climate maintainability](https://img.shields.io/codeclimate/maintainability/DevelappersGmbH/BillomatNet)](https://codeclimate.com/github/DevelappersGmbH/BillomatNet)
 
 ![GitHub issues](https://img.shields.io/github/issues/DevelappersGmbH/BillomatNet)
 
 ![GitHub Release Date](https://img.shields.io/github/release-date/DevelappersGmbH/BillomatNet)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![NuGet](https://img.shields.io/nuget/dt/Develappers.BillomatNet.svg)](https://www.nuget.org/packages/Develappers.BillomatNet/)
 
 ## Usage
@@ -60,4 +60,4 @@ successively. You can find detailed information about recent changes in [change 
 
 ## Contribution
 
-Bug reports and pull requests are welcome on [GitHub](https://github.com/martinhey/BillomatNet). Please check the [contribution guide](CONTRIBUTING.md).This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to our [code of conduct](CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on [GitHub](https://github.com/DevelappersGmbH/BillomatNet). Please check the [contribution guide](CONTRIBUTING.md).This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to our [code of conduct](CODE_OF_CONDUCT.md).

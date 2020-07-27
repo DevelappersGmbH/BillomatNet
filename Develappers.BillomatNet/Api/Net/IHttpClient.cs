@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -79,6 +83,6 @@ namespace Develappers.BillomatNet.Api.Net
         /// The task result contains the request result from the stream.
         /// </returns>
         /// <exception cref="IOException"> Throws when the response was null.</exception>
-        Task<string> PostAsync (Uri relativeUri, string data, CancellationToken token);
+        Task<string> PostAsync(Uri relativeUri, string data, CancellationToken token);
     }
 }

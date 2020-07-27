@@ -1,10 +1,15 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
-using Develappers.BillomatNet.Helpers;
+using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Queries;
 using Article = Develappers.BillomatNet.Types.Article;
 using ArticleProperty = Develappers.BillomatNet.Types.ArticleProperty;
@@ -13,7 +18,10 @@ using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
 namespace Develappers.BillomatNet
 {
-    public class ArticleService : ServiceBase, IEntityService<Article, ArticleFilter>
+    public class ArticleService : ServiceBase,
+        IEntityService<Article, ArticleFilter>,
+        IEntityPropertyService<ArticleProperty, ArticlePropertyFilter>,
+        IEntityTagService<ArticleTag, ArticleTagFilter>
     {
         /// <summary>
         /// Creates a new instance of <see cref="ArticleService"/>.
@@ -28,6 +36,7 @@ namespace Develappers.BillomatNet
         /// </summary>
         /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
         /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
+        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal ArticleService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }
@@ -192,7 +201,7 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<ArticleProperty> EditArticlePropertyAsync(ArticleProperty model, CancellationToken token = default)
+        public async Task<ArticleProperty> EditPropertyAsync(ArticleProperty model, CancellationToken token = default)
         {
             if (model == null || model.ArticleId <= 0 || model.ArticlePropertyId <= 0 || model.Value == null)
             {

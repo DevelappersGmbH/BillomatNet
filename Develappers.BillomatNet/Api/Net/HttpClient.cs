@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -7,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Develappers.BillomatNet.Api.Net
 {
-    public class HttpClient : IHttpClient
+    public sealed class HttpClient : IHttpClient
     {
         private const string HeaderNameApiKey = "X-BillomatApiKey";
         private const string HeaderNameAppId = "X-AppId";
@@ -77,7 +81,7 @@ namespace Develappers.BillomatNet.Api.Net
             {
                 throw new IOException("response stream was null!");
             }
-           
+
             var ms = new MemoryStream();
             await responseStream.CopyToAsync(ms);
             return ms.ToArray();
@@ -258,8 +262,8 @@ namespace Develappers.BillomatNet.Api.Net
         /// A task that represents the asynchronous operation.
         /// The task result contains the request result from the stream.
         /// </returns>
-        /// <exception cref="IOException"> Throws when the response was null.</exception>
-        public async Task<string> PostAsync (Uri relativeUri, string data, CancellationToken token)
+        /// <exception cref="IOException">Thrown when the response was null.</exception>
+        public async Task<string> PostAsync(Uri relativeUri, string data, CancellationToken token)
         {
             var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
             var builder = new UriBuilder(new Uri(baseUri, relativeUri));

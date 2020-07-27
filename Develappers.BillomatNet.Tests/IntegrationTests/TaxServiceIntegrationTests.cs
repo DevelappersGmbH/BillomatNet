@@ -1,4 +1,9 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Types;
@@ -6,71 +11,61 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
-    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
-    public class TaxServiceIntegrationTests
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
+    public class TaxServiceIntegrationTests : IntegrationTestBase<TaxService>
     {
+        public TaxServiceIntegrationTests() : base(c => new TaxService(c))
+        {
+        }
+
         [Fact]
         public async Task GetListOfTaxes()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new TaxService(config);
-            var result = await service.GetListAsync(CancellationToken.None);
+            var result = await SystemUnderTest.GetListAsync(CancellationToken.None);
             Assert.True(result.List.Count > 0);
         }
 
         [Fact]
-        public async Task GetByIdTax()
+        public async Task GetTaxById()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new TaxService(config);
-            var result = await service.GetByIdAsync(21281);
+            var result = await SystemUnderTest.GetByIdAsync(21281);
             Assert.NotNull(result);
         }
 
         [Fact]
         public async Task GetTaxByIdWhenNotFound()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new TaxService(config);
-            
-            var result = await service.GetByIdAsync(21285);
+            var result = await SystemUnderTest.GetByIdAsync(21285);
             Assert.Null(result);
         }
 
         [Fact]
         public async Task GetTaxByIdWhenNotAuthorized()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new TaxService(config);
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(1));
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetByIdAsync(1));
         }
 
-        //[Fact]
-        //public async Task CreateTaxItem()
-        //{
-        //    var config = Helpers.GetTestConfiguration();
-        //    var service = new TaxService(config);
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
+        public async Task CreateTaxItem()
+        {
+            const string name = "xUnit Test";
 
-        //    var name = "xUnit Test";
+            var taxItem = new Tax
+            {
+                Name = name,
+                Rate = 1.0f,
+                IsDefault = false
+            };
 
-        //    var taxItem = new Tax
-        //    {
-        //        Name = name,
-        //        Rate = 1.0f,
-        //        IsDefault = false
-        //    };
+            var result = await SystemUnderTest.CreateAsync(taxItem);
+            Assert.Equal(name, result.Name);
+        }
 
-        //    var result = await service.CreateAsync(taxItem);
-        //    Assert.Equal(name, result.Name);
-        //}
-
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateTaxItemWhenNotAuthorized()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new TaxService(config);
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
 
             var name = "xUnit Test";
 
@@ -80,18 +75,14 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Rate = 1.0f,
                 IsDefault = false
             };
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(taxItem));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.CreateAsync(taxItem));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateTaxItemWhenNull()
         {
-            var config = IntegrationTests.Helpers.GetTestConfiguration();
-            var service = new TaxService(config);
-
-            var tax = new Tax { };
-
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(tax));
+            var tax = new Tax();
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(tax));
         }
     }
 }

@@ -4,38 +4,11 @@ using System.Linq;
 using Develappers.BillomatNet.Api;
 using Tax = Develappers.BillomatNet.Types.Tax;
 
-
-namespace Develappers.BillomatNet.Helpers
+namespace Develappers.BillomatNet.Mapping
 {
-    internal static class TaxMappingExtensions
+    internal class TaxMapper : IMapper<Api.Tax, Tax>
     {
-        internal static Tax ToDomain(this TaxWrapper value)
-        {
-            return value?.Tax.ToDomain();
-        }
-
-        internal static Types.PagedList<Tax> ToDomain(this TaxList value)
-        {
-            if (value == null)
-            {
-                return null;
-            }
-
-            return new Types.PagedList<Tax>
-            {
-                Page = value.Page,
-                ItemsPerPage = value.PerPage,
-                TotalItems = value.Total,
-                List = value.List?.Select(x => x.ToDomain()).ToList()
-            };
-        }
-
-        internal static Types.PagedList<Tax> ToDomain(this TaxListWrapper value)
-        {
-            return value?.Item.ToDomain();
-        }
-
-        private static Tax ToDomain(this Api.Tax value)
+        public Tax ApiToDomain(Api.Tax value)
         {
             if (value == null)
             {
@@ -53,7 +26,7 @@ namespace Develappers.BillomatNet.Helpers
             };
         }
 
-        internal static Api.Tax ToApi(this Tax value)
+        public Api.Tax DomainToApi(Tax value)
         {
             if (value == null)
             {
@@ -65,6 +38,32 @@ namespace Develappers.BillomatNet.Helpers
                 Name = value.Name,
                 Rate = value.Rate.ToString(CultureInfo.InvariantCulture),
                 IsDefault = value.IsDefault.ToString()
+            };
+        }
+
+        public Tax ApiToDomain(TaxWrapper value)
+        {
+            return ApiToDomain(value?.Tax);
+        }
+
+        public Types.PagedList<Tax> ApiToDomain(TaxListWrapper value)
+        {
+            return ApiToDomain(value?.Item);
+        }
+
+        private Types.PagedList<Tax> ApiToDomain(TaxList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<Tax>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(ApiToDomain).ToList()
             };
         }
     }

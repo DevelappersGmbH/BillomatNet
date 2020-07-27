@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 
 namespace Develappers.BillomatNet.Types
 {
@@ -17,7 +21,7 @@ namespace Develappers.BillomatNet.Types
 
         public int? Number { get; set; }
 
-        public string NumberPre { get; set; }
+        public string NumberPrefix { get; set; }
 
         public int NumberLength { get; set; }
 

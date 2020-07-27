@@ -1,61 +1,53 @@
-﻿using Develappers.BillomatNet.Types;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Types;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
-    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
-    public class ClientServicePropertiesIntegrationTest
+    public class ClientServicePropertiesIntegrationTest : IntegrationTestBase<ClientService>
     {
+        public ClientServicePropertiesIntegrationTest() : base(c => new ClientService(c))
+        {
+        }
+
         [Fact]
         public async Task GetClientPropertyList()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
-            var result = await service.GetPropertyListAsync();
+            var result = await SystemUnderTest.GetPropertyListAsync();
             Assert.NotNull(result);
         }
 
         [Fact]
         public async Task GetClientPropertyById()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
-            var result = await service.GetPropertyById(3075686);
+            var result = await SystemUnderTest.GetPropertyById(3075686);
             Assert.NotNull(result);
         }
 
         [Fact]
         public async Task GetClientPropertyByIdWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new ClientService(config);
-
-            var result = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetPropertyById(3075686));
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetPropertyById(3075686));
         }
 
         [Fact]
         public async Task GetClientPropertyByIdWhenNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
-            var result = await service.GetPropertyById(3000000);
+            var result = await SystemUnderTest.GetPropertyById(3000000);
             Assert.Null(result);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateClientPropertyWhenCheckBox()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
             var clientProp = new ClientProperty
             {
                 ClientId = 796659,
@@ -63,19 +55,16 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Value = "1"
             };
 
-            var result = await service.EditAsync(clientProp);
+            var result = await SystemUnderTest.EditAsync(clientProp);
             Assert.True((bool)result.Value);
 
             clientProp.Value = "0";
-            await service.EditAsync(clientProp);
+            await SystemUnderTest.EditAsync(clientProp);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditClientPropertyWhenText()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
             var clientProp = new ClientProperty
             {
                 ClientId = 796659,
@@ -83,30 +72,24 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Value = "Hello"
             };
 
-            var result = await service.EditAsync(clientProp);
+            var result = await SystemUnderTest.EditAsync(clientProp);
             Assert.Equal(clientProp.Value, (string)result.Value);
 
             clientProp.Value = "";
-            await service.EditAsync(clientProp);
+            await SystemUnderTest.EditAsync(clientProp);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditClientPropertyWhenArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
-            var clientProp = new ClientProperty { };
-
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.EditAsync(clientProp));
+            var clientProp = new ClientProperty();
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditAsync(clientProp));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditClientPropertyWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new ClientService(config);
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
 
             var clientProp = new ClientProperty
             {
@@ -115,15 +98,12 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Value = "Hello"
             };
 
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.EditAsync(clientProp));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditAsync(clientProp));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditClientPropertyWhenNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
             var clientProp = new ClientProperty
             {
                 ClientId = 796659,
@@ -131,7 +111,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Value = "Hello"
             };
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.EditAsync(clientProp));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditAsync(clientProp));
         }
     }
 }

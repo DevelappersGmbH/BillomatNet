@@ -1,4 +1,8 @@
-﻿using System;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,20 +13,16 @@ using Xunit;
 namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
-    [Trait(TraitNames.Category, CategoryNames.IntegrationTest)]
     public class ClientServiceTagsIntegrationTests : IntegrationTestBase<ClientService>
     {
         public ClientServiceTagsIntegrationTests() : base(c => new ClientService(c))
         {
         }
+
         [Fact]
         public async Task GetClientTagCloud()
         {
-            var config = Helpers.GetTestConfiguration();
-
-            var service = new ClientService(config);
-
-            var result = await service.GetTagCloudAsync(CancellationToken.None);
+            await SystemUnderTest.GetTagCloudAsync(CancellationToken.None);
 
             Assert.True(true);
         }
@@ -30,125 +30,93 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetTagListAsync()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
             var query = new Query<ClientTag, ClientTagFilter>()
                 .AddFilter(x => x.ClientId, 796659);
 
-            var result = await service.GetTagListAsync(query);
+            var result = await SystemUnderTest.GetTagListAsync(query);
             Assert.NotNull(result);
         }
 
         [Fact]
         public async Task GetTagListAsyncWhenArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.GetTagListAsync(null));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.GetTagListAsync(null));
         }
 
         [Fact]
         public async Task GetTagListAsyncWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new ClientService(config);
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
 
             var query = new Query<ClientTag, ClientTagFilter>()
                 .AddFilter(x => x.ClientId, 796659);
 
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetTagListAsync(query));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetTagListAsync(query));
         }
 
         [Fact]
         public async Task GetTagListAsyncWhenNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
             var query = new Query<ClientTag, ClientTagFilter>()
                 .AddFilter(x => x.ClientId, 1);
 
-            var result = await service.GetTagListAsync(query);
+            var result = await SystemUnderTest.GetTagListAsync(query);
             Assert.Null(result.List);
         }
 
         [Fact]
         public async Task GetTagById()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
-            var result = await service.GetTagById(188156);
+            var result = await SystemUnderTest.GetTagById(188156);
             Assert.NotNull(result);
         }
 
         [Fact]
         public async Task GetTagByIdWhenArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.GetTagById(0));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.GetTagById(0));
         }
 
         [Fact]
         public async Task GetTagByIdWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
-
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new ClientService(config);
-
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetTagById(188156));
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetTagById(188156));
         }
 
         [Fact]
         public async Task GetTagByIdWhenNotFound()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
-            var result = await service.GetTagById(100000);
+            var result = await SystemUnderTest.GetTagById(100000);
             Assert.Null(result);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateTagAsync()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
-
             var tag = new ClientTag
             {
                 ClientId = 796659,
                 Name = "Testag"
             };
 
-            var result = await service.CreateAsync(tag);
+            var result = await SystemUnderTest.CreateAsync(tag);
             Assert.NotNull(result);
-            //await service.DeleteTagAsync(result.Id);
+            //await SystemUnderTest.DeleteTagAsync(result.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateTagAsyncWhenArgumentException()
         {
-            var config = Helpers.GetTestConfiguration();
-            var service = new ClientService(config);
+            var tag = new ClientTag();
 
-            var tag = new ClientTag { };
-
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => service.CreateAsync(tag));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(tag));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateTagAsyncWhenNotAuthorized()
         {
-            var config = Helpers.GetTestConfiguration();
-            config.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new ClientService(config);
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
 
             var tag = new ClientTag
             {
@@ -156,10 +124,10 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Name = "Testag"
             };
 
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => service.CreateAsync(tag));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.CreateAsync(tag));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteClientTag()
         {
             var tag = new ClientTag
@@ -175,20 +143,20 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.Null(await SystemUnderTest.GetTagById(result.Id));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteClientTagWhenArgumentException()
         {
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.DeleteTagAsync(0));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteClientTagWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.DeleteTagAsync(1));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteClientTagWhenNotFound()
         {
             await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.DeleteTagAsync(100000));

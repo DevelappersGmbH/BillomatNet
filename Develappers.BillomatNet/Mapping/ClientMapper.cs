@@ -1,29 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
 using System.Linq;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Types;
-using Account = Develappers.BillomatNet.Types.Account;
-using Quota = Develappers.BillomatNet.Types.Quota;
+using Client = Develappers.BillomatNet.Types.Client;
 
-namespace Develappers.BillomatNet.Helpers
+namespace Develappers.BillomatNet.Mapping
 {
-    internal static class AccountMappingExtensions
+    internal class ClientMapper : IMapper<Api.Client, Types.Client>
     {
-
-        internal static Account ToDomain(this AccountWrapper value)
-        {
-            return value?.Client.ToDomain();
-        }
-
-        private static Account ToDomain(this Develappers.BillomatNet.Api.Account value)
+        public Client ApiToDomain(Api.Client value)
         {
             if (value == null)
             {
                 return null;
             }
 
-            return new Account
+            NetGrossSettingsType netGrossSettingsType;
+
+            switch (value.NetGross.ToLowerInvariant())
+            {
+                case "net":
+                    netGrossSettingsType = NetGrossSettingsType.Net;
+                    break;
+                case "gross":
+                    netGrossSettingsType = NetGrossSettingsType.Gross;
+                    break;
+                case "settings":
+                    netGrossSettingsType = NetGrossSettingsType.Settings;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            return new Client
             {
                 Id = int.Parse(value.Id),
                 Number = value.Number,
@@ -59,49 +72,39 @@ namespace Develappers.BillomatNet.Helpers
                 VatNumber = value.VatNumber,
                 Web = value.Www,
                 ZipCode = value.Zip,
-                Plan = value.Plan,
-                Quotas = value.Quotas.ToDomain()
+                NetGross = netGrossSettingsType
             };
         }
 
-        private static Quota ToDomain(this Api.Quota value)
+        public Api.Client DomainToApi(Client value)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Client ApiToDomain(ClientWrapper value)
+        {
+            return ApiToDomain(value?.Client);
+        }
+
+        public Types.PagedList<Client> ApiToDomain(ClientList value)
         {
             if (value == null)
             {
                 return null;
             }
 
-            QuotaType type;
-            switch (value.Entity.ToLowerInvariant())
+            return new Types.PagedList<Client>
             {
-                case "documents":
-                    type = QuotaType.Documents;
-                    break;
-                case "clients":
-                    type = QuotaType.Clients;
-                    break;
-                case "articles":
-                    type = QuotaType.Articles;
-                    break;
-                case "storage":
-                    type = QuotaType.Storage;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-
-            }
-
-            return new Quota
-            {
-                Available = int.Parse(value.Available),
-                Used = int.Parse(value.Used),
-                Entity = type
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(ApiToDomain).ToList()
             };
         }
 
-        private static List<Quota> ToDomain(this QuotaWrapper value)
+        public Types.PagedList<Client> ApiToDomain(ClientListWrapper value)
         {
-            return value?.Quota?.Select(ToDomain).ToList();
+            return ApiToDomain(value?.Item);
         }
     }
 }

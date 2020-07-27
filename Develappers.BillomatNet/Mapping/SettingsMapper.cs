@@ -1,19 +1,18 @@
-﻿using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Types;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 using System;
 using System.Linq;
+using Develappers.BillomatNet.Api;
+using Develappers.BillomatNet.Types;
 using Settings = Develappers.BillomatNet.Types.Settings;
 
-namespace Develappers.BillomatNet.Helpers
+namespace Develappers.BillomatNet.Mapping
 {
-    internal static class SettingsMappingExtensions
+    internal class SettingsMapper : IMapper<Api.Settings, Settings>
     {
-        internal static Settings ToDomain(this SettingsWrapper value)
-        {
-            return value?.Settings.ToDomain();
-        }
-
-        private static Settings ToDomain(this Api.Settings value)
+        public Settings ApiToDomain(Api.Settings value)
         {
             if (value == null)
             {
@@ -116,13 +115,18 @@ namespace Develappers.BillomatNet.Helpers
                 TemplateEngine = value.TemplateEngine,
                 PrintVersion = value.PrintVersion.ToOptionalInt(),
                 DefaultEmailSender = value.DefaultEmailSender,
-                BccAddresses = value.BccAddresses.Select(x => x.ToDomain()).ToList()
+                BccAddresses = value.BccAddresses.Select(x => x.BccAddress).ToList()
             };
         }
 
-        internal static Types.BccAddressType ToDomain(this Api.BccAddressType value)
+        public Api.Settings DomainToApi(Settings value)
         {
-            return new Types.BccAddressType { BccAddress = value.BccAddress };
+            throw new System.NotImplementedException();
+        }
+
+        public Settings ApiToDomain(SettingsWrapper value)
+        {
+            return ApiToDomain(value?.Settings);
         }
     }
 }
