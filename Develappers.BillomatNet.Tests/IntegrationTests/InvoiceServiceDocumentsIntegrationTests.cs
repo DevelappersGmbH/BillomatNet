@@ -33,7 +33,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 {
                     //E-Mail should be changed to test
                     To = "info@billomat.com",
-                    Cc = "example@mail.com",
+                    Cc = "example@mail.com"
                 },
                 Subject = "TestMail",
                 Body = "Sehr geehrte Damen und Herren, das ist ein Test",

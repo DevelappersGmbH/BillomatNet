@@ -368,6 +368,14 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         public Task SendMailAsync(int id, InvoiceMail model, CancellationToken token = default)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            if (model.Recipients == null)
+            {
+                throw new ArgumentException("email or a value of the email is null", nameof(model));
+            }
             if (id <= 0)
             {
                 throw new ArgumentException("invalid invoice id", nameof(id));
