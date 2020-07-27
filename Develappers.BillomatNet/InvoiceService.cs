@@ -353,6 +353,7 @@ namespace Develappers.BillomatNet
         /// Sends the Invoice as E-Mail to the client.
         /// </summary>
         /// <param name="id">The ID of the invoice.</param>
+        /// <param name="model">The mail.</param>
         /// <param name="token">The token</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
