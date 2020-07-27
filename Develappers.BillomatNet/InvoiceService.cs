@@ -359,13 +359,13 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public Task SendMailAsync(int id, CancellationToken token = default)
+        public Task<InvoiceMail> SendMailAsync(int id, InvoiceMail model, CancellationToken token = default)
         {
             if (id <= 0)
             {
                 throw new ArgumentException("invalid invoice id", nameof(id));
             }
-            return PostAsync<object>($"/api/invoice/{id}/email", null, token);
+            return PostAsync($"/api/invoice/{id}/email", model, token);
         }
     }
 }
