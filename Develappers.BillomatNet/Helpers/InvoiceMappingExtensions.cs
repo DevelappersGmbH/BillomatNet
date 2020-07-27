@@ -1,9 +1,9 @@
-﻿using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Types;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Develappers.BillomatNet.Api;
+using Develappers.BillomatNet.Types;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
