@@ -13,6 +13,7 @@ using Develappers.BillomatNet.Queries;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
+using InvoiceMail = Develappers.BillomatNet.Types.InvoiceMail;
 
 namespace Develappers.BillomatNet
 {
@@ -351,6 +352,39 @@ namespace Develappers.BillomatNet
         {
             var jsonModel = await GetItemByIdAsync<InvoiceDocumentWrapper>($"/api/invoices/{id}/pdf", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Sends the Invoice as E-Mail to the client.
+        /// </summary>
+        /// <param name="id">The ID of the invoice.</param>
+        /// <param name="model">The mail.</param>
+        /// <param name="token">The token</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task SendMailAsync(int id, InvoiceMail model, CancellationToken token = default)
+        {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            if (model.Recipients == null)
+            {
+                throw new ArgumentException("email or a value of the email is null", nameof(model));
+            }
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid invoice id", nameof(id));
+            }
+            var wrappedModel = new InvoiceMailWrapper
+            {
+                InvoiceMail = model.ToApi()
+            };
+            return PostAsync($"/api/invoices/{id}/email", wrappedModel, token);
         }
     }
 }
