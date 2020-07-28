@@ -14,6 +14,7 @@ using Invoice = Develappers.BillomatNet.Types.Invoice;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 using InvoiceMail = Develappers.BillomatNet.Types.InvoiceMail;
+using InvoiceComment = Develappers.BillomatNet.Types.InvoiceComment;
 
 namespace Develappers.BillomatNet
 {
@@ -387,6 +388,10 @@ namespace Develappers.BillomatNet
             return PostAsync($"/api/invoices/{id}/email", wrappedModel, token);
         }
 
-        public Task  GetCommentListAsync(Query<InvoiceC>)
+        public async Task<Types.PagedList<InvoiceComment>> GetCommentListAsync(Query<InvoiceComment, InvoiceCommentFilter> query, CancellationToken token = default)
+        {
+            var jsonModel = await GetListAsync<InvoiceCommentListWrapper>("/api/invoice-comments", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
     }
 }

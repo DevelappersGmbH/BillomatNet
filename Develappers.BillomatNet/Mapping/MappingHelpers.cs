@@ -5,6 +5,7 @@
 using System;
 using System.Globalization;
 using Develappers.BillomatNet.Types;
+using Microsoft.Win32.SafeHandles;
 
 namespace Develappers.BillomatNet.Mapping
 {
@@ -167,6 +168,69 @@ namespace Develappers.BillomatNet.Mapping
                     return "CHECKBOX";
                 default:
                     return "TEXTFIELD";
+            }
+        }
+
+        internal static CommentType ToCommentType(this string value)
+        {
+            switch (value)
+            {
+                case "Comment":
+                    return CommentType.Comment;
+                case "Create":
+                    return CommentType.Create;
+                case "Copy":
+                    return CommentType.Copy;
+                case "CreateFromOffer":
+                    return CommentType.CreateFromOffer;
+                case "CreateFromInvoice":
+                    return CommentType.CreateFromInvoice;
+                case "CreateFromRecurring":
+                    return CommentType.CreateFromRecurring;
+                case "Status":
+                    return CommentType.Status;
+                case "Payment":
+                    return CommentType.Payment;
+                case "PaymentError":
+                    return CommentType.PaymentError;
+                case "DeletePayment":
+                    return CommentType.DeletePayment;
+                case "Mail":
+                    return CommentType.Mail;
+                case "Letter":
+                    return CommentType.Letter;
+                case "Fax":
+                    return CommentType.Fax;
+                case "Sign":
+                    return CommentType.Sign;
+                case "SignMail":
+                    return CommentType.SignMail;
+                case "Cancel":
+                    return CommentType.Cancel;
+                case "ErrorMail":
+                    return CommentType.ErrorMail;
+                case "CreateCreditNote":
+                    return CommentType.CreateCreditNote;
+                case "ReminderCreate":
+                    return CommentType.ReminderCreate;
+                case "ReminderStatus":
+                    return CommentType.ReminderStatus;
+                case "ReminderMail":
+                    return CommentType.ReminderMail;
+                case "ReminderErrorMail":
+                    return CommentType.ReminderErrorMail;
+                case "RemidnerLetter":
+                    return CommentType.RemidnerLetter;
+                case "ReminderFax":
+                    return CommentType.ReminderFax;
+                case "ReminderSign":
+                    return CommentType.ReminderSign;
+                case "ReminderSignMail":
+                    return CommentType.ReminderSignMail;
+                case "ReminderCancel":
+                    return CommentType.ReminderCancel;
+                default:
+                    return CommentType.ReminderDelete;
             }
         }
     }
