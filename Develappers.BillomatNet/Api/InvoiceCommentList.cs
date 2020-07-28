@@ -6,7 +6,7 @@ namespace Develappers.BillomatNet.Api
 {
     internal class InvoiceCommentList : PagedList<InvoiceComment>
     {
-        [JsonProperty("comment")]
+        [JsonProperty("invoice-comment")]
         [JsonConverter(typeof(CollectionConverter<InvoiceComment>))]
         public override List<InvoiceComment> List { get; set; }
     }

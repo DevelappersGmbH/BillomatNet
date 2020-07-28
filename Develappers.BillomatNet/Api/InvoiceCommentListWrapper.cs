@@ -11,7 +11,7 @@ namespace Develappers.BillomatNet.Api
 {
     internal class InvoiceCommentListWrapper : PagedListWrapper<InvoiceCommentList>
     {
-        [JsonProperty("coments")]
+        [JsonProperty("invoice-comments")]
         public override InvoiceCommentList Item { get; set; }
     }
 }

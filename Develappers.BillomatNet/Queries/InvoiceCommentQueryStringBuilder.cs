@@ -19,7 +19,7 @@ namespace Develappers.BillomatNet.Queries
             {
                 filters.Add($"invoice_id={filter.InvoiceId.Value}");
             }
-            if (filter.ActionKey.Count > 0)
+            if (filter.ActionKey != null)
             {
                 var filterValue = string.Join(", ", filter.ActionKey).ToUpper();
                 filters.Add($"user_id={filterValue}");

@@ -15,8 +15,6 @@ namespace Develappers.BillomatNet.Mapping
 {
     internal class InvoiceCommentMapper : IMapper<Api.InvoiceComment, InvoiceComment>
     {
-        private readonly InvoiceCommentMapper _commentMapper = new InvoiceCommentMapper();
-
         public Types.PagedList<InvoiceComment> ApiToDomain(InvoiceCommentListWrapper value)
         {
             return ApiToDomain(value?.Item);
@@ -48,7 +46,7 @@ namespace Develappers.BillomatNet.Mapping
             return new InvoiceComment
             {
                 Id = int.Parse(value.Id, CultureInfo.InvariantCulture),
-                Created = value.List.Created,
+                Created = value.Created,
                 Comment = value.Comment,
                 ActionKey = value.ActionKey.ToCommentType(),
                 Public = value.Public != "0",
@@ -58,6 +56,12 @@ namespace Develappers.BillomatNet.Mapping
                 ClientId = int.Parse(value.ClientId, CultureInfo.InvariantCulture),
                 InvoiceId = int.Parse(value.InvoiceId, CultureInfo.InvariantCulture)
             };
+        }
+
+        public Api.InvoiceComment DomainToApi(InvoiceComment value)
+        {
+            //TODO: implement DomainToApi
+            return new Api.InvoiceComment();
         }
     }
 }
