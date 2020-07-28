@@ -172,7 +172,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
 
         [Fact]
-        public async Task EditArticleWithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        public async Task EditArticle_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
         {
             var http = A.Fake<IHttpClient>();
             var sut = GetSystemUnderTest(http);
@@ -202,6 +202,47 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             // act and assert
             await Assert.ThrowsAsync<ArgumentNullException>(() => sut.EditAsync(null));
             await Assert.ThrowsAsync<ArgumentException>(() => sut.EditAsync(new Article { Id = 0 }));
+        }
+
+        [Fact]
+        public async Task DeleteArticle_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/articles/1";
+            const int id = 1;
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.DeleteAsync(id));
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task DeleteArticle_WithInvalidInputValue_ShouldThrowArgumentException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.DeleteAsync(0));
+        }
+
+        [Fact]
+        public async Task DeleteArticleItemWhenNotFound()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/articles/1";
+            const int id = 1;
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotFoundException);
+
+            await Assert.ThrowsAsync<NotFoundException>(() => sut.DeleteAsync(id));
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
         }
     }
 }
