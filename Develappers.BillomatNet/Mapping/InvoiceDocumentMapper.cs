@@ -79,7 +79,7 @@ namespace Develappers.BillomatNet.Mapping
             {
                 Filename = value.Filename,
                 Mimetype = value.Mimetype,
-                Base64File = value.Base64File
+                Base64File = Convert.ToBase64String(value.Base64File)
             };
         }
     }
