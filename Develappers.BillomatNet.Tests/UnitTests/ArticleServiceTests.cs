@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
@@ -12,6 +13,7 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class ArticleServiceTests : UnitTestBase<ArticleService>
     {
         [Fact]
@@ -88,7 +90,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task CreateArticle_WithValidInputValue_ShouldReturnCorrectValues()
+        public async Task CreateArticle_WithValidInputValue_ShouldCreateArticleAndReturnCorrectValues()
         {
             // arrange
             var http = A.Fake<IHttpClient>();

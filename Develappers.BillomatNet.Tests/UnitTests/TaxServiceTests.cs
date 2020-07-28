@@ -17,7 +17,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
     public class TaxServiceTests : UnitTestBase<TaxService>
     {
         [Fact(Skip = "skipped due to bug #250")]
-        public async Task CreateTax_WithValidData_ShouldCreateTaxItemAndReturnCorrectValues()
+        public async Task CreateTax_WithValidData_ShouldCreateTaxAndReturnCorrectValues()
         {
             // arrange
             const string name = "xUnit Test";
