@@ -265,6 +265,7 @@ namespace Develappers.BillomatNet
             {
                 throw new ArgumentException("invalid client tag id", nameof(id));
             }
+
             var jsonModel = await GetItemByIdAsync<ClientTagWrapper>($"/api/client-tags/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
