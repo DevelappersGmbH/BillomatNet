@@ -22,6 +22,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetClientTagCloud()
         {
+            // rewritten as unit test
             await SystemUnderTest.GetTagCloudAsync(CancellationToken.None);
 
             Assert.True(true);
@@ -67,19 +68,22 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetTagById()
         {
-            var result = await SystemUnderTest.GetTagById(188156);
+            // rewritten as unit test
+            var result = await SystemUnderTest.GetTagById(188521);
             Assert.NotNull(result);
         }
 
         [Fact]
         public async Task GetTagByIdWhenArgumentException()
         {
+            // rewritten as unit test
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.GetTagById(0));
         }
 
         [Fact]
         public async Task GetTagByIdWhenNotAuthorized()
         {
+            // rewritten as unit test
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetTagById(188156));
         }
@@ -87,11 +91,12 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetTagByIdWhenNotFound()
         {
+            // rewritten as unit test
             var result = await SystemUnderTest.GetTagById(100000);
             Assert.Null(result);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateTagAsync()
         {
             var tag = new ClientTag
@@ -105,7 +110,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             //await SystemUnderTest.DeleteTagAsync(result.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateTagAsyncWhenArgumentException()
         {
             var tag = new ClientTag();
@@ -113,7 +118,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(tag));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateTagAsyncWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
@@ -127,7 +132,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.CreateAsync(tag));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteClientTag()
         {
             var tag = new ClientTag
@@ -143,20 +148,20 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.Null(await SystemUnderTest.GetTagById(result.Id));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteClientTagWhenArgumentException()
         {
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.DeleteTagAsync(0));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteClientTagWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.DeleteTagAsync(1));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteClientTagWhenNotFound()
         {
             await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.DeleteTagAsync(100000));

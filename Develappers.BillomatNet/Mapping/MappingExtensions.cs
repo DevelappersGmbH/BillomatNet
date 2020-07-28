@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using Develappers.BillomatNet.Api;
+using Develappers.BillomatNet.Types;
 using Account = Develappers.BillomatNet.Types.Account;
 using Article = Develappers.BillomatNet.Types.Article;
 using ArticleProperty = Develappers.BillomatNet.Types.ArticleProperty;
@@ -127,6 +128,16 @@ namespace Develappers.BillomatNet.Mapping
         internal static InvoiceDocument ToDomain(this InvoiceDocumentWrapper value)
         {
             return s_invoiceDocumentMapper.ApiToDomain(value);
+        }
+
+        internal static Api.InvoiceMail ToApi(this Types.InvoiceMail value)
+        {
+            return s_invoiceDocumentMapper.DomainToApi(value);
+        }
+
+        internal static Api.Attachment ToApi(this Types.Attachment value)
+        {
+            return s_invoiceDocumentMapper.DomainToApi(value);
         }
 
         internal static Types.PagedList<Contact> ToDomain(this ContactListWrapper value)

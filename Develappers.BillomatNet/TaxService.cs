@@ -65,6 +65,11 @@ namespace Develappers.BillomatNet
         /// </returns>
         public async Task<Tax> GetByIdAsync(int id, CancellationToken token = default)
         {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid tax id", nameof(id));
+            }
+
             var jsonModel = await GetItemByIdAsync<TaxWrapper>($"/api/taxes/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }

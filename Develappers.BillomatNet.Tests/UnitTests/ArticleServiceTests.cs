@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
@@ -12,10 +13,11 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class ArticleServiceTests : UnitTestBase<ArticleService>
     {
         [Fact]
-        public async Task DeleteArticle()
+        public async Task DeleteArticle_WithCorrectParameters_ShouldSucceed()
         {
             const int id = 8;
             const string expectedUri = "/api/articles/8";
@@ -34,7 +36,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task GetArticleById()
+        public async Task GetArticleById_WithValidData_ShouldReturnCorrectValues()
         {
             const int id = 8;
 
@@ -73,6 +75,176 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             //Assert.Equal("", result.CostCenter);
             Assert.Equal(1.2f, result.PurchasePrice);
             Assert.Equal(NetGrossType.Gross, result.PurchasePriceNetGross);
+        }
+
+        [Fact]
+        public async Task CreateArticle_WithInvalidInputValue_ShouldThrowArgumentException()
+        {
+            // arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            // act and assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => sut.CreateAsync(null));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreateAsync(new Article { Id = 999 }));
+        }
+
+        [Fact]
+        public async Task CreateArticle_WithValidInputValue_ShouldCreateArticleAndReturnCorrectValues()
+        {
+            // arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/articles";
+            const string expectedHttpRequest = "{\"article\":{\"id\":\"0\",\"created\":\"0001-01-01\",\"updated\":null,\"article_number\":null,\"number\":\"\",\"number_pre\":null,\"number_length\":\"0\",\"title\":\"xUnit test\",\"description\":null,\"sales_price\":\"3.5\",\"sales_price2\":null,\"sales_price3\":null,\"sales_price4\":null,\"sales_price5\":null,\"currency_code\":null,\"unit_id\":\"20573\",\"tax_id\":\"21281\",\"purchase_price\":\"3.4\",\"purchase_price_net_gross\":\"NET\",\"supplier_id\":\"\"}}";
+            const string httpResult = "{\"article\":{\"id\":\"842769\",\"created\":\"2020-07-28T18:32:05+02:00\",\"updated\":\"2020-07-28T18:32:05+02:00\",\"archived\":\"0\",\"unit_id\":\"20573\",\"article_number\":\"5\",\"number\":\"5\",\"number_pre\":\"\",\"number_length\":\"0\",\"type\":\"SERVICE\",\"title\":\"xUnit test\",\"description\":\"\",\"sales_price\":\"3.5\",\"sales_price2\":\"\",\"sales_price3\":\"\",\"sales_price4\":\"\",\"sales_price5\":\"\",\"currency_code\":\"EUR\",\"tax_id\":\"21281\",\"revenue_account_number\":\"\",\"cost_center\":\"\",\"purchase_price\":\"3.4\",\"purchase_price_net_gross\":\"NET\",\"supplier_id\":\"\",\"customfield\":\"\",\"article-property-values\":{\"article-property-value\":[{\"id\":\"1423686\",\"created\":\"2020-07-28T18:32:05+02:00\",\"updated\":\"2020-07-28T18:32:05+02:00\",\"article_id\":\"842769\",\"article_property_id\":\"2442\",\"type\":\"TEXTFIELD\",\"name\":\"Farbe\",\"value\":\"farblos\",\"customfield\":\"\"},{\"id\":\"1423687\",\"created\":\"2020-07-28T18:32:05+02:00\",\"updated\":\"2020-07-28T18:32:05+02:00\",\"article_id\":\"842769\",\"article_property_id\":\"2490\",\"type\":\"CHECKBOX\",\"name\":\"ist defekt?\",\"value\":\"1\",\"customfield\":\"\"},{\"id\":\"1423688\",\"created\":\"2020-07-28T18:32:05+02:00\",\"updated\":\"2020-07-28T18:32:05+02:00\",\"article_id\":\"842769\",\"article_property_id\":\"4499\",\"type\":\"CHECKBOX\",\"name\":\"Sch\\u00f6n\",\"value\":\"0\",\"customfield\":\"\"}]}}}";
+
+            A.CallTo(() => http.PostAsync(new Uri(expectedUri, UriKind.Relative), expectedHttpRequest, A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(httpResult));
+
+            var inputArticle = new Article
+            {
+                Title = "xUnit test",
+                SalesPrice = 3.5f,
+                UnitId = 20573,
+                TaxId = 21281,
+                PurchasePrice = 3.4f
+            };
+
+            // act
+            var result = await sut.CreateAsync(inputArticle);
+
+            // assert
+            A.CallTo(() => http.PostAsync(new Uri(expectedUri, UriKind.Relative), expectedHttpRequest, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+
+            // check input parameters - the rest of the properties is checked by GetById
+            Assert.True(result.Id > 0);
+            Assert.Equal(inputArticle.Title, result.Title);
+            Assert.Equal(inputArticle.SalesPrice, result.SalesPrice);
+            Assert.Equal(inputArticle.UnitId, result.UnitId);
+            Assert.Equal(inputArticle.TaxId, result.TaxId);
+            Assert.Equal(inputArticle.PurchasePrice, result.PurchasePrice);
+        }
+
+        [Fact]
+        public async Task CreateArticle_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/articles";
+            A.CallTo(() => http.PostAsync(new Uri(expectedUri, UriKind.Relative), A<string>.Ignored, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            var articleItem = new Article
+            {
+                Title = "xUnit test",
+                SalesPrice = 3.5f,
+                UnitId = 20573,
+                TaxId = 21281,
+                PurchasePrice = 3.0f
+            };
+
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.CreateAsync(articleItem));
+            A.CallTo(() => http.PostAsync(new Uri(expectedUri, UriKind.Relative), A<string>.Ignored, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task EditArticle_WithInvalidArticleId_ShouldThrowNotFoundException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/articles/1";
+            A.CallTo(() => http.PutAsync(new Uri(expectedUri, UriKind.Relative), A<string>.Ignored, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotFoundException);
+
+            var editedArticleItem = new Article
+            {
+                Id = 1,
+            };
+
+            await Assert.ThrowsAsync<NotFoundException>(() => sut.EditAsync(editedArticleItem));
+            A.CallTo(() => http.PutAsync(new Uri(expectedUri, UriKind.Relative), A<string>.Ignored, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+
+        [Fact]
+        public async Task EditArticle_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/articles/1";
+            A.CallTo(() => http.PutAsync(new Uri(expectedUri, UriKind.Relative), A<string>.Ignored, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            var editedArticleItem = new Article
+            {
+                Id = 1,
+            };
+
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.EditAsync(editedArticleItem));
+            A.CallTo(() => http.PutAsync(new Uri(expectedUri, UriKind.Relative), A<string>.Ignored, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+
+        [Fact]
+        public async Task EditArticle_WithInvalidInputValue_ShouldThrowArgumentException()
+        {
+            // arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            // act and assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => sut.EditAsync(null));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.EditAsync(new Article { Id = 0 }));
+        }
+
+        [Fact]
+        public async Task DeleteArticle_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/articles/1";
+            const int id = 1;
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.DeleteAsync(id));
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task DeleteArticle_WithInvalidInputValue_ShouldThrowArgumentException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.DeleteAsync(0));
+        }
+
+        [Fact]
+        public async Task DeleteArticleItemWhenNotFound()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/articles/1";
+            const int id = 1;
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotFoundException);
+
+            await Assert.ThrowsAsync<NotFoundException>(() => sut.DeleteAsync(id));
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
         }
     }
 }

@@ -58,7 +58,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.True(true);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteArticleTag()
         {
             var articleItem = new Article
@@ -86,26 +86,26 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await SystemUnderTest.DeleteAsync(articleResult.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteArticleTagWhenArgumentException()
         {
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.DeleteTagAsync(0));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteArticleTagWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.DeleteTagAsync(1));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteArticleTagWhenNotFound()
         {
             await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.DeleteTagAsync(9699));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateArticleTag()
         {
             var name = "Xunit test";
@@ -122,7 +122,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await SystemUnderTest.DeleteTagAsync(result.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateArticleTagWhenArgumentException()
         {
             var tag = new ArticleTag();
@@ -130,7 +130,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateTagAsync(tag));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateArticleTagWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";

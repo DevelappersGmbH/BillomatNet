@@ -35,7 +35,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.True(result.List.Count > 0);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateInvoiceItem()
         {
             var cl = await SystemUnderTest.GetByIdAsync(1506365);
@@ -84,7 +84,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await SystemUnderTest.DeleteAsync(invoiceResult.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task GetMultipleInvoiceItems()
         {
             var list = await SystemUnderTest.GetListAsync(CancellationToken.None);
@@ -96,14 +96,14 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.True(true);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateInvoiceItemWhenArgumentException()
         {
             var item = new InvoiceItem();
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(item));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateInvoiceItemWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
@@ -115,7 +115,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.CreateAsync(item));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateInvoiceItemWhenNotFound()
         {
             var item = new InvoiceItem
@@ -126,7 +126,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(item));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditInvoiceItem()
         {
             #region Initializing to create
@@ -195,7 +195,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await SystemUnderTest.DeleteAsync(invoiceResult.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditInvoiceItemArgumentException()
         {
             var item = new InvoiceItem { };
@@ -203,7 +203,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             var ex = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditAsync(item));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditInvoiceItemWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
@@ -217,7 +217,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditAsync(item));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditInvoiceItemWhenNotFound()
         {
             var item = new InvoiceItem
@@ -229,7 +229,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             var ex = await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.EditAsync(item));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteInvoiceItem()
         {
 
@@ -293,20 +293,20 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             await SystemUnderTest.DeleteAsync(invResult.Id);
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteInvoiceItemArgumentException()
         {
             await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.DeleteInvoiceItemAsync(0));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteInvoiceItemNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.DeleteInvoiceItemAsync(1));
         }
 
-        [Fact]
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteInvoiceItemNotFound()
         {
             await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.DeleteInvoiceItemAsync(1));
