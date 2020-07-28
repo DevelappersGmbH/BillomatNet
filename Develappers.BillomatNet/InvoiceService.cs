@@ -386,5 +386,7 @@ namespace Develappers.BillomatNet
             };
             return PostAsync($"/api/invoices/{id}/email", wrappedModel, token);
         }
+
+        public Task  GetCommentListAsync(Query<InvoiceC>)
     }
 }
