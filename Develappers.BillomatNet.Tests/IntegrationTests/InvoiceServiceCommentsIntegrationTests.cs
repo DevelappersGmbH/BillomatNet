@@ -29,5 +29,12 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetCommentListAsync(new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1322225)));
         }
+
+        [Fact]
+        public async Task GetCommentById()
+        {
+            var result = await SystemUnderTest.GetCommentByIdAsync(4662801);
+            Assert.NotNull(result);
+        }
     }
 }

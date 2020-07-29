@@ -422,7 +422,7 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<InvoiceComment> GetCommentById(int id, CancellationToken token = default)
+        public async Task<InvoiceComment> GetCommentByIdAsync(int id, CancellationToken token = default)
         {
             if (id <= 0)
             {

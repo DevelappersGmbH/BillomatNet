@@ -67,9 +67,10 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             };
 
             var query = new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1322225);
+            var strQuery = "invoice_id=1322225&per_page=100&page=1";
 
             var http = A.Fake<IHttpClient>();
-            A.CallTo(() => http.GetAsync(expectedRequestUri, QueryString.For(query), A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
                 .Returns(Task.FromResult(responseBody));
 
             var sut = GetSystemUnderTest(http);
@@ -78,7 +79,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             var result = await sut.GetCommentListAsync(query);
 
             //assert
-            A.CallTo(() => http.GetAsync(expectedRequestUri, QueryString.For(query), A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
             Assert.Equal(3, result.TotalItems);
@@ -125,9 +126,10 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             const string responseBody = "{\"invoice-comments\":{\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"0\"}}";
 
             var query = new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1322226);
+            var strQuery = "invoice_id=1322226&per_page=100&page=1";
 
             var http = A.Fake<IHttpClient>();
-            A.CallTo(() => http.GetAsync(expectedRequestUri, QueryString.For(query), A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
                 .Returns(Task.FromResult(responseBody));
 
             var sut = GetSystemUnderTest(http);
@@ -136,10 +138,105 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             var result = await sut.GetCommentListAsync(query);
 
             //assert
-            A.CallTo(() => http.GetAsync(expectedRequestUri, QueryString.For(query), A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
             Assert.Equal(0, result.TotalItems);
+        }
+
+        [Fact]
+        public async Task GetById_ShouldReturnCorrectValues()
+        {
+            //arrange
+            var expectedRequestUri = new Uri("/api/invoice-comments/4662801", UriKind.Relative);
+            const string responseBody = "{\"invoice-comment\":{\"id\":\"4662801\",\"created\":\"2015-06-04T10:04:54+02:00\",\"comment\":\"Rechnung erstellt.\",\"actionkey\":\"CREATE\",\"public\":\"0\",\"by_client\":\"0\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"\",\"invoice_id\":\"1322225\",\"customfield\":\"\"}}";
+            var expectedResult = new InvoiceComment
+            {
+                Id = 4662801,
+                Created = DateTime.Parse("2015-06-04T10:04:54+02:00", CultureInfo.InvariantCulture),
+                Comment = "Rechnung erstellt.",
+                ActionKey = CommentType.Create,
+                Public = false,
+                ByClient = false,
+                UserId = 52821,
+                EmailId = null,
+                ClientId = null,
+                InvoiceId = 1322225
+            };
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(responseBody));
+
+            var sut = GetSystemUnderTest(http);
+
+            //act
+            var result = await sut.GetCommentByIdAsync(4662801);
+
+            //assert
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+
+            Assert.Equal(4662801, result.Id);
+            Assert.Equal(new DateTime(2015, 6, 4, 10, 4, 54, DateTimeKind.Utc), result.Created);
+            Assert.Equal("Rechnung erstellt.", result.Comment);
+            Assert.Equal(CommentType.Create, result.ActionKey);
+            Assert.False(result.Public);
+            Assert.False(result.ByClient);
+            Assert.Equal(52821, result.UserId);
+            Assert.Null(result.EmailId);
+            Assert.Null(result.ClientId);
+            Assert.Equal(1322225, result.InvoiceId);
+        }
+
+        [Fact]
+        public async Task GetById_WithInvalidInputData_ShouldReturnArgumentException()
+        {
+            //arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            //act and assert
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.GetCommentByIdAsync(0));
+        }
+
+        [Fact]
+        public async Task GetById_NotAuthorized()
+        {
+            //arrange
+            var expectedRequestUri = new Uri("/api/invoice-comments/4662801", UriKind.Relative);
+            var http = A.Fake<IHttpClient>();
+
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            var sut = GetSystemUnderTest(http);
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.GetCommentByIdAsync(4662801));
+
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task GetById_NotFound()
+        {
+            //arrange
+            var expectedRequestUri = new Uri("/api/invoice-comments/1", UriKind.Relative);
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotFoundException());
+
+            var sut = GetSystemUnderTest(http);
+
+            //act
+            var result = await sut.GetCommentByIdAsync(1);
+
+            //assert
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+
+            Assert.Null(result);
         }
     }
 }
