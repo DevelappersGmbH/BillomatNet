@@ -431,5 +431,35 @@ namespace Develappers.BillomatNet
             var jsonModel = await GetItemByIdAsync<InvoiceCommentWrapper>($"/api/invoice-comments/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
+
+        /// <summary>
+        /// Creates an invoice comment.
+        /// </summary>
+        /// <param name="model">The invoice comment.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the newly created invoice comment with the ID.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<InvoiceComment> CreateAsync(InvoiceComment model, CancellationToken token = default)
+        {
+            if (model == null || model.InvoiceId == 0 || model.Comment == "" || model.Comment == null)
+            {
+                throw new ArgumentException("invoice comment or a value of the invoice comment is null", nameof(model));
+            }
+            if (model.Id != 0)
+            {
+                throw new ArgumentException("invalid invoice comment id", nameof(model));
+            }
+            var wrappedModel = new InvoiceCommentWrapper
+            {
+                InvoiceComment = model.ToApi()
+            };
+            var result = await PostAsync("/api/invoice-comments", wrappedModel, token);
+            return result.ToDomain();
+        }
     }
 }
