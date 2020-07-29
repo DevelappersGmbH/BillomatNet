@@ -103,17 +103,17 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         public async Task GetList_NotAuthorized()
         {
             // arrange
-            var query = new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1);
+            var query = new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1322225);
+            var strQuery = "invoice_id=1322225&per_page=100&page=1";
             var expectedRequestUri = new Uri("/api/invoice-comments", UriKind.Relative);
-
             var http = A.Fake<IHttpClient>();
-            A.CallTo(() => http.GetAsync(A<Uri>.Ignored, A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
                 .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
 
             var sut = GetSystemUnderTest(http);
             await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.GetCommentListAsync(query));
 
-            A.CallTo(() => http.GetAsync(expectedRequestUri, QueryString.For(query), A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
         }
 

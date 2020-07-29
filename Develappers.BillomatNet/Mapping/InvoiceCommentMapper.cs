@@ -58,6 +58,28 @@ namespace Develappers.BillomatNet.Mapping
             };
         }
 
+        public InvoiceComment ApiToDomain(Api.InvoiceCommentWrapper value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new InvoiceComment
+            {
+                Id = int.Parse(value.InvoiceComment.Id, CultureInfo.InvariantCulture),
+                Created = value.InvoiceComment.Created,
+                Comment = value.InvoiceComment.Comment,
+                ActionKey = value.InvoiceComment.ActionKey.ToCommentType(),
+                Public = value.InvoiceComment.Public != "0",
+                ByClient = value.InvoiceComment.ByClient != "0",
+                UserId = value.InvoiceComment.UserId.ToOptionalInt(),
+                EmailId = value.InvoiceComment.EmailId.ToOptionalInt(),
+                ClientId = value.InvoiceComment.ClientId.ToOptionalInt(),
+                InvoiceId = int.Parse(value.InvoiceComment.InvoiceId, CultureInfo.InvariantCulture)
+            };
+        }
+
         public Api.InvoiceComment DomainToApi(InvoiceComment value)
         {
             //TODO: implement DomainToApi

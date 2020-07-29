@@ -393,7 +393,13 @@ namespace Develappers.BillomatNet
         /// </summary>
         /// <param name="query">The filter.</param>
         /// <param name="token">The token.</param>
-        /// <returns></returns>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the filtered list of invoice comment.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         public async Task<Types.PagedList<InvoiceComment>> GetCommentListAsync(Query<InvoiceComment, InvoiceCommentFilter> query, CancellationToken token = default)
         {
             if (query == null || query.Filter.InvoiceId <= 0 || query.Filter.InvoiceId == null)
@@ -401,6 +407,28 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("Filter or a value of the Filter is null or invalid", nameof(query));
             }
             var jsonModel = await GetListAsync<InvoiceCommentListWrapper>("/api/invoice-comments", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Retrieves an invoice comment by it's ID.
+        /// </summary>
+        /// <param name="id">The ID.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the invoice comment.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<InvoiceComment> GetCommentById(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid invoice comment id", nameof(id));
+            }
+            var jsonModel = await GetItemByIdAsync<InvoiceCommentWrapper>($"/api/invoice-comments/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
     }
