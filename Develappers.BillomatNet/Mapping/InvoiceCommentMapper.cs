@@ -51,9 +51,9 @@ namespace Develappers.BillomatNet.Mapping
                 ActionKey = value.ActionKey.ToCommentType(),
                 Public = value.Public != "0",
                 ByClient = value.ByClient != "0",
-                UserId = int.Parse(value.UserId, CultureInfo.InvariantCulture),
-                EmailId = int.Parse(value.EmailId, CultureInfo.InvariantCulture),
-                ClientId = int.Parse(value.ClientId, CultureInfo.InvariantCulture),
+                UserId = value.UserId.ToOptionalInt(),
+                EmailId = value.EmailId.ToOptionalInt(),
+                ClientId = value.ClientId.ToOptionalInt(),
                 InvoiceId = int.Parse(value.InvoiceId, CultureInfo.InvariantCulture)
             };
         }

@@ -396,6 +396,10 @@ namespace Develappers.BillomatNet
         /// <returns></returns>
         public async Task<Types.PagedList<InvoiceComment>> GetCommentListAsync(Query<InvoiceComment, InvoiceCommentFilter> query, CancellationToken token = default)
         {
+            if (query == null || query.Filter.InvoiceId <= 0 || query.Filter.InvoiceId == null)
+            {
+                throw new ArgumentException("Filter or a value of the Filter is null or invalid", nameof(query));
+            }
             var jsonModel = await GetListAsync<InvoiceCommentListWrapper>("/api/invoice-comments", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }

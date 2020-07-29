@@ -13,9 +13,9 @@ namespace Develappers.BillomatNet.Types
         public CommentType ActionKey { get; set; }
         public bool Public { get; set; }
         public bool ByClient { get; set; }
-        public int UserId { get; set; }
-        public int EmailId { get; set; }
-        public int ClientId { get; set; }
+        public int? UserId { get; set; }
+        public int? EmailId { get; set; }
+        public int? ClientId { get; set; }
         public int InvoiceId { get; set; }
     }
 }

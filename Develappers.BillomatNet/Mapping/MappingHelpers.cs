@@ -175,62 +175,64 @@ namespace Develappers.BillomatNet.Mapping
         {
             switch (value)
             {
-                case "Comment":
+                case "COMMENT":
                     return CommentType.Comment;
-                case "Create":
+                case "CREATE":
                     return CommentType.Create;
-                case "Copy":
+                case "COPE":
                     return CommentType.Copy;
-                case "CreateFromOffer":
+                case "CREATE_FROM_OFFER":
                     return CommentType.CreateFromOffer;
-                case "CreateFromInvoice":
+                case "CREATE_FROM_INVOICE":
                     return CommentType.CreateFromInvoice;
-                case "CreateFromRecurring":
+                case "CREATE_FROM_RECURRING":
                     return CommentType.CreateFromRecurring;
-                case "Status":
+                case "STATUS":
                     return CommentType.Status;
-                case "Payment":
+                case "PAYMENT":
                     return CommentType.Payment;
-                case "PaymentError":
+                case "PAYMENT_ERROR":
                     return CommentType.PaymentError;
-                case "DeletePayment":
+                case "DELETE_PAYMENT":
                     return CommentType.DeletePayment;
-                case "Mail":
+                case "MAIL":
                     return CommentType.Mail;
-                case "Letter":
+                case "LETTER":
                     return CommentType.Letter;
-                case "Fax":
+                case "FAX":
                     return CommentType.Fax;
-                case "Sign":
+                case "SIGN":
                     return CommentType.Sign;
-                case "SignMail":
+                case "SIGN_MAIL":
                     return CommentType.SignMail;
-                case "Cancel":
+                case "CANCEL":
                     return CommentType.Cancel;
-                case "ErrorMail":
+                case "ERROR_MAIL":
                     return CommentType.ErrorMail;
-                case "CreateCreditNote":
+                case "CREATE_CREDIT_NOTE":
                     return CommentType.CreateCreditNote;
-                case "ReminderCreate":
+                case "REMINDER_CREATE":
                     return CommentType.ReminderCreate;
-                case "ReminderStatus":
+                case "REMINDER_STATUS":
                     return CommentType.ReminderStatus;
-                case "ReminderMail":
+                case "REMINDER_MAIL":
                     return CommentType.ReminderMail;
-                case "ReminderErrorMail":
+                case "REMINDER_ERROR_MAIL":
                     return CommentType.ReminderErrorMail;
-                case "RemidnerLetter":
+                case "REMINDER_LETTER":
                     return CommentType.RemidnerLetter;
-                case "ReminderFax":
+                case "REMINDER_FAX":
                     return CommentType.ReminderFax;
-                case "ReminderSign":
+                case "REMINDER_SIGN":
                     return CommentType.ReminderSign;
-                case "ReminderSignMail":
+                case "REMINDER_SIGN_MAIL":
                     return CommentType.ReminderSignMail;
-                case "ReminderCancel":
+                case "REMINDER_CANCEL":
                     return CommentType.ReminderCancel;
-                default:
+                case "REMINDER_DELETE":
                     return CommentType.ReminderDelete;
+                default:
+                    return CommentType.Create;
             }
         }
     }
