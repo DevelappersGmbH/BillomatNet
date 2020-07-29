@@ -17,7 +17,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
     public class TaxServiceTests : UnitTestBase<TaxService>
     {
         [Fact(Skip = "skipped due to bug #250")]
-        public async Task CreateTax_WithValidData_ShouldCreateTaxItemAndReturnCorrectValues()
+        public async Task CreateTax_WithValidData_ShouldCreateTaxAndReturnCorrectValues()
         {
             // arrange
             const string name = "xUnit Test";
@@ -86,7 +86,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task GetTaxById_WithInvalidApiKey_ShouldThrowNotAuthorizedException()
+        public async Task GetTaxById_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
         {
             // arrange
             const int id = 1;
@@ -102,6 +102,19 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.GetByIdAsync(id));
             A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task GetTaxById_WithInvalidInputValues_ShouldThrowArgumentException()
+        {
+            // arrange
+            const int id = 0;
+
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            // act and assert
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.GetByIdAsync(id));
         }
 
         [Fact]

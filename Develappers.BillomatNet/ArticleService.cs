@@ -78,7 +78,7 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates an article.
         /// </summary>
-        /// <param name="model">The article to create.</param>
+        /// <param name="value">The article to create.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -87,21 +87,22 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<Article> CreateAsync(Article model, CancellationToken token = default)
+        public async Task<Article> CreateAsync(Article value, CancellationToken token = default)
         {
-            if (model == null)
+            if (value == null)
             {
-                throw new ArgumentException("article or a value of the article is null", nameof(model));
+                throw new ArgumentNullException(nameof(value));
             }
-            if (model.Id != 0)
+            if (value.Id != 0)
             {
-                throw new ArgumentException("invalid article id", nameof(model));
+                throw new ArgumentException("invalid article id", nameof(value));
             }
 
             var wrappedModel = new ArticleWrapper
             {
-                Article = model.ToApi()
+                Article = value.ToApi()
             };
+
             var jsonModel = await PostAsync("/api/articles", wrappedModel, token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
@@ -109,7 +110,7 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Updates the specified article.
         /// </summary>
-        /// <param name="model">The article.</param>
+        /// <param name="value">The article.</param>
         /// <param name="token">The token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -118,19 +119,24 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<Article> EditAsync(Article model, CancellationToken token = default)
+        public async Task<Article> EditAsync(Article value, CancellationToken token = default)
         {
-            if (model.Id <= 0)
+            if (value == null)
             {
-                throw new ArgumentException("invalid article id", nameof(model));
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            if (value.Id <= 0)
+            {
+                throw new ArgumentException("invalid article id", nameof(value));
             }
 
             var wrappedModel = new ArticleWrapper
             {
-                Article = model.ToApi()
+                Article = value.ToApi()
             };
 
-            var jsonModel = await PutAsync($"/api/articles/{model.Id}", wrappedModel, token);
+            var jsonModel = await PutAsync($"/api/articles/{value.Id}", wrappedModel, token);
             return jsonModel.ToDomain();
         }
 
@@ -288,7 +294,7 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates an article tag.
         /// </summary>
-        /// <param name="model">The article tag to create.</param>
+        /// <param name="value">The article tag to create.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -297,20 +303,20 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<ArticleTag> CreateTagAsync(ArticleTag model, CancellationToken token = default)
+        public async Task<ArticleTag> CreateTagAsync(ArticleTag value, CancellationToken token = default)
         {
-            if (model == null || model.ArticleId == 0 || model.Name == null)
+            if (value == null || value.ArticleId == 0 || value.Name == null)
             {
-                throw new ArgumentException("article tag or a value of the article tag is null", nameof(model));
+                throw new ArgumentException("article tag or a value of the article tag is null", nameof(value));
             }
-            if (model.Id != 0)
+            if (value.Id != 0)
             {
-                throw new ArgumentException("invalid article tag id", nameof(model));
+                throw new ArgumentException("invalid article tag id", nameof(value));
             }
 
             var wrappedModel = new ArticleTagWrapper
             {
-                ArticleTag = model.ToApi()
+                ArticleTag = value.ToApi()
             };
             var jsonModel = await PostAsync("/api/article-tags", wrappedModel, token);
             return jsonModel.ToDomain();

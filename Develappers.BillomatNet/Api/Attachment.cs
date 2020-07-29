@@ -8,9 +8,9 @@ namespace Develappers.BillomatNet.Api
     internal class Attachment
     {
         [JsonProperty("filename")]
-        public string Filename { get; set; }
+        public string FileName { get; set; }
         [JsonProperty("mimetype")]
-        public string Mimetype { get; set; }
+        public string MimeType { get; set; }
         [JsonProperty("base64file")]
         public string Base64File { get; set; }
     }

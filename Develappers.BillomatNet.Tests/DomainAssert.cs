@@ -51,6 +51,23 @@ namespace Develappers.BillomatNet.Tests
             Assert.Equal(expected.Updated, actual.Updated);
         }
 
+        public static void Equal(TagCloudItem expected, TagCloudItem actual)
+        {
+            if (expected == null && actual == null)
+            {
+                return;
+            }
+
+            if (expected == null || actual == null)
+            {
+                Assert.True(false, "one of the items is null");
+            }
+
+            Assert.Equal(expected.Id, actual.Id);
+            Assert.Equal(expected.Name, actual.Name);
+            Assert.Equal(expected.Count, actual.Count);
+        }
+
         public static void Equal(Tax expected, Tax actual)
         {
             if (expected == null && actual == null)

@@ -29,7 +29,7 @@ namespace Develappers.BillomatNet.Mapping
                 FileSize = int.Parse(value.FileSize, CultureInfo.InvariantCulture),
                 InvoiceId = int.Parse(value.InvoiceId, CultureInfo.InvariantCulture),
                 MimeType = value.MimeType,
-                Bytes = Convert.FromBase64String(value.Base64File)
+                FileContent = Convert.FromBase64String(value.Base64File)
             };
         }
 
@@ -77,9 +77,9 @@ namespace Develappers.BillomatNet.Mapping
         {
             return new Api.Attachment
             {
-                Filename = value.Filename,
-                Mimetype = value.Mimetype,
-                Base64File = Convert.ToBase64String(value.Base64File)
+                FileName = value.FileName,
+                MimeType = value.MimeType,
+                Base64File = Convert.ToBase64String(value.FileContent)
             };
         }
     }
