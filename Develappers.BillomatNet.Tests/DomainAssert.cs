@@ -87,5 +87,22 @@ namespace Develappers.BillomatNet.Tests
             Assert.Equal(expected.Updated, actual.Updated);
             Assert.Equal(expected.IsDefault, actual.IsDefault);
         }
+
+        public static void Equal(Article expected, Article actual)
+        {
+            if (expected == null && actual == null)
+            {
+                return;
+            }
+
+            if (expected == null || actual == null)
+            {
+                Assert.True(false, "one of the items is null");
+            }
+
+            Assert.Equal(expected.Id, actual.Id);
+            Assert.Equal(expected.Created, actual.Created);
+            Assert.Equal(expected.Updated, actual.Updated);
+        }
     }
 }

@@ -48,6 +48,18 @@ namespace Develappers.BillomatNet.Mapping
             return (string)value;
         }
 
+        public static string BoolToString(this bool value)
+        {
+            if (value)
+            {
+                return "1";
+            }
+            else
+            {
+                return "0";
+            }
+        }
+
         internal static TagCloudItem ToDomain(this Api.TagCloudItem value)
         {
             if (value == null)
