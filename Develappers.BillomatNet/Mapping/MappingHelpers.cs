@@ -217,7 +217,7 @@ namespace Develappers.BillomatNet.Mapping
                 case "REMINDER_ERROR_MAIL":
                     return CommentType.ReminderErrorMail;
                 case "REMINDER_LETTER":
-                    return CommentType.RemidnerLetter;
+                    return CommentType.ReminderLetter;
                 case "REMINDER_FAX":
                     return CommentType.ReminderFax;
                 case "REMINDER_SIGN":
@@ -279,7 +279,7 @@ namespace Develappers.BillomatNet.Mapping
                     return "REMINDER_MAIL";
                 case CommentType.ReminderErrorMail:
                     return "REMINDER_ERROR_MAIL";
-                case CommentType.RemidnerLetter:
+                case CommentType.ReminderLetter:
                     return "REMINDER_LETTER";
                 case CommentType.ReminderFax:
                     return "REMINDER_FAX";
