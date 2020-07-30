@@ -5,9 +5,7 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Types;
 using InvoiceComment = Develappers.BillomatNet.Types.InvoiceComment;
 
 namespace Develappers.BillomatNet.Mapping

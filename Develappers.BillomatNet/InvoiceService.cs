@@ -402,9 +402,14 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         public async Task<Types.PagedList<InvoiceComment>> GetCommentListAsync(Query<InvoiceComment, InvoiceCommentFilter> query, CancellationToken token = default)
         {
-            if (query == null || query.Filter.InvoiceId <= 0 || query.Filter.InvoiceId == null)
+            if (query == null)
             {
-                throw new ArgumentException("Filter or a value of the Filter is null or invalid", nameof(query));
+                throw new ArgumentNullException(nameof(query));
+            }
+
+            if (query.Filter?.InvoiceId.GetValueOrDefault(0) <= 0)
+            {
+                throw new ArgumentException("a required value of the filter invalid", nameof(query));
             }
             var jsonModel = await GetListAsync<InvoiceCommentListWrapper>("/api/invoice-comments", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
