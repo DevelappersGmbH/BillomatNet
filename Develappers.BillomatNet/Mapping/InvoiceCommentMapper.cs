@@ -71,7 +71,7 @@ namespace Develappers.BillomatNet.Mapping
             return new Api.InvoiceComment
             {
                 Id = value.Id.ToString(),
-                Created = value.Created,
+                Created = value.Created.ToString(),
                 Comment = value.Comment,
                 ActionKey = value.ActionKey.ToApiValue(),
                 Public = value.Public.ToString(),
