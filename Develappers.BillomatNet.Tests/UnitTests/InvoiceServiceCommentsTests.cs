@@ -177,16 +177,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            Assert.Equal(4662801, result.Id);
-            Assert.Equal(DateTime.Parse("2015-06-04T10:04:54+02:00", CultureInfo.InvariantCulture), result.Created);
-            Assert.Equal("Rechnung erstellt.", result.Comment);
-            Assert.Equal(CommentType.Create, result.ActionKey);
-            Assert.False(result.Public);
-            Assert.False(result.ByClient);
-            Assert.Equal(52821, result.UserId);
-            Assert.Null(result.EmailId);
-            Assert.Null(result.ClientId);
-            Assert.Equal(1322225, result.InvoiceId);
+            DomainAssert.Equal(expectedResult, result);
         }
 
         [Fact]

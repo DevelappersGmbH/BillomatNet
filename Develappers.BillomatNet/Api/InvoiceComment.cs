@@ -10,7 +10,7 @@ namespace Develappers.BillomatNet.Api
         [JsonProperty("id")]
         public string Id { get; set; }
         [JsonProperty("created")]
-        public DateTime Created { get; set; }
+        public string Created { get; set; }
         [JsonProperty("comment")]
         public string Comment { get; set; }
         [JsonProperty("actionkey")]
