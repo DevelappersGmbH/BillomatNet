@@ -458,8 +458,16 @@ namespace Develappers.BillomatNet
             {
                 InvoiceComment = model.ToApi()
             };
-            var result = await PostAsync("/api/invoice-comments", wrappedModel, token);
-            return result.ToDomain();
+            try
+            {
+                var result = await PostAsync("/api/invoice-comments", wrappedModel, token);
+                return result.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException("wrong input parameter", nameof(model), wex);
+            }
         }
     }
 }

@@ -231,13 +231,13 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task Create_WithCorrectValues()
+        public async Task Create_WithCorrectValues_ShouldCreateCommentAndReturnCorrectValues()
         {
             //arrange
-            var comment = new InvoiceComment { InvoiceId = 1, Comment = "Test Rechnung" };
+            var comment = new InvoiceComment { InvoiceId = 7506691, Comment = "Test Comment", Public = true, ByClient = true, UserId = 52821, ClientId = 3722360 };
 
             var expectedRequestUri = new Uri("/api/invoice-comments", UriKind.Relative);
-            const string expectedRequestBody = "{\"invoice-comment\":{\"id\":\"0\",\"created\":\"0001-01-01T00:00:00\",\"comment\":\"Test Comment\",\"actionkey\":\"COMMENT\",\"public\":\"False\",\"by_client\":\"False\",\"user_id\":\"\",\"email_id\":\"\",\"client_id\":\"\",\"invoice_id\":\"7506691\"}}";
+            const string expectedRequestBody = "{\"invoice-comment\":{\"id\":\"0\",\"created\":\"01.01.0001 00:00:00\",\"comment\":\"Test Comment\",\"actionkey\":\"COMMENT\",\"public\":\"True\",\"by_client\":\"True\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"3722360\",\"invoice_id\":\"7506691\"}}";
             const string responseBody = "{\"invoice-comment\":{\"id\":\"31327675\",\"created\":\"2020-07-30T10:42:51+02:00\",\"comment\":\"Test Comment\",\"actionkey\":\"COMMENT\",\"public\":\"1\",\"by_client\":\"1\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"3722360\",\"invoice_id\":\"7506691\",\"customfield\":\"\"}}";
 
             var http = A.Fake<IHttpClient>();
@@ -254,15 +254,15 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .MustHaveHappenedOnceExactly();
 
             Assert.True(result.Id > 0);
-            Assert.Equal(new DateTime(2020, 7, 29, 16, 30, 54, DateTimeKind.Utc), result.Created);
-            Assert.Equal("Test Rechnung", result.Comment);
-            Assert.Equal(CommentType.Create, result.ActionKey);
-            Assert.False(result.Public);
-            Assert.False(result.ByClient);
-            Assert.Null(result.UserId);
+            Assert.Equal(DateTime.Parse("2020-07-30T10:42:51+02:00"), result.Created);
+            Assert.Equal("Test Comment", result.Comment);
+            Assert.Equal(CommentType.Comment, result.ActionKey);
+            Assert.True(result.Public);
+            Assert.True(result.ByClient);
+            Assert.Equal(52821, result.UserId);
             Assert.Null(result.EmailId);
-            Assert.Null(result.ClientId);
-            Assert.Equal(1, result.InvoiceId);
+            Assert.Equal(3722360, result.ClientId);
+            Assert.Equal(7506691, result.InvoiceId);
         }
 
         [Fact]
@@ -279,7 +279,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task Create_NotAuthorized()
+        public async Task Create_WithInvalidApiKey_ShouldThrowNotAuthorizedException()
         {
             //arrange
             var http = A.Fake<IHttpClient>();
