@@ -242,22 +242,24 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         [Fact]
         public async Task Create_WithCorrectValues()
         {
-            var http = A.Fake<IHttpClient>();
-            var sut = GetSystemUnderTest(http);
-
-            const string expectedUri = "/api/invoice-comments";
-            const string expectedHttpRequest = "{\"invoice-comment\": {\"id\": \"0\",\"created\": \"\",\"comment\": \"Test Rechnung.\",\"actionkey\": \"CREATE\",\"public\": \"0\",\"by_client\": \"0\",\"user_id\": \"\",\"email_id\": \"\",\"client_id\": \"\",\"invoice_id\": \"1322225\",\"customfield\": \"\"}}";
-            const string httpResult = "{\"invoice-comment\": {\"id\": \"4662804\",\"created\": \"2020-07-29T16:30:54+02:00\",\"comment\": \"Test Rechnung.\",\"actionkey\": \"CREATE\",\"public\": \"0\",\"by_client\": \"0\",\"user_id\": \"\",\"email_id\": \"\",\"client_id\": \"\",\"invoice_id\": \"1322225\",\"customfield\": \"\"}}";
-
-            A.CallTo(() => http.PostAsync(new Uri(expectedUri, UriKind.Relative), expectedHttpRequest, A<CancellationToken>.Ignored))
-                .Returns(Task.FromResult(httpResult));
-
+            //arrange
             var comment = new InvoiceComment { InvoiceId = 1, Comment = "Test Rechnung" };
+
+            var expectedRequestUri = new Uri("/api/invoice-comments", UriKind.Relative);
+            const string expectedRequestBody = "{\"invoice-comment\":{\"id\":\"0\",\"created\":\"0001-01-01T00:00:00\",\"comment\":\"Test Comment\",\"actionkey\":\"COMMENT\",\"public\":\"False\",\"by_client\":\"False\",\"user_id\":\"\",\"email_id\":\"\",\"client_id\":\"\",\"invoice_id\":\"7506691\"}}";
+            const string responseBody = "{\"invoice-comment\":{\"id\":\"31327675\",\"created\":\"2020-07-30T10:42:51+02:00\",\"comment\":\"Test Comment\",\"actionkey\":\"COMMENT\",\"public\":\"1\",\"by_client\":\"1\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"3722360\",\"invoice_id\":\"7506691\",\"customfield\":\"\"}}";
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(responseBody));
+
+            var sut = GetSystemUnderTest(http);
 
             //act
             var result = await sut.CreateCommentAsync(comment);
+
             // assert
-            A.CallTo(() => http.PostAsync(new Uri(expectedUri, UriKind.Relative), expectedHttpRequest, A<CancellationToken>.Ignored))
+            A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
             Assert.True(result.Id > 0);
