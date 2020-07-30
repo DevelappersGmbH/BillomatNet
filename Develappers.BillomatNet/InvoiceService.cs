@@ -444,15 +444,15 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<InvoiceComment> CreateAsync(InvoiceComment model, CancellationToken token = default)
+        public async Task<InvoiceComment> CreateCommentAsync(InvoiceComment model, CancellationToken token = default)
         {
-            if (model == null || model.InvoiceId == 0 || model.Comment == "" || model.Comment == null)
+            if (model == null)
             {
-                throw new ArgumentException("invoice comment or a value of the invoice comment is null", nameof(model));
+                throw new ArgumentNullException(nameof(model));
             }
-            if (model.Id != 0)
+            if (model.InvoiceId == 0 || string.IsNullOrEmpty(model.Comment) || model.Id != 0)
             {
-                throw new ArgumentException("invalid invoice comment id", nameof(model));
+                throw new ArgumentException("invalid property values for invoice comment", nameof(model));
             }
             var wrappedModel = new InvoiceCommentWrapper
             {

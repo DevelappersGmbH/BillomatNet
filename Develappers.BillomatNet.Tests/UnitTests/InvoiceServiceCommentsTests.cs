@@ -238,5 +238,69 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
             Assert.Null(result);
         }
+
+        [Fact]
+        public async Task Create_WithCorrectValues()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/invoice-comments";
+            const string expectedHttpRequest = "{\"invoice-comment\": {\"id\": \"0\",\"created\": \"\",\"comment\": \"Test Rechnung.\",\"actionkey\": \"CREATE\",\"public\": \"0\",\"by_client\": \"0\",\"user_id\": \"\",\"email_id\": \"\",\"client_id\": \"\",\"invoice_id\": \"1322225\",\"customfield\": \"\"}}";
+            const string httpResult = "{\"invoice-comment\": {\"id\": \"4662804\",\"created\": \"2020-07-29T16:30:54+02:00\",\"comment\": \"Test Rechnung.\",\"actionkey\": \"CREATE\",\"public\": \"0\",\"by_client\": \"0\",\"user_id\": \"\",\"email_id\": \"\",\"client_id\": \"\",\"invoice_id\": \"1322225\",\"customfield\": \"\"}}";
+
+            A.CallTo(() => http.PostAsync(new Uri(expectedUri, UriKind.Relative), expectedHttpRequest, A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(httpResult));
+
+            var comment = new InvoiceComment { InvoiceId = 1, Comment = "Test Rechnung" };
+
+            //act
+            var result = await sut.CreateCommentAsync(comment);
+            // assert
+            A.CallTo(() => http.PostAsync(new Uri(expectedUri, UriKind.Relative), expectedHttpRequest, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+
+            Assert.True(result.Id > 0);
+            Assert.Equal(new DateTime(2020, 7, 29, 16, 30, 54, DateTimeKind.Utc), result.Created);
+            Assert.Equal("Test Rechnung", result.Comment);
+            Assert.Equal(CommentType.Create, result.ActionKey);
+            Assert.False(result.Public);
+            Assert.False(result.ByClient);
+            Assert.Null(result.UserId);
+            Assert.Null(result.EmailId);
+            Assert.Null(result.ClientId);
+            Assert.Equal(1, result.InvoiceId);
+        }
+
+        [Fact]
+        public async Task Create_WithInvalidInputValue_ShouldThrowArgumentException()
+        {
+            // arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            // act and assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => sut.CreateCommentAsync(null));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreateCommentAsync(new InvoiceComment()));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreateCommentAsync(new InvoiceComment { Id = 1 }));
+        }
+
+        [Fact]
+        public async Task Create_NotAuthorized()
+        {
+            //arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            var expectedRequestUri = new Uri("/api/invoice-comments", UriKind.Relative);
+            A.CallTo(() => http.PostAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            var comment = new InvoiceComment { InvoiceId = 1, Comment = "asdf" };
+
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.CreateCommentAsync(comment));
+            A.CallTo(() => http.PostAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
     }
 }
