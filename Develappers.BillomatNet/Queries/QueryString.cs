@@ -33,6 +33,11 @@ namespace Develappers.BillomatNet.Queries
             return new InvoiceQueryStringBuilder().BuildFor(value);
         }
 
+        internal static string For(Query<InvoiceComment, InvoiceCommentFilter> value)
+        {
+            return new InvoiceCommentQueryStringBuilder().BuildFor(value);
+        }
+
         internal static string For(Query<Article, ArticleFilter> value)
         {
             return new ArticleQueryStringBuilder().BuildFor(value);

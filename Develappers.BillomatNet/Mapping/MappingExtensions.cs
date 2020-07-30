@@ -15,6 +15,7 @@ using Contact = Develappers.BillomatNet.Types.Contact;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
+using InvoiceComment = Develappers.BillomatNet.Types.InvoiceComment;
 using Settings = Develappers.BillomatNet.Types.Settings;
 using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 using Tax = Develappers.BillomatNet.Types.Tax;
@@ -32,6 +33,7 @@ namespace Develappers.BillomatNet.Mapping
         private static readonly SettingsMapper s_settingsMapper = new SettingsMapper();
         private static readonly InvoiceItemMapper s_invoiceItemMapper = new InvoiceItemMapper();
         private static readonly InvoiceDocumentMapper s_invoiceDocumentMapper = new InvoiceDocumentMapper();
+        private static readonly InvoiceCommentMapper s_invoiceCommentMapper = new InvoiceCommentMapper();
         private static readonly ContactMapper s_contactMapper = new ContactMapper();
         private static readonly ArticlePropertyMapper s_articlePropertyMapper = new ArticlePropertyMapper();
         private static readonly ArticleTagMapper s_articleTagMapper = new ArticleTagMapper();
@@ -138,6 +140,16 @@ namespace Develappers.BillomatNet.Mapping
         internal static Api.Attachment ToApi(this Types.Attachment value)
         {
             return s_invoiceDocumentMapper.DomainToApi(value);
+        }
+
+        internal static Types.PagedList<InvoiceComment> ToDomain(this InvoiceCommentListWrapper value)
+        {
+            return s_invoiceCommentMapper.ApiToDomain(value);
+        }
+
+        internal static Types.InvoiceComment ToDomain(this InvoiceCommentWrapper value)
+        {
+            return s_invoiceCommentMapper.ApiToDomain(value);
         }
 
         internal static Types.PagedList<Contact> ToDomain(this ContactListWrapper value)

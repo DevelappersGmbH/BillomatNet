@@ -169,5 +169,68 @@ namespace Develappers.BillomatNet.Mapping
                     return "TEXTFIELD";
             }
         }
+
+        internal static CommentType ToCommentType(this string value)
+        {
+            switch (value)
+            {
+                case "COMMENT":
+                    return CommentType.Comment;
+                case "COPY":
+                    return CommentType.Copy;
+                case "CREATE_FROM_OFFER":
+                    return CommentType.CreateFromOffer;
+                case "CREATE_FROM_INVOICE":
+                    return CommentType.CreateFromInvoice;
+                case "CREATE_FROM_RECURRING":
+                    return CommentType.CreateFromRecurring;
+                case "STATUS":
+                    return CommentType.Status;
+                case "PAYMENT":
+                    return CommentType.Payment;
+                case "PAYMENT_ERROR":
+                    return CommentType.PaymentError;
+                case "DELETE_PAYMENT":
+                    return CommentType.DeletePayment;
+                case "MAIL":
+                    return CommentType.Mail;
+                case "LETTER":
+                    return CommentType.Letter;
+                case "FAX":
+                    return CommentType.Fax;
+                case "SIGN":
+                    return CommentType.Sign;
+                case "SIGN_MAIL":
+                    return CommentType.SignMail;
+                case "CANCEL":
+                    return CommentType.Cancel;
+                case "ERROR_MAIL":
+                    return CommentType.ErrorMail;
+                case "CREATE_CREDIT_NOTE":
+                    return CommentType.CreateCreditNote;
+                case "REMINDER_CREATE":
+                    return CommentType.ReminderCreate;
+                case "REMINDER_STATUS":
+                    return CommentType.ReminderStatus;
+                case "REMINDER_MAIL":
+                    return CommentType.ReminderMail;
+                case "REMINDER_ERROR_MAIL":
+                    return CommentType.ReminderErrorMail;
+                case "REMINDER_LETTER":
+                    return CommentType.RemidnerLetter;
+                case "REMINDER_FAX":
+                    return CommentType.ReminderFax;
+                case "REMINDER_SIGN":
+                    return CommentType.ReminderSign;
+                case "REMINDER_SIGN_MAIL":
+                    return CommentType.ReminderSignMail;
+                case "REMINDER_CANCEL":
+                    return CommentType.ReminderCancel;
+                case "REMINDER_DELETE":
+                    return CommentType.ReminderDelete;
+                default:
+                    return CommentType.Create;
+            }
+        }
     }
 }
