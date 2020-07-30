@@ -178,7 +178,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .MustHaveHappenedOnceExactly();
 
             Assert.Equal(4662801, result.Id);
-            Assert.Equal(new DateTime(2015, 6, 4, 10, 4, 54, DateTimeKind.Utc), result.Created);
+            Assert.Equal(DateTime.Parse("2015-06-04T10:04:54+02:00", CultureInfo.InvariantCulture), result.Created);
             Assert.Equal("Rechnung erstellt.", result.Comment);
             Assert.Equal(CommentType.Create, result.ActionKey);
             Assert.False(result.Public);
