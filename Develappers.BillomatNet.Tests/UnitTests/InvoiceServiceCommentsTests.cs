@@ -255,17 +255,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .MustHaveHappenedOnceExactly();
 
             DomainAssert.Equal(expectedResult, result);
-
-            //Assert.True(result.Id > 0);
-            //Assert.Equal(DateTime.Parse("2020-07-30T10:42:51+02:00", CultureInfo.InvariantCulture), result.Created);
-            //Assert.Equal("Test Comment", result.Comment);
-            //Assert.Equal(CommentType.Comment, result.ActionKey);
-            //Assert.True(result.Public);
-            //Assert.True(result.ByClient);
-            //Assert.Equal(52821, result.UserId);
-            //Assert.Null(result.EmailId);
-            //Assert.Equal(3722360, result.ClientId);
-            //Assert.Equal(7506691, result.InvoiceId);
         }
 
         [Fact]
