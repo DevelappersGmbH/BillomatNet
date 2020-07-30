@@ -21,6 +21,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetArticles()
         {
+            // rewritten as unit test
             var result = await SystemUnderTest.GetListAsync(CancellationToken.None);
 
             Assert.True(result.List.Count > 0);
@@ -29,6 +30,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetArticleById()
         {
+            // rewritten as unit test
             var result = await SystemUnderTest.GetByIdAsync(154123);
             Assert.NotNull(result);
         }
@@ -36,6 +38,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetArticleByIdWhenNotFound()
         {
+            // rewritten as unit test
             var result = await SystemUnderTest.GetByIdAsync(1);
             Assert.Null(result);
         }
