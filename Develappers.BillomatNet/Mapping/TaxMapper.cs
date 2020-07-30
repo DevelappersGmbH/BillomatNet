@@ -37,7 +37,7 @@ namespace Develappers.BillomatNet.Mapping
             {
                 Name = value.Name,
                 Rate = value.Rate.ToString(CultureInfo.InvariantCulture),
-                IsDefault = value.IsDefault.ToString()
+                IsDefault = value.IsDefault.BoolToString()
             };
         }
 
