@@ -235,6 +235,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         {
             //arrange
             var comment = new InvoiceComment { InvoiceId = 7506691, Comment = "Test Comment", Public = true, ByClient = true, UserId = 52821, ClientId = 3722360 };
+            var expectedResult = new InvoiceComment { Id = 31327675, Created = DateTime.Parse("2020-07-30T10:42:51+02:00", CultureInfo.InvariantCulture), Comment = "Test Comment", ActionKey = CommentType.Comment, Public = true, ByClient = true, UserId = 52821, ClientId = 3722360, InvoiceId = 7506691 };
 
             var expectedRequestUri = new Uri("/api/invoice-comments", UriKind.Relative);
             const string expectedRequestBody = "{\"invoice-comment\":{\"id\":\"0\",\"created\":\"01.01.0001 00:00:00\",\"comment\":\"Test Comment\",\"actionkey\":\"COMMENT\",\"public\":\"True\",\"by_client\":\"True\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"3722360\",\"invoice_id\":\"7506691\"}}";
@@ -253,16 +254,18 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            Assert.True(result.Id > 0);
-            Assert.Equal(DateTime.Parse("2020-07-30T10:42:51+02:00", CultureInfo.InvariantCulture), result.Created);
-            Assert.Equal("Test Comment", result.Comment);
-            Assert.Equal(CommentType.Comment, result.ActionKey);
-            Assert.True(result.Public);
-            Assert.True(result.ByClient);
-            Assert.Equal(52821, result.UserId);
-            Assert.Null(result.EmailId);
-            Assert.Equal(3722360, result.ClientId);
-            Assert.Equal(7506691, result.InvoiceId);
+            DomainAssert.Equal(expectedResult, result);
+
+            //Assert.True(result.Id > 0);
+            //Assert.Equal(DateTime.Parse("2020-07-30T10:42:51+02:00", CultureInfo.InvariantCulture), result.Created);
+            //Assert.Equal("Test Comment", result.Comment);
+            //Assert.Equal(CommentType.Comment, result.ActionKey);
+            //Assert.True(result.Public);
+            //Assert.True(result.ByClient);
+            //Assert.Equal(52821, result.UserId);
+            //Assert.Null(result.EmailId);
+            //Assert.Equal(3722360, result.ClientId);
+            //Assert.Equal(7506691, result.InvoiceId);
         }
 
         [Fact]
