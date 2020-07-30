@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
 using System.Threading.Tasks;
-using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Queries;
-using Develappers.BillomatNet.Types;
 using Xunit;
 using InvoiceComment = Develappers.BillomatNet.Types.InvoiceComment;
 
@@ -27,7 +26,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         public async Task GetCommentListAsyncWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetCommentListAsync(new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1322225)));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetCommentListAsync(new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1322225)));
         }
 
         [Fact]

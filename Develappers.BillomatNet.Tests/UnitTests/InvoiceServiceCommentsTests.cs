@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class InvoiceServiceCommentsTests : UnitTestBase<InvoiceService>
     {
         [Fact]
@@ -66,23 +68,21 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 },
             };
 
-            var query = new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1322225);
-            var strQuery = "invoice_id=1322225&per_page=100&page=1";
+            const string expectedQuery = "invoice_id=1322225&per_page=100&page=1";
 
             var http = A.Fake<IHttpClient>();
-            A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
                 .Returns(Task.FromResult(responseBody));
 
             var sut = GetSystemUnderTest(http);
+            var query = new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1322225);
 
             //act
             var result = await sut.GetCommentListAsync(query);
 
             //assert
-            A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
-
-            Assert.Equal(3, result.TotalItems);
 
             result.List.AssertWith(expectedResult, DomainAssert.Equal);
         }
@@ -95,17 +95,17 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             var sut = GetSystemUnderTest(http);
 
             //act and assert
-            await Assert.ThrowsAsync<ArgumentException>(() => sut.GetCommentListAsync(null));
+            await Assert.ThrowsAsync<ArgumentNullException>(() => sut.GetCommentListAsync(null));
             await Assert.ThrowsAsync<ArgumentException>(() => sut.GetCommentListAsync(new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 0)));
             await Assert.ThrowsAsync<ArgumentException>(() => sut.GetCommentListAsync(new Query<InvoiceComment, InvoiceCommentFilter>()));
         }
 
         [Fact]
-        public async Task GetList_NotAuthorized()
+        public async Task GetList_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
         {
             // arrange
             var query = new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1322225);
-            var strQuery = "invoice_id=1322225&per_page=100&page=1";
+            const string expectedQuery = "invoice_id=1322225&per_page=100&page=1";
             var expectedRequestUri = new Uri("/api/invoice-comments", UriKind.Relative);
             var http = A.Fake<IHttpClient>();
             A.CallTo(() => http.GetAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
@@ -114,38 +114,37 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             var sut = GetSystemUnderTest(http);
             await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.GetCommentListAsync(query));
 
-            A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
         }
 
         [Fact]
-        public async Task GetList_NotFound()
+        public async Task GetList_WithNonMatchingFilter_ShouldReturnEmptyList()
         {
             //arrange
             var expectedRequestUri = new Uri("/api/invoice-comments", UriKind.Relative);
             const string responseBody = "{\"invoice-comments\":{\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"0\"}}";
-
-            var query = new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1322226);
-            var strQuery = "invoice_id=1322226&per_page=100&page=1";
+            const string expectedRequestQuery = "invoice_id=1322226&per_page=100&page=1";
 
             var http = A.Fake<IHttpClient>();
-            A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedRequestQuery, A<CancellationToken>.Ignored))
                 .Returns(Task.FromResult(responseBody));
 
             var sut = GetSystemUnderTest(http);
 
             //act
+            var query = new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1322226);
             var result = await sut.GetCommentListAsync(query);
 
             //assert
-            A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedRequestQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
             Assert.Equal(0, result.TotalItems);
         }
 
         [Fact]
-        public async Task GetById_ShouldReturnCorrectValues()
+        public async Task GetCommentById_ShouldReturnCorrectValues()
         {
             //arrange
             var expectedRequestUri = new Uri("/api/invoice-comments/4662801", UriKind.Relative);
@@ -181,7 +180,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task GetById_WithInvalidInputData_ShouldReturnArgumentException()
+        public async Task GetCommentById__WithInvalidInputData_ShouldReturnArgumentException()
         {
             //arrange
             var http = A.Fake<IHttpClient>();
@@ -192,7 +191,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task GetById_NotAuthorized()
+        public async Task GetCommentById_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
         {
             //arrange
             var expectedRequestUri = new Uri("/api/invoice-comments/4662801", UriKind.Relative);
@@ -209,9 +208,10 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task GetById_NotFound()
+        public async Task GetCommentById_WithInvalidId_ShouldThrowNotFoundException()
         {
             //arrange
+            const int commentId = 1;
             var expectedRequestUri = new Uri("/api/invoice-comments/1", UriKind.Relative);
 
             var http = A.Fake<IHttpClient>();
@@ -221,7 +221,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             var sut = GetSystemUnderTest(http);
 
             //act
-            var result = await sut.GetCommentByIdAsync(1);
+            var result = await sut.GetCommentByIdAsync(commentId);
 
             //assert
             A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
