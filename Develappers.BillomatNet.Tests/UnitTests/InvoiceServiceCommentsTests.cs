@@ -254,7 +254,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .MustHaveHappenedOnceExactly();
 
             Assert.True(result.Id > 0);
-            Assert.Equal(DateTime.Parse("2020-07-30T10:42:51+02:00"), result.Created);
+            Assert.Equal(DateTime.Parse("2020-07-30T10:42:51+02:00", CultureInfo.InvariantCulture), result.Created);
             Assert.Equal("Test Comment", result.Comment);
             Assert.Equal(CommentType.Comment, result.ActionKey);
             Assert.True(result.Public);
