@@ -22,7 +22,7 @@ namespace Develappers.BillomatNet.Queries
             if (filter.ActionKey != null)
             {
                 var filterValue = string.Join(", ", filter.ActionKey).ToUpper();
-                filters.Add($"user_id={filterValue}");
+                filters.Add($"actionkey={filterValue}");
             }
             return string.Join("&", filters);
         }

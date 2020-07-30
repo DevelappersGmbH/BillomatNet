@@ -5,7 +5,6 @@
 using System;
 using System.Globalization;
 using Develappers.BillomatNet.Types;
-using Microsoft.Win32.SafeHandles;
 
 namespace Develappers.BillomatNet.Mapping
 {
@@ -177,9 +176,7 @@ namespace Develappers.BillomatNet.Mapping
             {
                 case "COMMENT":
                     return CommentType.Comment;
-                case "CREATE":
-                    return CommentType.Create;
-                case "COPE":
+                case "COPY":
                     return CommentType.Copy;
                 case "CREATE_FROM_OFFER":
                     return CommentType.CreateFromOffer;
