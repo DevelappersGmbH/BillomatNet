@@ -8,8 +8,10 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
+using Develappers.BillomatNet.Tests.UnitTests.Comparer;
 using Develappers.BillomatNet.Types;
 using FakeItEasy;
+using FluentAssertions;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
@@ -22,6 +24,16 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             // arrange
             const string name = "xUnit Test";
             var taxItem = new Tax { Name = name, Rate = 1.0f, IsDefault = false };
+
+            var expected = new Tax
+            {
+                Name = name,
+                Id = 119547,
+                Created = DateTime.Parse("2020-07-26T09:17:20+02:00", CultureInfo.InvariantCulture),
+                Updated = DateTime.Parse("2020-07-26T09:17:20+02:00", CultureInfo.InvariantCulture),
+                Rate = 1f,
+                IsDefault = false
+            };
 
             const string expectedRequestBody =
                 "{\"tax\":{\"id\":null,\"created\":null,\"updated\":null,\"name\":\"xUnit Test\",\"rate\":\"1\",\"is_default\":\"0\"}}";
@@ -42,12 +54,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            Assert.Equal(name, result.Name);
-            Assert.Equal(119547, result.Id);
-            Assert.Equal(DateTime.Parse("2020-07-26T09:17:20+02:00", CultureInfo.InvariantCulture), result.Created);
-            Assert.Equal(DateTime.Parse("2020-07-26T09:17:20+02:00", CultureInfo.InvariantCulture), result.Updated);
-            Assert.Equal(1f, result.Rate);
-            Assert.False(result.IsDefault);
+            result.Should().BeEquivalentUsingComparerTo(expected, new TaxEqualityComparer());
         }
 
         [Fact]
@@ -134,7 +141,8 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             var result = await sut.GetByIdAsync(id);
             A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
-            Assert.Null(result);
+
+            result.Should().BeNull();
         }
 
         [Fact]
@@ -169,7 +177,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            DomainAssert.Equal(expectedResult, result);
+            result.Should().BeEquivalentUsingComparerTo(expectedResult, new TaxEqualityComparer());
         }
 
         [Fact]
@@ -231,9 +239,9 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, null, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            Assert.Equal(4, result.TotalItems);
-
-            result.List.AssertWith(expectedResult, DomainAssert.Equal);
+            result.List.Should()
+                .HaveCount(expectedResult.Count)
+                .And.ContainItemsInOrderUsingComparer(expectedResult, new TaxEqualityComparer());
         }
     }
 }

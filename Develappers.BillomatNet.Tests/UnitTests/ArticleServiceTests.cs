@@ -10,8 +10,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Queries;
+using Develappers.BillomatNet.Tests.UnitTests.Comparer;
 using Develappers.BillomatNet.Types;
 using FakeItEasy;
+using FluentAssertions;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
@@ -64,6 +66,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 SalesPrice4 = 0f,
                 SalesPrice5 = 0f,
                 CurrencyCode = "EUR",
+                TaxId = 21281,
                 PurchasePrice = 1.2f,
                 PurchasePriceNetGross = NetGrossType.Gross
             };
@@ -78,7 +81,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            DomainAssert.Equal(expected, result);
+            result.Should().BeEquivalentUsingComparerTo(expected, new ArticleEqualityComparer());
         }
 
         [Fact]
@@ -360,10 +363,11 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, expectedRequestQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            Assert.Equal(32, result.TotalItems);
-            Assert.Equal(2, result.Page);
-            Assert.Equal(10, result.ItemsPerPage);
-            result.List.AssertWith(expectedResult, DomainAssert.Equal);
+            result.TotalItems.Should().Be(32);
+            result.ItemsPerPage.Should().Be(10);
+            result.Page.Should().Be(2);
+            result.List.Should().HaveCount(expectedResult.Count)
+                .And.ContainItemsInOrderUsingComparer(expectedResult, new ArticleEqualityComparer());
         }
     }
 }

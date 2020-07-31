@@ -98,12 +98,12 @@ namespace Develappers.BillomatNet
             throw new NotImplementedException();
         }
 
-        Task<Client> IEntityService<Client, ClientFilter>.CreateAsync(Client model, CancellationToken token)
+        Task<Client> IEntityService<Client, ClientFilter>.CreateAsync(Client value, CancellationToken token)
         {
             throw new NotImplementedException();
         }
 
-        Task<Client> IEntityService<Client, ClientFilter>.EditAsync(Client model, CancellationToken token)
+        Task<Client> IEntityService<Client, ClientFilter>.EditAsync(Client value, CancellationToken token)
         {
             throw new NotImplementedException();
         }
@@ -164,7 +164,7 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        Task<ClientProperty> IEntityPropertyService<ClientProperty, ClientPropertyFilter>.EditPropertyAsync(ClientProperty model, CancellationToken token)
+        Task<ClientProperty> IEntityPropertyService<ClientProperty, ClientPropertyFilter>.EditPropertyAsync(ClientProperty value, CancellationToken token)
         {
             throw new NotImplementedException();
         }
@@ -172,28 +172,35 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates / Edits a client property.
         /// </summary>
-        /// <param name="model">The client property.</param>
+        /// <param name="value">The client property.</param>
         /// <param name="token">The token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
-        /// The task result contains the new client propery.
+        /// The task result contains the new client property.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<ClientProperty> EditAsync(ClientProperty model, CancellationToken token = default)
+        public async Task<ClientProperty> EditAsync(ClientProperty value, CancellationToken token = default)
         {
-            if (model.ClientId == 0 || model.ClientPropertyId == 0 || model.Value == null)
+            if (value == null)
             {
-                throw new ArgumentException("client or a value of the client is null", nameof(model));
+                throw new ArgumentNullException(nameof(value));
             }
-            if (model.Id != 0)
+
+            if (value.ClientId == 0 || value.ClientPropertyId == 0 || value.Value == null)
             {
-                throw new ArgumentException("invalid client id", nameof(model));
+                throw new ArgumentException("required value of the client invalid", nameof(value));
             }
+
+            if (value.Id != 0)
+            {
+                throw new ArgumentException("invalid id", nameof(value));
+            }
+
             var wrappedModel = new ClientPropertyWrapper
             {
-                ClientProperty = model.ToApi()
+                ClientProperty = value.ToApi()
             };
             try
             {
@@ -203,7 +210,7 @@ namespace Develappers.BillomatNet
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
             {
-                throw new ArgumentException("wrong input parameter", nameof(model), wex);
+                throw new ArgumentException("wrong input parameter", nameof(value), wex);
             }
         }
 
@@ -273,7 +280,7 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates an client tag.
         /// </summary>
-        /// <param name="model">The client tag to create.</param>
+        /// <param name="value">The client tag to create.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -282,19 +289,25 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<ClientTag> CreateAsync(ClientTag model, CancellationToken token = default)
+        public async Task<ClientTag> CreateAsync(ClientTag value, CancellationToken token = default)
         {
-            if (model.ClientId == 0 || model.Name == null)
+            if (value == null)
             {
-                throw new ArgumentException("client tag or a value of the client tag is null", nameof(model));
+                throw new ArgumentNullException(nameof(value));
             }
-            if (model.Id != 0)
+
+            if (value.ClientId == 0 || string.IsNullOrEmpty(value.Name))
             {
-                throw new ArgumentException("invalid model id", nameof(model));
+                throw new ArgumentException("client tag or a value of the client tag is null", nameof(value));
+            }
+
+            if (value.Id != 0)
+            {
+                throw new ArgumentException("invalid model id", nameof(value));
             }
             var wrappedModel = new ClientTagWrapper
             {
-                ClientTag = model.ToApi()
+                ClientTag = value.ToApi()
             };
             var jsonModel = await PostAsync("/api/client-tags", wrappedModel, token);
             return jsonModel.ToDomain();
