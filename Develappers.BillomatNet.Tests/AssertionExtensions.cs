@@ -51,7 +51,6 @@ namespace Develappers.BillomatNet.Tests
             return new AndConstraint<GenericCollectionAssertions<T>>(assertions);
         }
 
-
         public static AndConstraint<ObjectAssertions> BeEquivalentUsingComparerTo<T>(
             this ObjectAssertions assertions,
             T expected,
@@ -81,6 +80,5 @@ namespace Develappers.BillomatNet.Tests
             }
             return new AndConstraint<ObjectAssertions>(assertions);
         }
-
     }
 }

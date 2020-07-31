@@ -35,8 +35,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests.Comparer
                    x.CurrencyCode == y.CurrencyCode &&
                    x.TaxId == y.TaxId &&
                    x.PurchasePrice == y.PurchasePrice &&
-                   x.PurchasePriceNetGross == y.PurchasePriceNetGross
-                ;
+                   x.PurchasePriceNetGross == y.PurchasePriceNetGross;
         }
 
         public int GetHashCode(Article obj)

@@ -54,7 +54,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-
             result.Should().BeEquivalentUsingComparerTo(expected, new TaxEqualityComparer());
         }
 
