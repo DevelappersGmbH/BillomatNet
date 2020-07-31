@@ -259,7 +259,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            DomainAssert.Equal(expectedResult, result);
+            result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoiceCommentEqualityComparer());
         }
 
         [Fact]
