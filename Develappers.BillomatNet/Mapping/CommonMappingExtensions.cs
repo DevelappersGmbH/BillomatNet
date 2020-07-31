@@ -61,9 +61,29 @@ namespace Develappers.BillomatNet.Mapping
         /// </summary>
         /// <param name="value">The nullable DateTime which gets converted.</param>
         /// <returns>The string.</returns>
+        internal static string ToApiDateTime(this DateTime? value)
+        {
+            return value?.ToString("o", CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Converts a DateTime to a string.
+        /// </summary>
+        /// <param name="value">The DateTime which gets converted.</param>
+        /// <returns>The string.</returns>
+        internal static string ToApiDateTime(this DateTime value)
+        {
+            return ((DateTime?)value).ToApiDateTime();
+        }
+
+        /// <summary>
+        /// Converts a nullable DateTime to a string.
+        /// </summary>
+        /// <param name="value">The nullable DateTime which gets converted.</param>
+        /// <returns>The string.</returns>
         internal static string ToApiDate(this DateTime? value)
         {
-            return value?.ToString("yyyy-MM-dd");
+            return value?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
         }
 
         /// <summary>

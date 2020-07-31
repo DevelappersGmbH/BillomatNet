@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - implemented service for CR operations on client property
 - implemented service for R operations on client tags
 - implemented service for CRD operations on one client tag
-- implemented service for R operations on one invoice comment
+- implemented service for CR operations on one invoice comment
 - implemented service for R operations on invoice comments
 
 ### Changed
