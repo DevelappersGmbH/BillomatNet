@@ -10,7 +10,7 @@ namespace Develappers.BillomatNet.Api
 {
     internal class InvoicePaymentList : PagedList<InvoicePayment>
     {
-        [JsonProperty("invoice_payment")]
+        [JsonProperty("invoice-payment")]
         [JsonConverter(typeof(CollectionConverter<InvoicePayment>))]
         public override List<InvoicePayment> List { get; set; }
     }

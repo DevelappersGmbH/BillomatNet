@@ -4,8 +4,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Queries;
+using Develappers.BillomatNet.Types;
 using Xunit;
 using InvoicePayment = Develappers.BillomatNet.Types.InvoicePayment;
 
@@ -24,5 +27,18 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.NotNull(result);
         }
 
+        [Fact]
+        public async Task GetPaymentListAsync_WithQuery()
+        {
+            var result = await SystemUnderTest.GetPaymmentListAsync(new Query<InvoicePayment, InvoicePaymentFilter>().AddFilter(x => x.Type, PaymentType.BankCard));
+            Assert.NotNull(result);
+        }
+
+        [Fact]
+        public async Task GetPaymentByIdAsync()
+        {
+            var result = await SystemUnderTest.GetPaymentByIdAsync(872254);
+            Assert.NotNull(result);
+        }
     }
 }
