@@ -198,7 +198,7 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates / Edits an article property.
         /// </summary>
-        /// <param name="model">The article property.</param>
+        /// <param name="value">The article property.</param>
         /// <param name="token">The token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -207,16 +207,16 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<ArticleProperty> EditPropertyAsync(ArticleProperty model, CancellationToken token = default)
+        public async Task<ArticleProperty> EditPropertyAsync(ArticleProperty value, CancellationToken token = default)
         {
-            if (model == null || model.ArticleId <= 0 || model.ArticlePropertyId <= 0 || model.Value == null)
+            if (value == null || value.ArticleId <= 0 || value.ArticlePropertyId <= 0 || value.Value == null)
             {
-                throw new ArgumentException("any parameter was not set", nameof(model));
+                throw new ArgumentException("any parameter was not set", nameof(value));
             }
 
             var wrappedModel = new ArticlePropertyWrapper
             {
-                ArticleProperty = model.ToApi()
+                ArticleProperty = value.ToApi()
             };
             try
             {
@@ -226,7 +226,7 @@ namespace Develappers.BillomatNet
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
             {
-                throw new ArgumentException("wrong input parameter", nameof(model), wex);
+                throw new ArgumentException("wrong input parameter", nameof(value), wex);
             }
         }
 

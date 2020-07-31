@@ -24,7 +24,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         public async Task GetFilteredInvoices()
         {
             var result = await SystemUnderTest.GetListAsync(
-                new Query<Invoice, InvoiceFilter>().AddFilter(x => x.Status, InvoiceStatus.Draft));
+                new Query<Invoice, InvoiceFilter>().AddFilter(x => x.Status, new List<InvoiceStatus> { InvoiceStatus.Draft } ));
             Assert.True(result.List.Count > 0);
         }
 

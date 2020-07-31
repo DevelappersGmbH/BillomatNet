@@ -35,5 +35,12 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             var result = await SystemUnderTest.GetCommentByIdAsync(4662801);
             Assert.NotNull(result);
         }
+
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
+        public async Task CreateComment()
+        {
+            var result = await SystemUnderTest.CreateCommentAsync(new InvoiceComment { InvoiceId = 7506691, Comment = "Test Comment" });
+            Assert.NotNull(result);
+        }
     }
 }

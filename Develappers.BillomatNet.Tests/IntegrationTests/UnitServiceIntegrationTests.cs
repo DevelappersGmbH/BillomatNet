@@ -45,7 +45,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetFilteredUnitsNotAuthorized()
         {
-            Configuration.ApiKey = "";
+            Configuration.ApiKey = "dfgdfgd";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetListAsync(
                 new Query<Unit, UnitFilter>().AddFilter(x => x.Name, "Stunde")));
         }

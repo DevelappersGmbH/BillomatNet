@@ -8,8 +8,10 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
+using Develappers.BillomatNet.Tests.UnitTests.Comparer;
 using Develappers.BillomatNet.Types;
 using FakeItEasy;
+using FluentAssertions;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
@@ -60,9 +62,9 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, null, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            Assert.Equal(3, result.TotalItems);
-
-            result.List.AssertWith(expectedResult, DomainAssert.Equal);
+            result.List.Should()
+                .HaveCount(expectedResult.Count)
+                .And.ContainItemsInOrderUsingComparer(expectedResult, new UnitEqualityComparer());
         }
 
         [Fact]
