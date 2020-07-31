@@ -154,6 +154,10 @@ namespace Develappers.BillomatNet.Mapping
             return s_invoiceCommentMapper.ApiToDomain(value);
         }
 
+        internal static Api.InvoiceComment ToApi(this InvoiceComment value)
+        {
+            return s_invoiceCommentMapper.DomainToApi(value);
+        }
         internal static Types.PagedList<InvoicePayment> ToDomain(this InvoicePaymentListWrapper value)
         {
             return s_invoicePaymentMapper.ApiToDomain(value);

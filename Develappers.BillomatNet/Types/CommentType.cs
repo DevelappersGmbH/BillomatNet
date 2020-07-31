@@ -12,6 +12,6 @@ namespace Develappers.BillomatNet.Types
         Comment, Create, Copy, CreateFromOffer, CreateFromInvoice, CreateFromRecurring,
         Status, Payment, PaymentError, DeletePayment, Mail, Letter, Fax,
         Sign, SignMail, Cancel, ErrorMail, CreateCreditNote,
-        ReminderCreate, ReminderStatus, ReminderMail, ReminderErrorMail, RemidnerLetter, ReminderFax, ReminderSign, ReminderSignMail, ReminderCancel, ReminderDelete
+        ReminderCreate, ReminderStatus, ReminderMail, ReminderErrorMail, ReminderLetter, ReminderFax, ReminderSign, ReminderSignMail, ReminderCancel, ReminderDelete
     }
 }
