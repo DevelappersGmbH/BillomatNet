@@ -62,7 +62,23 @@ namespace Develappers.BillomatNet.Mapping
 
         public Api.InvoiceComment DomainToApi(InvoiceComment value)
         {
-            throw new NotImplementedException();
+            if (value ==null)
+            {
+                return null;
+            }
+            return new Api.InvoiceComment
+            {
+                Id = value.Id.ToString(),
+                Created = value.Created.ToApiDateTime(),
+                Comment = value.Comment,
+                ActionKey = value.ActionKey.ToApiValue(),
+                Public = value.Public.ToString(),
+                ByClient = value.ByClient.ToString(),
+                UserId = value.UserId.ToString(),
+                EmailId = value.EmailId.ToString(),
+                ClientId = value.ClientId.ToString(),
+                InvoiceId = value.InvoiceId.ToString()
+            };
         }
     }
 }

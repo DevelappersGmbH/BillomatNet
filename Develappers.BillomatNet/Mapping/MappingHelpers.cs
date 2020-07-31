@@ -229,7 +229,7 @@ namespace Develappers.BillomatNet.Mapping
                 case "REMINDER_ERROR_MAIL":
                     return CommentType.ReminderErrorMail;
                 case "REMINDER_LETTER":
-                    return CommentType.RemidnerLetter;
+                    return CommentType.ReminderLetter;
                 case "REMINDER_FAX":
                     return CommentType.ReminderFax;
                 case "REMINDER_SIGN":
@@ -242,6 +242,69 @@ namespace Develappers.BillomatNet.Mapping
                     return CommentType.ReminderDelete;
                 default:
                     return CommentType.Create;
+            }
+        }
+
+        internal static string ToApiValue(this CommentType value)
+        {
+            switch (value)
+            {
+                case CommentType.Create:
+                    return "CREATE";
+                case CommentType.Copy:
+                    return "COPY";
+                case CommentType.CreateFromOffer:
+                    return "CREATE_FROM_OFFER";
+                case CommentType.CreateFromInvoice:
+                    return "CREATE_FROM_INVOICE";
+                case CommentType.CreateFromRecurring:
+                    return "CREATE_FROM_REURRING";
+                case CommentType.Status:
+                    return "STATUS";
+                case CommentType.Payment:
+                    return "PAYMENT";
+                case CommentType.PaymentError:
+                    return "PAYMENT_ERROR";
+                case CommentType.DeletePayment:
+                    return "DELETE_PAYMENT";
+                case CommentType.Mail:
+                    return "MAIL";
+                case CommentType.Letter:
+                    return "LETTER";
+                case CommentType.Fax:
+                    return "FAX";
+                case CommentType.Sign:
+                    return "SIGN";
+                case CommentType.SignMail:
+                    return "SIGN_MAIL";
+                case CommentType.Cancel:
+                    return "CANCEL";
+                case CommentType.ErrorMail:
+                    return "ERROR_MAIL";
+                case CommentType.CreateCreditNote:
+                    return "CREATE_CREDIT_NOTE";
+                case CommentType.ReminderCreate:
+                    return "REMINDER_CREATE";
+                case CommentType.ReminderStatus:
+                    return "REMINDER_STATUS";
+                case CommentType.ReminderMail:
+                    return "REMINDER_MAIL";
+                case CommentType.ReminderErrorMail:
+                    return "REMINDER_ERROR_MAIL";
+                case CommentType.ReminderLetter:
+                    return "REMINDER_LETTER";
+                case CommentType.ReminderFax:
+                    return "REMINDER_FAX";
+                case CommentType.ReminderSign:
+                    return "REMINDER_SIGN";
+                case CommentType.ReminderSignMail:
+                    return "REMINDER_SIGN_MAIL";
+                case CommentType.ReminderCancel:
+                    return "REMINDER_CANCEL";
+                case CommentType.ReminderDelete:
+                    return "REMINDER_DELETE";
+                default:
+                    return "COMMENT";
             }
         }
     }
