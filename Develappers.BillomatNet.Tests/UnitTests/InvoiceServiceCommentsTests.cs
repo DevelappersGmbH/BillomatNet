@@ -10,8 +10,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Queries;
+using Develappers.BillomatNet.Tests.UnitTests.Comparer;
 using Develappers.BillomatNet.Types;
 using FakeItEasy;
+using FluentAssertions;
 using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
@@ -84,7 +86,9 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.List.AssertWith(expectedResult, DomainAssert.Equal);
+            result.List.Should()
+                .HaveCount(expectedResult.Count)
+                .And.ContainItemsInOrderUsingComparer(expectedResult, new InvoiceCommentEqualityComparer());
         }
 
         [Fact]
@@ -176,7 +180,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            DomainAssert.Equal(expectedResult, result);
+            result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoiceCommentEqualityComparer());
         }
 
         [Fact]
