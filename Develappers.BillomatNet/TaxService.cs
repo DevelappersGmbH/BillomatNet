@@ -84,6 +84,11 @@ namespace Develappers.BillomatNet
         /// </returns>
         public async Task DeleteAsync(int id, CancellationToken token = default)
         {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid tax id", nameof(id));
+            }
+
             await DeleteAsync($"/api/taxes/{id}", token).ConfigureAwait(false);
         }
 
