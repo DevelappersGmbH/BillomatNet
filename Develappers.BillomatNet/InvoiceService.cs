@@ -440,7 +440,7 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates an invoice comment.
         /// </summary>
-        /// <param name="model">The invoice comment.</param>
+        /// <param name="value">The invoice comment.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -449,19 +449,19 @@ namespace Develappers.BillomatNet
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<InvoiceComment> CreateCommentAsync(InvoiceComment model, CancellationToken token = default)
+        public async Task<InvoiceComment> CreateCommentAsync(InvoiceComment value, CancellationToken token = default)
         {
-            if (model == null)
+            if (value == null)
             {
-                throw new ArgumentNullException(nameof(model));
+                throw new ArgumentNullException(nameof(value));
             }
-            if (model.InvoiceId == 0 || string.IsNullOrEmpty(model.Comment) || model.Id != 0)
+            if (value.InvoiceId == 0 || string.IsNullOrEmpty(value.Comment) || value.Id != 0)
             {
-                throw new ArgumentException("invalid property values for invoice comment", nameof(model));
+                throw new ArgumentException("invalid property values for invoice comment", nameof(value));
             }
             var wrappedModel = new InvoiceCommentWrapper
             {
-                InvoiceComment = model.ToApi()
+                InvoiceComment = value.ToApi()
             };
             try
             {
@@ -471,7 +471,7 @@ namespace Develappers.BillomatNet
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
             {
-                throw new ArgumentException("wrong input parameter", nameof(model), wex);
+                throw new ArgumentException("wrong input parameter", nameof(value), wex);
             }
         }
     }
