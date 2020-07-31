@@ -468,7 +468,29 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         public async Task<Types.PagedList<InvoicePayment>> GetPaymmentListAsync(Query<InvoicePayment, InvoicePaymentFilter> query, CancellationToken token = default)
         {
-            var jsonModel = await GetListAsync<InvoicePaymentListWrapper>("/api/invoices", QueryString.For(query), token).ConfigureAwait(false);
+            var jsonModel = await GetListAsync<InvoicePaymentListWrapper>("/api/invoice-payments", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Retrieves an invoice payment by it's ID.
+        /// </summary>
+        /// <param name="id">The ID.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the invoice payment.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<InvoicePayment> GetPaymentByIdAsync(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid invoice comment id", nameof(id));
+            }
+            var jsonModel = await GetItemByIdAsync<InvoicePaymentWrapper>($"/api/invoice-payments/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
     }

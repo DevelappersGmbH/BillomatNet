@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Api
 {
-    internal class InvoicePaymentListWrapper
+    internal class InvoicePaymentListWrapper : PagedListWrapper<InvoicePaymentList>
     {
         [JsonProperty("invoice_payments")]
         public override InvoicePaymentList Item { get; set; }
