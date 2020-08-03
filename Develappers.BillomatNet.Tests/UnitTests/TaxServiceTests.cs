@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class TaxServiceTests : UnitTestBase<TaxService>
     {
         [Fact]
@@ -242,6 +244,66 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             result.List.Should()
                 .HaveCount(expectedResult.Count)
                 .And.ContainItemsInOrderUsingComparer(expectedResult, new TaxEqualityComparer());
+        }
+
+        [Fact]
+        public async Task DeleteTax_WithCorrectParameters_ShouldSucceed()
+        {
+            const int id = 8;
+            const string expectedUri = "/api/taxes/8";
+
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(string.Empty));
+
+            var sut = GetSystemUnderTest(http);
+
+            await sut.DeleteAsync(id);
+
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task DeleteTax_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/taxes/1";
+            const int id = 1;
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.DeleteAsync(id));
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task DeleteTax_WithInvalidId_ShouldThrowNotFoundException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/taxes/1";
+            const int id = 1;
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotFoundException);
+
+            await Assert.ThrowsAsync<NotFoundException>(() => sut.DeleteAsync(id));
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task DeleteTax_WithInvalidInputValue_ShouldThrowArgumentException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.DeleteAsync(0));
         }
     }
 }
