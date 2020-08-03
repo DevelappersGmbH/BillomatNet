@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
+using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Queries
@@ -19,11 +20,11 @@ namespace Develappers.BillomatNet.Queries
             }
             if (filter.From != null)
             {
-                filters.Add($"from={filter.From.DateTimeToDateString()}");
+                filters.Add($"from={filter.From.ToApiDate()}");
             }
             if (filter.From != null)
             {
-                filters.Add($"to={filter.To.DateTimeToDateString()}");
+                filters.Add($"to={filter.To.ToApiDate()}");
             }
             if (filter.Type != null)
             {
