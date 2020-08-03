@@ -78,7 +78,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 TaxRate = taxes.Rate,
             };
 
-            var itemResult = await SystemUnderTest.CreateAsync(item);
+            var itemResult = await SystemUnderTest.CreateItemAsync(item);
             Assert.NotNull(itemResult);
 
             await SystemUnderTest.DeleteAsync(invoiceResult.Id);
@@ -100,7 +100,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         public async Task CreateInvoiceItemWhenArgumentException()
         {
             var item = new InvoiceItem();
-            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(item));
+            await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateItemAsync(item));
         }
 
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
@@ -112,7 +112,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 InvoiceId = 7458050
             };
 
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.CreateAsync(item));
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.CreateItemAsync(item));
         }
 
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
@@ -123,7 +123,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 InvoiceId = 7458050
             };
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateAsync(item));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.CreateItemAsync(item));
         }
 
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
@@ -172,7 +172,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 TaxRate = taxes.Rate,
             };
 
-            var itemResult = await SystemUnderTest.CreateAsync(item);
+            var itemResult = await SystemUnderTest.CreateItemAsync(item);
             Assert.NotNull(itemResult);
 
             var editedItem = new InvoiceItem
@@ -189,7 +189,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 TaxRate = taxes.Rate,
             };
 
-            var editedItemResult = await SystemUnderTest.EditAsync(editedItem);
+            var editedItemResult = await SystemUnderTest.EditItemAsync(editedItem);
             Assert.Equal(2.0f, editedItemResult.UnitPrice);
 
             await SystemUnderTest.DeleteAsync(invoiceResult.Id);
@@ -200,7 +200,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         {
             var item = new InvoiceItem { };
 
-            var ex = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditAsync(item));
+            var ex = await Assert.ThrowsAsync<ArgumentException>(() => SystemUnderTest.EditItemAsync(item));
         }
 
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
@@ -214,7 +214,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 InvoiceId = 1
             };
 
-            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditAsync(item));
+            var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.EditItemAsync(item));
         }
 
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
@@ -226,7 +226,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 InvoiceId = 1
             };
 
-            var ex = await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.EditAsync(item));
+            var ex = await Assert.ThrowsAsync<NotFoundException>(() => SystemUnderTest.EditItemAsync(item));
         }
 
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
@@ -285,7 +285,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 TaxRate = taxes.Rate,
             };
 
-            var invItemResult = await SystemUnderTest.CreateAsync(invoiceItem);
+            var invItemResult = await SystemUnderTest.CreateItemAsync(invoiceItem);
 
             await SystemUnderTest.DeleteInvoiceItemAsync(invItemResult.Id);
             Assert.Null(await SystemUnderTest.GetItemByIdAsync(invItemResult.Id));

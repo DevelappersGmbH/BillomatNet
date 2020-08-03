@@ -30,7 +30,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetPaymentListAsync_WithQuery()
         {
-            var result = await SystemUnderTest.GetPaymmentListAsync(new Query<InvoicePayment, InvoicePaymentFilter>().AddFilter(x => x.Type, new List<PaymentType> { PaymentType.BankCard }));
+            var result = await SystemUnderTest.GetPaymentListAsync(new Query<InvoicePayment, InvoicePaymentFilter>().AddFilter(x => x.Type, new List<PaymentType> { PaymentType.BankCard }));
             Assert.NotNull(result);
         }
 
