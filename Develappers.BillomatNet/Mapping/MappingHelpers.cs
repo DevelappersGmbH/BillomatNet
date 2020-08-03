@@ -305,6 +305,34 @@ namespace Develappers.BillomatNet.Mapping
                     return "REMINDER_DELETE";
                 default:
                     return "COMMENT";
+             }
+        }
+        internal static PaymentType ToPaymentType(this string value)
+        {
+            switch (value)
+            {
+                case "CREDIT_NOTE":
+                    return PaymentType.CreditNote;
+                case "BANK_CARD":
+                    return PaymentType.BankCard;
+                case "BANK_TRANSFER":
+                    return PaymentType.BankTransfer;
+                case "DEBIT":
+                    return PaymentType.Debit;
+                case "CASH":
+                    return PaymentType.Cash;
+                case "CHECK":
+                    return PaymentType.Check;
+                case "PAYPAL":
+                    return PaymentType.PayPal;
+                case "CREDIT_CARD":
+                    return PaymentType.CreditCard;
+                case "COUPON":
+                    return PaymentType.Coupon;
+                case "MISC":
+                    return PaymentType.Misc;
+                default:
+                    return PaymentType.InvoiceCorrection;
             }
         }
     }

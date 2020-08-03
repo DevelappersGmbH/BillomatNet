@@ -9,9 +9,16 @@ namespace Develappers.BillomatNet.Types
     /// </summary>
     public enum PaymentType
     {
-        Cash,
+        InvoiceCorrection,
+        CreditNote,
+        BankCard,
         BankTransfer,
-        PayPal
-        // TODO add missing
+        Debit,
+        Cash,
+        Check,
+        PayPal,
+        CreditCard,
+        Coupon,
+        Misc
     }
 }
