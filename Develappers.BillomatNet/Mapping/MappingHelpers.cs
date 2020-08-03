@@ -104,28 +104,6 @@ namespace Develappers.BillomatNet.Mapping
         }
 
         /// <summary>
-        /// Converts the PaymentType enum to string
-        /// </summary>
-        /// <param name="value">The enum</param>
-        /// <returns>
-        /// The string or an exception if the value doesn't match any case
-        /// </returns>
-        internal static string ToApiValue(this PaymentType value)
-        {
-            switch (value)
-            {
-                case PaymentType.Cash:
-                    return "CASH";
-                case PaymentType.BankTransfer:
-                    return "BANK_TRANSFER";
-                case PaymentType.PayPal:
-                    return "PAYPAL";
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
-            }
-        }
-
-        /// <summary>
         /// Converts the InvoiceStatus enum to string
         /// </summary>
         /// <param name="value">The enum</param>
@@ -333,6 +311,44 @@ namespace Develappers.BillomatNet.Mapping
                     return PaymentType.Misc;
                 default:
                     return PaymentType.InvoiceCorrection;
+            }
+        }
+
+        /// <summary>
+        /// Converts the PaymentType enum to string
+        /// </summary>
+        /// <param name="value">The enum</param>
+        /// <returns>
+        /// The string or an exception if the value doesn't match any case
+        /// </returns>
+        internal static string ToApiValue(this PaymentType value)
+        {
+            switch (value)
+            {
+                case PaymentType.InvoiceCorrection:
+                    return "INVOICE_CORRETCITONS";
+                case PaymentType.CreditNote:
+                    return "CREDIT_NOTE";
+                case PaymentType.BankCard:
+                    return "BANK_CARD";
+                case PaymentType.BankTransfer:
+                    return "BANK_TRANSFER";
+                case PaymentType.Debit:
+                    return "DEBIT";
+                case PaymentType.Cash:
+                    return "CASH";
+                case PaymentType.Check:
+                    return "CHECK";
+                case PaymentType.PayPal:
+                    return "PAYPAL";
+                case PaymentType.CreditCard:
+                    return "CREDIT_CARD";
+                case PaymentType.Coupon:
+                    return "COUPON";
+                case PaymentType.Misc:
+                    return "MISC";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
             }
         }
     }
