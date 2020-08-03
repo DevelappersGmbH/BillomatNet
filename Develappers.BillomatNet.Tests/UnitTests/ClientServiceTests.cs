@@ -15,13 +15,13 @@ namespace Develappers.BillomatNet.Tests.UnitTests
     public class ClientServiceTests : UnitTestBase<ClientService>
     {
         [Fact]
-        public async Task GetClientById_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        public async Task GetById_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
         {
             const int id = 485054;
             const string expectedUri = "/api/clients/485054";
 
             var http = A.Fake<IHttpClient>();
-            A.CallTo(() => http.GetAsync(A<Uri>.Ignored, A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
                 .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
 
             var sut = GetSystemUnderTest(http);
@@ -50,7 +50,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
 
         [Fact]
-        public async Task GetCustomerById_WithValidData_ShouldReturnCorrectValues()
+        public async Task GetById_WithValidData_ShouldReturnCorrectValues()
         {
             const string httpResult =
                 "{\"client\":{\"id\":\"485054\",\"created\":\"2015-02-23T09:52:05+01:00\",\"updated\":\"2018-04-17T15:16:01+02:00\",\"archived\":\"0\",\"dig_exclude\":\"0\",\"client_number\":\"KD1\",\"number\":\"1\",\"number_pre\":\"KD\",\"number_length\":\"0\",\"name\":\"Hallo GmbH\",\"salutation\":\"Herr\",\"first_name\":\"Peter\",\"last_name\":\"Acme\",\"street\":\"Acme Str. 12\",\"zip\":\"12345\",\"city\":\"M\\u00fcnchen\",\"state\":\"Sachsen\",\"country_code\":\"DE\",\"address\":\"Hallo GmbH\\nHerr Peter Acme\\nAcme Str. 12\\n12345 M\\u00fcnchen\",\"phone\":\"012312341234\",\"fax\":\"012312341235\",\"mobile\":\"012312341236\",\"email\":\"testemailvonfirma@-acme.com\",\"www\":\"www.acme.com\",\"tax_number\":\"210/211/212\",\"vat_number\":\"DE1234567\",\"bank_account_owner\":\"Acme Company\",\"bank_number\":\"\",\"bank_name\":\"Postbank\",\"bank_account_number\":\"\",\"bank_swift\":\"PBNKDEFF\",\"bank_iban\":\"DE1234567\",\"currency_code\":\"EUR\",\"enable_customerportal\":\"1\",\"customerportal_url\":\"https:\\/\\/develappersdev.billomat.net\\/customerportal\\/auth\\/autologin\\/entityId\\/485054?hash=bf6b673abe78a5ddbab30908d5c7bae3\",\"default_payment_types\":\"\",\"sepa_mandate\":\"\",\"sepa_mandate_date\":\"\",\"locale\":\"\",\"tax_rule\":\"COUNTRY\",\"net_gross\":\"NET\",\"price_group\":\"2\",\"debitor_account_number\":\"\",\"reduction\":\"0\",\"discount_rate_type\":\"SETTINGS\",\"discount_rate\":\"2\",\"discount_days_type\":\"SETTINGS\",\"discount_days\":\"7\",\"due_days_type\":\"SETTINGS\",\"due_days\":\"5\",\"reminder_due_days_type\":\"SETTINGS\",\"reminder_due_days\":\"7\",\"offer_validity_days_type\":\"SETTINGS\",\"offer_validity_days\":\"28\",\"dunning_run\":\"1\",\"note\":\"Notizen\nNotizen\",\"revenue_gross\":\"30319.68\",\"revenue_net\":\"25489.53\",\"customfield\":\"\",\"client-property-values\":{\"client-property-value\":[{\"id\":\"4139983\",\"client_id\":\"485054\",\"client_property_id\":\"7804\",\"type\":\"CHECKBOX\",\"name\":\"Stammkunde\",\"value\":\"\",\"customfield\":\"\"},{\"id\":\"4776942\",\"client_id\":\"485054\",\"client_property_id\":\"13027\",\"type\":\"TEXTFIELD\",\"name\":\"TextField\",\"value\":\"\",\"customfield\":\"\"},{\"id\":\"4777078\",\"client_id\":\"485054\",\"client_property_id\":\"13028\",\"type\":\"TEXTAREA\",\"name\":\"TextArea\",\"value\":\"\",\"customfield\":\"\"}]}}}";
