@@ -9,6 +9,7 @@ namespace Develappers.BillomatNet.Types
     /// </summary>
     public enum PaymentType
     {
+        InvoiceCorrection,
         CreditNote,
         BankCard,
         BankTransfer,

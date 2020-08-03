@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
@@ -166,6 +165,135 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             result.List.Should()
                 .HaveCount(expectedResult.Count)
                 .And.ContainItemsInOrderUsingComparer(expectedResult, new InvoicePaymentEqualityComparer());
+        }
+
+        [Fact]
+        public async Task GetList_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        {
+            // arrange
+            var expectedRequestUri = new Uri("/api/invoice-payments", UriKind.Relative);
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, null, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            var sut = GetSystemUnderTest(http);
+
+            //act and assert
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.GetPaymentListAsync());
+            A.CallTo(() => http.GetAsync(expectedRequestUri, null, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task GetList_WithNonMatchingFilter_ShouldReturnEmptyList()
+        {
+            //arrange
+            var expectedRequestUri = new Uri("/api/invoice-payments", UriKind.Relative);
+            const string responseBody = "{\"invoice-payments\":{\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"0\"}}";
+            const string expectedRequestQuery = "invoice_id=1322226&per_page=100&page=1";
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedRequestQuery, A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(responseBody));
+
+            var sut = GetSystemUnderTest(http);
+
+            //act
+            var query = new Query<InvoicePayment, InvoicePaymentFilter>().AddFilter(x => x.InvoiceId, 1322226);
+            var result = await sut.GetPaymmentListAsync(query);
+
+            //assert
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedRequestQuery, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+
+            Assert.Equal(0, result.TotalItems);
+        }
+
+        [Fact]
+        public async Task GetById_WithValidInputValue_ShouldReturnCorrectValue()
+        {
+            //arrange
+            const int id = 872254;
+            var expectedRequestUri = new Uri($"/api/invoice-payments/{id}", UriKind.Relative);
+            const string responseBody = "{\"invoice-payment\":{\"id\":\"872254\",\"created\":\"2015-06-04T09:51:54+02:00\",\"invoice_id\":\"1220304\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"-17\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"\",\"customfield\":\"\"}}";
+            var expectedResult = new InvoicePayment
+            {
+                Id = 872254,
+                Created = DateTime.Parse("2015-06-04T09:51:54+02:00", CultureInfo.InvariantCulture),
+                InvoiceId = 1220304,
+                UserId = 52821,
+                Date = DateTime.Parse("2015-05-04", CultureInfo.InvariantCulture),
+                Amount = -17f,
+                Comment = "",
+                TransactionPurpose = "",
+                CurrencyCode = "",
+                Quote = 1,
+                MarkInvoiceAsPaid = true
+            };
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(responseBody));
+
+            var sut = GetSystemUnderTest(http);
+
+            //act
+            var result = await sut.GetPaymentByIdAsync(id);
+
+            //assert
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+
+            result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoicePaymentEqualityComparer());
+        }
+
+        [Fact]
+        public async Task GetById_WithInvalidInputData_ShouldThrowArgumentException()
+        {
+            // arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            //act and assert
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.GetPaymentByIdAsync(0));
+        }
+
+        [Fact]
+        public async Task GetById_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        {
+            // arrange
+            const int id = 1;
+            var expectedRequestUri = new Uri($"/api/invoice-payments/{id}", UriKind.Relative);
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            var sut = GetSystemUnderTest(http);
+
+            //act and assert
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.GetPaymentByIdAsync(id));
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task GetById_WithInvalidId_ShouldReturnNull()
+        {
+            // arrange
+            const int id = 1;
+            var expectedRequestUri = new Uri($"/api/invoice-payments/{id}", UriKind.Relative);
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotFoundException);
+
+            var sut = GetSystemUnderTest(http);
+
+            //act and assert
+            var result = await sut.GetPaymentByIdAsync(id);
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+
+            result.Should().BeNull();
         }
     }
 }

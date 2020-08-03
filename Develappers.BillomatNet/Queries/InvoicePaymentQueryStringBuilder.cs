@@ -2,9 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Queries
@@ -29,7 +27,8 @@ namespace Develappers.BillomatNet.Queries
             }
             if (filter.Type != null)
             {
-                var filterValue = string.Join(", ", filter.Type).ToUpper();
+                var typeStringList = EnumToString(filter.Type);
+                var filterValue = string.Join(", ", typeStringList).ToUpper();
                 filters.Add($"type={filterValue}");
             }
             if (filter.UserId != null)
@@ -38,5 +37,36 @@ namespace Develappers.BillomatNet.Queries
             }
             return string.Join("&", filters);
         }
+
+        private static List<string> EnumToString(List<PaymentType> values)
+        {
+            var list = new List<string>();
+            foreach (var item in values)
+            {
+                switch (item)
+                {
+                    case PaymentType.InvoiceCorrection:
+                        list.Add("Invoice_Correction");
+                        break;
+                    case PaymentType.CreditNote:
+                        list.Add("Credit_Note");
+                        break;
+                    case PaymentType.BankCard:
+                        list.Add("Bank_Card");
+                        break;
+                    case PaymentType.BankTransfer:
+                        list.Add("Bank_Transfer");
+                        break;
+                    case PaymentType.CreditCard:
+                        list.Add("Credit_Card");
+                        break;
+                    default:
+                        list.Add(item.ToString());
+                        break;
+                }
+            }
+            return list;
+        }
+
     }
 }

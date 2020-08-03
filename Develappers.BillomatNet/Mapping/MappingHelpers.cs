@@ -311,6 +311,8 @@ namespace Develappers.BillomatNet.Mapping
         {
             switch (value)
             {
+                case "CREDIT_NOTE":
+                    return PaymentType.CreditNote;
                 case "BANK_CARD":
                     return PaymentType.BankCard;
                 case "BANK_TRANSFER":
@@ -330,7 +332,7 @@ namespace Develappers.BillomatNet.Mapping
                 case "MISC":
                     return PaymentType.Misc;
                 default:
-                    return PaymentType.CreditNote;
+                    return PaymentType.InvoiceCorrection;
             }
         }
     }
