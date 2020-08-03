@@ -154,7 +154,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .Returns(Task.FromResult(responseBody));
 
             var sut = GetSystemUnderTest(http);
-            var query = new Query<InvoicePayment, InvoicePaymentFilter>().AddFilter(x => x.Type, PaymentType.BankCard);
+            var query = new Query<InvoicePayment, InvoicePaymentFilter>().AddFilter(x => x.Type, new List<PaymentType> { PaymentType.BankCard });
 
             //act
             var result = await sut.GetPaymmentListAsync(query);
