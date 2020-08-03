@@ -567,5 +567,43 @@ namespace Develappers.BillomatNet
             var jsonModel = await GetItemByIdAsync<InvoicePaymentWrapper>($"/api/invoice-payments/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
+
+        /// <summary>
+        /// Creates an invoice payment.
+        /// </summary>
+        /// <param name="value">The invoice payment.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result returns the newly created invoice payment with the ID.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<InvoicePayment> CreatePaymentAsync(InvoicePayment value, CancellationToken token = default)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+            if (value.InvoiceId == 0 || value.Amount <= 0 || value.Id != 0)
+            {
+                throw new ArgumentException("invalid property values for invoice payment", nameof(value));
+            }
+            var wrappedModel = new InvoicePaymentWrapper
+            {
+                InvoicePayment = value.ToApi()
+            };
+            try
+            {
+                var result = await PostAsync("/api/invoice-payments", wrappedModel, token);
+                return result.ToDomain();
+            }
+            catch (WebException wex)
+                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.BadRequest)
+            {
+                throw new ArgumentException("wrong input parameter", nameof(value), wex);
+            }
+        }
     }
 }

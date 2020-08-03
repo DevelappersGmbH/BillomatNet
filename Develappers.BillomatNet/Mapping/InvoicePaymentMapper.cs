@@ -67,7 +67,26 @@ namespace Develappers.BillomatNet.Mapping
 
         public Api.InvoicePayment DomainToApi(InvoicePayment value)
         {
-            throw new NotImplementedException();
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Api.InvoicePayment
+            {
+                Id = value.Id.ToString(),
+                Created = value.Created.ToApiDateTime(),
+                InvoiceId = value.InvoiceId.ToString(),
+                UserId = value.UserId.ToString(),
+                Date = value.Date.ToApiDate(),
+                Amount = value.Amount.ToString(CultureInfo.InvariantCulture),
+                Comment = value.Comment,
+                TransactionPurpose = value.TransactionPurpose,
+                CurrencyCode = value.CurrencyCode,
+                Quote = value.Quote.ToString(CultureInfo.InvariantCulture),
+                Type = value.Type.ToApiValue(),
+                MarkInvoiceAsPaid = value.MarkInvoiceAsPaid.BoolToString()
+            };
         }
     }
 }

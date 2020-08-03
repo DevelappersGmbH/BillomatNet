@@ -295,5 +295,64 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
             result.Should().BeNull();
         }
+
+        [Fact]
+        public async Task Create_WithCorrectValues_ShouldCreateCommentAndReturnCorrectValues()
+        {
+            //arrange
+            var expectedRequestUri = new Uri("/api/invoice-payments", UriKind.Relative);
+            const string expectedRequestBody = "{\"invoice-payment\":{\"id\":\"0\",\"created\":\"0001-01-01T00:00:00.0000000\",\"invoice_id\":\"7506691\",\"user_id\":\"7506691\",\"date\":\"0001-01-01\",\"amount\":\"17\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"BANK_CARD\",\"mark_invoice_as_paid\":\"0\"}}";
+            const string responseBody = "{\"invoice-payment\":{\"id\":\"872254\",\"created\":\"2015-06-04T09:51:54+02:00\",\"invoice_id\":\"7506691\",\"user_id\":\"7506691\",\"date\":\"2015-05-04\",\"amount\":\"17\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"BANK_CARD\",\"customfield\":\"\"}}";
+
+            var model = new InvoicePayment{ Created = DateTime.Parse("0001-01-01T00:00:00.0000000", CultureInfo.InvariantCulture), InvoiceId = 7506691, UserId = 7506691, Date = DateTime.Parse("0001-01-01", CultureInfo.InvariantCulture), Amount = 17f, Comment = "", TransactionPurpose = "", CurrencyCode = "", Quote = 1, Type = PaymentType.BankCard };
+            var expectedResult = new InvoicePayment{ Id = 872254, Created = DateTime.Parse("2015-06-04T09:51:54+02:00", CultureInfo.InvariantCulture), InvoiceId = 7506691, UserId = 7506691, Date = DateTime.Parse("2015-05-04", CultureInfo.InvariantCulture), Amount = 17f, Comment = "", TransactionPurpose = "", CurrencyCode = "", Quote = 1, Type = PaymentType.BankCard, MarkInvoiceAsPaid = true };
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(responseBody));
+
+            var sut = GetSystemUnderTest(http);
+
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
+            //act
+            var result = await sut.CreatePaymentAsync(model);
+
+            // assert
+            A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+
+            result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoicePaymentEqualityComparer());
+        }
+
+        [Fact]
+        public async Task Create_WithInvalidInputValue_ShouldThrowArgumentException()
+        {
+            // arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            // act and assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => sut.CreatePaymentAsync(null));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreatePaymentAsync(new InvoicePayment()));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreatePaymentAsync(new InvoicePayment { Id = 1 }));
+        }
+
+        [Fact]
+        public async Task Create_WithInvalidApiKey_ShouldThrowNotAuthorizedException()
+        {
+            //arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            var expectedRequestUri = new Uri("/api/invoice-payments", UriKind.Relative);
+            A.CallTo(() => http.PostAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            var model = new InvoicePayment { InvoiceId = 1, Amount = 17f };
+
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.CreatePaymentAsync(model));
+            A.CallTo(() => http.PostAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
     }
 }
