@@ -9,17 +9,18 @@ namespace Develappers.BillomatNet.Queries
 {
     internal class ArticleTagQueryStringBuilder : QueryStringBuilder<ArticleTag, Api.ArticleTag, ArticleTagFilter>
     {
-        protected internal override string GetFilterStringFor(ArticleTagFilter filter)
-        {
-            if (filter == null)
-            {
-                return string.Empty;
-            }
+        // TODO: test
+        //protected internal override string GetFilterStringFor(ArticleTagFilter filter)
+        //{
+        //    if (filter == null)
+        //    {
+        //        return string.Empty;
+        //    }
 
-            var filters = new List<string>();
-            filters.Add($"article_id={filter.ArticleId}");
+        //    var filters = new List<string>();
+        //    filters.Add($"article_id={filter.ArticleId}");
 
-            return string.Join("&", filters);
-        }
+        //    return string.Join("&", filters);
+        //}
     }
 }

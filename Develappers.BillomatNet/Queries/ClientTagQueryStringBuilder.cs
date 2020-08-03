@@ -9,17 +9,18 @@ namespace Develappers.BillomatNet.Queries
 {
     internal class ClientTagQueryStringBuilder : QueryStringBuilder<ClientTag, Api.ClientTag, ClientTagFilter>
     {
-        protected internal override string GetFilterStringFor(ClientTagFilter filter)
-        {
-            if (filter == null)
-            {
-                return string.Empty;
-            }
+        // TODO: test
+        //protected internal override string GetFilterStringFor(ClientTagFilter filter)
+        //{
+        //    if (filter == null)
+        //    {
+        //        return string.Empty;
+        //    }
 
-            var filters = new List<string>();
-            filters.Add($"client_id={filter.ClientId}");
+        //    var filters = new List<string>();
+        //    filters.Add($"client_id={filter.ClientId}");
 
-            return string.Join("&", filters);
-        }
+        //    return string.Join("&", filters);
+        //}
     }
 }

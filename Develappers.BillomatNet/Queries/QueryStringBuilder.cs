@@ -3,9 +3,12 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using Develappers.BillomatNet.Helpers;
+using Develappers.BillomatNet.Mapping;
 using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Queries
@@ -26,7 +29,84 @@ namespace Develappers.BillomatNet.Queries
             return string.Join("&", new[] { filter, sort, paging }.AsEnumerable().Where(x => !string.IsNullOrEmpty(x)));
         }
 
-        protected internal abstract string GetFilterStringFor(TFilter filter);
+        protected internal virtual string GetFilterStringForProperty(TFilter filter, string propertyName)
+        {
+            return null;
+        }
+
+        public string GetFilterStringFor(TFilter filter)
+        {
+            if (filter == null)
+            {
+                return string.Empty;
+            }
+
+            var filters = new List<string>();
+            var filterProperties = typeof(TFilter).GetProperties();
+            var apiProperties = typeof(TApiEntity).GetProperties();
+            foreach (var filterProperty in filterProperties)
+            {
+                var filterValue = filterProperty.GetMethod.Invoke(filter, null);
+                if (filterValue == null)
+                {
+                    continue;
+                }
+
+                // first let the child implementation decide
+                var filterString = GetFilterStringForProperty(filter, filterProperty.Name);
+                if (!string.IsNullOrEmpty(filterString))
+                {
+                    filters.Add(filterString);
+                    continue;
+                }
+
+                // the child implementation didn't return any filter - so let's try the standard implementation
+                var apiProperty = apiProperties.Single(x => x.Name == filterProperty.Name);
+                if (apiProperty == null)
+                {
+                    continue;
+                }
+
+                var apiName = apiProperty.GetCustomAttribute<JsonPropertyAttribute>()?.PropertyName;
+                if (apiName == null)
+                {
+                    continue;
+                }
+
+                if (filterProperty.GetMethod.ReturnType == typeof(string))
+                {
+                    filterString = HttpUtility.UrlEncode((string)filterValue);
+                }
+                else if (filterProperty.GetMethod.ReturnType == typeof(bool) || filterProperty.GetMethod.ReturnType == typeof(bool?))
+                {
+                    filterString = ((bool)filterValue).BoolToString();
+                }
+                else if (filterProperty.GetMethod.ReturnType == typeof(int) || filterProperty.GetMethod.ReturnType == typeof(int?))
+                {
+                    filterString = ((int)filterValue).ToString(CultureInfo.InvariantCulture);
+                }
+                else if (filterProperty.GetMethod.ReturnType == typeof(long) || filterProperty.GetMethod.ReturnType == typeof(long?))
+                {
+                    filterString = ((long)filterValue).ToString(CultureInfo.InvariantCulture);
+                }
+                else if (filterProperty.GetMethod.ReturnType == typeof(short) || filterProperty.GetMethod.ReturnType == typeof(short?))
+                {
+                    filterString = ((short)filterValue).ToString(CultureInfo.InvariantCulture);
+                }
+                else if (filterProperty.GetMethod.ReturnType == typeof(byte) || filterProperty.GetMethod.ReturnType == typeof(byte?))
+                {
+                    filterString = ((byte)filterValue).ToString(CultureInfo.InvariantCulture);
+                }
+                else if (filterProperty.GetMethod.ReturnType == typeof(sbyte) || filterProperty.GetMethod.ReturnType == typeof(sbyte?))
+                {
+                    filterString = ((sbyte)filterValue).ToString(CultureInfo.InvariantCulture);
+                }
+
+                filters.Add($"{apiName}={filterString}");
+            }
+
+            return string.Join("&", filters);
+        }
 
         protected internal virtual string GetSortStringFor(List<SortItem<TDomainEntity>> sort)
         {

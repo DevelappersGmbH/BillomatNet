@@ -10,20 +10,21 @@ namespace Develappers.BillomatNet.Queries
 {
     internal class UnitQueryStringBuilder : QueryStringBuilder<Unit, Api.Unit, UnitFilter>
     {
-        protected internal override string GetFilterStringFor(UnitFilter filter)
-        {
-            if (filter == null)
-            {
-                return string.Empty;
-            }
+        // TODO: test
+    //    protected internal override string GetFilterStringFor(UnitFilter filter)
+    //    {
+    //        if (filter == null)
+    //        {
+    //            return string.Empty;
+    //        }
 
-            var filters = new List<string>();
-            if (!string.IsNullOrEmpty(filter.Name))
-            {
-                filters.Add($"?name={HttpUtility.UrlEncode(filter.Name)}");
-            }
+    //        var filters = new List<string>();
+    //        if (!string.IsNullOrEmpty(filter.Name))
+    //        {
+    //            filters.Add($"?name={HttpUtility.UrlEncode(filter.Name)}");
+    //        }
 
-            return string.Join("&", filters);
-        }
+    //        return string.Join("&", filters);
+    //    }
     }
 }

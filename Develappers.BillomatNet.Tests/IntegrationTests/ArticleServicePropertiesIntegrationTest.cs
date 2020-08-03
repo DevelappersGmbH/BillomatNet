@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 using Xunit;
 
@@ -22,7 +23,8 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetArticlePropertyList()
         {
-            var result = await SystemUnderTest.GetPropertyListAsync(CancellationToken.None);
+
+            var result = await SystemUnderTest.GetPropertyListAsync(new Query<ArticleProperty, ArticlePropertyFilter>().AddFilter(x => x.ArticleId, 198532), CancellationToken.None);
 
             Assert.True(result.List.Count > 0);
         }

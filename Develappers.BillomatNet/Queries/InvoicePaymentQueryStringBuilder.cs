@@ -3,40 +3,54 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
-using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Queries
 {
     internal class InvoicePaymentQueryStringBuilder : QueryStringBuilder<InvoicePayment, Api.InvoicePayment, InvoicePaymentFilter>
     {
-        protected internal override string GetFilterStringFor(InvoicePaymentFilter filter)
-        {
-            var filters = new List<string>();
+        //TODO: test
+        //protected internal override string GetFilterStringFor(InvoicePaymentFilter filter)
+        //{
+        //    var filters = new List<string>();
 
-            if (filter.InvoiceId != null)
+        //    if (filter.InvoiceId != null)
+        //    {
+        //        filters.Add($"invoice_id={filter.InvoiceId.Value}");
+        //    }
+        //    if (filter.From != null)
+        //    {
+        //        filters.Add($"from={filter.From.ToApiDate()}");
+        //    }
+        //    if (filter.From != null)
+        //    {
+        //        filters.Add($"to={filter.To.ToApiDate()}");
+        //    }
+        //    if (filter.Type != null)
+        //    {
+        //        var typeStringList = EnumToString(filter.Type);
+        //        var filterValue = string.Join(", ", typeStringList).ToUpper();
+        //        filters.Add($"type={filterValue}");
+        //    }
+        //    if (filter.UserId != null)
+        //    {
+        //        filters.Add($"user_id={filter.UserId.Value}");
+        //    }
+        //    return string.Join("&", filters);
+        //}
+
+
+        protected internal override string GetFilterStringForProperty(InvoicePaymentFilter filter, string propertyName)
+        {
+            switch (propertyName)
             {
-                filters.Add($"invoice_id={filter.InvoiceId.Value}");
+                case nameof(filter.Type):
+                    var typeStringList = EnumToString(filter.Type);
+                    var filterValue = string.Join(", ", typeStringList).ToUpper();
+                    return $"type={filterValue}";
             }
-            if (filter.From != null)
-            {
-                filters.Add($"from={filter.From.ToApiDate()}");
-            }
-            if (filter.From != null)
-            {
-                filters.Add($"to={filter.To.ToApiDate()}");
-            }
-            if (filter.Type != null)
-            {
-                var typeStringList = EnumToString(filter.Type);
-                var filterValue = string.Join(", ", typeStringList).ToUpper();
-                filters.Add($"type={filterValue}");
-            }
-            if (filter.UserId != null)
-            {
-                filters.Add($"user_id={filter.UserId.Value}");
-            }
-            return string.Join("&", filters);
+
+            return base.GetFilterStringForProperty(filter, propertyName);
         }
 
         private static List<string> EnumToString(List<PaymentType> values)
