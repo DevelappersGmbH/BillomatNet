@@ -3,8 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
-using System.Text;
+using Develappers.BillomatNet.Mapping;
 
 namespace Develappers.BillomatNet.Queries
 {
@@ -12,7 +11,7 @@ namespace Develappers.BillomatNet.Queries
     {
         internal static string DateTimeToDateString (this DateTime? value)
         {
-            return string.Join("-", value.Value.Year, value.Value.Month, value.Value.Day);
+            return string.Join("-", value.ToApiDate());
         }
     }
 }
