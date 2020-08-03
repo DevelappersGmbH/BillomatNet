@@ -40,5 +40,14 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             var result = await SystemUnderTest.GetPaymentByIdAsync(872254);
             Assert.NotNull(result);
         }
+
+        [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
+        public async Task CreatePaymentAsync()
+        {
+            var payment = new InvoicePayment { InvoiceId = 7506691, UserId = 7506691, Amount = 17f, Comment = "", TransactionPurpose = "", CurrencyCode = "", Quote = 1, Type = PaymentType.BankCard };
+
+            var result = await SystemUnderTest.CreatePaymentAsync(payment);
+            Assert.NotNull(result);
+        }
     }
 }

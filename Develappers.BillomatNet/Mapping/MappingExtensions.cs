@@ -168,6 +168,11 @@ namespace Develappers.BillomatNet.Mapping
             return s_invoicePaymentMapper.ApiToDomain(value);
         }
 
+        internal static Api.InvoicePayment ToApi(this InvoicePayment value)
+        {
+            return s_invoicePaymentMapper.DomainToApi(value);
+        }
+
         internal static Types.PagedList<Contact> ToDomain(this ContactListWrapper value)
         {
             return s_contactMapper.ApiToDomain(value);
