@@ -78,7 +78,17 @@ namespace Develappers.BillomatNet.Mapping
 
         public Api.InvoiceTag DomainToApi(InvoiceTag value)
         {
-            throw new NotImplementedException();
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Api.InvoiceTag
+            {
+                Id = value.Id.ToString(),
+                InvoiceId = value.InvoiceId.ToString(),
+                Name = value.Name
+            };
         }
     }
 }

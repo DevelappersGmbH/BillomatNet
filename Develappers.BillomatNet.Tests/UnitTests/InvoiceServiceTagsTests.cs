@@ -218,5 +218,63 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
             result.Should().BeNull();
         }
+
+        [Fact]
+        public async Task Create_WithCorrectValues_ShouldCreateCommentAndReturnCorrectValues()
+        {
+            //arrange
+            var expectedRequestUri = new Uri("/api/invoice-tags", UriKind.Relative);
+            const string expectedRequestBody = "{\"invoice-tag\":{\"id\":\"0\",\"invoice_id\":\"3982556\",\"name\":\"Test\"}}";
+            const string responseBody = "{\"invoice-tag\":{\"id\":\"872254\",\"invoice_id\":\"3982556\",\"name\":\"Test\"}}";
+
+            var model = new InvoiceTag { InvoiceId = 3982556, Name = "Test" };
+            var expectedResult = new InvoiceTag { Id = 872254, InvoiceId = 3982556, Name = "Test" };
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(responseBody));
+
+            var sut = GetSystemUnderTest(http);
+
+            //act
+            var result = await sut.CreateTagAsync(model);
+
+            // assert
+            A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+
+            result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoiceTagEqualityComparer());
+        }
+
+        [Fact]
+        public async Task Create_WithInvalidInputValue_ShouldThrowArgumentException()
+        {
+            // arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            // act and assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => sut.CreateTagAsync(null));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreateTagAsync(new InvoiceTag()));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreateTagAsync(new InvoiceTag { Id = 1 }));
+        }
+
+        [Fact]
+        public async Task Create_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        {
+            //arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            var expectedRequestUri = new Uri("/api/invoice-tags", UriKind.Relative);
+            A.CallTo(() => http.PostAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            var model = new InvoiceTag { InvoiceId = 1, Name = "Test" };
+
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.CreateTagAsync(model));
+            A.CallTo(() => http.PostAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
     }
 }
