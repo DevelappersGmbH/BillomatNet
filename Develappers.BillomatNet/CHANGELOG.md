@@ -38,7 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - nothing
 
 ### Fixed
-- nothing
+- converting SupplyDateType for CU operation on invoice
 
 
 ## [0.1.4] - 2020-07-16

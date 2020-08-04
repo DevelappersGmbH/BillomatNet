@@ -162,10 +162,10 @@ namespace Develappers.BillomatNet.Mapping
             switch (value.SupplyDateType)
             {
                 case SupplyDateType.SupplyDate:
-                    supplyDateType = "supply_date";
+                    supplyDateType = "SUPPLY_DATE";
                     break;
                 case SupplyDateType.DeliveryDate:
-                    supplyDateType = "delivery_date";
+                    supplyDateType = "DELIVERY_DATE";
                     break;
                 case null:
                     supplyDateType = "";
