@@ -608,7 +608,6 @@ namespace Develappers.BillomatNet
             }
         }
 
-
         /// <summary>
         /// Retrieves the invoice tag cloud.
         /// </summary>
