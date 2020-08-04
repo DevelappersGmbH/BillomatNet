@@ -16,7 +16,7 @@ namespace Develappers.BillomatNet.Types
         public DateTime Created { get; set; }
         public bool Archived { get; set; }
         public string ClientNumber { get; set; }
-        public string Number { get; set; }
+        public int Number { get; set; }
         public string NumberPre { get; set; }
         public int NumberLength { get; set; }
         public string Name { get; set; }

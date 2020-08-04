@@ -93,6 +93,29 @@ namespace Develappers.BillomatNet.Mapping
             }
         }
 
+        internal static NetGrossSettingsType ToNetGrossSettingsType(this string value)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            switch (value.ToLowerInvariant())
+            {
+                case "net":
+                    return NetGrossSettingsType.Net;
+                case "gross":
+                    return NetGrossSettingsType.Gross;
+                default:
+                    return NetGrossSettingsType.Settings;
+            };
+        }
+
+        internal static string ToApiValue(this NetGrossSettingsType value)
+        {
+            return value.ToString().ToUpperInvariant();
+        }
+
         internal static string ToApiValue(this NetGrossType value)
         {
             return value.ToString().ToUpperInvariant();
@@ -350,6 +373,60 @@ namespace Develappers.BillomatNet.Mapping
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value), value, null);
             }
+        }
+
+        internal static TaxRuleType ToTaxRuleType(this string value)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            switch (value.ToLowerInvariant())
+            {
+                case "tax":
+                    return TaxRuleType.Tax;
+                case "no_tax":
+                    return TaxRuleType.NoTax;
+                default:
+                    return TaxRuleType.Country;
+            }
+        }
+
+        internal static string ToApiValue(this TaxRuleType value)
+        {
+            switch (value)
+            {
+                case TaxRuleType.Tax:
+                    return value.ToString().ToUpperInvariant();
+                case TaxRuleType.NoTax:
+                    return "NO_TAX";
+                default:
+                    return value.ToString().ToUpperInvariant();
+            }
+        }
+
+        internal static DiscountType ToDiscountType(this string value)
+        {
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            switch (value.ToLowerInvariant())
+            {
+                case "absolute":
+                    return DiscountType.Absolute;
+                case "relative":
+                    return DiscountType.Relative;
+                default:
+                    return DiscountType.Settings;
+            }
+        }
+
+        internal static string ToApiValue(this DiscountType value)
+        {
+            return value.ToString().ToUpperInvariant();
         }
     }
 }
