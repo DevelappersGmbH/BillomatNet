@@ -54,6 +54,71 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
+        public async Task GetList_WithValidInputParameters_ShouldReturnCorrectValues()
+        {
+            // arrange
+            var expectedRequestUri = new Uri("/api/invoice-tags", UriKind.Relative);
+            const string expectedQueryString = "invoice_id=3982556&per_page=100&page=1";
+            const string responseBody = "{\"invoice-tags\":{\"invoice-tag\":{\"id\":\"207252\",\"name\":\"Test\",\"invoice_id\":\"3982556\",\"customfield\":\"\"},\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"1\"}}";
+            var query = new Query<InvoiceTag, InvoiceTagFilter>()
+                .AddFilter(x => x.InvoiceId, 3982556);
+            var expectedResult = new List<InvoiceTag>
+            {
+                new InvoiceTag {Id = 207252, Name = "Test", InvoiceId = 3982556}
+            };
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQueryString, A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(responseBody));
+
+            var sut = GetSystemUnderTest(http);
+
+            // act
+            var result = await sut.GetTagListAsync(query);
+
+            // assert
+            result.TotalItems.Should().Be(1);
+            result.Page.Should().Be(1);
+            result.ItemsPerPage.Should().Be(100);
+            result.List.Should().HaveCount(expectedResult.Count)
+                .And.ContainItemsInOrderUsingComparer(expectedResult, new InvoiceTagEqualityComparer());
+        }
+
+        [Fact]
+        public async Task GetList_WithInvalidInputValues_ShouldThrowArgumentException()
+        {
+            //arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            // act and assert
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.GetTagListAsync(null));
+        }
+
+        [Fact]
+        public async Task GetList_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        {
+            // arrange
+            var expectedRequestUri = new Uri($"/api/invoice-tags", UriKind.Relative);
+
+            var query = new Query<InvoiceTag, InvoiceTagFilter>()
+                .AddFilter(x => x.InvoiceId, 3982556);
+
+            var strQuery = "invoice_id=3982556";
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            var sut = GetSystemUnderTest(http);
+
+            // act and assert
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.GetTagListAsync(query));
+            A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
         public async Task GetTagById_WithValidData_ShouldReturnCorrectValues()
         {
             // arrange
@@ -133,37 +198,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .MustHaveHappenedOnceExactly();
 
             result.Should().BeNull();
-        }
-
-        [Fact]
-        public async Task GetList_WithValidInputParameters_ShouldReturnCorrectValues()
-        {
-            // arrange
-            var expectedRequestUri = new Uri("/api/invoice-tags", UriKind.Relative);
-            const string expectedQueryString = "invoice_id=3982556&per_page=100&page=1";
-            const string responseBody = "{\"invoice-tags\":{\"invoice-tag\":{\"id\":\"207252\",\"name\":\"Test\",\"invoice_id\":\"3982556\",\"customfield\":\"\"},\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"1\"}}";
-            var query = new Query<InvoiceTag, InvoiceTagFilter>()
-                .AddFilter(x => x.InvoiceId, 3982556);
-            var expectedResult = new List<InvoiceTag>
-            {
-                new InvoiceTag {Id = 207252, Name = "Test", InvoiceId = 3982556}
-            };
-
-            var http = A.Fake<IHttpClient>();
-            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQueryString, A<CancellationToken>.Ignored))
-                .Returns(Task.FromResult(responseBody));
-
-            var sut = GetSystemUnderTest(http);
-
-            // act
-            var result = await sut.GetTagListAsync(query);
-
-            // assert
-            result.TotalItems.Should().Be(1);
-            result.Page.Should().Be(1);
-            result.ItemsPerPage.Should().Be(100);
-            result.List.Should().HaveCount(expectedResult.Count)
-                .And.ContainItemsInOrderUsingComparer(expectedResult, new InvoiceTagEqualityComparer());
         }
     }
 }
