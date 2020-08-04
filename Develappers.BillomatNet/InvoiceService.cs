@@ -617,7 +617,6 @@ namespace Develappers.BillomatNet
         /// A task that represents the asynchronous operation.
         /// The task result contains the paged list of tag cloud items.
         /// </returns>
-        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         public async Task<Types.PagedList<TagCloudItem>> GetTagcloudAsync(CancellationToken token = default)
