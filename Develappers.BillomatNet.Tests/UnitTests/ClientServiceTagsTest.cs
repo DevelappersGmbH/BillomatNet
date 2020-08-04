@@ -136,7 +136,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             result.Should().BeNull();
         }
 
-        [Fact(Skip = "skipped due to bug #259")]
+        [Fact]
         public async Task GetList_WithValidInputParameters_ShouldReturnCorrectValues()
         {
             // arrange
