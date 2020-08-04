@@ -70,7 +70,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .MustHaveHappenedOnceExactly();
         }
 
-
         [Fact]
         public async Task GetList_WithValidData_ShouldReturnCorrectValues()
         {
@@ -135,7 +134,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
         }
-
 
         [Fact]
         public async Task GetTagById_WithValidData_ShouldReturnCorrectValues()

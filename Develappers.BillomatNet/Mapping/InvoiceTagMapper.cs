@@ -9,7 +9,6 @@ using Develappers.BillomatNet.Api;
 using InvoiceTag = Develappers.BillomatNet.Types.InvoiceTag;
 using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
-
 namespace Develappers.BillomatNet.Mapping
 {
     internal class InvoiceTagMapper : IMapper<Api.InvoiceTag, InvoiceTag>
