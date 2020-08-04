@@ -74,14 +74,14 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             //Assert.Equal(false, result.DigExclude);
             Assert.Equal("KD1", result.ClientNumber);
             //Assert.Equal(1, result.Number);
-            Assert.Equal("KD", result.NumberPrefix);
+            Assert.Equal("KD", result.NumberPre);
             Assert.Equal(0, result.NumberLength);
             Assert.Equal("Hallo GmbH", result.Name);
             Assert.Equal("Herr", result.Salutation);
             Assert.Equal("Peter", result.FirstName);
             Assert.Equal("Acme", result.LastName);
             Assert.Equal("Acme Str. 12", result.Street);
-            Assert.Equal("12345", result.ZipCode);
+            Assert.Equal("12345", result.Zip);
             Assert.Equal("München", result.City);
             Assert.Equal("Sachsen", result.State);
             Assert.Equal("DE", result.CountryCode);
@@ -90,7 +90,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             Assert.Equal("012312341235", result.Fax);
             Assert.Equal("012312341236", result.Mobile);
             Assert.Equal("testemailvonfirma@-acme.com", result.Email);
-            Assert.Equal("www.acme.com", result.Web);
+            Assert.Equal("www.acme.com", result.Www);
             Assert.Equal("210/211/212", result.TaxNumber);
             Assert.Equal("DE1234567", result.VatNumber);
             Assert.Equal("Acme Company", result.BankAccountOwner);

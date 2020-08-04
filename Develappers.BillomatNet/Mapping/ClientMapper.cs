@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Types;
@@ -45,11 +46,9 @@ namespace Develappers.BillomatNet.Mapping
                 FirstName = value.FirstName,
                 LastName = value.LastName,
                 Note = value.Note,
-                Tags = value.Tags.ToStringList(),
-                InvoiceIds = value.InvoiceId.ToIntList(),
-                CreatedAt = value.Created,
-                IsArchived = value.Archived != "0",
-                NumberPrefix = value.NumberPre,
+                Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
+                Archived = value.Archived != "0",
+                NumberPre = value.NumberPre,
                 NumberLength = int.Parse(value.NumberLength),
                 Address = value.Address,
                 ClientNumber = value.ClientNumber,
@@ -70,8 +69,8 @@ namespace Develappers.BillomatNet.Mapping
                 Street = value.Street,
                 TaxNumber = value.TaxNumber,
                 VatNumber = value.VatNumber,
-                Web = value.Www,
-                ZipCode = value.Zip,
+                Www = value.Www,
+                Zip = value.Zip,
                 NetGross = netGrossSettingsType
             };
         }

@@ -28,9 +28,9 @@ namespace Develappers.BillomatNet.Mapping
                 Note = value.Note,
                 Tags = value.Tags.ToStringList(),
                 InvoiceIds = value.InvoiceId.ToIntList(),
-                CreatedAt = value.Created,
-                IsArchived = value.Archived != "0",
-                NumberPrefix = value.NumberPre,
+                Created = value.Created,
+                Archived = value.Archived != "0",
+                NumberPre = value.NumberPre,
                 NumberLength = int.Parse(value.NumberLength),
                 Address = value.Address,
                 ClientNumber = value.ClientNumber,
@@ -51,8 +51,8 @@ namespace Develappers.BillomatNet.Mapping
                 Street = value.Street,
                 TaxNumber = value.TaxNumber,
                 VatNumber = value.VatNumber,
-                Web = value.Www,
-                ZipCode = value.Zip,
+                Www = value.Www,
+                Zip = value.Zip,
                 Plan = value.Plan,
                 Quotas = new QuotaMapper().ApiToDomain(value.Quotas)
             };
