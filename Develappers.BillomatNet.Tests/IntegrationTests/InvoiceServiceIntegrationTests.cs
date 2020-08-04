@@ -100,7 +100,8 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Date = DateTime.Now.Date,
                 Label = label,
                 Quote = 1,
-                InvoiceItems = invoiceItemList
+                InvoiceItems = invoiceItemList,
+                SupplyDateType = SupplyDateType.SupplyDate
             };
 
             var result = await SystemUnderTest.CreateAsync(inv);
