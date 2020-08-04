@@ -6,7 +6,6 @@ using System;
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Types;
 using Client = Develappers.BillomatNet.Types.Client;
 
 namespace Develappers.BillomatNet.Mapping
