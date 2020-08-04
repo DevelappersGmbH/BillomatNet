@@ -156,7 +156,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             var query = new Query<InvoicePayment, InvoicePaymentFilter>().AddFilter(x => x.Type, new List<PaymentType> { PaymentType.BankCard });
 
             //act
-            var result = await sut.GetPaymmentListAsync(query);
+            var result = await sut.GetPaymentListAsync(query);
 
             //assert
             A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
@@ -200,7 +200,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
             //act
             var query = new Query<InvoicePayment, InvoicePaymentFilter>().AddFilter(x => x.InvoiceId, 1322226);
-            var result = await sut.GetPaymmentListAsync(query);
+            var result = await sut.GetPaymentListAsync(query);
 
             //assert
             A.CallTo(() => http.GetAsync(expectedRequestUri, expectedRequestQuery, A<CancellationToken>.Ignored))

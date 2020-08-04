@@ -4,7 +4,7 @@
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
-    public class InvoiceServiceTagsTest : UnitTestBase<ClientService>
+    public class InvoiceServiceTagsTests : UnitTestBase<ClientService>
     {
     }
 }

@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
+    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class UnitServiceTests : UnitTestBase<UnitService>
     {
         [Fact]
