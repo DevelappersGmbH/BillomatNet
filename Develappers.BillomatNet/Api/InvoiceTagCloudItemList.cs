@@ -8,10 +8,10 @@ using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Api
 {
-    internal class InvoiceTagList : PagedList<InvoiceTag>
+    internal class InvoiceTagCloudItemList : PagedList<TagCloudItem>
     {
         [JsonProperty("invoice-tag")]
-        [JsonConverter(typeof(CollectionConverter<InvoiceTag>))]
-        public override List<InvoiceTag> List { get; set; }
+        [JsonConverter(typeof(CollectionConverter<TagCloudItem>))]
+        public override List<TagCloudItem> List { get; set; }
     }
 }
