@@ -10,5 +10,17 @@ namespace Develappers.BillomatNet.Queries
 {
     internal class InvoiceTagQueryStringBuilder : QueryStringBuilder<InvoiceTag, Api.InvoiceTag, InvoiceTagFilter>
     {
+        protected internal override string GetFilterStringFor(InvoiceTagFilter filter)
+        {
+            if (filter == null)
+            {
+                return string.Empty;
+            }
+
+            var filters = new List<string>();
+            filters.Add($"invoice_id={filter.InvoiceId}");
+
+            return string.Join("&", filters);
+        }
     }
 }

@@ -578,7 +578,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("filter has to be set", nameof(query));
             }
 
-            var jsonModel = await GetListAsync<InvoiceTagListWrapper>("/api/invoice-tags", QueryString.For(query), token).ConfigureAwait(false);
+            var jsonModel = await GetListAsync<InvoiceTagListWrapper>("/api/invoice-tags", QueryString.For<Types.InvoiceTag, InvoiceTagFilter>(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
