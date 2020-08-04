@@ -54,7 +54,25 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task GetList_WithValidInputParameters_ShouldReturnCorrectValues()
+        public async Task GetTagCloudList_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        {
+            // arrange
+            var expectedRequestUri = new Uri("/api/invoice-tags", UriKind.Relative);
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, null, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            var sut = GetSystemUnderTest(http);
+
+            //act and assert
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.GetTagcloudAsync());
+            A.CallTo(() => http.GetAsync(expectedRequestUri, null, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+
+        [Fact]
+        public async Task GetList_WithValidData_ShouldReturnCorrectValues()
         {
             // arrange
             var expectedRequestUri = new Uri("/api/invoice-tags", UriKind.Relative);
@@ -104,7 +122,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             var query = new Query<InvoiceTag, InvoiceTagFilter>()
                 .AddFilter(x => x.InvoiceId, 3982556);
 
-            var strQuery = "invoice_id=3982556";
+            var strQuery = "invoice_id=3982556&per_page=100&page=1";
 
             var http = A.Fake<IHttpClient>();
             A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
@@ -117,6 +135,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, strQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
         }
+
 
         [Fact]
         public async Task GetTagById_WithValidData_ShouldReturnCorrectValues()
