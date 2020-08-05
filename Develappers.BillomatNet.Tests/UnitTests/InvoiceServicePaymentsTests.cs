@@ -92,6 +92,82 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
+        public async Task GetList_WithValidInputValue_WithEnumQuery_ShouldReturnCorrectValues()
+        {
+            //arrange
+            var expectedRequestUri = new Uri("/api/invoice-payments", UriKind.Relative);
+            const string responseBody = "{\"invoice-payments\":{\"invoice-payment\":[{\"id\":\"872254\",\"created\":\"2015-06-04T09:51:54+02:00\",\"invoice_id\":\"1220304\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"-17\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"\",\"type\":\"BANK_CARD\",\"customfield\":\"\"},{\"id\":\"872269\",\"created\":\"2015-06-04T10:05:37+02:00\",\"invoice_id\":\"1322225\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"212.33\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"\",\"type\":\"CASH\",\"customfield\":\"\"},{\"id\":\"872282\",\"created\":\"2015-06-04T10:09:55+02:00\",\"invoice_id\":\"1298716\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"495\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"\",\"type\":\"DEBIT\",\"customfield\":\"\"}],\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"3\"}}";
+            var expectedResult = new List<InvoicePayment>
+            {
+                new InvoicePayment
+                {
+                    Id = 872254,
+                    Created = DateTime.Parse("2015-06-04T09:51:54+02:00", CultureInfo.InvariantCulture),
+                    InvoiceId = 1220304,
+                    UserId = 52821,
+                    Date = DateTime.Parse("2015-05-04", CultureInfo.InvariantCulture),
+                    Amount = -17f,
+                    Comment = "",
+                    TransactionPurpose = "",
+                    CurrencyCode = "",
+                    Quote = 1,
+                    MarkInvoiceAsPaid = true,
+                    Type = PaymentType.BankCard
+                },
+                new InvoicePayment
+                {
+                    Id = 872269,
+                    Created = DateTime.Parse("2015-06-04T10:05:37+02:00", CultureInfo.InvariantCulture),
+                    InvoiceId = 1322225,
+                    UserId = 52821,
+                    Date = DateTime.Parse("2015-05-04", CultureInfo.InvariantCulture),
+                    Amount = 212.33f,
+                    Comment = "",
+                    TransactionPurpose = "",
+                    CurrencyCode = "",
+                    Quote = 1,
+                    MarkInvoiceAsPaid = true,
+                    Type = PaymentType.Cash
+                },
+                new InvoicePayment
+                {
+                    Id = 872282,
+                    Created = DateTime.Parse("2015-06-04T10:09:55+02:00", CultureInfo.InvariantCulture),
+                    InvoiceId = 1298716,
+                    UserId = 52821,
+                    Date = DateTime.Parse("2015-05-04", CultureInfo.InvariantCulture),
+                    Amount = 495f,
+                    Comment = "",
+                    TransactionPurpose = "",
+                    CurrencyCode = "",
+                    Quote = 1,
+                    MarkInvoiceAsPaid = true,
+                    Type = PaymentType.Debit
+                }
+            };
+            const string expectedQuery = "type=BANK_CARD,CASH,DEBIT&per_page=100&page=1";
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(responseBody));
+
+            var sut = GetSystemUnderTest(http);
+            var query = new Query<InvoicePayment, InvoicePaymentFilter>()
+                .AddFilter(x => x.Type, new List<PaymentType> { PaymentType.BankCard, PaymentType.Cash, PaymentType.Debit });
+
+            //act
+            var result = await sut.GetPaymentListAsync(query);
+
+            //assert
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+
+            result.List.Should()
+                .HaveCount(expectedResult.Count)
+                .And.ContainItemsInOrderUsingComparer(expectedResult, new InvoicePaymentEqualityComparer());
+        }
+
+        [Fact]
         public async Task GetListWithQuery_WithValidInputValue_ShouldReturnCorrectValues()
         {
             //arrange

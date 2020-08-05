@@ -92,6 +92,78 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
+        public async Task GetList_WithEnumQuery_ShouldReturnCorrectValues()
+        {
+            //arrange
+            var expectedRequestUri = new Uri("/api/invoice-comments", UriKind.Relative);
+            const string responseBody = "{\"invoice-comments\":{\"invoice-comment\":[{\"id\":\"4662801\",\"created\":\"2015-06-04T10:04:54+02:00\",\"comment\":\"Rechnung erstellt.\",\"actionkey\":\"CREATE\",\"public\":\"0\",\"by_client\":\"0\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"\",\"invoice_id\":\"1322225\",\"customfield\":\"\"},{\"id\":\"4662804\",\"created\":\"2015-06-04T10:05:08+02:00\",\"comment\":\"Status geändert von Entwurf nach offen.\",\"actionkey\":\"STATUS\",\"public\":\"0\",\"by_client\":\"0\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"\",\"invoice_id\":\"1322225\",\"customfield\":\"\"},{\"id\":\"4662810\",\"created\":\"2015-06-04T10:05:37+02:00\",\"comment\":\"Zahlung über 212,33 EUR entgegengenommen. Aktueller Status: bezahlt.\",\"actionkey\":\"PAYMENT\",\"public\":\"0\",\"by_client\":\"0\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"\",\"invoice_id\":\"1322225\",\"customfield\":\"\"}],\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"3\"}}";
+            var expectedResult = new List<InvoiceComment>
+            {
+                new InvoiceComment
+                {
+                    Id = 4662801,
+                    Created = DateTime.Parse("2015-06-04T10:04:54+02:00", CultureInfo.InvariantCulture),
+                    Comment = "Rechnung erstellt.",
+                    ActionKey = CommentType.Create,
+                    Public = false,
+                    ByClient = false,
+                    UserId = 52821,
+                    EmailId = null,
+                    ClientId = null,
+                    InvoiceId = 1322225
+                },
+                new InvoiceComment
+                {
+                    Id = 4662804,
+                    Created = DateTime.Parse("2015-06-04T10:05:08+02:00", CultureInfo.InvariantCulture),
+                    Comment = "Status geändert von Entwurf nach offen.",
+                    ActionKey = CommentType.Status,
+                    Public = false,
+                    ByClient = false,
+                    UserId = 52821,
+                    EmailId = null,
+                    ClientId = null,
+                    InvoiceId = 1322225
+                },
+                new InvoiceComment
+                {
+                    Id = 4662810,
+                    Created = DateTime.Parse("2015-06-04T10:05:37+02:00", CultureInfo.InvariantCulture),
+                    Comment = "Zahlung über 212,33 EUR entgegengenommen. Aktueller Status: bezahlt.",
+                    ActionKey = CommentType.Payment,
+                    Public = false,
+                    ByClient = false,
+                    UserId = 52821,
+                    EmailId = null,
+                    ClientId = null,
+                    InvoiceId = 1322225
+                },
+            };
+
+            const string expectedQuery = "invoice_id=1322225&actionkey=CREATE,STATUS,PAYMENT&per_page=100&page=1";
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(responseBody));
+
+            var sut = GetSystemUnderTest(http);
+            var query = new Query<InvoiceComment, InvoiceCommentFilter>()
+                .AddFilter(x => x.InvoiceId, 1322225)
+                .AddFilter(x => x.ActionKey, new List<CommentType> { CommentType.Create, CommentType.Status, CommentType.Payment });
+
+            //act
+            var result = await sut.GetCommentListAsync(query);
+
+            //assert
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+
+            result.List.Should()
+                .HaveCount(expectedResult.Count)
+                .And.ContainItemsInOrderUsingComparer(expectedResult, new InvoiceCommentEqualityComparer());
+        }
+
+        [Fact]
         public async Task GetList_WithInvalidInputValue_ShouldThrowArgumentException()
         {
             //arrange
