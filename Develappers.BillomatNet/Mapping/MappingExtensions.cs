@@ -196,6 +196,11 @@ namespace Develappers.BillomatNet.Mapping
             return s_invoiceTagMapper.ApiToDomain(value);
         }
 
+        internal static Api.InvoiceTag ToApi(this InvoiceTag value)
+        {
+            return s_invoiceTagMapper.DomainToApi(value);
+        }
+
         internal static Types.PagedList<Contact> ToDomain(this ContactListWrapper value)
         {
             return s_contactMapper.ApiToDomain(value);
