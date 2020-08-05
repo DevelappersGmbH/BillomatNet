@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Globalization;
 using Develappers.BillomatNet.Api;
 using Account = Develappers.BillomatNet.Types.Account;
 
@@ -26,7 +27,7 @@ namespace Develappers.BillomatNet.Mapping
                 FirstName = value.FirstName,
                 LastName = value.LastName,
                 Note = value.Note,
-                Created = value.Created,
+                Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
                 Archived = value.Archived != "0",
                 NumberPre = value.NumberPre,
                 NumberLength = int.Parse(value.NumberLength),
