@@ -8,6 +8,6 @@ namespace Develappers.BillomatNet.Types
     {
         public List<string> To { get; set; }
         public List<string> Cc { get; set; }
-        public List<string> Bc { get; set; }
+        public List<string> Bcc { get; set; }
     }
 }

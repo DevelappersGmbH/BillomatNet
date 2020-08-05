@@ -55,7 +55,7 @@ namespace Develappers.BillomatNet.Mapping
             {
                 To = value.Recipients.To,
                 Cc = value.Recipients.Cc,
-                Bc = value.Recipients.Bc
+                Bcc = value.Recipients.Bcc
             };
 
             var attachmentList = new AttachmentsWrapper

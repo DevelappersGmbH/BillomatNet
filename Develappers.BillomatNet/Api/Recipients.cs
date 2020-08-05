@@ -11,9 +11,9 @@ namespace Develappers.BillomatNet.Api
     {
         [JsonProperty("to")]
         public List<string> To { get; set; }
-        [JsonProperty("cc")]
+        [JsonProperty("cc", NullValueHandling = NullValueHandling.Ignore)]
         public List<string> Cc { get; set; }
-        [JsonProperty("bc")]
-        public List<string> Bc { get; set; }
+        [JsonProperty("bcc", NullValueHandling = NullValueHandling.Ignore)]
+        public List<string> Bcc { get; set; }
     }
 }
