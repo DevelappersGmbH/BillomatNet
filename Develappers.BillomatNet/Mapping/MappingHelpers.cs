@@ -108,7 +108,7 @@ namespace Develappers.BillomatNet.Mapping
                     return NetGrossSettingsType.Gross;
                 default:
                     return NetGrossSettingsType.Settings;
-            };
+            }
         }
 
         internal static string ToApiValue(this NetGrossSettingsType value)
