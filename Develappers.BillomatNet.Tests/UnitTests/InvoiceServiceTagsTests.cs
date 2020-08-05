@@ -274,5 +274,65 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.PostAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
         }
+
+        [Fact]
+        public async Task Delete_WithCorrectParameters_ShouldSucceed()
+        {
+            const int id = 8;
+            const string expectedUri = "/api/invoice-tags/8";
+
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(string.Empty));
+
+            var sut = GetSystemUnderTest(http);
+
+            await sut.DeleteTagAsync(id);
+
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task Delete_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/invoice-tags/1";
+            const int id = 1;
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.DeleteTagAsync(id));
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task Delete_WithInvalidId_ShouldThrowNotFoundException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            const string expectedUri = "/api/invoice-tags/1";
+            const int id = 1;
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotFoundException);
+
+            await Assert.ThrowsAsync<NotFoundException>(() => sut.DeleteTagAsync(id));
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
+
+        [Fact]
+        public async Task Delete_WithInvalidInputValue_ShouldThrowArgumentException()
+        {
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.DeleteTagAsync(0));
+        }
     }
 }
