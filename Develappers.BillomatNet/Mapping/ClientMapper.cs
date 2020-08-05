@@ -54,7 +54,7 @@ namespace Develappers.BillomatNet.Mapping
                 EnableCustomerportal = value.EnableCustomerportal != "0",
                 CustomerportalUrl = value.CustomerportalUrl,
                 SepaMandate = value.SepaMandate,
-                SepaMandateDate = DateTime.Parse(value.SepaMandateDate),
+                SepaMandateDate = value.SepaMandateDate.ToOptionalDateTime(),
                 TaxRule = value.TaxRule.ToTaxRuleType(),
                 NetGross = value.NetGross.ToNetGrossSettingsType(),
                 DefaultPaymentTypes = value.DefaultPaymentTypes.Split(',').ToList().Select(x => x.ToPaymentType()).ToList(),

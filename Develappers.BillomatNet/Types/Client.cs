@@ -45,7 +45,7 @@ namespace Develappers.BillomatNet.Types
         public bool EnableCustomerportal { get; set; }
         public string CustomerportalUrl { get; set; }
         public string SepaMandate { get; set; }
-        public DateTime SepaMandateDate { get; set; }
+        public DateTime? SepaMandateDate { get; set; }
         public TaxRuleType TaxRule { get; set; }
         public NetGrossSettingsType NetGross { get; set; }
         public List<PaymentType> DefaultPaymentTypes { get; set; }
