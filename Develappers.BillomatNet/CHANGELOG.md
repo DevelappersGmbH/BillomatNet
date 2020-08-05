@@ -34,7 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - implemented service for CUD operations on one invoice item
 - implemented service for CR operations on one invoice comment
 - implemented service for R operations on invoice comments
-- implemented service for CR operations on one invoice payment
+- implemented service for CRD operations on one invoice payment
 - implemented service for R operations on invoice payments
 - implemented service for R operations on one invoice payment
 - implemented service for R operations on invoice payments
