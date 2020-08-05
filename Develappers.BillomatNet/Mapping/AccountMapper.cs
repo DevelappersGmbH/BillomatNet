@@ -20,14 +20,12 @@ namespace Develappers.BillomatNet.Mapping
             return new Account
             {
                 Id = int.Parse(value.Id),
-                Number = value.Number,
+                Number = int.Parse(value.Number),
                 CountryCode = value.CountryCode,
                 Email = value.Email,
                 FirstName = value.FirstName,
                 LastName = value.LastName,
                 Note = value.Note,
-                Tags = value.Tags.ToStringList(),
-                InvoiceIds = value.InvoiceId.ToIntList(),
                 Created = value.Created,
                 Archived = value.Archived != "0",
                 NumberPre = value.NumberPre,
