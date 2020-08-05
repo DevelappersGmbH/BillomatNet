@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Globalization;
 using Develappers.BillomatNet.Api;
 using Account = Develappers.BillomatNet.Types.Account;
 
@@ -20,17 +21,15 @@ namespace Develappers.BillomatNet.Mapping
             return new Account
             {
                 Id = int.Parse(value.Id),
-                Number = value.Number,
+                Number = int.Parse(value.Number),
                 CountryCode = value.CountryCode,
                 Email = value.Email,
                 FirstName = value.FirstName,
                 LastName = value.LastName,
                 Note = value.Note,
-                Tags = value.Tags.ToStringList(),
-                InvoiceIds = value.InvoiceId.ToIntList(),
-                CreatedAt = value.Created,
-                IsArchived = value.Archived != "0",
-                NumberPrefix = value.NumberPre,
+                Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
+                Archived = value.Archived != "0",
+                NumberPre = value.NumberPre,
                 NumberLength = int.Parse(value.NumberLength),
                 Address = value.Address,
                 ClientNumber = value.ClientNumber,
@@ -51,8 +50,8 @@ namespace Develappers.BillomatNet.Mapping
                 Street = value.Street,
                 TaxNumber = value.TaxNumber,
                 VatNumber = value.VatNumber,
-                Web = value.Www,
-                ZipCode = value.Zip,
+                Www = value.Www,
+                Zip = value.Zip,
                 Plan = value.Plan,
                 Quotas = new QuotaMapper().ApiToDomain(value.Quotas)
             };

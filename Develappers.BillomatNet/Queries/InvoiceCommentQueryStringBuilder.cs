@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
+using System.Linq;
+using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Queries
@@ -22,7 +24,7 @@ namespace Develappers.BillomatNet.Queries
 
             if (filter.ActionKey != null)
             {
-                var filterValue = string.Join(", ", filter.ActionKey).ToUpper();
+                var filterValue = string.Join(",", filter.ActionKey.Select(x => x.ToApiValue()));
                 filters.Add($"actionkey={filterValue}");
             }
             return string.Join("&", filters);

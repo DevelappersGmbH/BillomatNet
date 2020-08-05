@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Develappers.BillomatNet.Api;
-using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Types
 {

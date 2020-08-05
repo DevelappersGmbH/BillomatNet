@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
+using System.Linq;
 using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Types;
 
@@ -28,8 +29,7 @@ namespace Develappers.BillomatNet.Queries
             }
             if (filter.Type != null)
             {
-                var typeStringList = EnumToString(filter.Type);
-                var filterValue = string.Join(", ", typeStringList).ToUpper();
+                var filterValue = string.Join(",", filter.Type.Select(x => x.ToApiValue()));
                 filters.Add($"type={filterValue}");
             }
             if (filter.UserId != null)

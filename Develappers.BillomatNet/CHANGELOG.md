@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - implemented service for R operations on invoice comments
 - implemented service for CR operations on one invoice payment
 - implemented service for R operations on invoice payments
+- implemented service for R operations on one invoice payment
+- implemented service for R operations on invoice payments
 
 ### Changed
 - GetList can throw an exception when not authorized now
@@ -38,7 +40,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - nothing
 
 ### Fixed
-- nothing
+- converting SupplyDateType for CU operation on invoice
+- Client Model and Mapper
 
 
 ## [0.1.4] - 2020-07-16
