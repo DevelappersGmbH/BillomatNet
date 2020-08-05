@@ -33,8 +33,8 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Recipients = new Recipients
                 {
                     //E-Mail should be changed to test
-                    To = "info@billomat.com",
-                    Cc = "example@mail.com"
+                    To = new List<string>{ "kuroyxde@gmx.net", "seongbae@vivaldi.net" },
+                    Cc = new List<string>{ "example@mail.com" }
                 },
                 Subject = "TestMail",
                 Body = "Sehr geehrte Damen und Herren, das ist ein Test",

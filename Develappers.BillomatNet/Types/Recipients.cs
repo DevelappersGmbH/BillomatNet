@@ -6,8 +6,8 @@ namespace Develappers.BillomatNet.Types
 {
     public class Recipients
     {
-        public string To { get; set; }
-        public string Cc { get; set; }
-        public string Bc { get; set; }
+        public List<string> To { get; set; }
+        public List<string> Cc { get; set; }
+        public List<string> Bc { get; set; }
     }
 }
