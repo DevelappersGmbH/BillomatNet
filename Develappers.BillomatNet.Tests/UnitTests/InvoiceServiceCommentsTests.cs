@@ -366,7 +366,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task DeleteArticle_WithCorrectParameters_ShouldSucceed()
+        public async Task Delete_WithCorrectParameters_ShouldSucceed()
         {
             const int id = 8;
             const string expectedUri = "/api/invoice-comments/8";
@@ -385,7 +385,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task DeleteArticle_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
+        public async Task Delete_WithInvalidCredentials_ShouldThrowNotAuthorizedException()
         {
             var http = A.Fake<IHttpClient>();
             var sut = GetSystemUnderTest(http);
@@ -401,7 +401,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task DeleteArticle_WithInvalidId_ShouldThrowNotFoundException()
+        public async Task Delete_WithInvalidId_ShouldThrowNotFoundException()
         {
             var http = A.Fake<IHttpClient>();
             var sut = GetSystemUnderTest(http);
@@ -417,7 +417,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task DeleteArticle_WithInvalidInputValue_ShouldThrowArgumentException()
+        public async Task Delete_WithInvalidInputValue_ShouldThrowArgumentException()
         {
             var http = A.Fake<IHttpClient>();
             var sut = GetSystemUnderTest(http);
