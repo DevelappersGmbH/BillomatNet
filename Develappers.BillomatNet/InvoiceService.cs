@@ -513,7 +513,27 @@ namespace Develappers.BillomatNet
             }
 
         }
-        
+
+        /// <summary>
+        /// Deletes an invoice comment.
+        /// </summary>
+        /// <param name="id">The ID of the invoice tag.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeleteCommentAsync(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid invoice comment id", nameof(id));
+            }
+            return DeleteAsync($"/api/invoice-comments/{id}", token);
+        }
+
         /// <summary>
         /// Retrieves a list of all invoice payments.
         /// </summary>
@@ -606,6 +626,26 @@ namespace Develappers.BillomatNet
             {
                 throw new ArgumentException("wrong input parameter", nameof(value), wex);
             }
+        }
+
+        /// <summary>
+        /// Deletes an invoice payment.
+        /// </summary>
+        /// <param name="id">The ID of the invoice payment.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeletePaymentAsync(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid invoice payment id", nameof(id));
+            }
+            return DeleteAsync($"/api/invoice-payments/{id}", token);
         }
 
         /// <summary>
@@ -705,6 +745,26 @@ namespace Develappers.BillomatNet
             {
                 throw new ArgumentException("wrong input parameter", nameof(value), wex);
             }
+        }
+
+        /// <summary>
+        /// Deletes an invoice tag.
+        /// </summary>
+        /// <param name="id">The ID of the invoice tag.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeleteTagAsync(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid invoice tag id", nameof(id));
+            }
+            return DeleteAsync($"/api/invoice-tags/{id}", token);
         }
     }
 }
