@@ -41,6 +41,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 - converting SupplyDateType for CU operation on invoice
+- Client Model and Mapper
 
 
 ## [0.1.4] - 2020-07-16
