@@ -17,6 +17,7 @@ using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 using InvoiceComment = Develappers.BillomatNet.Types.InvoiceComment;
 using InvoicePayment = Develappers.BillomatNet.Types.InvoicePayment;
+using InvoiceTag = Develappers.BillomatNet.Types.InvoiceTag;
 using Settings = Develappers.BillomatNet.Types.Settings;
 using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 using Tax = Develappers.BillomatNet.Types.Tax;
@@ -36,6 +37,7 @@ namespace Develappers.BillomatNet.Mapping
         private static readonly InvoiceDocumentMapper s_invoiceDocumentMapper = new InvoiceDocumentMapper();
         private static readonly InvoiceCommentMapper s_invoiceCommentMapper = new InvoiceCommentMapper();
         private static readonly InvoicePaymentMapper s_invoicePaymentMapper = new InvoicePaymentMapper();
+        private static readonly InvoiceTagMapper s_invoiceTagMapper = new InvoiceTagMapper();
         private static readonly ContactMapper s_contactMapper = new ContactMapper();
         private static readonly ArticlePropertyMapper s_articlePropertyMapper = new ArticlePropertyMapper();
         private static readonly ArticleTagMapper s_articleTagMapper = new ArticleTagMapper();
@@ -171,6 +173,27 @@ namespace Develappers.BillomatNet.Mapping
         internal static Api.InvoicePayment ToApi(this InvoicePayment value)
         {
             return s_invoicePaymentMapper.DomainToApi(value);
+        }
+
+
+        internal static Types.PagedList<TagCloudItem> ToDomain(this InvoiceTagCloudItemListWrapper value)
+        {
+            return s_invoiceTagMapper.ApiToDomain(value);
+        }
+
+        internal static Types.PagedList<TagCloudItem> ToDomain(this InvoiceTagCloudItemList value)
+        {
+            return s_invoiceTagMapper.ApiToDomain(value);
+        }
+
+        internal static Types.PagedList<InvoiceTag> ToDomain(this InvoiceTagListWrapper value)
+        {
+            return s_invoiceTagMapper.ApiToDomain(value);
+        }
+
+        internal static Types.InvoiceTag ToDomain(this InvoiceTagWrapper value)
+        {
+            return s_invoiceTagMapper.ApiToDomain(value);
         }
 
         internal static Types.PagedList<Contact> ToDomain(this ContactListWrapper value)

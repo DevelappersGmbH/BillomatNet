@@ -16,6 +16,8 @@ using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 using InvoiceMail = Develappers.BillomatNet.Types.InvoiceMail;
 using InvoiceComment = Develappers.BillomatNet.Types.InvoiceComment;
 using InvoicePayment = Develappers.BillomatNet.Types.InvoicePayment;
+using InvoiceTag = Develappers.BillomatNet.Types.InvoiceTag;
+using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
 namespace Develappers.BillomatNet
 {
@@ -604,6 +606,67 @@ namespace Develappers.BillomatNet
             {
                 throw new ArgumentException("wrong input parameter", nameof(value), wex);
             }
+        }
+
+        /// <summary>
+        /// Retrieves the invoice tag cloud.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the paged list of tag cloud items.
+        /// </returns>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Types.PagedList<TagCloudItem>> GetTagcloudAsync(CancellationToken token = default)
+        {
+            var jsonModel = await GetListAsync<InvoiceTagCloudItemListWrapper>("/api/invoice-tags", null, token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Retrieves a list of invoice tags appropriate to the filter.
+        /// </summary>
+        /// <param name="query">The filter with the property and value</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the invoice tag list.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Types.PagedList<InvoiceTag>> GetTagListAsync(Query<InvoiceTag, InvoiceTagFilter> query, CancellationToken token = default)
+        {
+            if (query?.Filter == null)
+            {
+                throw new ArgumentException("filter has to be set", nameof(query));
+            }
+
+            var jsonModel = await GetListAsync<InvoiceTagListWrapper>("/api/invoice-tags", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Retrieves an invoice tag by it's ID.
+        /// </summary>
+        /// <param name="id">The ID.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the invoice tag.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Types.InvoiceTag> GetTagByIdAsync(int id, CancellationToken token = default)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid invoice tag id", nameof(id));
+            }
+            var jsonModel = await GetItemByIdAsync<InvoiceTagWrapper>($"/api/invoice-tags/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
         }
     }
 }
