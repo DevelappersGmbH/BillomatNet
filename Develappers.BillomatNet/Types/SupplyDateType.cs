@@ -11,5 +11,7 @@ namespace Develappers.BillomatNet.Types
     {
         SupplyDate,
         DeliveryDate,
+        SupplyText,
+        DeliveryText
     }
 }
