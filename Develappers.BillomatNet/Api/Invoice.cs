@@ -14,6 +14,9 @@ namespace Develappers.BillomatNet.Api
         [JsonProperty("created")]
         public string Created { get; set; }
 
+        [JsonProperty("updated")]
+        public string Updated { get; set; }
+
         [JsonProperty("contact_id")]
         public string ContactId { get; set; }
 

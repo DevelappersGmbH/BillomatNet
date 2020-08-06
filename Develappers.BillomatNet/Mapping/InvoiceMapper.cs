@@ -244,7 +244,8 @@ namespace Develappers.BillomatNet.Mapping
             return new Api.Invoice
             {
                 Id = value.Id.ToString(),
-                Created = value.Created.ToApiDate(),
+                Created = value.Created.ToApiDateTime(),
+                Updated = value.Updated.ToApiDateTime(),
                 ContactId = value.ContactId.ToString(),
                 ClientId = value.ClientId.ToString(),
                 InvoiceNumber = value.InvoiceNumber,

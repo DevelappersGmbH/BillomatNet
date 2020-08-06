@@ -21,6 +21,7 @@ namespace Develappers.BillomatNet.Types
         public int? RecurringId { get; set; }
         public int? TemplateId { get; set; }
         public DateTime Created { get; set; }
+        public DateTime Updated { get; set; }
         public int? ContactId { get; set; }
         public string InvoiceNumber { get; set; }
         public int? Number { get; set; }
