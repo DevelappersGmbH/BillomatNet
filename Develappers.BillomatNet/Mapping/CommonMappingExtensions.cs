@@ -37,6 +37,10 @@ namespace Develappers.BillomatNet.Mapping
             {
                 return null;
             }
+            if (value == null)
+            {
+                return null;
+            }
 
             return float.Parse(value, CultureInfo.InvariantCulture);
         }

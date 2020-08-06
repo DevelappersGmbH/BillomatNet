@@ -37,7 +37,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .MustHaveHappenedOnceExactly();
         }
 
-
         [Fact]
         public async Task GetById_WithValidData_ShouldReturnCorrectValues()
         {
@@ -113,13 +112,14 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoiceEqualityComparer());
         }
 
+
         [Fact]
         public async Task Create_WithCorrectValues_ShouldCreateCommentAndReturnCorrectValues()
         {
             //arrange
             var expectedRequestUri = new Uri("/api/invoices", UriKind.Relative);
-            const string expectedRequestBody = "{\"invoice\":{\"id\":\"0\",\"created\":\"0001-01-01T00:00:00.0000000\",\"updated\":\"0001-01-01T00:00:00.0000000\",\"client_id\":\"485054\",\"contact_id\":\"7722\",\"invoice_number\":null,\"number\":\"\",\"number_pre\":null,\"number_length\":\"0\",\"title\":\"Title\",\"date\":\"2020-08-06\",\"supply_date\":\"\",\"supply_date_type\":\"\",\"due_date\":\"0001-01-01\",\"due_days\":\"0\",\"address\":null,\"status\":\"DRAFT\",\"label\":null,\"intro\":null,\"note\":null,\"total_net\":\"0\",\"total_gross\":\"0\",\"reduction\":\"\",\"total_reduction\":\"0\",\"total_net_unreduced\":\"0\",\"total_gross_unreduced\":\"0\",\"currency_code\":null,\"quote\":\"1\",\"net_gross\":\"NET\",\"discount_rate\":\"0\",\"discount_date\":null,\"discount_days\":\"0\",\"discount_amount\":\"3\",\"paid_amount\":\"0\",\"open_amount\":\"0\",\"payment_types\":\"\",\"customerportal_url\":null,\"invoice_id\":\"\",\"offer_id\":\"\",\"confirmation_id\":\"\",\"recurring_id\":\"\",\"template_id\":\"\"}}";
-            const string responseBody = "{\"invoice\":{\"id\":\"7563765\",\"created\":\"2020-08-06T09:25:37+02:00\",\"updated\":\"2020-08-06T09:25:37+02:00\",\"client_id\":\"485054\",\"contact_id\":\"7722\",\"invoice_number\":\"RE198\",\"number\":\"\",\"number_pre\":\"RE\",\"number_length\":\"3\",\"title\":\"Title\",\"date\":\"2020-08-06\",\"supply_date\":\"\",\"supply_date_type\":\"\",\"due_date\":\"2020-08-11\",\"due_days\":\"5\",\"address\":\"Hallo GmbH\nHerr Ronny Roller\nAcme Str. 12\n12345 M\u00fcnchen\",\"status\":\"DRAFT\",\"label\":\"\",\"intro\":\"Hiermit stellen wir Ihnen die folgenden Positionen in Rechnung.\",\"note\":\"Bitte \u00fcberweisen Sie den Rechnungsbetrag bis zum[Invoice.due_date] auf unser Konto.\",\"total_net\":\"0\",\"total_gross\":\"0\",\"reduction\":\"\",\"total_reduction\":\"0\",\"total_net_unreduced\":\"0\",\"total_gross_unreduced\":\"0\",\"currency_code\":\"EUR\",\"quote\":\"1\",\"net_gross\":\"NET\",\"discount_rate\":\"2\",\"discount_date\":\"2020-08-13\",\"discount_days\":\"7\",\"discount_amount\":\"0\",\"paid_amount\":\"0\",\"open_amount\":\"0\",\"payment_types\":\"CREDIT_CARD,DEBIT,CASH\",\"customerportal_url\":\"https:\\/\\/develappersdev.billomat.net\\/customerportal\\/invoices\\/show\\/c4da1693-51b1-4f81-a05c-1e412b9a9abd\",\"invoice_id\":\"\",\"offer_id\":\"\",\"confirmation_id\":\"\",\"recurring_id\":\"\",\"dig_proceeded\":\"0\",\"template_id\":\"\",\"customfield\":\"\"}}";
+            const string expectedRequestBody = "{\"invoice\":{\"id\":\"0\",\"created\":\"0001-01-01T00:00:00.0000000\",\"updated\":\"0001-01-01T00:00:00.0000000\",\"contact_id\":\"7722\",\"client_id\":\"485054\",\"invoice_number\":null,\"number\":\"\",\"number_pre\":null,\"number_length\":\"0\",\"title\":\"Title\",\"date\":\"2020-08-06\",\"supply_date\":\"\",\"supply_date_type\":\"\",\"due_date\":\"0001-01-01\",\"due_days\":\"0\",\"address\":null,\"status\":\"DRAFT\",\"discount_rate\":\"0\",\"discount_date\":null,\"discount_days\":\"\",\"discount_amount\":\"3\",\"label\":null,\"intro\":null,\"note\":null,\"total_gross\":\"0\",\"total_net\":\"0\",\"currency_code\":null,\"quote\":\"1\",\"net_gross\":\"NET\",\"reduction\":\"0\",\"total_gross_unreduced\":\"0\",\"total_net_unreduced\":\"0\",\"paid_amount\":\"0\",\"open_amount\":\"0\",\"customerportal_url\":null,\"invoice_id\":\"\",\"offer_id\":\"\",\"confirmation_id\":\"\",\"recurring_id\":\"\",\"template_id\":\"\",\"payment_types\":\"\",\"taxes\":{\"tax\":null},\"invoice_items\":null}}";
+            const string responseBody = "{\"invoice\":{\"id\":\"7563765\",\"created\":\"2020-08-06T09:25:37+02:00\",\"updated\":\"2020-08-06T09:25:37+02:00\",\"client_id\":\"485054\",\"contact_id\":\"7722\",\"invoice_number\":\"RE198\",\"number\":\"\",\"number_pre\":\"RE\",\"number_length\":\"3\",\"title\":\"Title\",\"date\":\"2020-08-06\",\"supply_date\":\"\",\"supply_date_type\":\"\",\"due_date\":\"2020-08-11\",\"due_days\":\"5\",\"address\":\"Hallo GmbH\nHerr Ronny Roller\nAcme Str. 12\n12345 M\u00fcnchen\",\"status\":\"DRAFT\",\"label\":null,\"intro\":\"Hiermit stellen wir Ihnen die folgenden Positionen in Rechnung.\",\"note\":\"Bitte überweisen Sie den Rechnungsbetrag bis zum[Invoice.due_date] auf unser Konto.\",\"total_net\":\"0\",\"total_gross\":\"0\",\"reduction\":\"\",\"total_net_unreduced\":\"0\",\"total_gross_unreduced\":\"0\",\"currency_code\":\"EUR\",\"quote\":\"1\",\"net_gross\":\"NET\",\"discount_rate\":\"2\",\"discount_date\":\"2020-08-13\",\"discount_days\":\"7\",\"discount_amount\":null,\"paid_amount\":\"0\",\"open_amount\":\"0\",\"payment_types\":\"CREDIT_CARD,DEBIT,CASH\",\"customerportal_url\":\"https:\\/\\/develappersdev.billomat.net\\/customerportal\\/invoices\\/show\\/c4da1693-51b1-4f81-a05c-1e412b9a9abd\",\"invoice_id\":\"\",\"offer_id\":\"\",\"confirmation_id\":\"\",\"recurring_id\":\"\",\"dig_proceeded\":\"0\",\"template_id\":\"\",\"customfield\":\"\"}}";
 
             var model = new Invoice
             {
@@ -150,7 +150,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 Address = "Hallo GmbH\nHerr Ronny Roller\nAcme Str. 12\n12345 München",
                 Status = InvoiceStatus.Draft,
                 Intro = "Hiermit stellen wir Ihnen die folgenden Positionen in Rechnung.",
-                Note = "Bitte überweisen Sie den Rechnungsbetrag bis zum [Invoice.due_date] auf unser Konto.",
+                Note = "Bitte überweisen Sie den Rechnungsbetrag bis zum[Invoice.due_date] auf unser Konto.",
                 CurrencyCode = "EUR",
                 Quote = 1,
                 NetGross = NetGrossType.Net,
@@ -158,7 +158,8 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 DiscountDate = DateTime.Parse("2020-08-13", CultureInfo.InvariantCulture),
                 DiscountDays = 7,
                 PaymentTypes = new List<string> { "CREDIT_CARD", "DEBIT", "CASH" },
-                CustomerPortalUrl = "https:\\/\\/develappersdev.billomat.net\\/customerportal\\/invoices\\/show\\/c4da1693-51b1-4f81-a05c-1e412b9a9abd",
+                CustomerPortalUrl = "https://develappersdev.billomat.net/customerportal/invoices/show/c4da1693-51b1-4f81-a05c-1e412b9a9abd",
+                Label = null
             };
 
             var http = A.Fake<IHttpClient>();
@@ -176,6 +177,37 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .MustHaveHappenedOnceExactly();
 
             result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoiceEqualityComparer());
+        }
+
+        [Fact]
+        public async Task Create_WithInvalidInputValue_ShouldThrowArgumentException()
+        {
+            // arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            // act and assert
+            await Assert.ThrowsAsync<ArgumentNullException>(() => sut.CreateAsync(null));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreateAsync(new Invoice()));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreateAsync(new Invoice { Id = 1 }));
+        }
+
+        [Fact]
+        public async Task Create_WithInvalidApiKey_ShouldThrowNotAuthorizedException()
+        {
+            //arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            var expectedRequestUri = new Uri("/api/invoices", UriKind.Relative);
+            A.CallTo(() => http.PostAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            var model = new Invoice { ClientId = 1, Quote = 1, Date = DateTime.Parse("2020-08-06", CultureInfo.InvariantCulture), };
+
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.CreateAsync(model));
+            A.CallTo(() => http.PostAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
         }
     }
 }
