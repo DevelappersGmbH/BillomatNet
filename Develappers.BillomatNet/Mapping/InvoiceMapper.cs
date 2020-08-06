@@ -62,30 +62,6 @@ namespace Develappers.BillomatNet.Mapping
                     throw new ArgumentOutOfRangeException();
             }
 
-
-            InvoiceStatus status;
-            switch (value.Status.ToLowerInvariant())
-            {
-                case "draft":
-                    status = InvoiceStatus.Draft;
-                    break;
-                case "open":
-                    status = InvoiceStatus.Open;
-                    break;
-                case "overdue":
-                    status = InvoiceStatus.Overdue;
-                    break;
-                case "paid":
-                    status = InvoiceStatus.Paid;
-                    break;
-                case "canceled":
-                    status = InvoiceStatus.Canceled;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-
             IReduction reduction = null;
             if (!string.IsNullOrEmpty(value.Reduction))
             {
@@ -137,7 +113,7 @@ namespace Develappers.BillomatNet.Mapping
                 NetGross = value.NetGross.ToNetGrossType(),
                 SupplyDate = supplyDate,
                 SupplyDateType = supplyDateType,
-                Status = status,
+                Status = value.Status.ToInvoiceStatus(),
                 PaymentTypes = value.PaymentTypes.ToStringList(),
                 Taxes = _taxMapper.ApiToDomain(value.Taxes),
                 Quote = float.Parse(value.Quote, CultureInfo.InvariantCulture),

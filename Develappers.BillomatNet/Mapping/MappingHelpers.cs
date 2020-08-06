@@ -127,6 +127,25 @@ namespace Develappers.BillomatNet.Mapping
             return value?.ToString(CultureInfo.InvariantCulture);
         }
 
+        internal static InvoiceStatus ToInvoiceStatus(this string value)
+        {
+            switch (value.ToLowerInvariant())
+            {
+                case "draft":
+                    return InvoiceStatus.Draft;
+                case "open":
+                    return InvoiceStatus.Open;
+                case "overdue":
+                    return InvoiceStatus.Overdue;
+                case "paid":
+                    return InvoiceStatus.Paid;
+                case "canceled":
+                    return InvoiceStatus.Canceled;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
+        }
+
         /// <summary>
         /// Converts the InvoiceStatus enum to string
         /// </summary>
