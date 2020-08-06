@@ -158,44 +158,6 @@ namespace Develappers.BillomatNet.Mapping
                 return null;
             }
 
-            string supplyDateType;
-            switch (value.SupplyDateType)
-            {
-                case SupplyDateType.SupplyDate:
-                    supplyDateType = "SUPPLY_DATE";
-                    break;
-                case SupplyDateType.DeliveryDate:
-                    supplyDateType = "DELIVERY_DATE";
-                    break;
-                case null:
-                    supplyDateType = "";
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            string status;
-            switch (value.Status)
-            {
-                case InvoiceStatus.Draft:
-                    status = "draft";
-                    break;
-                case InvoiceStatus.Open:
-                    status = "open";
-                    break;
-                case InvoiceStatus.Overdue:
-                    status = "overdue";
-                    break;
-                case InvoiceStatus.Paid:
-                    status = "paid";
-                    break;
-                case InvoiceStatus.Canceled:
-                    status = "canceled";
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
             // TODO: extract
             var reduction = "";
             switch (value.Reduction)
@@ -255,11 +217,11 @@ namespace Develappers.BillomatNet.Mapping
                 Title = value.Title,
                 Date = value.Date.ToApiDate(),
                 SupplyDate = strSupplyDate,
-                SupplyDateType = supplyDateType,
+                SupplyDateType = value.SupplyDateType.ToApiValue(),
                 DueDate = value.DueDate.ToApiDate(),
                 DueDays = value.DueDays.ToString(),
                 Address = value.Address,
-                Status = status,
+                Status = value.Status.ToApiValue(),
                 DiscountRate = value.DiscountRate.ToString(CultureInfo.InvariantCulture),
                 DiscountDate = value.DiscountDate.ToApiDate(),
                 DiscountDays = value.DiscountDays.ToString(),
