@@ -146,7 +146,7 @@ namespace Develappers.BillomatNet.Mapping
                 DiscountDate = value.DiscountDate.ToOptionalDateTime(),
                 DiscountDays = value.DiscountDays.ToOptionalInt(),
                 DiscountAmount = value.DiscountAmount.ToOptionalFloat(),
-                PaidAmount = value.PaidAmount.ToOptionalFloat() ?? 0,
+                PaidAmount = float.Parse(value.PaidAmount, CultureInfo.InvariantCulture),
                 OpenAmount = float.Parse(value.OpenAmount, CultureInfo.InvariantCulture)
             };
         }
