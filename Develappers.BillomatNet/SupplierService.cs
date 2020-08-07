@@ -4,7 +4,12 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
+using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
+using Develappers.BillomatNet.Mapping;
+using Supplier = Develappers.BillomatNet.Types.Supplier;
 
 namespace Develappers.BillomatNet
 {
@@ -26,6 +31,24 @@ namespace Develappers.BillomatNet
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal SupplierService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
+        }
+
+        /// <summary>
+        /// Retrieves an supplier by it's ID.
+        /// </summary>
+        /// <param name="id">The ID.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the supplier.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public async Task<Supplier> GetByIdAsync(int id, CancellationToken token = default)
+        {
+            var jsonModel = await GetItemByIdAsync<SupplierWrapper>($"/api/supplier/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
         }
     }
 }
