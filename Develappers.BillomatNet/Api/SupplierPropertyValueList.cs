@@ -10,7 +10,7 @@ namespace Develappers.BillomatNet.Api
 {
     internal class SupplierPropertyValuesWrapper
     {
-        [JsonProperty("supplier_property_values")]
+        [JsonProperty("supplier-property-value")]
         [JsonConverter(typeof(CollectionConverter<SupplierPropertyValue>))]
         public List<SupplierPropertyValue> List { get; set; }
     }

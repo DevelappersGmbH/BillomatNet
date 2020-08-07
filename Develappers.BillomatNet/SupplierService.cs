@@ -47,7 +47,11 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         public async Task<Supplier> GetByIdAsync(int id, CancellationToken token = default)
         {
-            var jsonModel = await GetItemByIdAsync<SupplierWrapper>($"/api/supplier/{id}", token).ConfigureAwait(false);
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid supplier id", nameof(id));
+            }
+            var jsonModel = await GetItemByIdAsync<SupplierWrapper>($"/api/suppliers/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
     }

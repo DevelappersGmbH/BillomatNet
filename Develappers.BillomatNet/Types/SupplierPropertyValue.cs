@@ -14,6 +14,7 @@ namespace Develappers.BillomatNet.Types
         public int SupplierPropertyId { get; set; }
         public PropertyType Type { get; set; }
         public string Name { get; set; }
+        //TODO: PropertyValue typisiert #224
         public object Value { get; set; }
     }
 }
