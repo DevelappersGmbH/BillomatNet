@@ -62,30 +62,6 @@ namespace Develappers.BillomatNet.Mapping
                     throw new ArgumentOutOfRangeException();
             }
 
-
-            InvoiceStatus status;
-            switch (value.Status.ToLowerInvariant())
-            {
-                case "draft":
-                    status = InvoiceStatus.Draft;
-                    break;
-                case "open":
-                    status = InvoiceStatus.Open;
-                    break;
-                case "overdue":
-                    status = InvoiceStatus.Overdue;
-                    break;
-                case "paid":
-                    status = InvoiceStatus.Paid;
-                    break;
-                case "canceled":
-                    status = InvoiceStatus.Canceled;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-
             IReduction reduction = null;
             if (!string.IsNullOrEmpty(value.Reduction))
             {
@@ -137,7 +113,7 @@ namespace Develappers.BillomatNet.Mapping
                 NetGross = value.NetGross.ToNetGrossType(),
                 SupplyDate = supplyDate,
                 SupplyDateType = supplyDateType,
-                Status = status,
+                Status = value.Status.ToInvoiceStatus(),
                 PaymentTypes = value.PaymentTypes.ToStringList(),
                 Taxes = _taxMapper.ApiToDomain(value.Taxes),
                 Quote = float.Parse(value.Quote, CultureInfo.InvariantCulture),
@@ -146,7 +122,7 @@ namespace Develappers.BillomatNet.Mapping
                 DiscountDate = value.DiscountDate.ToOptionalDateTime(),
                 DiscountDays = value.DiscountDays.ToOptionalInt(),
                 DiscountAmount = value.DiscountAmount.ToOptionalFloat(),
-                PaidAmount = value.PaidAmount.ToOptionalFloat() ?? 0,
+                PaidAmount = float.Parse(value.PaidAmount, CultureInfo.InvariantCulture),
                 OpenAmount = float.Parse(value.OpenAmount, CultureInfo.InvariantCulture)
             };
         }
@@ -156,44 +132,6 @@ namespace Develappers.BillomatNet.Mapping
             if (value == null)
             {
                 return null;
-            }
-
-            string supplyDateType;
-            switch (value.SupplyDateType)
-            {
-                case SupplyDateType.SupplyDate:
-                    supplyDateType = "SUPPLY_DATE";
-                    break;
-                case SupplyDateType.DeliveryDate:
-                    supplyDateType = "DELIVERY_DATE";
-                    break;
-                case null:
-                    supplyDateType = "";
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            string status;
-            switch (value.Status)
-            {
-                case InvoiceStatus.Draft:
-                    status = "draft";
-                    break;
-                case InvoiceStatus.Open:
-                    status = "open";
-                    break;
-                case InvoiceStatus.Overdue:
-                    status = "overdue";
-                    break;
-                case InvoiceStatus.Paid:
-                    status = "paid";
-                    break;
-                case InvoiceStatus.Canceled:
-                    status = "canceled";
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
             }
 
             // TODO: extract
@@ -244,7 +182,8 @@ namespace Develappers.BillomatNet.Mapping
             return new Api.Invoice
             {
                 Id = value.Id.ToString(),
-                Created = value.Created.ToApiDate(),
+                Created = value.Created.ToApiDateTime(),
+                Updated = value.Updated.ToApiDateTime(),
                 ContactId = value.ContactId.ToString(),
                 ClientId = value.ClientId.ToString(),
                 InvoiceNumber = value.InvoiceNumber,
@@ -254,11 +193,11 @@ namespace Develappers.BillomatNet.Mapping
                 Title = value.Title,
                 Date = value.Date.ToApiDate(),
                 SupplyDate = strSupplyDate,
-                SupplyDateType = supplyDateType,
+                SupplyDateType = value.SupplyDateType.ToApiValue(),
                 DueDate = value.DueDate.ToApiDate(),
                 DueDays = value.DueDays.ToString(),
                 Address = value.Address,
-                Status = status,
+                Status = value.Status.ToApiValue(),
                 DiscountRate = value.DiscountRate.ToString(CultureInfo.InvariantCulture),
                 DiscountDate = value.DiscountDate.ToApiDate(),
                 DiscountDays = value.DiscountDays.ToString(),

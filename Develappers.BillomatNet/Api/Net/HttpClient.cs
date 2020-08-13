@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Develappers.BillomatNet.Api.Net
 {
-    public sealed class HttpClient : IHttpClient
+    internal sealed class HttpClient : IHttpClient
     {
         private const string HeaderNameApiKey = "X-BillomatApiKey";
         private const string HeaderNameAppId = "X-AppId";

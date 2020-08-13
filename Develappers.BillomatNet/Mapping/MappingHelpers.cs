@@ -4,6 +4,7 @@
 
 using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Mapping
@@ -124,6 +125,25 @@ namespace Develappers.BillomatNet.Mapping
         internal static string ToInvariantString(this float? value)
         {
             return value?.ToString(CultureInfo.InvariantCulture);
+        }
+
+        internal static InvoiceStatus ToInvoiceStatus(this string value)
+        {
+            switch (value.ToLowerInvariant())
+            {
+                case "draft":
+                    return InvoiceStatus.Draft;
+                case "open":
+                    return InvoiceStatus.Open;
+                case "overdue":
+                    return InvoiceStatus.Overdue;
+                case "paid":
+                    return InvoiceStatus.Paid;
+                case "canceled":
+                    return InvoiceStatus.Canceled;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
         }
 
         /// <summary>
@@ -427,6 +447,41 @@ namespace Develappers.BillomatNet.Mapping
         internal static string ToApiValue(this DiscountType value)
         {
             return value.ToString().ToUpperInvariant();
+        }
+
+        internal static SupplyDateType? ToSupplyDateType(this string value)
+        {
+
+            switch (value)
+            {
+                case "SUPPLY_DATE":
+                    return SupplyDateType.SupplyDate;
+                case "DELIVERY_DATE":
+                    return SupplyDateType.DeliveryDate;
+                case "SUPPLY_TEXT":
+                    return SupplyDateType.SupplyText;
+                case "DELIVERY_TEXT":
+                    return SupplyDateType.DeliveryText;
+                default:
+                    return null;
+            }
+        }
+
+        internal static string ToApiValue(this SupplyDateType? value)
+        {
+            switch (value)
+            {
+                case SupplyDateType.SupplyDate:
+                    return "SUPPLY_DATE";
+                case SupplyDateType.DeliveryDate:
+                    return "DELIVERY_DATE";
+                case SupplyDateType.SupplyText:
+                    return "SUPPLY_TEXT";
+                case SupplyDateType.DeliveryText:
+                    return "DELIVERY_TEXT";
+                default:
+                    return "";
+            }
         }
     }
 }
