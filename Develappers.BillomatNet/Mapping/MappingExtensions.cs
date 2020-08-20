@@ -2,8 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System.Collections.Generic;
 using Develappers.BillomatNet.Api;
-using Develappers.BillomatNet.Types;
 using Account = Develappers.BillomatNet.Types.Account;
 using Article = Develappers.BillomatNet.Types.Article;
 using ArticleProperty = Develappers.BillomatNet.Types.ArticleProperty;
@@ -13,12 +13,14 @@ using ClientProperty = Develappers.BillomatNet.Types.ClientProperty;
 using ClientTag = Develappers.BillomatNet.Types.ClientTag;
 using Contact = Develappers.BillomatNet.Types.Contact;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
+using InvoiceComment = Develappers.BillomatNet.Types.InvoiceComment;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
-using InvoiceComment = Develappers.BillomatNet.Types.InvoiceComment;
 using InvoicePayment = Develappers.BillomatNet.Types.InvoicePayment;
 using InvoiceTag = Develappers.BillomatNet.Types.InvoiceTag;
 using Settings = Develappers.BillomatNet.Types.Settings;
+using Supplier = Develappers.BillomatNet.Types.Supplier;
+using SupplierPropertyValue = Develappers.BillomatNet.Types.SupplierPropertyValue;
 using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 using Tax = Develappers.BillomatNet.Types.Tax;
 using Unit = Develappers.BillomatNet.Types.Unit;
@@ -44,6 +46,8 @@ namespace Develappers.BillomatNet.Mapping
         private static readonly ClientMapper s_clientMapper = new ClientMapper();
         private static readonly ClientTagMapper s_clientTagMapper = new ClientTagMapper();
         private static readonly ClientPropertyMapper s_clientPropertyMapper = new ClientPropertyMapper();
+        private static readonly SupplierMapper s_supplierMapper = new SupplierMapper();
+        private static readonly SupplierPropertyValueMapper s_supplierPropertyValueMapper = new SupplierPropertyValueMapper();
 
         internal static Types.PagedList<Article> ToDomain(this ArticleListWrapper value)
         {
@@ -305,6 +309,16 @@ namespace Develappers.BillomatNet.Mapping
         internal static Api.ClientProperty ToApi(this ClientProperty value)
         {
             return s_clientPropertyMapper.DomainToApi(value);
+        }
+
+        internal static Supplier ToDomain(this SupplierWrapper value)
+        {
+            return s_supplierMapper.ApiToDomain(value);
+        }
+
+        internal static List<SupplierPropertyValue> ToDomain(this SupplierPropertyValuesWrapper value)
+        {
+            return s_supplierPropertyValueMapper.ApiToDomain(value);
         }
     }
 }
