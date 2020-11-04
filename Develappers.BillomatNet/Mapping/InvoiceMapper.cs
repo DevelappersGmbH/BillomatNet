@@ -164,7 +164,7 @@ namespace Develappers.BillomatNet.Mapping
                     break;
             }
 
-            var paymentTypes = "";
+            string paymentTypes = null;
             if (value.PaymentTypes != null && value.PaymentTypes.Count != 0)
             {
                 paymentTypes = String.Join(",", value.PaymentTypes);
