@@ -38,7 +38,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             };
 
             const string expectedRequestBody =
-                "{\"tax\":{\"id\":null,\"created\":null,\"updated\":null,\"name\":\"xUnit Test\",\"rate\":\"1\",\"is_default\":\"0\"}}";
+                "{\"tax\":{\"name\":\"xUnit Test\",\"rate\":\"1\",\"is_default\":\"0\"}}";
             var expectedRequestUri = new Uri("/api/taxes", UriKind.Relative);
             const string responseBody =
                 "{\"tax\":{\"id\":\"119547\",\"created\":\"2020-07-26T09:17:20+02:00\",\"updated\":\"2020-07-26T09:17:20+02:00\",\"name\":\"xUnit Test\",\"rate\":\"1\",\"is_default\":\"0\",\"customfield\":\"\"}}";
