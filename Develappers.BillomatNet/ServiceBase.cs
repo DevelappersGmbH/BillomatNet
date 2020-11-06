@@ -240,7 +240,10 @@ namespace Develappers.BillomatNet
 
             try
             {
-                var requestData = model == null ? "" : JsonConvert.SerializeObject(model);
+                var requestData = model == null ? "" : JsonConvert.SerializeObject(model, new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                });
                 var responseData = await httpClient.PostAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token);
                 return JsonConvert.DeserializeObject<TOut>(responseData);
             }
