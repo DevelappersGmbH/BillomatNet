@@ -5,7 +5,6 @@
 using System;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Types;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
@@ -135,12 +134,6 @@ namespace Develappers.BillomatNet.Mapping
                 return null;
             }
 
-            string address = null;
-            if (value.Address != null && value.Address != "")
-            {
-                address = value.Address;
-            }
-
             // TODO: extract
             var reduction = "";
             switch (value.Reduction)
@@ -203,7 +196,7 @@ namespace Develappers.BillomatNet.Mapping
                 SupplyDateType = value.SupplyDateType.ToApiValue(),
                 DueDate = null,
                 DueDays = null,
-                Address = address,
+                Address = (value.Address == "") ? null : value.Address,
                 Status = value.Status.ToApiValue(),
                 DiscountRate = value.DiscountRate.ToString(CultureInfo.InvariantCulture),
                 DiscountDate = value.DiscountDate.ToApiDate(),
