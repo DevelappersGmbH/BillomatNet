@@ -117,8 +117,8 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         {
             //arrange
             var expectedRequestUri = new Uri("/api/invoices", UriKind.Relative);
-            const string expectedRequestBody = "{\"invoice\":{\"id\":\"0\",\"created\":\"0001-01-01T00:00:00.0000000\",\"updated\":\"0001-01-01T00:00:00.0000000\",\"contact_id\":\"7722\",\"client_id\":\"485054\",\"number\":\"\",\"number_length\":\"0\",\"title\":\"Title\",\"date\":\"2020-08-06\",\"supply_date\":\"\",\"supply_date_type\":\"\",\"status\":\"DRAFT\",\"discount_rate\":\"0\",\"discount_days\":\"\",\"discount_amount\":\"3\",\"total_gross\":\"0\",\"total_net\":\"0\",\"quote\":\"1\",\"net_gross\":\"NET\",\"reduction\":\"0\",\"total_gross_unreduced\":\"0\",\"total_net_unreduced\":\"0\",\"paid_amount\":\"0\",\"open_amount\":\"0\",\"invoice_id\":\"\",\"offer_id\":\"\",\"confirmation_id\":\"\",\"recurring_id\":\"\",\"template_id\":\"\",\"taxes\":{}}}";
-            const string responseBody = "{\"invoice\":{\"id\":\"7563765\",\"created\":\"2020-08-06T09:25:37+02:00\",\"updated\":\"2020-08-06T09:25:37+02:00\",\"client_id\":\"485054\",\"contact_id\":\"7722\",\"invoice_number\":\"RE198\",\"number\":\"\",\"number_pre\":\"RE\",\"number_length\":\"3\",\"title\":\"Title\",\"date\":\"2020-08-06\",\"supply_date\":\"\",\"supply_date_type\":\"\",\"due_date\":\"2020-08-11\",\"due_days\":\"5\",\"address\":\"Hallo GmbH\nHerr Ronny Roller\nAcme Str. 12\n12345 M\u00fcnchen\",\"status\":\"DRAFT\",\"label\":null,\"intro\":\"Hiermit stellen wir Ihnen die folgenden Positionen in Rechnung.\",\"note\":\"Bitte überweisen Sie den Rechnungsbetrag bis zum[Invoice.due_date] auf unser Konto.\",\"total_net\":\"0\",\"total_gross\":\"0\",\"reduction\":\"\",\"total_net_unreduced\":\"0\",\"total_gross_unreduced\":\"0\",\"currency_code\":\"EUR\",\"quote\":\"1\",\"net_gross\":\"NET\",\"discount_rate\":\"2\",\"discount_date\":\"2020-08-13\",\"discount_days\":\"7\",\"discount_amount\":null,\"paid_amount\":\"0\",\"open_amount\":\"0\",\"payment_types\":\"CREDIT_CARD,DEBIT,CASH\",\"customerportal_url\":\"https:\\/\\/develappersdev.billomat.net\\/customerportal\\/invoices\\/show\\/c4da1693-51b1-4f81-a05c-1e412b9a9abd\",\"invoice_id\":\"\",\"offer_id\":\"\",\"confirmation_id\":\"\",\"recurring_id\":\"\",\"dig_proceeded\":\"0\",\"template_id\":\"\",\"customfield\":\"\"}}";
+            const string expectedRequestBody = "{\"invoice\":{\"id\":\"0\",\"created\":\"0001-01-01T00:00:00.0000000\",\"updated\":\"0001-01-01T00:00:00.0000000\",\"contact_id\":\"7722\",\"client_id\":\"485054\",\"number\":\"\",\"number_length\":\"0\",\"date\":\"2020-08-06\",\"supply_date\":\"\",\"supply_date_type\":\"\",\"status\":\"DRAFT\",\"discount_rate\":\"0\",\"discount_days\":\"\",\"discount_amount\":\"3\",\"total_gross\":\"0\",\"total_net\":\"0\",\"quote\":\"1\",\"net_gross\":\"NET\",\"reduction\":\"0\",\"total_gross_unreduced\":\"0\",\"total_net_unreduced\":\"0\",\"paid_amount\":\"0\",\"open_amount\":\"0\",\"invoice_id\":\"\",\"offer_id\":\"\",\"confirmation_id\":\"\",\"recurring_id\":\"\",\"template_id\":\"\",\"taxes\":{}}}";
+            const string responseBody = "{\"invoice\":{\"id\":\"7563765\",\"created\":\"2020-08-06T09:25:37+02:00\",\"updated\":\"2020-08-06T09:25:37+02:00\",\"client_id\":\"485054\",\"contact_id\":\"7722\",\"invoice_number\":\"RE198\",\"number\":\"\",\"number_pre\":\"RE\",\"number_length\":\"3\",\"title\":\"[Invoice.invoice_number]\",\"date\":\"2020-08-06\",\"supply_date\":\"\",\"supply_date_type\":\"\",\"due_date\":\"2020-08-11\",\"due_days\":\"5\",\"address\":\"Hallo GmbH\nHerr Ronny Roller\nAcme Str. 12\n12345 M\u00fcnchen\",\"status\":\"DRAFT\",\"label\":\"\",\"intro\":\"Hiermit stellen wir Ihnen die folgenden Positionen in Rechnung.\",\"note\":\"Bitte überweisen Sie den Rechnungsbetrag bis zum[Invoice.due_date] auf unser Konto.\",\"total_net\":\"0\",\"total_gross\":\"0\",\"reduction\":\"\",\"total_net_unreduced\":\"0\",\"total_gross_unreduced\":\"0\",\"currency_code\":\"EUR\",\"quote\":\"1\",\"net_gross\":\"NET\",\"discount_rate\":\"2\",\"discount_date\":\"2020-08-13\",\"discount_days\":\"7\",\"discount_amount\":null,\"paid_amount\":\"0\",\"open_amount\":\"0\",\"payment_types\":\"CREDIT_CARD,DEBIT,CASH\",\"customerportal_url\":\"https:\\/\\/develappersdev.billomat.net\\/customerportal\\/invoices\\/show\\/c4da1693-51b1-4f81-a05c-1e412b9a9abd\",\"invoice_id\":\"\",\"offer_id\":\"\",\"confirmation_id\":\"\",\"recurring_id\":\"\",\"dig_proceeded\":\"0\",\"template_id\":\"\",\"customfield\":\"\"}}";
 
             var model = new Invoice
             {
@@ -126,7 +126,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 Created = DateTime.Parse("0001-01-01T00:00:00", CultureInfo.InvariantCulture),
                 Updated = DateTime.Parse("0001-01-01T00:00:00", CultureInfo.InvariantCulture),
                 ContactId = 7722,
-                Title = "Title",
                 Date = DateTime.Parse("2020-08-06", CultureInfo.InvariantCulture),
                 DiscountAmount = 3,
                 Quote = 1,
@@ -142,7 +141,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 InvoiceNumber = "RE198",
                 NumberPre = "RE",
                 NumberLength = 3,
-                Title = "Title",
+                Title = "[Invoice.invoice_number]",
                 Date = DateTime.Parse("2020-08-06", CultureInfo.InvariantCulture),
                 DueDate = DateTime.Parse("2020-08-11", CultureInfo.InvariantCulture),
                 DueDays = 5,
@@ -158,7 +157,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 DiscountDays = 7,
                 PaymentTypes = new List<string> { "CREDIT_CARD", "DEBIT", "CASH" },
                 CustomerPortalUrl = "https://develappersdev.billomat.net/customerportal/invoices/show/c4da1693-51b1-4f81-a05c-1e412b9a9abd",
-                Label = null
+                Label = ""
             };
 
             var http = A.Fake<IHttpClient>();
