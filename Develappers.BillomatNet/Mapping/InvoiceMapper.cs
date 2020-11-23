@@ -196,7 +196,7 @@ namespace Develappers.BillomatNet.Mapping
                 SupplyDateType = value.SupplyDateType.ToApiValue(),
                 DueDate = null,
                 DueDays = null,
-                Address = value.Address,
+                Address = (value.Address == "") ? null : value.Address,
                 Status = value.Status.ToApiValue(),
                 DiscountRate = value.DiscountRate.ToString(CultureInfo.InvariantCulture),
                 DiscountDate = value.DiscountDate.ToApiDate(),
