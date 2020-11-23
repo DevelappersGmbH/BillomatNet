@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
@@ -83,21 +84,18 @@ namespace Develappers.BillomatNet.Mapping
 
             return new Api.InvoiceItem
             {
+                Id = value.Id.ToString(),
                 ArticleId = value.ArticleId.ToString(),
                 InvoiceId = value.InvoiceId.ToString(),
                 Position = value.Position.ToString(),
                 Unit = value.Unit,
-                Quantity = value.Quantity.ToString(CultureInfo.InvariantCulture),
-                UnitPrice = value.UnitPrice.ToString(CultureInfo.InvariantCulture),
-                TaxName = value.TaxName,
-                TaxRate = value.TaxRate.ToString(),
+                Quantity = Math.Round(value.Quantity, 2).ToString(CultureInfo.InvariantCulture),
+                UnitPrice = value.UnitPrice == 0 ? null : value.UnitPrice.ToString(CultureInfo.InvariantCulture),
+                TaxName = value.TaxName == "" ? null : value.TaxName,
+                TaxRate = value.TaxRate == 0 || value.TaxRate == null ? null : value.TaxRate.ToString(),
                 Title = value.Title,
                 Description = value.Description,
-                TotalGross = value.TotalGross.ToString(CultureInfo.InvariantCulture),
-                TotalNet = value.TotalNet.ToString(CultureInfo.InvariantCulture),
                 Reduction = reduction,
-                TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(CultureInfo.InvariantCulture),
-                TotalNetUnreduced = value.TotalNetUnreduced.ToString(CultureInfo.InvariantCulture)
             };
         }
 
