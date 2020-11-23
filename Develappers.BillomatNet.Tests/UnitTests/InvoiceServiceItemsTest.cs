@@ -70,5 +70,36 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
             result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoiceItemEqualityComparer());
         }
+
+        [Fact]
+        public async Task Create_WithInvalidInputValue_ShouldThrowArgumentException()
+        {
+            // arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            // act and assert
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreateItemAsync(null));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreateItemAsync(new InvoiceItem()));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreateItemAsync(new InvoiceItem { Id = 1 }));
+        }
+
+        [Fact]
+        public async Task Create_WithInvalidApiKey_ShouldThrowNotAuthorizedException()
+        {
+            //arrange
+            var http = A.Fake<IHttpClient>();
+            var sut = GetSystemUnderTest(http);
+
+            var expectedRequestUri = new Uri("/api/invoice-items", UriKind.Relative);
+            A.CallTo(() => http.PostAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
+                .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
+
+            var model = new InvoiceItem { ArticleId = 154123, InvoiceId = 8332909, Position = 1, Quantity = 3.5389F, Title = "Test-Item", Description = "Ganz viel toller Text" };
+
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.CreateItemAsync(model));
+            A.CallTo(() => http.PostAsync(expectedRequestUri, A<string>.Ignored, A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
     }
 }
