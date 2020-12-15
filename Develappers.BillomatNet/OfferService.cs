@@ -12,7 +12,7 @@ using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 using Offer = Develappers.BillomatNet.Types.Offer;
-//using OfferItem = Develappers.BillomatNet.Types.OfferItem;
+using OfferItem = Develappers.BillomatNet.Types.OfferItem;
 using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
 namespace Develappers.BillomatNet
@@ -51,6 +51,30 @@ namespace Develappers.BillomatNet
         public async Task<Types.PagedList<Offer>> GetListAsync(Query<Offer, OfferFilter> query, CancellationToken token = default)
         {
             var jsonModel = await GetListAsync<OfferListWrapper>("/api/offers", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Returns and invoice by it's ID.
+        /// </summary>
+        /// <param name="id">The ID of the invoice.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The invoice or null if not found.</returns>
+        public async Task<OfferItem> GetItemByIdAsync(int id, CancellationToken token = default)
+        {
+            var jsonModel = await GetItemByIdAsync<OfferItemWrapper>($"/api/offer-items/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Retrieves a list of the items (articles) used in the offer.
+        /// </summary>
+        /// <param name="offerId">The ID of the invoice.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The invoice items list or null if not found.</returns>
+        public async Task<Types.PagedList<OfferItem>> GetItemsAsync(int offerId, CancellationToken token = default)
+        {
+            var jsonModel = await GetListAsync<OfferItemListWrapper>("/api/offer-items", $"offer_id={offerId}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
     }

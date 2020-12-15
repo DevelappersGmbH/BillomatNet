@@ -13,6 +13,7 @@ using ClientProperty = Develappers.BillomatNet.Types.ClientProperty;
 using ClientTag = Develappers.BillomatNet.Types.ClientTag;
 using Contact = Develappers.BillomatNet.Types.Contact;
 using Offer = Develappers.BillomatNet.Types.Offer;
+using OfferItem = Develappers.BillomatNet.Types.OfferItem;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
 using InvoiceComment = Develappers.BillomatNet.Types.InvoiceComment;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
@@ -36,6 +37,7 @@ namespace Develappers.BillomatNet.Mapping
         private static readonly TaxMapper s_taxMapper = new TaxMapper();
         private static readonly InvoiceMapper s_invoiceMapper = new InvoiceMapper();
         private static readonly OfferMapper s_offerMapper = new OfferMapper();
+        private static readonly OfferItemMapper s_offerItemMapper = new OfferItemMapper();
         private static readonly SettingsMapper s_settingsMapper = new SettingsMapper();
         private static readonly InvoiceItemMapper s_invoiceItemMapper = new InvoiceItemMapper();
         private static readonly InvoiceDocumentMapper s_invoiceDocumentMapper = new InvoiceDocumentMapper();
@@ -120,6 +122,16 @@ namespace Develappers.BillomatNet.Mapping
         internal static Offer ToDomain(this OfferWrapper value)
         {
             return s_offerMapper.ApiToDomain(value);
+        }
+
+        internal static OfferItem ToDomain(this OfferItemWrapper value)
+        {
+            return s_offerItemMapper.ApiToDomain(value);
+        }
+
+        internal static Types.PagedList<OfferItem> ToDomain(this OfferItemListWrapper value)
+        {
+            return s_offerItemMapper.ApiToDomain(value);
         }
 
         internal static Types.PagedList<Offer> ToDomain(this OfferListWrapper value)
