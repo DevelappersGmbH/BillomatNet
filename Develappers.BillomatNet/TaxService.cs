@@ -48,7 +48,7 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        Task<Types.PagedList<Tax>> IEntityService<Tax, TaxFilter>.GetListAsync(Query<Tax, TaxFilter> query,
+        Task<Types.PagedList<Tax>> IEntityReadService<Tax, TaxFilter>.GetListAsync(Query<Tax, TaxFilter> query,
             CancellationToken token)
         {
             // TODO: implement implicitly and make public
@@ -114,7 +114,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid property values for tax", nameof(value));
             }
 
-            var wrappedModel = new TaxWrapper {Tax = value.ToApi()};
+            var wrappedModel = new TaxWrapper { Tax = value.ToApi() };
             var result = await PostAsync("/api/taxes", wrappedModel, token);
 
             return result.ToDomain();

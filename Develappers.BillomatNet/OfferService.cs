@@ -4,11 +4,20 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
+using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
+using Develappers.BillomatNet.Mapping;
+using Develappers.BillomatNet.Queries;
+using Develappers.BillomatNet.Types;
+using Offer = Develappers.BillomatNet.Types.Offer;
+//using OfferItem = Develappers.BillomatNet.Types.OfferItem;
+using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
 namespace Develappers.BillomatNet
 {
-    public class OfferService : ServiceBase
+    public class OfferService : ServiceBase, IEntityReadService<Offer, OfferFilter>
     {
         /// <summary>
         /// Creates a new instance of <see cref="OfferService"/>.
@@ -26,6 +35,23 @@ namespace Develappers.BillomatNet
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal OfferService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
+        }
+
+        public async Task<Offer> GetByIdAsync(int id, CancellationToken token = default)
+        {
+            var jsonModel = await GetItemByIdAsync<OfferWrapper>($"/api/offers/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        public Task<Types.PagedList<Offer>> GetListAsync(CancellationToken token = default)
+        {
+            return GetListAsync(null, token);
+        }
+
+        public async Task<Types.PagedList<Offer>> GetListAsync(Query<Offer, OfferFilter> query, CancellationToken token = default)
+        {
+            var jsonModel = await GetListAsync<OfferListWrapper>("/api/offers", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
         }
     }
 }

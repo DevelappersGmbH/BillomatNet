@@ -2,17 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Web;
 using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Queries
 {
-    internal class InvoiceQueryStringBuilder : QueryStringBuilder<Invoice, Api.Invoice, InvoiceFilter>
+    internal class OfferQueryStringBuilder : QueryStringBuilder<Offer, Api.Offer, OfferFilter>
     {
-        protected internal override string GetFilterStringFor(InvoiceFilter filter)
+        protected internal override string GetFilterStringFor(OfferFilter filter)
         {
             if (filter == null)
             {
@@ -30,19 +32,14 @@ namespace Develappers.BillomatNet.Queries
                 filters.Add($"contact_id={filter.ContactId.Value}");
             }
 
-            if (!string.IsNullOrEmpty(filter.InvoiceNumber))
+            if (!string.IsNullOrEmpty(filter.OfferNumber))
             {
-                filters.Add($"invoice_number={HttpUtility.UrlEncode(filter.InvoiceNumber)}");
+                filters.Add($"offer_number={HttpUtility.UrlEncode(filter.OfferNumber)}");
             }
 
             if ((filter.Status?.Count ?? 0) > 0)
             {
                 filters.Add($"status={string.Join(",", filter.Status.Select(MappingHelpers.ToApiValue))}");
-            }
-
-            if ((filter.PaymentType?.Count ?? 0) > 0)
-            {
-                filters.Add($"payment_type={string.Join(",", filter.PaymentType.Select(MappingHelpers.ToApiValue))}");
             }
 
             if (filter.From.HasValue)
