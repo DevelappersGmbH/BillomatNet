@@ -29,6 +29,7 @@ namespace Develappers.BillomatNet
             services.AddScoped<Develappers.BillomatNet.SupplierService>();
             services.AddScoped<Develappers.BillomatNet.TaxService>();
             services.AddScoped<Develappers.BillomatNet.UnitService>();
+            services.AddSingleton<BillomatUrlBuilder>();
             return services;
         }
     }
