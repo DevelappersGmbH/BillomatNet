@@ -4,11 +4,18 @@
 
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+using System.Threading.Tasks;
+using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
+using Develappers.BillomatNet.Mapping;
+using Develappers.BillomatNet.Queries;
+using Offer = Develappers.BillomatNet.Types.Offer;
+using OfferItem = Develappers.BillomatNet.Types.OfferItem;
 
 namespace Develappers.BillomatNet
 {
-    public class OfferService : ServiceBase
+    public class OfferService : ServiceBase, IEntityService<Offer, OfferFilter>
     {
         /// <summary>
         /// Creates a new instance of <see cref="OfferService"/>.
@@ -26,6 +33,62 @@ namespace Develappers.BillomatNet
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal OfferService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
+        }
+
+        public async Task<Offer> GetByIdAsync(int id, CancellationToken token = default)
+        {
+            var jsonModel = await GetItemByIdAsync<OfferWrapper>($"/api/offers/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        Task IEntityService<Offer, OfferFilter>.DeleteAsync(int id, CancellationToken token)
+        {
+            throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
+        }
+
+        Task<Offer> IEntityService<Offer, OfferFilter>.CreateAsync(Offer model, CancellationToken token)
+        {
+            throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
+        }
+
+        Task<Offer> IEntityService<Offer, OfferFilter>.EditAsync(Offer model, CancellationToken token)
+        {
+            throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
+        }
+
+        public Task<Types.PagedList<Offer>> GetListAsync(CancellationToken token = default)
+        {
+            return GetListAsync(null, token);
+        }
+
+        public async Task<Types.PagedList<Offer>> GetListAsync(Query<Offer, OfferFilter> query, CancellationToken token = default)
+        {
+            var jsonModel = await GetListAsync<OfferListWrapper>("/api/offers", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Returns and invoice by it's ID.
+        /// </summary>
+        /// <param name="id">The ID of the invoice.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The invoice or null if not found.</returns>
+        public async Task<OfferItem> GetItemByIdAsync(int id, CancellationToken token = default)
+        {
+            var jsonModel = await GetItemByIdAsync<OfferItemWrapper>($"/api/offer-items/{id}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Retrieves a list of the items (articles) used in the offer.
+        /// </summary>
+        /// <param name="offerId">The ID of the invoice.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>The invoice items list or null if not found.</returns>
+        public async Task<Types.PagedList<OfferItem>> GetItemsAsync(int offerId, CancellationToken token = default)
+        {
+            var jsonModel = await GetListAsync<OfferItemListWrapper>("/api/offer-items", $"offer_id={offerId}", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
         }
     }
 }

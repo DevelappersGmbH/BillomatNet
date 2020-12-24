@@ -28,6 +28,11 @@ namespace Develappers.BillomatNet.Queries
             return new ArticleTagQueryStringBuilder().BuildFor(value);
         }
 
+        internal static string For(Query<Offer, OfferFilter> value)
+        {
+            return new OfferQueryStringBuilder().BuildFor(value);
+        }
+
         internal static string For(Query<Invoice, InvoiceFilter> value)
         {
             return new InvoiceQueryStringBuilder().BuildFor(value);

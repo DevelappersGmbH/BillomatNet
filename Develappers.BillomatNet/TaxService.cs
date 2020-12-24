@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
@@ -29,7 +28,6 @@ namespace Develappers.BillomatNet
         /// </summary>
         /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
         /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal TaxService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }
@@ -51,8 +49,7 @@ namespace Develappers.BillomatNet
         Task<Types.PagedList<Tax>> IEntityService<Tax, TaxFilter>.GetListAsync(Query<Tax, TaxFilter> query,
             CancellationToken token)
         {
-            // TODO: implement implicitly and make public
-            throw new NotImplementedException();
+            throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
         }
 
         /// <summary>
@@ -114,7 +111,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid property values for tax", nameof(value));
             }
 
-            var wrappedModel = new TaxWrapper {Tax = value.ToApi()};
+            var wrappedModel = new TaxWrapper { Tax = value.ToApi() };
             var result = await PostAsync("/api/taxes", wrappedModel, token);
 
             return result.ToDomain();
