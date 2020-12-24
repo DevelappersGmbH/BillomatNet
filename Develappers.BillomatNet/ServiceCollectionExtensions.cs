@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Develappers.BillomatNet
@@ -13,23 +11,32 @@ namespace Develappers.BillomatNet
     {
         public static IServiceCollection ConfigureBillomatNet(this IServiceCollection services, Configuration config)
         {
+            if (services == null)
+            {
+                throw new ArgumentNullException(nameof(services));
+            }
+
+            if (config == null)
+            {
+                throw new ArgumentNullException(nameof(config));
+            }
+
             services.AddSingleton(config);
-            services.AddScoped<Develappers.BillomatNet.ArticleService>();
-            services.AddScoped<Develappers.BillomatNet.ClientService>();
-            services.AddScoped<Develappers.BillomatNet.CreditNoteService>();
-            services.AddScoped<Develappers.BillomatNet.DeliveryNoteService>();
-            services.AddScoped<Develappers.BillomatNet.InvoiceService>();
-            services.AddScoped<Develappers.BillomatNet.LetterService>();
-            services.AddScoped<Develappers.BillomatNet.OfferService>();
-            services.AddScoped<Develappers.BillomatNet.OrderConfirmationService>();
-            services.AddScoped<Develappers.BillomatNet.PurchaseInvoiceService>();
-            services.AddScoped<Develappers.BillomatNet.ReminderService>();
-            services.AddScoped<Develappers.BillomatNet.SettingsService>();
-            services.AddScoped<Develappers.BillomatNet.SubscriptionInvoiceService>();
-            services.AddScoped<Develappers.BillomatNet.SupplierService>();
-            services.AddScoped<Develappers.BillomatNet.TaxService>();
-            services.AddScoped<Develappers.BillomatNet.UnitService>();
-            services.AddSingleton<BillomatUrlBuilder>();
+            services.AddScoped<ArticleService>();
+            services.AddScoped<ClientService>();
+            services.AddScoped<CreditNoteService>();
+            services.AddScoped<DeliveryNoteService>();
+            services.AddScoped<InvoiceService>();
+            services.AddScoped<LetterService>();
+            services.AddScoped<OfferService>();
+            services.AddScoped<OrderConfirmationService>();
+            services.AddScoped<PurchaseInvoiceService>();
+            services.AddScoped<ReminderService>();
+            services.AddScoped<SettingsService>();
+            services.AddScoped<SubscriptionInvoiceService>();
+            services.AddScoped<SupplierService>();
+            services.AddScoped<TaxService>();
+            services.AddScoped<UnitService>();
             return services;
         }
     }
