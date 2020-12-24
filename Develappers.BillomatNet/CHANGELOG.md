@@ -6,20 +6,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- nothing
+- implemented R operation on offers and offer items
+- service collection extension to add all the services to IoC container
 
 ### Changed
-- nothing
+- changed creation of invoices to use the template and pre configured values
 
 ### Removed
 - nothing
 
 ### Fixed
-- nothing
+- date filter problems ind invoice service
 
 ## [0.1.5] - 
 ### Added
-- implemented service for CUD operations on one Contact
+- implemented service for CUD operations on one contact
 - implemented service for CUD operations on article
 - implemented service for U operations on article property
 - implemented service for CRD operation on article tag
