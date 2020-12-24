@@ -191,7 +191,7 @@ namespace Develappers.BillomatNet.Mapping
                 NumberPre = value.NumberPre,
                 NumberLength = value.NumberLength.ToString(),
                 Title = (value.Title == "") ? null : value.Title,
-                Date = value.Date.ToApiDate(),
+                Date = !value.Date.HasValue || value.Date == DateTime.MinValue ? null : value.Date.ToApiDate(),
                 SupplyDate = strSupplyDate,
                 SupplyDateType = value.SupplyDateType.ToApiValue(),
                 DueDate = null,
