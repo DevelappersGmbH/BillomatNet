@@ -10,14 +10,12 @@ using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Queries;
-using Develappers.BillomatNet.Types;
 using Offer = Develappers.BillomatNet.Types.Offer;
 using OfferItem = Develappers.BillomatNet.Types.OfferItem;
-using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 
 namespace Develappers.BillomatNet
 {
-    public class OfferService : ServiceBase, IEntityReadService<Offer, OfferFilter>
+    public class OfferService : ServiceBase, IEntityService<Offer, OfferFilter>
     {
         /// <summary>
         /// Creates a new instance of <see cref="OfferService"/>.
@@ -41,6 +39,21 @@ namespace Develappers.BillomatNet
         {
             var jsonModel = await GetItemByIdAsync<OfferWrapper>($"/api/offers/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        Task IEntityService<Offer, OfferFilter>.DeleteAsync(int id, CancellationToken token)
+        {
+            throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
+        }
+
+        Task<Offer> IEntityService<Offer, OfferFilter>.CreateAsync(Offer model, CancellationToken token)
+        {
+            throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
+        }
+
+        Task<Offer> IEntityService<Offer, OfferFilter>.EditAsync(Offer model, CancellationToken token)
+        {
+            throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
         }
 
         public Task<Types.PagedList<Offer>> GetListAsync(CancellationToken token = default)
