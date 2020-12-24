@@ -4,12 +4,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
-using Develappers.BillomatNet.Tests.UnitTests.Comparer;
 using Develappers.BillomatNet.Types;
 using FakeItEasy;
 using FluentAssertions;
@@ -81,12 +79,12 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 DiscountAmount = 92.31f,
                 PaidAmount = 4523.19f,
                 OpenAmount = 0f,
-                PaymentTypes = null,
+                PaymentTypes = new List<string>( ),
                 CustomerPortalUrl = "https://develappersdev.billomat.net/customerportal/invoices/show/bc3654c0-b822-4aad-894f-8c5b1620241c",
                 Taxes = new List<InvoiceTax>
                 {
-                    new InvoiceTax {Name = "ust", Rate = 19f, Amount = 722f, AmountPlain = 722f, AmountRounded = 722f, AmountNet = 3800f, AmountNetPlain = 3800f, AmountNetRounded = 3800f, AmountGross = 4522f, AmountGrossPlain = 4522f, AmountGrossRounded = 4522f},
-                    new InvoiceTax {Name = "gtr", Rate = 10f, Amount = 8.5f, AmountPlain = 8.5f, AmountRounded = 8.5f, AmountNet = 85f, AmountNetPlain = 85f, AmountNetRounded = 85f, AmountGross = 93.5f, AmountGrossPlain = 93.5f, AmountGrossRounded = 93.5f}
+                    new() {Name = "ust", Rate = 19f, Amount = 722f, AmountPlain = 722f, AmountRounded = 722f, AmountNet = 3800f, AmountNetPlain = 3800f, AmountNetRounded = 3800f, AmountGross = 4522f, AmountGrossPlain = 4522f, AmountGrossRounded = 4522f},
+                    new() {Name = "gtr", Rate = 10f, Amount = 8.5f, AmountPlain = 8.5f, AmountRounded = 8.5f, AmountNet = 85f, AmountNetPlain = 85f, AmountNetRounded = 85f, AmountGross = 93.5f, AmountGrossPlain = 93.5f, AmountGrossRounded = 93.5f}
                 },
                 InvoiceId = null,
                 OfferId = null,
@@ -108,7 +106,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoiceEqualityComparer());
+            result.Should().BeEquivalentTo(expectedResult);
         }
 
         [Fact]
@@ -173,7 +171,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoiceEqualityComparer());
+            result.Should().BeEquivalentTo(expectedResult);
         }
 
         [Fact]

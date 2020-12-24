@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Queries;
-using Develappers.BillomatNet.Tests.UnitTests.Comparer;
 using Develappers.BillomatNet.Types;
 using FakeItEasy;
 using FluentAssertions;
@@ -29,7 +28,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             const string responseBody = "{\"invoice-comments\":{\"invoice-comment\":[{\"id\":\"4662801\",\"created\":\"2015-06-04T10:04:54+02:00\",\"comment\":\"Rechnung erstellt.\",\"actionkey\":\"CREATE\",\"public\":\"0\",\"by_client\":\"0\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"\",\"invoice_id\":\"1322225\",\"customfield\":\"\"},{\"id\":\"4662804\",\"created\":\"2015-06-04T10:05:08+02:00\",\"comment\":\"Status geändert von Entwurf nach offen.\",\"actionkey\":\"STATUS\",\"public\":\"0\",\"by_client\":\"0\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"\",\"invoice_id\":\"1322225\",\"customfield\":\"\"},{\"id\":\"4662810\",\"created\":\"2015-06-04T10:05:37+02:00\",\"comment\":\"Zahlung über 212,33 EUR entgegengenommen. Aktueller Status: bezahlt.\",\"actionkey\":\"PAYMENT\",\"public\":\"0\",\"by_client\":\"0\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"\",\"invoice_id\":\"1322225\",\"customfield\":\"\"}],\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"3\"}}";
             var expectedResult = new List<InvoiceComment>
             {
-                new InvoiceComment
+                new()
                 {
                     Id = 4662801,
                     Created = DateTime.Parse("2015-06-04T10:04:54+02:00", CultureInfo.InvariantCulture),
@@ -42,7 +41,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     ClientId = null,
                     InvoiceId = 1322225
                 },
-                new InvoiceComment
+                new()
                 {
                     Id = 4662804,
                     Created = DateTime.Parse("2015-06-04T10:05:08+02:00", CultureInfo.InvariantCulture),
@@ -55,7 +54,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     ClientId = null,
                     InvoiceId = 1322225
                 },
-                new InvoiceComment
+                new()
                 {
                     Id = 4662810,
                     Created = DateTime.Parse("2015-06-04T10:05:37+02:00", CultureInfo.InvariantCulture),
@@ -86,9 +85,10 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.List.Should()
-                .HaveCount(expectedResult.Count)
-                .And.ContainItemsInOrderUsingComparer(expectedResult, new InvoiceCommentEqualityComparer());
+            
+            result.List.Should().SatisfyRespectively(first => first.Should().BeEquivalentTo(expectedResult[0]),
+                    second => second.Should().BeEquivalentTo(expectedResult[1]),
+                    third => third.Should().BeEquivalentTo(expectedResult[2]));
         }
 
         [Fact]
@@ -99,7 +99,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             const string responseBody = "{\"invoice-comments\":{\"invoice-comment\":[{\"id\":\"4662801\",\"created\":\"2015-06-04T10:04:54+02:00\",\"comment\":\"Rechnung erstellt.\",\"actionkey\":\"CREATE\",\"public\":\"0\",\"by_client\":\"0\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"\",\"invoice_id\":\"1322225\",\"customfield\":\"\"},{\"id\":\"4662804\",\"created\":\"2015-06-04T10:05:08+02:00\",\"comment\":\"Status geändert von Entwurf nach offen.\",\"actionkey\":\"STATUS\",\"public\":\"0\",\"by_client\":\"0\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"\",\"invoice_id\":\"1322225\",\"customfield\":\"\"},{\"id\":\"4662810\",\"created\":\"2015-06-04T10:05:37+02:00\",\"comment\":\"Zahlung über 212,33 EUR entgegengenommen. Aktueller Status: bezahlt.\",\"actionkey\":\"PAYMENT\",\"public\":\"0\",\"by_client\":\"0\",\"user_id\":\"52821\",\"email_id\":\"\",\"client_id\":\"\",\"invoice_id\":\"1322225\",\"customfield\":\"\"}],\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"3\"}}";
             var expectedResult = new List<InvoiceComment>
             {
-                new InvoiceComment
+                new()
                 {
                     Id = 4662801,
                     Created = DateTime.Parse("2015-06-04T10:04:54+02:00", CultureInfo.InvariantCulture),
@@ -112,7 +112,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     ClientId = null,
                     InvoiceId = 1322225
                 },
-                new InvoiceComment
+                new()
                 {
                     Id = 4662804,
                     Created = DateTime.Parse("2015-06-04T10:05:08+02:00", CultureInfo.InvariantCulture),
@@ -125,7 +125,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     ClientId = null,
                     InvoiceId = 1322225
                 },
-                new InvoiceComment
+                new()
                 {
                     Id = 4662810,
                     Created = DateTime.Parse("2015-06-04T10:05:37+02:00", CultureInfo.InvariantCulture),
@@ -158,9 +158,9 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.List.Should()
-                .HaveCount(expectedResult.Count)
-                .And.ContainItemsInOrderUsingComparer(expectedResult, new InvoiceCommentEqualityComparer());
+            result.List.Should().SatisfyRespectively(first => first.Should().BeEquivalentTo(expectedResult[0]),
+                second => second.Should().BeEquivalentTo(expectedResult[1]),
+                third => third.Should().BeEquivalentTo(expectedResult[2]));
         }
 
         [Fact]
@@ -252,7 +252,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoiceCommentEqualityComparer());
+            result.Should().BeEquivalentTo(expectedResult);
         }
 
         [Fact]
@@ -331,7 +331,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoiceCommentEqualityComparer());
+            result.Should().BeEquivalentTo(expectedResult);
         }
 
         [Fact]

@@ -4,12 +4,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Queries;
-using Develappers.BillomatNet.Tests.UnitTests.Comparer;
 using Develappers.BillomatNet.Types;
 using FakeItEasy;
 using FluentAssertions;
@@ -17,7 +15,6 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
-    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class InvoiceServiceTagsTests : UnitTestBase<InvoiceService>
     {
         [Fact]
@@ -29,7 +26,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
             var expectedResult = new List<TagCloudItem>
             {
-                new TagCloudItem
+                new()
                 {
                     Id = 207252,
                     Name = "Test",
@@ -50,7 +47,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             result.TotalItems.Should().Be(1);
             result.ItemsPerPage.Should().Be(100);
 
-            result.List.Should().Equal(expectedResult, new TagCloudItemEqualityComparer().Equals);
+            result.List.Should().SatisfyRespectively(first => first.Should().BeEquivalentTo(expectedResult[0]));
         }
 
         [Fact]
@@ -81,7 +78,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .AddFilter(x => x.InvoiceId, 3982556);
             var expectedResult = new List<InvoiceTag>
             {
-                new InvoiceTag {Id = 207252, Name = "Test", InvoiceId = 3982556}
+                new() {Id = 207252, Name = "Test", InvoiceId = 3982556}
             };
 
             var http = A.Fake<IHttpClient>();
@@ -97,8 +94,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             result.TotalItems.Should().Be(1);
             result.Page.Should().Be(1);
             result.ItemsPerPage.Should().Be(100);
-            result.List.Should().HaveCount(expectedResult.Count)
-                .And.ContainItemsInOrderUsingComparer(expectedResult, new InvoiceTagEqualityComparer());
+            result.List.Should().SatisfyRespectively(first => first.Should().BeEquivalentTo(expectedResult[0]));
         }
 
         [Fact]
@@ -241,7 +237,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoiceTagEqualityComparer());
+            result.Should().BeEquivalentTo(expectedResult);
         }
 
         [Fact]
