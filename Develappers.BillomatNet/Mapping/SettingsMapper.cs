@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Types;
@@ -115,7 +116,7 @@ namespace Develappers.BillomatNet.Mapping
                 TemplateEngine = value.TemplateEngine,
                 PrintVersion = value.PrintVersion.ToOptionalInt(),
                 DefaultEmailSender = value.DefaultEmailSender,
-                BccAddresses = value.BccAddresses.Select(x => x.BccAddress).ToList()
+                BccAddresses = value.BccAddresses?.Where(x => x != null).Select(x => x.BccAddress).ToList() ?? new List<string>(),
             };
         }
 

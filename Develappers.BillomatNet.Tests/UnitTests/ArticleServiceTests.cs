@@ -4,13 +4,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Queries;
-using Develappers.BillomatNet.Tests.UnitTests.Comparer;
 using Develappers.BillomatNet.Types;
 using FakeItEasy;
 using FluentAssertions;
@@ -18,7 +16,6 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
-    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class ArticleServiceTests : UnitTestBase<ArticleService>
     {
         [Fact]
@@ -275,7 +272,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.Should().BeEquivalentUsingComparerTo(expected, new ArticleEqualityComparer());
+            result.Should().BeEquivalentTo(expected);
         }
 
         [Fact]
@@ -288,7 +285,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 "{\"articles\":{\"article\":[{\"id\":\"203719\",\"created\":\"2015-11-04T18:00:37+01:00\",\"updated\":\"2017-07-22T13:57:37+02:00\",\"archived\":\"0\",\"unit_id\":\"\",\"article_number\":\"ART62\",\"number\":\"62\",\"number_pre\":\"ART\",\"number_length\":\"0\",\"type\":\"\",\"title\":\"Banane\",\"description\":\"Gelb und krumm\",\"sales_price\":\"5\",\"sales_price2\":\"4.2\",\"sales_price3\":\"3\",\"sales_price4\":\"2.9\",\"sales_price5\":\"2.8\",\"currency_code\":\"EUR\",\"tax_id\":\"\",\"revenue_account_number\":\"\",\"cost_center\":\"\",\"purchase_price\":\"2.5\",\"purchase_price_net_gross\":\"NET\",\"supplier_id\":\"\",\"customfield\":\"\",\"article-property-values\":{\"article-property-value\":[{\"id\":\"309134\",\"article_id\":\"203719\",\"article_property_id\":\"2442\",\"type\":\"TEXTFIELD\",\"name\":\"Farbe\",\"value\":\"\",\"customfield\":\"\"},{\"id\":\"309135\",\"article_id\":\"203719\",\"article_property_id\":\"2490\",\"type\":\"CHECKBOX\",\"name\":\"ist defekt?\",\"value\":\"1\",\"customfield\":\"\"},{\"id\":\"569678\",\"article_id\":\"203719\",\"article_property_id\":\"3250\",\"type\":\"TEXTAREA\",\"name\":\"Blob\",\"value\":\"\",\"customfield\":\"\"}]}},{\"id\":\"205143\",\"created\":\"2015-11-12T15:53:24+01:00\",\"updated\":\"2020-07-10T12:20:36+02:00\",\"archived\":\"0\",\"unit_id\":\"\",\"article_number\":\"ART63\",\"number\":\"63\",\"number_pre\":\"ART\",\"number_length\":\"0\",\"type\":\"\",\"title\":\"Apfel\",\"description\":\"\",\"sales_price\":\"1.2\",\"sales_price2\":\"1.15\",\"sales_price3\":\"1.13\",\"sales_price4\":\"0.8\",\"sales_price5\":\"0.78\",\"currency_code\":\"EUR\",\"tax_id\":\"21282\",\"revenue_account_number\":\"\",\"cost_center\":\"\",\"purchase_price\":\"0.58\",\"purchase_price_net_gross\":\"NET\",\"supplier_id\":\"\",\"customfield\":\"\",\"article-property-values\":{\"article-property-value\":[{\"id\":\"298535\",\"article_id\":\"205143\",\"article_property_id\":\"2442\",\"type\":\"TEXTFIELD\",\"name\":\"Farbe\",\"value\":\"Rot\",\"customfield\":\"\"},{\"id\":\"320391\",\"article_id\":\"205143\",\"article_property_id\":\"2490\",\"type\":\"CHECKBOX\",\"name\":\"ist defekt?\",\"value\":\"\",\"customfield\":\"\"},{\"id\":\"569679\",\"article_id\":\"205143\",\"article_property_id\":\"3250\",\"type\":\"TEXTAREA\",\"name\":\"Blob\",\"value\":\"\",\"customfield\":\"\"}]}},{\"id\":\"205176\",\"created\":\"2015-11-12T22:08:43+01:00\",\"updated\":\"2020-07-10T12:20:36+02:00\",\"archived\":\"0\",\"unit_id\":\"\",\"article_number\":\"ART64\",\"number\":\"64\",\"number_pre\":\"ART\",\"number_length\":\"0\",\"type\":\"\",\"title\":\"Weintrauben\",\"description\":\"Aus Spanien\",\"sales_price\":\"1.09\",\"sales_price2\":\"1\",\"sales_price3\":\"0.8\",\"sales_price4\":\"0.45\",\"sales_price5\":\"0\",\"currency_code\":\"EUR\",\"tax_id\":\"21282\",\"revenue_account_number\":\"\",\"cost_center\":\"\",\"purchase_price\":\"0.45\",\"purchase_price_net_gross\":\"GROSS\",\"supplier_id\":\"\",\"customfield\":\"\",\"article-property-values\":{\"article-property-value\":[{\"id\":\"298529\",\"article_id\":\"205176\",\"article_property_id\":\"2442\",\"type\":\"TEXTFIELD\",\"name\":\"Farbe\",\"value\":\"farblos\",\"customfield\":\"\"},{\"id\":\"309133\",\"article_id\":\"205176\",\"article_property_id\":\"2490\",\"type\":\"CHECKBOX\",\"name\":\"ist defekt?\",\"value\":\"1\",\"customfield\":\"\"},{\"id\":\"569680\",\"article_id\":\"205176\",\"article_property_id\":\"3250\",\"type\":\"TEXTAREA\",\"name\":\"Blob\",\"value\":\"\",\"customfield\":\"\"}]}}],\"@page\":\"2\",\"@per_page\":\"10\",\"@total\":\"32\"}}";
             var expectedResult = new List<Article>
             {
-                new Article
+                new()
                 {
                     Id = 203719,
                     Created = DateTime.Parse("2015-11-04T18:00:37+01:00", CultureInfo.InvariantCulture),
@@ -310,7 +307,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     PurchasePrice = 2.5f,
                     PurchasePriceNetGross = NetGrossType.Net
                 },
-                new Article
+                new()
                 {
                     Id = 205143,
                     Created = DateTime.Parse("2015-11-12T15:53:24+01:00", CultureInfo.InvariantCulture),
@@ -332,7 +329,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     PurchasePrice = 0.58f,
                     PurchasePriceNetGross = NetGrossType.Net
                 },
-                new Article
+                new()
                 {
                     Id = 205176,
                     Created = DateTime.Parse("2015-11-12T22:08:43+01:00", CultureInfo.InvariantCulture),
@@ -372,8 +369,10 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             result.TotalItems.Should().Be(32);
             result.ItemsPerPage.Should().Be(10);
             result.Page.Should().Be(2);
-            result.List.Should().HaveCount(expectedResult.Count)
-                .And.ContainItemsInOrderUsingComparer(expectedResult, new ArticleEqualityComparer());
+            result.List.Should().SatisfyRespectively(
+                first => first.Should().BeEquivalentTo(expectedResult[0]),
+                second => second.Should().BeEquivalentTo(expectedResult[1]),
+                third => third.Should().BeEquivalentTo(expectedResult[2]));
         }
     }
 }

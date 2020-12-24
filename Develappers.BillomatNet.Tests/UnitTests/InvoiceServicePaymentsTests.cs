@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Queries;
-using Develappers.BillomatNet.Tests.UnitTests.Comparer;
 using Develappers.BillomatNet.Types;
 using FakeItEasy;
 using FluentAssertions;
@@ -18,7 +17,6 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
-    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class InvoiceServicePaymentsTests : UnitTestBase<InvoiceService>
     {
         [Fact]
@@ -29,7 +27,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             const string responseBody = "{\"invoice-payments\":{\"invoice-payment\":[{\"id\":\"872254\",\"created\":\"2015-06-04T09:51:54+02:00\",\"invoice_id\":\"1220304\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"-17\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"\",\"customfield\":\"\"},{\"id\":\"872269\",\"created\":\"2015-06-04T10:05:37+02:00\",\"invoice_id\":\"1322225\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"212.33\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"\",\"customfield\":\"\"},{\"id\":\"872282\",\"created\":\"2015-06-04T10:09:55+02:00\",\"invoice_id\":\"1298716\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"495\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"\",\"customfield\":\"\"}],\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"3\"}}";
             var expectedResult = new List<InvoicePayment>
             {
-                new InvoicePayment
+                new()
                 {
                     Id = 872254,
                     Created = DateTime.Parse("2015-06-04T09:51:54+02:00", CultureInfo.InvariantCulture),
@@ -43,7 +41,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     Quote = 1,
                     MarkInvoiceAsPaid = true
                 },
-                new InvoicePayment
+                new()
                 {
                     Id = 872269,
                     Created = DateTime.Parse("2015-06-04T10:05:37+02:00", CultureInfo.InvariantCulture),
@@ -57,7 +55,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     Quote = 1,
                     MarkInvoiceAsPaid = true
                 },
-                new InvoicePayment
+                new()
                 {
                     Id = 872282,
                     Created = DateTime.Parse("2015-06-04T10:09:55+02:00", CultureInfo.InvariantCulture),
@@ -86,9 +84,9 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, null, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.List.Should()
-                .HaveCount(expectedResult.Count)
-                .And.ContainItemsInOrderUsingComparer(expectedResult, new InvoicePaymentEqualityComparer());
+            result.List.Should().SatisfyRespectively(first => first.Should().BeEquivalentTo(expectedResult[0]),
+                second => second.Should().BeEquivalentTo(expectedResult[1]),
+                third => third.Should().BeEquivalentTo(expectedResult[2]));
         }
 
         [Fact]
@@ -99,7 +97,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             const string responseBody = "{\"invoice-payments\":{\"invoice-payment\":[{\"id\":\"872254\",\"created\":\"2015-06-04T09:51:54+02:00\",\"invoice_id\":\"1220304\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"-17\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"\",\"type\":\"BANK_CARD\",\"customfield\":\"\"},{\"id\":\"872269\",\"created\":\"2015-06-04T10:05:37+02:00\",\"invoice_id\":\"1322225\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"212.33\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"\",\"type\":\"CASH\",\"customfield\":\"\"},{\"id\":\"872282\",\"created\":\"2015-06-04T10:09:55+02:00\",\"invoice_id\":\"1298716\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"495\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"\",\"type\":\"DEBIT\",\"customfield\":\"\"}],\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"3\"}}";
             var expectedResult = new List<InvoicePayment>
             {
-                new InvoicePayment
+                new()
                 {
                     Id = 872254,
                     Created = DateTime.Parse("2015-06-04T09:51:54+02:00", CultureInfo.InvariantCulture),
@@ -114,7 +112,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     MarkInvoiceAsPaid = true,
                     Type = PaymentType.BankCard
                 },
-                new InvoicePayment
+                new()
                 {
                     Id = 872269,
                     Created = DateTime.Parse("2015-06-04T10:05:37+02:00", CultureInfo.InvariantCulture),
@@ -129,7 +127,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     MarkInvoiceAsPaid = true,
                     Type = PaymentType.Cash
                 },
-                new InvoicePayment
+                new()
                 {
                     Id = 872282,
                     Created = DateTime.Parse("2015-06-04T10:09:55+02:00", CultureInfo.InvariantCulture),
@@ -162,9 +160,9 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.List.Should()
-                .HaveCount(expectedResult.Count)
-                .And.ContainItemsInOrderUsingComparer(expectedResult, new InvoicePaymentEqualityComparer());
+            result.List.Should().SatisfyRespectively(first => first.Should().BeEquivalentTo(expectedResult[0]),
+                second => second.Should().BeEquivalentTo(expectedResult[1]),
+                third => third.Should().BeEquivalentTo(expectedResult[2]));
         }
 
         [Fact]
@@ -175,7 +173,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             const string responseBody = "{\"invoice-payments\":{\"invoice-payment\":[{\"id\":\"872254\",\"created\":\"2015-06-04T09:51:54+02:00\",\"invoice_id\":\"1220304\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"-17\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"BANK_CARD\",\"customfield\":\"\"},{\"id\":\"872269\",\"created\":\"2015-06-04T10:05:37+02:00\",\"invoice_id\":\"1322225\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"212.33\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"BANK_CARD\",\"customfield\":\"\"},{\"id\":\"872282\",\"created\":\"2015-06-04T10:09:55+02:00\",\"invoice_id\":\"1298716\",\"user_id\":\"52821\",\"date\":\"2015-05-04\",\"amount\":\"495\",\"comment\":\"\",\"transaction_purpose\":\"\",\"currency_code\":\"\",\"quote\":\"1\",\"type\":\"BANK_CARD\",\"customfield\":\"\"}],\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"3\"}}";
             var expectedResult = new List<InvoicePayment>
             {
-                new InvoicePayment
+                new()
                 {
                     Id = 872254,
                     Created = DateTime.Parse("2015-06-04T09:51:54+02:00", CultureInfo.InvariantCulture),
@@ -190,7 +188,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     MarkInvoiceAsPaid = true,
                     Type = PaymentType.BankCard
                 },
-                new InvoicePayment
+                new()
                 {
                     Id = 872269,
                     Created = DateTime.Parse("2015-06-04T10:05:37+02:00", CultureInfo.InvariantCulture),
@@ -205,7 +203,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     MarkInvoiceAsPaid = true,
                     Type = PaymentType.BankCard
                 },
-                new InvoicePayment
+                new()
                 {
                     Id = 872282,
                     Created = DateTime.Parse("2015-06-04T10:09:55+02:00", CultureInfo.InvariantCulture),
@@ -238,9 +236,9 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, expectedQuery, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.List.Should()
-                .HaveCount(expectedResult.Count)
-                .And.ContainItemsInOrderUsingComparer(expectedResult, new InvoicePaymentEqualityComparer());
+            result.List.Should().SatisfyRespectively(first => first.Should().BeEquivalentTo(expectedResult[0]),
+                second => second.Should().BeEquivalentTo(expectedResult[1]),
+                third => third.Should().BeEquivalentTo(expectedResult[2]));
         }
 
         [Fact]
@@ -320,7 +318,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoicePaymentEqualityComparer());
+            result.Should().BeEquivalentTo(expectedResult);
         }
 
         [Fact]
@@ -397,7 +395,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.Should().BeEquivalentUsingComparerTo(expectedResult, new InvoicePaymentEqualityComparer());
+            result.Should().BeEquivalentTo(expectedResult);
         }
 
         [Fact]
