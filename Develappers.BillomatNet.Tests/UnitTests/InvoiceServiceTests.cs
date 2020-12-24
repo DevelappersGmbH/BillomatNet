@@ -17,7 +17,6 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
-    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class InvoiceServiceTests : UnitTestBase<InvoiceService>
     {
         [Fact]
