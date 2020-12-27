@@ -39,7 +39,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .Returns(Task.FromResult(httpResult));
 
             var sut = GetSystemUnderTest(http);
-            var result = await sut.GetTagcloudAsync();
+            var result = await sut.GetTagCloudAsync();
 
             A.CallTo(() => http.GetAsync(new Uri(expectedUri, UriKind.Relative), null, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
@@ -62,7 +62,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             var sut = GetSystemUnderTest(http);
 
             //act and assert
-            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.GetTagcloudAsync());
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.GetTagCloudAsync());
             A.CallTo(() => http.GetAsync(expectedRequestUri, null, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
         }

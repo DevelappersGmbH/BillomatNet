@@ -25,6 +25,7 @@ namespace Develappers.BillomatNet
         IEntityService<Invoice, InvoiceFilter>
     {
         private readonly Configuration _configuration;
+        private const string EntityUrlFragment = "invoices";
 
         /// <summary>
         /// Creates a new instance of <see cref="InvoiceService"/>.
@@ -62,7 +63,7 @@ namespace Develappers.BillomatNet
         /// <returns>The invoice list or null if not found.</returns>
         public async Task<Types.PagedList<Invoice>> GetListAsync(Query<Invoice, InvoiceFilter> query, CancellationToken token = default)
         {
-            var jsonModel = await GetListAsync<InvoiceListWrapper>("/api/invoices", QueryString.For(query), token).ConfigureAwait(false);
+            var jsonModel = await GetListAsync<InvoiceListWrapper>($"/api/{EntityUrlFragment}", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -74,7 +75,7 @@ namespace Develappers.BillomatNet
         /// <returns>The invoice or null if not found.</returns>
         public async Task<Invoice> GetByIdAsync(int id, CancellationToken token = default)
         {
-            var jsonModel = await GetItemByIdAsync<InvoiceWrapper>($"/api/invoices/{id}", token).ConfigureAwait(false);
+            var jsonModel = await GetItemByIdAsync<InvoiceWrapper>($"/api/{EntityUrlFragment}/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -134,7 +135,7 @@ namespace Develappers.BillomatNet
                 Invoice = value.ToApi()
             };
 
-            var result = await PostAsync("/api/invoices", wrappedModel, token);
+            var result = await PostAsync($"/api/{EntityUrlFragment}", wrappedModel, token);
 
             return result.ToDomain();
         }
@@ -185,7 +186,7 @@ namespace Develappers.BillomatNet
 
             try
             {
-                var jsonModel = await PutAsync($"/api/invoices/{value.Id}", wrappedModel, token).ConfigureAwait(false);
+                var jsonModel = await PutAsync($"/api/{EntityUrlFragment}/{value.Id}", wrappedModel, token).ConfigureAwait(false);
                 return jsonModel.ToDomain();
             }
             catch (WebException wex)
@@ -205,7 +206,7 @@ namespace Develappers.BillomatNet
         /// </returns>
         public Task CancelAsync(int id, CancellationToken token = default)
         {
-            return PutAsync<object>($"/api/invoices/{id}/cancel", null, token);
+            return PutAsync<object>($"/api/{EntityUrlFragment}/{id}/cancel", null, token);
         }
 
         /// <summary>
@@ -218,7 +219,7 @@ namespace Develappers.BillomatNet
         /// </returns>
         public Task UncancelAsync(int id, CancellationToken token = default)
         {
-            return PutAsync<object>($"/api/invoices/{id}/uncancel", null, token);
+            return PutAsync<object>($"/api/{EntityUrlFragment}/{id}/uncancel", null, token);
         }
 
         /// <summary>
@@ -257,7 +258,7 @@ namespace Develappers.BillomatNet
                     TemplateId = templateId
                 }
             };
-            await PutAsync<object, CompleteInvoiceWrapper>($"/api/invoices/{id}/complete", model, token).ConfigureAwait(false);
+            await PutAsync<object, CompleteInvoiceWrapper>($"/api/{EntityUrlFragment}/{id}/complete", model, token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -277,7 +278,7 @@ namespace Develappers.BillomatNet
             {
                 throw new ArgumentException("invalid invoice id", nameof(id));
             }
-            return DeleteAsync($"/api/invoices/{id}", token);
+            return DeleteAsync($"/api/{EntityUrlFragment}/{id}", token);
         }
 
 
@@ -392,7 +393,7 @@ namespace Develappers.BillomatNet
 
         public async Task<InvoiceDocument> GetPdfAsync(int id, CancellationToken token = default)
         {
-            var jsonModel = await GetItemByIdAsync<InvoiceDocumentWrapper>($"/api/invoices/{id}/pdf", token).ConfigureAwait(false);
+            var jsonModel = await GetItemByIdAsync<InvoiceDocumentWrapper>($"/api/{EntityUrlFragment}/{id}/pdf", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -403,7 +404,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid invoice id", nameof(id));
             }
 
-            return $"https://{_configuration.BillomatId}.billomat.net/app/invoices/show/entityId/{id}";
+            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
         }
 
         /// <summary>
@@ -436,7 +437,7 @@ namespace Develappers.BillomatNet
             {
                 InvoiceMail = model.ToApi()
             };
-            return PostAsync($"/api/invoices/{id}/email", wrappedModel, token);
+            return PostAsync($"/api/{EntityUrlFragment}/{id}/email", wrappedModel, token);
         }
 
         /// <summary>
@@ -671,7 +672,7 @@ namespace Develappers.BillomatNet
         /// </returns>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
-        public async Task<Types.PagedList<TagCloudItem>> GetTagcloudAsync(CancellationToken token = default)
+        public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default)
         {
             var jsonModel = await GetListAsync<InvoiceTagCloudItemListWrapper>("/api/invoice-tags", null, token).ConfigureAwait(false);
             return jsonModel.ToDomain();
