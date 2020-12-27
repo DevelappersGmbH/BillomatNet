@@ -11,6 +11,7 @@ using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Queries;
 using Offer = Develappers.BillomatNet.Types.Offer;
+using OfferDocument = Develappers.BillomatNet.Types.OfferDocument;
 using OfferItem = Develappers.BillomatNet.Types.OfferItem;
 
 namespace Develappers.BillomatNet
@@ -44,6 +45,12 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        public async Task<OfferDocument> GetPdfAsync(int id, CancellationToken token = default)
+        {
+            var jsonModel = await GetItemByIdAsync<OfferDocumentWrapper>($"/api/offers/{id}/pdf", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
         public string GetPortalUrl(int id)
         {
             if (id <= 0)
@@ -69,11 +76,28 @@ namespace Develappers.BillomatNet
             throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
         }
 
+        /// <summary>
+        /// Gets the list asynchronous.
+        /// </summary>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the result of the requested page.
+        /// </returns>
         public Task<Types.PagedList<Offer>> GetListAsync(CancellationToken token = default)
         {
             return GetListAsync(null, token);
         }
 
+        /// <summary>
+        /// Get list as an asynchronous operation.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the result of the requested page.
+        /// </returns>
         public async Task<Types.PagedList<Offer>> GetListAsync(Query<Offer, OfferFilter> query, CancellationToken token = default)
         {
             var jsonModel = await GetListAsync<OfferListWrapper>("/api/offers", QueryString.For(query), token).ConfigureAwait(false);
@@ -81,11 +105,14 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Returns and invoice by it's ID.
+        /// Returns and offer by it's ID.
         /// </summary>
-        /// <param name="id">The ID of the invoice.</param>
+        /// <param name="id">The ID of the offer.</param>
         /// <param name="token">The cancellation token.</param>
-        /// <returns>The invoice or null if not found.</returns>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the offer item.
+        /// </returns>
         public async Task<OfferItem> GetItemByIdAsync(int id, CancellationToken token = default)
         {
             var jsonModel = await GetItemByIdAsync<OfferItemWrapper>($"/api/offer-items/{id}", token).ConfigureAwait(false);

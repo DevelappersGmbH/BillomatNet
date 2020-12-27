@@ -17,6 +17,9 @@ using OfferItem = Develappers.BillomatNet.Types.OfferItem;
 using Invoice = Develappers.BillomatNet.Types.Invoice;
 using InvoiceComment = Develappers.BillomatNet.Types.InvoiceComment;
 using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
+using OfferDocument = Develappers.BillomatNet.Types.OfferDocument;
+using Attachment = Develappers.BillomatNet.Types.Attachment;
+using InvoiceMail = Develappers.BillomatNet.Types.InvoiceMail;
 using InvoiceItem = Develappers.BillomatNet.Types.InvoiceItem;
 using InvoicePayment = Develappers.BillomatNet.Types.InvoicePayment;
 using InvoiceTag = Develappers.BillomatNet.Types.InvoiceTag;
@@ -37,10 +40,12 @@ namespace Develappers.BillomatNet.Mapping
         private static readonly TaxMapper s_taxMapper = new TaxMapper();
         private static readonly InvoiceMapper s_invoiceMapper = new InvoiceMapper();
         private static readonly OfferMapper s_offerMapper = new OfferMapper();
+        private static readonly OfferDocumentMapper s_offerDocumentMapper = new OfferDocumentMapper();
         private static readonly OfferItemMapper s_offerItemMapper = new OfferItemMapper();
         private static readonly SettingsMapper s_settingsMapper = new SettingsMapper();
         private static readonly InvoiceItemMapper s_invoiceItemMapper = new InvoiceItemMapper();
         private static readonly InvoiceDocumentMapper s_invoiceDocumentMapper = new InvoiceDocumentMapper();
+        private static readonly InvoiceMailMapper s_invoiceMailMapper = new InvoiceMailMapper();
         private static readonly InvoiceCommentMapper s_invoiceCommentMapper = new InvoiceCommentMapper();
         private static readonly InvoicePaymentMapper s_invoicePaymentMapper = new InvoicePaymentMapper();
         private static readonly InvoiceTagMapper s_invoiceTagMapper = new InvoiceTagMapper();
@@ -164,14 +169,19 @@ namespace Develappers.BillomatNet.Mapping
             return s_invoiceDocumentMapper.ApiToDomain(value);
         }
 
-        internal static Api.InvoiceMail ToApi(this Types.InvoiceMail value)
+        internal static OfferDocument ToDomain(this OfferDocumentWrapper value)
         {
-            return s_invoiceDocumentMapper.DomainToApi(value);
+            return s_offerDocumentMapper.ApiToDomain(value);
         }
 
-        internal static Api.Attachment ToApi(this Types.Attachment value)
+        internal static Api.InvoiceMail ToApi(this InvoiceMail value)
         {
-            return s_invoiceDocumentMapper.DomainToApi(value);
+            return s_invoiceMailMapper.DomainToApi(value);
+        }
+
+        internal static Api.Attachment ToApi(this Attachment value)
+        {
+            return s_invoiceMailMapper.DomainToApi(value);
         }
 
         internal static Types.PagedList<InvoiceComment> ToDomain(this InvoiceCommentListWrapper value)
@@ -179,7 +189,7 @@ namespace Develappers.BillomatNet.Mapping
             return s_invoiceCommentMapper.ApiToDomain(value);
         }
 
-        internal static Types.InvoiceComment ToDomain(this InvoiceCommentWrapper value)
+        internal static InvoiceComment ToDomain(this InvoiceCommentWrapper value)
         {
             return s_invoiceCommentMapper.ApiToDomain(value);
         }
@@ -193,7 +203,7 @@ namespace Develappers.BillomatNet.Mapping
             return s_invoicePaymentMapper.ApiToDomain(value);
         }
 
-        internal static Types.InvoicePayment ToDomain(this InvoicePaymentWrapper value)
+        internal static InvoicePayment ToDomain(this InvoicePaymentWrapper value)
         {
             return s_invoicePaymentMapper.ApiToDomain(value);
         }
@@ -219,7 +229,7 @@ namespace Develappers.BillomatNet.Mapping
             return s_invoiceTagMapper.ApiToDomain(value);
         }
 
-        internal static Types.InvoiceTag ToDomain(this InvoiceTagWrapper value)
+        internal static InvoiceTag ToDomain(this InvoiceTagWrapper value)
         {
             return s_invoiceTagMapper.ApiToDomain(value);
         }
