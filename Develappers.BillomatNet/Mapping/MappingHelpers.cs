@@ -146,6 +146,27 @@ namespace Develappers.BillomatNet.Mapping
             }
         }
 
+        internal static OfferStatus ToOfferStatus(this string value)
+        {
+            switch (value.ToLowerInvariant())
+            {
+                case "draft":
+                    return OfferStatus.Draft;
+                case "open":
+                    return OfferStatus.Open;
+                case "won":
+                    return OfferStatus.Won;
+                case "lost":
+                    return OfferStatus.Lost;
+                case "canceled":
+                    return OfferStatus.Canceled;
+                case "cleared":
+                    return OfferStatus.Cleared;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
+        }
+
         /// <summary>
         /// Converts the InvoiceStatus enum to string
         /// </summary>
@@ -167,6 +188,34 @@ namespace Develappers.BillomatNet.Mapping
                     return "OVERDUE";
                 case InvoiceStatus.Canceled:
                     return "CANCELED";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
+        }
+
+        /// <summary>
+        /// Converts the InvoiceStatus enum to string
+        /// </summary>
+        /// <param name="value">The enum</param>
+        /// <returns>
+        /// The string or an exception if the value doesn't match any case
+        /// </returns>
+        internal static string ToApiValue(this OfferStatus value)
+        {
+            switch (value)
+            {
+                case OfferStatus.Draft:
+                    return "DRAFT";
+                case OfferStatus.Open:
+                    return "OPEN";
+                case OfferStatus.Won:
+                    return "WON";
+                case OfferStatus.Lost:
+                    return "LOST";
+                case OfferStatus.Canceled:
+                    return "CANCELED";
+                case OfferStatus.Cleared:
+                    return "CLEARED";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value), value, null);
             }
@@ -326,7 +375,7 @@ namespace Develappers.BillomatNet.Mapping
                     return "REMINDER_DELETE";
                 default:
                     return "COMMENT";
-             }
+            }
         }
         internal static PaymentType ToPaymentType(this string value)
         {

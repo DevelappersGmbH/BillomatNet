@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,12 +26,16 @@ namespace Develappers.BillomatNet
         IEntityPropertyService<ClientProperty, ClientPropertyFilter>,
         IEntityTagService<ClientTag, ClientTagFilter>
     {
+        private readonly Configuration _configuration;
+        private const string EntityUrlFragment = "clients";
+
         /// <summary>
         /// Creates a new instance of <see cref="ClientService"/>.
         /// </summary>
         /// <param name="configuration">The service configuration.</param>
         public ClientService(Configuration configuration) : base(configuration)
         {
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -40,7 +43,6 @@ namespace Develappers.BillomatNet
         /// </summary>
         /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
         /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal ClientService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }
@@ -53,7 +55,7 @@ namespace Develappers.BillomatNet
         public async Task<Account> MyselfAsync(CancellationToken token = default)
         {
             var httpClient = HttpClientFactory.Invoke();
-            var httpResponse = await httpClient.GetAsync(new Uri("/api/clients/myself", UriKind.Relative), token).ConfigureAwait(false);
+            var httpResponse = await httpClient.GetAsync(new Uri($"/api/{EntityUrlFragment}/myself", UriKind.Relative), token).ConfigureAwait(false);
             var jsonModel = JsonConvert.DeserializeObject<AccountWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }
@@ -76,7 +78,7 @@ namespace Develappers.BillomatNet
         /// <returns>The client list or null if not found.</returns>
         public async Task<Types.PagedList<Client>> GetListAsync(Query<Client, ClientFilter> query, CancellationToken token = default)
         {
-            var jsonModel = await GetListAsync<ClientListWrapper>("/api/clients", QueryString.For(query), token).ConfigureAwait(false);
+            var jsonModel = await GetListAsync<ClientListWrapper>($"/api/{EntityUrlFragment}", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -89,8 +91,24 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotAuthorizedException">Thrown when the client is not accessible.</exception>
         public async Task<Client> GetByIdAsync(int id, CancellationToken token = default)
         {
-            var jsonModel = await GetItemByIdAsync<ClientWrapper>($"/api/clients/{id}", token).ConfigureAwait(false);
+            var jsonModel = await GetItemByIdAsync<ClientWrapper>($"/api/{EntityUrlFragment}/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        /// <summary>
+        /// Gets the portal URL for this entity.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The url to this entity in billomat portal.</returns>
+        /// <exception cref="ArgumentException">Thrown when the id is invalid.</exception>
+        public string GetPortalUrl(int id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid client id", nameof(id));
+            }
+
+            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
         }
 
         Task IEntityService<Client, ClientFilter>.DeleteAsync(int id, CancellationToken token)

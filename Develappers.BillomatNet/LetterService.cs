@@ -10,12 +10,16 @@ namespace Develappers.BillomatNet
 {
     public class LetterService : ServiceBase
     {
+        private readonly Configuration _configuration;
+        private const string EntityUrlFragment = "letters";
+
         /// <summary>
         /// Creates a new instance of <see cref="LetterService"/>.
         /// </summary>
         /// <param name="configuration">The service configuration.</param>
         public LetterService(Configuration configuration) : base(configuration)
         {
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -26,6 +30,22 @@ namespace Develappers.BillomatNet
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal LetterService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
+        }
+
+        /// <summary>
+        /// Gets the portal URL for this entity.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The url to this entity in billomat portal.</returns>
+        /// <exception cref="ArgumentException">Thrown when the id is invalid.</exception>
+        public string GetPortalUrl(int id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid letter id", nameof(id));
+            }
+
+            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
         }
     }
 }

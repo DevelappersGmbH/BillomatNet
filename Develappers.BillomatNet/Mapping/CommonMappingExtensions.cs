@@ -117,7 +117,7 @@ namespace Develappers.BillomatNet.Mapping
         /// <returns>The the list of strings</returns>
         internal static List<string> ToStringList(this string value)
         {
-            if (value == null)
+            if (string.IsNullOrEmpty(value))
             {
                 return new List<string>();
             }

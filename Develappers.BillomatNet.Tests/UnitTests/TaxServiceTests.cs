@@ -9,7 +9,6 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
-using Develappers.BillomatNet.Tests.UnitTests.Comparer;
 using Develappers.BillomatNet.Types;
 using FakeItEasy;
 using FluentAssertions;
@@ -17,7 +16,6 @@ using Xunit;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
-    [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class TaxServiceTests : UnitTestBase<TaxService>
     {
         [Fact]
@@ -38,7 +36,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             };
 
             const string expectedRequestBody =
-                "{\"tax\":{\"id\":null,\"created\":null,\"updated\":null,\"name\":\"xUnit Test\",\"rate\":\"1\",\"is_default\":\"0\"}}";
+                "{\"tax\":{\"name\":\"xUnit Test\",\"rate\":\"1\",\"is_default\":\"0\"}}";
             var expectedRequestUri = new Uri("/api/taxes", UriKind.Relative);
             const string responseBody =
                 "{\"tax\":{\"id\":\"119547\",\"created\":\"2020-07-26T09:17:20+02:00\",\"updated\":\"2020-07-26T09:17:20+02:00\",\"name\":\"xUnit Test\",\"rate\":\"1\",\"is_default\":\"0\",\"customfield\":\"\"}}";
@@ -56,7 +54,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.PostAsync(expectedRequestUri, expectedRequestBody, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.Should().BeEquivalentUsingComparerTo(expected, new TaxEqualityComparer());
+            result.Should().BeEquivalentTo(expected);
         }
 
         [Fact]
@@ -179,7 +177,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.Should().BeEquivalentUsingComparerTo(expectedResult, new TaxEqualityComparer());
+            result.Should().BeEquivalentTo(expectedResult);
         }
 
         [Fact]
@@ -190,7 +188,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             const string responseBody = "{\"taxes\":{\"tax\":[{\"id\":\"21281\",\"created\":\"2015-11-05T13:16:49+01:00\",\"updated\":\"2016-11-27T21:57:21+01:00\",\"name\":\"MwSt\",\"rate\":\"19\",\"is_default\":\"0\",\"customfield\":\"\"},{\"id\":\"21282\",\"created\":\"2015-11-05T13:17:12+01:00\",\"updated\":\"2016-11-27T19:05:35+01:00\",\"name\":\"MwSt\",\"rate\":\"7\",\"is_default\":\"0\",\"customfield\":\"\"},{\"id\":\"21436\",\"created\":\"2015-11-10T10:55:59+01:00\",\"updated\":\"2015-11-10T10:55:59+01:00\",\"name\":\"Mehrwertsteuer\",\"rate\":\"19\",\"is_default\":\"0\",\"customfield\":\"\"},{\"id\":\"32362\",\"created\":\"2018-02-24T09:52:54+01:00\",\"updated\":\"2020-07-14T14:28:43+02:00\",\"name\":\"blups\",\"rate\":\"4\",\"is_default\":\"1\",\"customfield\":\"\"}],\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"4\"}}";
             var expectedResult = new List<Tax>
             {
-                new Tax
+                new()
                 {
                     Id = 21281,
                     Created = DateTime.Parse("2015-11-05T13:16:49+01:00", CultureInfo.InvariantCulture),
@@ -199,7 +197,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     Rate = 19f,
                     IsDefault = false
                 },
-                new Tax
+                new()
                 {
                     Id = 21282,
                     Created = DateTime.Parse("2015-11-05T13:17:12+01:00", CultureInfo.InvariantCulture),
@@ -208,7 +206,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     Rate = 7f,
                     IsDefault = false
                 },
-                new Tax
+                new()
                 {
                     Id = 21436,
                     Created = DateTime.Parse("2015-11-10T10:55:59+01:00", CultureInfo.InvariantCulture),
@@ -217,7 +215,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     Rate = 19f,
                     IsDefault = false
                 },
-                new Tax
+                new()
                 {
                     Id = 32362,
                     Created = DateTime.Parse("2018-02-24T09:52:54+01:00", CultureInfo.InvariantCulture),
@@ -241,9 +239,10 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, null, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.List.Should()
-                .HaveCount(expectedResult.Count)
-                .And.ContainItemsInOrderUsingComparer(expectedResult, new TaxEqualityComparer());
+            result.List.Should().SatisfyRespectively(first => first.Should().BeEquivalentTo(expectedResult[0]),
+                second => second.Should().BeEquivalentTo(expectedResult[1]),
+                third => third.Should().BeEquivalentTo(expectedResult[2]),
+                fourth => fourth.Should().BeEquivalentTo(expectedResult[3]));
         }
 
         [Fact]

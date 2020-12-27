@@ -164,7 +164,7 @@ namespace Develappers.BillomatNet.Mapping
                     break;
             }
 
-            var paymentTypes = "";
+            string paymentTypes = null;
             if (value.PaymentTypes != null && value.PaymentTypes.Count != 0)
             {
                 paymentTypes = String.Join(",", value.PaymentTypes);
@@ -190,21 +190,21 @@ namespace Develappers.BillomatNet.Mapping
                 Number = value.Number.ToString(),
                 NumberPre = value.NumberPre,
                 NumberLength = value.NumberLength.ToString(),
-                Title = value.Title,
-                Date = value.Date.ToApiDate(),
+                Title = (value.Title == "") ? null : value.Title,
+                Date = !value.Date.HasValue || value.Date == DateTime.MinValue ? null : value.Date.ToApiDate(),
                 SupplyDate = strSupplyDate,
                 SupplyDateType = value.SupplyDateType.ToApiValue(),
-                DueDate = value.DueDate.ToApiDate(),
-                DueDays = value.DueDays.ToString(),
-                Address = value.Address,
+                DueDate = null,
+                DueDays = null,
+                Address = (value.Address == "") ? null : value.Address,
                 Status = value.Status.ToApiValue(),
                 DiscountRate = value.DiscountRate.ToString(CultureInfo.InvariantCulture),
                 DiscountDate = value.DiscountDate.ToApiDate(),
                 DiscountDays = value.DiscountDays.ToString(),
                 DiscountAmount = value.DiscountAmount.ToString(),
-                Label = value.Label,
-                Intro = value.Intro,
-                Note = value.Note,
+                Label = (value.Label == "") ? null : value.Label,
+                Intro = (value.Intro == "") ? null : value.Intro,
+                Note = (value.Note == "") ? null : value.Note,
                 TotalGross = value.TotalGross.ToString(CultureInfo.InvariantCulture),
                 TotalNet = value.TotalNet.ToString(CultureInfo.InvariantCulture),
                 CurrencyCode = value.CurrencyCode,
