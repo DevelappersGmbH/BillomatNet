@@ -95,6 +95,12 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        /// <summary>
+        /// Gets the portal URL for this entity.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The url to this entity in billomat portal.</returns>
+        /// <exception cref="ArgumentException">Thrown when the id is invalid.</exception>
         public string GetPortalUrl(int id)
         {
             if (id <= 0)
