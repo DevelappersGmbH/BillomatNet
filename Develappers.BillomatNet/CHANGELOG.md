@@ -6,6 +6,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- nothing
+
+### Changed
+- nothing
+
+### Removed
+- nothing
+
+### Fixed
+- nothing
+
+## [0.1.6] - 2020-12-27
+### Added
 - implemented R operation on offers and offer items
 - service collection extension to add all the services to IoC container
 - implemented R operations for suppliers
@@ -20,7 +33,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - date filter problems in invoice service
 
-## [0.1.5] - 
+## [0.1.5] - 2020-08-13
 ### Added
 - implemented service for CUD operations on one contact
 - implemented service for CUD operations on article
