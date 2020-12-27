@@ -27,12 +27,15 @@ namespace Develappers.BillomatNet
         IEntityPropertyService<ClientProperty, ClientPropertyFilter>,
         IEntityTagService<ClientTag, ClientTagFilter>
     {
+        private readonly Configuration _configuration;
+
         /// <summary>
         /// Creates a new instance of <see cref="ClientService"/>.
         /// </summary>
         /// <param name="configuration">The service configuration.</param>
         public ClientService(Configuration configuration) : base(configuration)
         {
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -40,7 +43,6 @@ namespace Develappers.BillomatNet
         /// </summary>
         /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
         /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal ClientService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
         }
@@ -91,6 +93,16 @@ namespace Develappers.BillomatNet
         {
             var jsonModel = await GetItemByIdAsync<ClientWrapper>($"/api/clients/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        public string GetPortalUrl(int id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid client id", nameof(id));
+            }
+
+            return $"https://{_configuration.BillomatId}.billomat.net/app/clients/show/entityId/{id}";
         }
 
         Task IEntityService<Client, ClientFilter>.DeleteAsync(int id, CancellationToken token)

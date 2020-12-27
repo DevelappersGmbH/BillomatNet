@@ -17,12 +17,15 @@ namespace Develappers.BillomatNet
 {
     public class OfferService : ServiceBase, IEntityService<Offer, OfferFilter>
     {
+        private readonly Configuration _configuration;
+
         /// <summary>
         /// Creates a new instance of <see cref="OfferService"/>.
         /// </summary>
         /// <param name="configuration">The service configuration.</param>
         public OfferService(Configuration configuration) : base(configuration)
         {
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -39,6 +42,16 @@ namespace Develappers.BillomatNet
         {
             var jsonModel = await GetItemByIdAsync<OfferWrapper>($"/api/offers/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
+        }
+
+        public string GetPortalUrl(int id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid offer id", nameof(id));
+            }
+
+            return $"https://{_configuration.BillomatId}.billomat.net/app/offers/show/entityId/{id}";
         }
 
         Task IEntityService<Offer, OfferFilter>.DeleteAsync(int id, CancellationToken token)
