@@ -10,12 +10,16 @@ namespace Develappers.BillomatNet
 {
     public class OrderConfirmationService : ServiceBase
     {
+        private readonly Configuration _configuration;
+        private const string EntityUrlFragment = "confirmations";
+
         /// <summary>
         /// Creates a new instance of <see cref="OrderConfirmationService"/>.
         /// </summary>
         /// <param name="configuration">The service configuration.</param>
         public OrderConfirmationService(Configuration configuration) : base(configuration)
         {
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -26,6 +30,16 @@ namespace Develappers.BillomatNet
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal OrderConfirmationService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
+        }
+
+        public string GetPortalUrl(int id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid letter id", nameof(id));
+            }
+
+            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
         }
     }
 }

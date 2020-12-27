@@ -10,12 +10,16 @@ namespace Develappers.BillomatNet
 {
     public class PurchaseInvoiceService : ServiceBase
     {
+        private readonly Configuration _configuration;
+        private const string EntityUrlFragment = "incomings";
+
         /// <summary>
         /// Creates a new instance of <see cref="PurchaseInvoiceService"/>.
         /// </summary>
         /// <param name="configuration">The service configuration.</param>
         public PurchaseInvoiceService(Configuration configuration) : base(configuration)
         {
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -26,6 +30,16 @@ namespace Develappers.BillomatNet
         [SuppressMessage("ReSharper", "UnusedMember.Global")]
         internal PurchaseInvoiceService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
         {
+        }
+
+        public string GetPortalUrl(int id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid incoming invoice id", nameof(id));
+            }
+
+            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
         }
     }
 }

@@ -23,12 +23,17 @@ namespace Develappers.BillomatNet
         IEntityPropertyService<ArticleProperty, ArticlePropertyFilter>,
         IEntityTagService<ArticleTag, ArticleTagFilter>
     {
+        private readonly Configuration _configuration;
+        private const string EntityUrlFragment = "articles";
+        private const string EntityTagsUrlFragment = "article-tags";
+
         /// <summary>
         /// Creates a new instance of <see cref="ArticleService"/>.
         /// </summary>
         /// <param name="configuration">The service configuration.</param>
         public ArticleService(Configuration configuration) : base(configuration)
         {
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -59,7 +64,7 @@ namespace Develappers.BillomatNet
         /// <returns></returns>
         public async Task<Types.PagedList<Article>> GetListAsync(Query<Article, ArticleFilter> query, CancellationToken token = default)
         {
-            var jsonModel = await GetListAsync<ArticleListWrapper>("/api/articles", QueryString.For(query), token).ConfigureAwait(false);
+            var jsonModel = await GetListAsync<ArticleListWrapper>($"/api/{EntityUrlFragment}", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -71,7 +76,7 @@ namespace Develappers.BillomatNet
         /// <returns>The article or null if not found.</returns>
         public async Task<Article> GetByIdAsync(int id, CancellationToken token = default)
         {
-            var jsonModel = await GetItemByIdAsync<ArticleWrapper>($"/api/articles/{id}", token).ConfigureAwait(false);
+            var jsonModel = await GetItemByIdAsync<ArticleWrapper>($"/api/{EntityUrlFragment}/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -103,7 +108,7 @@ namespace Develappers.BillomatNet
                 Article = value.ToApi()
             };
 
-            var jsonModel = await PostAsync("/api/articles", wrappedModel, token).ConfigureAwait(false);
+            var jsonModel = await PostAsync($"/api/{EntityUrlFragment}", wrappedModel, token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -136,7 +141,7 @@ namespace Develappers.BillomatNet
                 Article = value.ToApi()
             };
 
-            var jsonModel = await PutAsync($"/api/articles/{value.Id}", wrappedModel, token);
+            var jsonModel = await PutAsync($"/api/{EntityUrlFragment}/{value.Id}", wrappedModel, token);
             return jsonModel.ToDomain();
         }
 
@@ -157,7 +162,7 @@ namespace Develappers.BillomatNet
             {
                 throw new ArgumentException("invalid article id", nameof(id));
             }
-            return DeleteAsync($"/api/articles/{id}", token);
+            return DeleteAsync($"/api/{EntityUrlFragment}/{id}", token);
         }
 
 
@@ -238,7 +243,7 @@ namespace Develappers.BillomatNet
         public async Task<Types.PagedList<TagCloudItem>> GetTagCloudAsync(CancellationToken token = default)
         {
             // do we need paging possibilities in parameters? 100 items in tag cloud should be enough, shouldn't it?
-            var jsonModel = await GetListAsync<ArticleTagCloudItemListWrapper>("/api/article-tags", null, token).ConfigureAwait(false);
+            var jsonModel = await GetListAsync<ArticleTagCloudItemListWrapper>($"/api/{EntityTagsUrlFragment}", null, token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -255,7 +260,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("filter has to be set", nameof(query));
             }
 
-            var jsonModel = await GetListAsync<ArticleTagListWrapper>("/api/article-tags", QueryString.For(query), token).ConfigureAwait(false);
+            var jsonModel = await GetListAsync<ArticleTagListWrapper>($"/api/{EntityTagsUrlFragment}", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -267,7 +272,7 @@ namespace Develappers.BillomatNet
         /// <returns>The article tag or null if not found.</returns>
         public async Task<ArticleTag> GetTagByIdAsync(int id, CancellationToken token = default)
         {
-            var jsonModel = await GetItemByIdAsync<ArticleTagWrapper>($"/api/article-tags/{id}", token).ConfigureAwait(false);
+            var jsonModel = await GetItemByIdAsync<ArticleTagWrapper>($"/api/{EntityTagsUrlFragment}/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -288,7 +293,7 @@ namespace Develappers.BillomatNet
             {
                 throw new ArgumentException("invalid article tag id", nameof(id));
             }
-            return DeleteAsync($"/api/article-tags/{id}", token);
+            return DeleteAsync($"/api/{EntityTagsUrlFragment}/{id}", token);
         }
 
         /// <summary>
@@ -318,8 +323,18 @@ namespace Develappers.BillomatNet
             {
                 ArticleTag = value.ToApi()
             };
-            var jsonModel = await PostAsync("/api/article-tags", wrappedModel, token);
+            var jsonModel = await PostAsync($"/api/{EntityTagsUrlFragment}", wrappedModel, token);
             return jsonModel.ToDomain();
+        }
+
+        public string GetPortalUrl(int id)
+        {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid article id", nameof(id));
+            }
+
+            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
         }
     }
 }

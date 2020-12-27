@@ -554,7 +554,7 @@ namespace Develappers.BillomatNet
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
-        /// The task result contains the invoice payment llst.
+        /// The task result contains the invoice payment list.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>

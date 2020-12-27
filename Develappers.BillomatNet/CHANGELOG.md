@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - implemented R operation on offers and offer items
 - service collection extension to add all the services to IoC container
+- implemented R operations for suppliers
 
 ### Changed
 - changed creation of invoices to use the template and pre configured values
@@ -16,7 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - nothing
 
 ### Fixed
-- date filter problems ind invoice service
+- date filter problems in invoice service
 
 ## [0.1.5] - 
 ### Added

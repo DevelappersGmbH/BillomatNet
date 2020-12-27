@@ -15,6 +15,9 @@ namespace Develappers.BillomatNet
 {
     public class TaxService : ServiceBase, IEntityService<Tax, TaxFilter>
     {
+        private const string EntityUrlFragment = "taxes";
+
+
         /// <summary>
         ///     Creates a new instance of <see cref="TaxService" />.
         /// </summary>
@@ -42,7 +45,7 @@ namespace Develappers.BillomatNet
         /// </returns>
         public async Task<Types.PagedList<Tax>> GetListAsync(CancellationToken token = default)
         {
-            var jsonModel = await GetListAsync<TaxListWrapper>("/api/taxes", null, token).ConfigureAwait(false);
+            var jsonModel = await GetListAsync<TaxListWrapper>($"/api/{EntityUrlFragment}", null, token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -68,7 +71,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid tax id", nameof(id));
             }
 
-            var jsonModel = await GetItemByIdAsync<TaxWrapper>($"/api/taxes/{id}", token).ConfigureAwait(false);
+            var jsonModel = await GetItemByIdAsync<TaxWrapper>($"/api/{EntityUrlFragment}/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
@@ -87,7 +90,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid tax id", nameof(id));
             }
 
-            await DeleteAsync($"/api/taxes/{id}", token).ConfigureAwait(false);
+            await DeleteAsync($"/api/{EntityUrlFragment}/{id}", token).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -112,15 +115,14 @@ namespace Develappers.BillomatNet
             }
 
             var wrappedModel = new TaxWrapper { Tax = value.ToApi() };
-            var result = await PostAsync("/api/taxes", wrappedModel, token);
+            var result = await PostAsync($"/api/{EntityUrlFragment}", wrappedModel, token);
 
             return result.ToDomain();
         }
 
         Task<Tax> IEntityService<Tax, TaxFilter>.EditAsync(Tax model, CancellationToken token)
         {
-            // TODO: implement implicitly and make public
-            throw new NotImplementedException();
+            throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
         }
     }
 }
