@@ -154,7 +154,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 DiscountDays = 7,
                 PaymentTypes = new List<string> { "CREDIT_CARD", "DEBIT", "CASH" },
                 CustomerPortalUrl = "https://develappersdev.billomat.net/customerportal/invoices/show/c4da1693-51b1-4f81-a05c-1e412b9a9abd",
-                Label = ""
+                Label = null
             };
 
             var http = A.Fake<IHttpClient>();
