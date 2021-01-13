@@ -61,7 +61,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 DueDays = 14,
                 Address = "ACME Ltd.\r\nJohn Doe\r\nSecond Street 123\r\n01159 Dresden",
                 Status = InvoiceStatus.Paid,
-                Label = string.Empty,
+                Label = null,
                 Intro = "Hiermit stellen wir Ihnen die folgenden Positionen in Rechnung.",
                 Note = "Bitte \u00fcberweisen Sie den Rechnungsbetrag bis zum 18.09.2015 auf unser Konto.",
                 TotalNet = 3885f,

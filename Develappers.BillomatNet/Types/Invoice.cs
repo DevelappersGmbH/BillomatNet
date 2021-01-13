@@ -32,7 +32,7 @@ namespace Develappers.BillomatNet.Types
         public ISupplyDate SupplyDate { get; set; }
         public SupplyDateType? SupplyDateType { get; set; }
         public DateTime DueDate { get; set; }
-        public int DueDays { get; set; }
+        public int? DueDays { get; set; }
         public string Address { get; set; }
         public InvoiceStatus Status { get; set; }
         public float DiscountRate { get; set; }
