@@ -222,7 +222,7 @@ namespace Develappers.BillomatNet.Mapping
                 RecurringId = value.RecurringId.ToString(),
                 TemplateId = value.TemplateId.ToString(),
                 PaymentTypes = paymentTypes,
-                Taxes = new InvoiceTaxWrapper(),
+                Taxes = null,
                 InvoiceItems = itemsWrapper
             };
         }
