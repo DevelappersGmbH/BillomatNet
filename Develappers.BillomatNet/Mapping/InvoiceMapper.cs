@@ -194,7 +194,7 @@ namespace Develappers.BillomatNet.Mapping
                 Date = value.Date.ToApiDate(),
                 SupplyDate = strSupplyDate,
                 SupplyDateType = value.SupplyDateType.ToApiValue(),
-                DueDate = null,
+                DueDate = value.DueDate?.ToApiDate(),
                 DueDays = !value.DueDays.HasValue ? null : value.DueDays.ToString(),
                 Address = (value.Address == "") ? null : value.Address,
                 Status = value.Status.ToApiValue(),
