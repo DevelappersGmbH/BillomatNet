@@ -299,6 +299,11 @@ namespace Develappers.BillomatNet.Mapping
             return s_clientMapper.ApiToDomain(value);
         }
 
+        internal static Types.PagedList<Supplier> ToDomain(this SupplierListWrapper value)
+        {
+            return s_supplierMapper.ApiToDomain(value);
+        }
+
         internal static Client ToDomain(this ClientWrapper value)
         {
             return s_clientMapper.ApiToDomain(value);

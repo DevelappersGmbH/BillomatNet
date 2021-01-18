@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
+using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 using FakeItEasy;
 using FluentAssertions;
@@ -62,7 +63,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 CostsNet = 997.99f,
                 SupplierPropertyValues = new List<SupplierPropertyValue>
                 {
-                    new SupplierPropertyValue
+                    new()
                     {
                         Id = 20204,
                         SupplierId = 36444,
@@ -71,7 +72,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                         Name = "SupplierCheckBox",
                         Value = true,
                     },
-                    new SupplierPropertyValue
+                    new()
                     {
                         Id = 20205,
                         SupplierId = 36444,
@@ -80,7 +81,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                         Name = "SupplierTextField",
                         Value = "",
                     },
-                    new SupplierPropertyValue
+                    new()
                     {
                         Id = 20206,
                         SupplierId = 36444,
@@ -126,7 +127,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task GetById__WithInvalidInputData_ShouldReturnArgumentException()
+        public async Task GetById_WithInvalidInputData_ShouldReturnArgumentException()
         {
             //arrange
             var http = A.Fake<IHttpClient>();
@@ -137,26 +138,38 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         }
 
         [Fact]
-        public async Task GetCommentById_WithInvalidId_ShouldThrowNotFoundException()
+        public async Task GetFilteredList_ShouldReturnCorrectResult()
         {
             //arrange
-            const int id = 1;
-            var expectedRequestUri = new Uri("/api/suppliers/1", UriKind.Relative);
-
             var http = A.Fake<IHttpClient>();
-            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
-                .ThrowsAsync(ExceptionFactory.CreateNotFoundException());
-
             var sut = GetSystemUnderTest(http);
 
-            //act
-            var result = await sut.GetByIdAsync(id);
+            var expectedRequestUri = new Uri("/api/suppliers", UriKind.Relative);
+            const string expectedRequestQuery = "name=GmbH&order_by=city+ASC&per_page=100&page=1";
+            const string responseBody = "{\"suppliers\":{\"supplier\":{\"id\":\"36444\",\"created\":\"2017-06-27T17:25:46+02:00\",\"updated\":\"2018-01-20T15:23:34+01:00\",\"name\":\"Develappers GmbH\",\"salutation\":\"Herr\",\"first_name\":\"Martin\",\"last_name\":\"Hey\",\"street\":\"K\\u00f6nigsbr\\u00fccker Str. 64\",\"zip\":\"01234\",\"city\":\"Dresden\",\"state\":\"Sachsen\",\"country_code\":\"DE\",\"is_eu_country\":\"1\",\"address\":\"Develappers GmbH\\nHerr Martin Hey\\nK\\u00f6nigsbr\\u00fccker Str. 64\\n01234 Dresden\",\"phone\":\"1\",\"fax\":\"2\",\"mobile\":\"3\",\"email\":\"4@4.de\",\"www\":\"http:\\/\\/5.de\",\"tax_number\":\"123123\",\"vat_number\":\"123345\",\"bank_account_owner\":\"1\",\"bank_number\":\"456\",\"bank_name\":\"2\",\"bank_account_number\":\"123\",\"bank_swift\":\"\",\"bank_iban\":\"\",\"currency_code\":\"\",\"locale\":\"\",\"note\":\"\",\"client_number\":\"123\",\"creditor_account_number\":\"1\",\"creditor_identifier\":\"\",\"costs_gross\":\"2478.11\",\"costs_net\":\"997.99\",\"customfield\":\"\",\"supplier-property-values\":{\"supplier-property-value\":[{\"id\":\"20204\",\"supplier_id\":\"36444\",\"supplier_property_id\":\"172\",\"type\":\"CHECKBOX\",\"name\":\"SupplierCheckBox\",\"value\":\"\",\"customfield\":\"\"},{\"id\":\"20205\",\"supplier_id\":\"36444\",\"supplier_property_id\":\"173\",\"type\":\"TEXTFIELD\",\"name\":\"SupplierTextField\",\"value\":\"\",\"customfield\":\"\"},{\"id\":\"20206\",\"supplier_id\":\"36444\",\"supplier_property_id\":\"174\",\"type\":\"TEXTAREA\",\"name\":\"SupplierTextArea\",\"value\":\"\",\"customfield\":\"\"}]}},\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"1\"}}";
 
-            //assert
-            A.CallTo(() => http.GetAsync(expectedRequestUri, A<CancellationToken>.Ignored))
-                .MustHaveHappenedOnceExactly();
+            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedRequestQuery, A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(responseBody));
 
-            Assert.Null(result);
+            // ReSharper disable once RedundantArgumentDefaultValue
+            var query = new Query<Supplier, SupplierFilter>()
+                .AddFilter(x => x.Name, "GmbH")
+                .AddSort(x => x.City, SortOrder.Ascending);
+
+            var result = await sut.GetListAsync(query, CancellationToken.None);
+
+            result.Page.Should().Be(1);
+            result.ItemsPerPage.Should().Be(100);
+            result.TotalItems.Should().Be(1);
+            result.List.Should().SatisfyRespectively(
+                first =>
+                {
+                    first.Id.Should().Be(36444);
+                    first.Name.Should().Be("Develappers GmbH");
+                });
+
+
         }
+
     }
 }
