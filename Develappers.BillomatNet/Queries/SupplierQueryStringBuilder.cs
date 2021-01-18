@@ -59,9 +59,9 @@ namespace Develappers.BillomatNet.Queries
                 filters.Add($"client_number={HttpUtility.UrlEncode(filter.ClientNumber)}");
             }
 
-            if ((filter.IncomingIds?.Count ?? 0) > 0)
+            if ((filter.PurchaseInvoiceIds?.Count ?? 0) > 0)
             {
-                filters.Add($"incoming_id={string.Join(",", filter.IncomingIds)}");
+                filters.Add($"incoming_id={string.Join(",", filter.PurchaseInvoiceIds)}");
             }
 
             if ((filter.Tags?.Count ?? 0) > 0)

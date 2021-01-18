@@ -16,7 +16,7 @@ namespace Develappers.BillomatNet.Queries
         public string CreditorIdentifier { get; set; }
         public string Note { get; set; }
         public string ClientNumber { get; set; }
-        public List<int> IncomingIds { get; set; }
+        public List<int> PurchaseInvoiceIds { get; set; }
         public List<string> Tags { get; set; }
     }
 }
