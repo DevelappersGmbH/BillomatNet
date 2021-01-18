@@ -75,7 +75,10 @@ namespace Develappers.BillomatNet
         /// </summary>
         /// <param name="query">The query.</param>
         /// <param name="token">The cancellation token.</param>
-        /// <returns>The client list or null if not found.</returns>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the list of clients.
+        /// </returns>
         public async Task<Types.PagedList<Client>> GetListAsync(Query<Client, ClientFilter> query, CancellationToken token = default)
         {
             var jsonModel = await GetListAsync<ClientListWrapper>($"/api/{EntityUrlFragment}", QueryString.For(query), token).ConfigureAwait(false);

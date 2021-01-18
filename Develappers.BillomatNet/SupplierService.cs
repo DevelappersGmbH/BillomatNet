@@ -39,14 +39,32 @@ namespace Develappers.BillomatNet
         {
         }
 
-        Task<Types.PagedList<Supplier>> IEntityService<Supplier, SupplierFilter>.GetListAsync(CancellationToken token)
+        /// <summary>
+        /// Retrieves a list of all clients.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the list of suppliers.
+        /// </returns>
+        public Task<Types.PagedList<Supplier>> GetListAsync(CancellationToken token)
         {
-            throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
+            return GetListAsync(null, token);
         }
 
-        Task<Types.PagedList<Supplier>> IEntityService<Supplier, SupplierFilter>.GetListAsync(Query<Supplier, SupplierFilter> query, CancellationToken token)
+        /// <summary>
+        /// Retrieves a list of all clients.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the list of suppliers.
+        /// </returns>
+        public async Task<Types.PagedList<Supplier>> GetListAsync(Query<Supplier, SupplierFilter> query, CancellationToken token)
         {
-            throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
+            var jsonModel = await GetListAsync<SupplierListWrapper>($"/api/{EntityUrlFragment}", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
         }
 
         /// <summary>
@@ -67,6 +85,7 @@ namespace Develappers.BillomatNet
             {
                 throw new ArgumentException("invalid supplier id", nameof(id));
             }
+
             var jsonModel = await GetItemByIdAsync<SupplierWrapper>($"/api/{EntityUrlFragment}/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }

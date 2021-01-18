@@ -13,6 +13,11 @@ namespace Develappers.BillomatNet.Queries
             return new ClientQueryStringBuilder().BuildFor(value);
         }
 
+        internal static string For(Query<Supplier, SupplierFilter> value)
+        {
+            return new SupplierQueryStringBuilder().BuildFor(value);
+        }
+
         internal static string For(Query<ClientTag, ClientTagFilter> value)
         {
             return new ClientTagQueryStringBuilder().BuildFor(value);
