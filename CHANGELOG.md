@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.7] - 2021-01-18
 ### Fixed
 - invoice items are now created by using default tax settings, when tax is not set
-- due date and due date aren't reset any more on edit of an invoice
+- due day, due date and tax settings aren't reset any more on edit of an invoice
 
 
 ## [0.1.6] - 2020-12-27
