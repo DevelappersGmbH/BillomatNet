@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Types;
-using Supplier = Develappers.BillomatNet.Types.Supplier;
 
 namespace Develappers.BillomatNet.Mapping
 {
