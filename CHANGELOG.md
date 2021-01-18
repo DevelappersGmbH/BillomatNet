@@ -17,6 +17,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - nothing
 
+
+## [0.1.7] - 2021-01-18
+### Fixed
+- invoice items are now created by using default tax settings, when tax is not set
+- due date and due date aren't reset any more on edit of an invoice
+
+
 ## [0.1.6] - 2020-12-27
 ### Added
 - implemented R operation on offers and offer items
@@ -27,11 +34,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - changed creation of invoices to use the template and pre configured values
 
-### Removed
-- nothing
-
 ### Fixed
 - date filter problems in invoice service
+
 
 ## [0.1.5] - 2020-08-13
 ### Added
@@ -61,9 +66,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - GetList can throw an exception when not authorized now
 - ToApiDate returns null when value is null
 
-### Removed
-- nothing
-
 ### Fixed
 - converting SupplyDateType for CU operation on invoice
 - Client Model and Mapper
@@ -80,24 +82,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - write operations throw NotFoundException when the entity was not found
 - validation check on create
 
-### Removed
-- nothing
-
-### Fixed
-- nothing
 
 ## [0.1.3] - 2020-02-11
-### Added
-- nothing
-
 ### Changed
 - changed namespace (BREAKING!)
 
-### Removed
-- nothing
-
-### Fixed
-- nothing
 
 ## [0.1.2] - 2018-11-07
 ### Added
@@ -111,22 +100,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - HTTP NotAuthorized will cause NotAuthorizedException
 - GetById returns NULL when not found
 
-### Removed
-- nothing
-
-### Fixed
-- nothing
 
 ## [0.1.1] - 2018-11-07
 ### Added
 - retrieving invoices and invoice items
 - retrieving a pdf for an invoice
-
-### Changed
-- nothing
-
-### Removed
-- nothing
-
-### Fixed
-- nothing
