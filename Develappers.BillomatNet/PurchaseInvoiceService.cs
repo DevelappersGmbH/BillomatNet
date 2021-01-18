@@ -53,14 +53,32 @@ namespace Develappers.BillomatNet
             return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
         }
 
-        Task<Types.PagedList<PurchaseInvoice>> IEntityService<PurchaseInvoice, PurchaseInvoiceFilter>.GetListAsync(CancellationToken token)
+        /// <summary>
+        /// Retrieves a list of all incoming invoices.
+        /// </summary>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the list of incoming invoices.
+        /// </returns>
+        public Task<Types.PagedList<PurchaseInvoice>> GetListAsync(CancellationToken token = default)
         {
-            throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
+            return GetListAsync(null, token);
         }
 
-        Task<Types.PagedList<PurchaseInvoice>> IEntityService<PurchaseInvoice, PurchaseInvoiceFilter>.GetListAsync(Query<PurchaseInvoice, PurchaseInvoiceFilter> query, CancellationToken token)
+        /// <summary>
+        /// Retrieves a list of all incoming invoices.
+        /// </summary>
+        /// <param name="query">The query.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the list of incoming invoices.
+        /// </returns>
+        public async Task<Types.PagedList<PurchaseInvoice>> GetListAsync(Query<PurchaseInvoice, PurchaseInvoiceFilter> query, CancellationToken token)
         {
-            throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
+            var jsonModel = await GetListAsync<IncomingListWrapper>($"/api/{EntityUrlFragment}", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
         }
 
         /// <summary>

@@ -329,6 +329,21 @@ namespace Develappers.BillomatNet.Mapping
             }
         }
 
+        internal static string ToApiValue(this PurchaseInvoiceStatus value)
+        {
+            switch (value)
+            {
+                case PurchaseInvoiceStatus.Open:
+                    return "OPEN";
+                case PurchaseInvoiceStatus.Paid:
+                    return "PAID";
+                case PurchaseInvoiceStatus.Overdue:
+                    return "OVERDUE";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
+        }
+
         internal static string ToApiValue(this CommentType value)
         {
             switch (value)

@@ -41,7 +41,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             const int id = 485054;
             const string expectedUri = "/api/incomings/485054";
 
-            var expectedResult = new PurchaseInvoice()
+            var expectedResult = new PurchaseInvoice
             {
                 Id = id,
                 Created = DateTime.Parse("2020-07-01T09:38:21+02:00", CultureInfo.InvariantCulture),

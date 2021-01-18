@@ -72,5 +72,10 @@ namespace Develappers.BillomatNet.Queries
         {
             return new UnitQueryStringBuilder().BuildFor(value);
         }
+
+        public static string For(Query<PurchaseInvoice, PurchaseInvoiceFilter> value)
+        {
+            return new IncomingQueryStringBuilder().BuildFor(value);
+        }
     }
 }

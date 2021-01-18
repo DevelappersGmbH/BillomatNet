@@ -306,11 +306,15 @@ namespace Develappers.BillomatNet.Mapping
             return s_supplierMapper.ApiToDomain(value);
         }
 
+        internal static Types.PagedList<PurchaseInvoice> ToDomain(this IncomingListWrapper value)
+        {
+            return s_purchaseInvoiceMapper.ApiToDomain(value);
+        }
+
         internal static Client ToDomain(this ClientWrapper value)
         {
             return s_clientMapper.ApiToDomain(value);
         }
-
 
         internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemListWrapper value)
         {

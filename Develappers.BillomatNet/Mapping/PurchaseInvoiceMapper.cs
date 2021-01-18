@@ -3,8 +3,10 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
+using System.Linq;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Types;
+using Supplier = Develappers.BillomatNet.Types.Supplier;
 
 namespace Develappers.BillomatNet.Mapping
 {
@@ -51,6 +53,27 @@ namespace Develappers.BillomatNet.Mapping
         public PurchaseInvoice ApiToDomain(IncomingWrapper value)
         {
             return ApiToDomain(value?.Incoming);
+        }
+
+        public Types.PagedList<PurchaseInvoice> ApiToDomain(IncomingListWrapper value)
+        {
+            return ApiToDomain(value?.Item);
+        }
+
+        public Types.PagedList<PurchaseInvoice> ApiToDomain(IncomingList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<PurchaseInvoice>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(ApiToDomain).ToList()
+            };
         }
     }
 }
