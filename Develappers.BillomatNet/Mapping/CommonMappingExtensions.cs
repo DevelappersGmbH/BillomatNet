@@ -87,10 +87,10 @@ namespace Develappers.BillomatNet.Mapping
         }
 
         /// <summary>
-        /// Converts a string to a nullable DateTime.
+        /// Converts a string to a DateTime.
         /// </summary>
         /// <param name="value">The string which gets converted</param>
-        /// <returns>The nullable DateTime or null if not found</returns>
+        /// <returns>The DateTime.</returns>
         internal static DateTime ToDateTime(this string value)
         {
             if (string.IsNullOrEmpty(value))

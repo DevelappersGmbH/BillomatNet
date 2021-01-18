@@ -2,17 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Develappers.BillomatNet.Types
+using Newtonsoft.Json;
+
+namespace Develappers.BillomatNet.Api
 {
-    /// <summary>
-    /// The status of the invoice.
-    /// </summary>
-    public enum InvoiceStatus
+    internal class IncomingWrapper
     {
-        Draft,
-        Open,
-        Paid,
-        Overdue,
-        Canceled
+        [JsonProperty("incoming")]
+        public Incoming Incoming { get; set; }
     }
 }

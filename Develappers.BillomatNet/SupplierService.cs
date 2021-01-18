@@ -47,7 +47,7 @@ namespace Develappers.BillomatNet
         /// A task that represents the asynchronous operation.
         /// The task result contains the list of suppliers.
         /// </returns>
-        public Task<Types.PagedList<Supplier>> GetListAsync(CancellationToken token)
+        public Task<Types.PagedList<Supplier>> GetListAsync(CancellationToken token = default)
         {
             return GetListAsync(null, token);
         }
@@ -61,7 +61,7 @@ namespace Develappers.BillomatNet
         /// A task that represents the asynchronous operation.
         /// The task result contains the list of suppliers.
         /// </returns>
-        public async Task<Types.PagedList<Supplier>> GetListAsync(Query<Supplier, SupplierFilter> query, CancellationToken token)
+        public async Task<Types.PagedList<Supplier>> GetListAsync(Query<Supplier, SupplierFilter> query, CancellationToken token = default)
         {
             var jsonModel = await GetListAsync<SupplierListWrapper>($"/api/{EntityUrlFragment}", QueryString.For(query), token).ConfigureAwait(false);
             return jsonModel.ToDomain();

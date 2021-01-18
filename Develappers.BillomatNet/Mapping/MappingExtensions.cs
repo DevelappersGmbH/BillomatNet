@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using Develappers.BillomatNet.Api;
+using Develappers.BillomatNet.Types;
 using Account = Develappers.BillomatNet.Types.Account;
 using Article = Develappers.BillomatNet.Types.Article;
 using ArticleProperty = Develappers.BillomatNet.Types.ArticleProperty;
@@ -57,6 +58,7 @@ namespace Develappers.BillomatNet.Mapping
         private static readonly ClientPropertyMapper s_clientPropertyMapper = new ClientPropertyMapper();
         private static readonly SupplierMapper s_supplierMapper = new SupplierMapper();
         private static readonly SupplierPropertyValueMapper s_supplierPropertyValueMapper = new SupplierPropertyValueMapper();
+        private static readonly PurchaseInvoiceMapper s_purchaseInvoiceMapper = new PurchaseInvoiceMapper();
 
         internal static Types.PagedList<Article> ToDomain(this ArticleListWrapper value)
         {
@@ -353,6 +355,11 @@ namespace Develappers.BillomatNet.Mapping
         internal static Supplier ToDomain(this SupplierWrapper value)
         {
             return s_supplierMapper.ApiToDomain(value);
+        }
+
+        internal static PurchaseInvoice ToDomain(this IncomingWrapper value)
+        {
+            return s_purchaseInvoiceMapper.ApiToDomain(value);
         }
 
         internal static List<SupplierPropertyValue> ToDomain(this SupplierPropertyValuesWrapper value)

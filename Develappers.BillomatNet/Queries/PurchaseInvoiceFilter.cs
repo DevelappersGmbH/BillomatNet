@@ -2,17 +2,12 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-namespace Develappers.BillomatNet.Types
+namespace Develappers.BillomatNet.Queries
 {
     /// <summary>
-    /// The status of the invoice.
+    /// Represents the filter for incoming invoices.
     /// </summary>
-    public enum InvoiceStatus
+    public class PurchaseInvoiceFilter
     {
-        Draft,
-        Open,
-        Paid,
-        Overdue,
-        Canceled
     }
 }
