@@ -20,7 +20,7 @@ namespace Develappers.BillomatNet.Types
         public DateTime Date { get; set; }
         public DateTime? DueDate { get; set; }
         public string Address { get; set; }
-        public InvoiceStatus Status { get; set; }
+        public PurchaseInvoiceStatus Status { get; set; }
         public string Label { get; set; }
         public string Note { get; set; }
         public float TotalGross { get; set; }

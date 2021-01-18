@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
@@ -52,7 +51,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 ClientNumber = null,
                 Date = DateTime.Parse("2020-07-01", CultureInfo.InvariantCulture),
                 Address = "Meyers AG\r\nHerr Jens  Maul",
-                Status = InvoiceStatus.Open,
+                Status = PurchaseInvoiceStatus.Open,
                 PageCount = 1,
                 Category = null,
                 CurrencyCode = "EUR",

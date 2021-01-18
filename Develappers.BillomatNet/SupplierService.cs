@@ -53,7 +53,7 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Retrieves a list of all clients.
+        /// Retrieves a list of all suppliers.
         /// </summary>
         /// <param name="query">The query.</param>
         /// <param name="token">The cancellation token.</param>

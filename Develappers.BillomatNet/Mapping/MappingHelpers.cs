@@ -4,7 +4,6 @@
 
 using System;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Mapping
@@ -141,6 +140,21 @@ namespace Develappers.BillomatNet.Mapping
                     return InvoiceStatus.Paid;
                 case "canceled":
                     return InvoiceStatus.Canceled;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
+        }
+
+        internal static PurchaseInvoiceStatus ToPurchaseInvoiceStatus(this string value)
+        {
+            switch (value.ToLowerInvariant())
+            {
+                case "open":
+                    return PurchaseInvoiceStatus.Open;
+                case "overdue":
+                    return PurchaseInvoiceStatus.Overdue;
+                case "paid":
+                    return PurchaseInvoiceStatus.Paid;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value), value, null);
             }

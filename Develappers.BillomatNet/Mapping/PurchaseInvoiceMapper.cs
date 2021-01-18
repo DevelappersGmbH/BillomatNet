@@ -35,7 +35,7 @@ namespace Develappers.BillomatNet.Mapping
                 PageCount = value.PageCount.ToInt(),
                 PaidAmount = value.PaidAmount.ToFloat(),
                 Quote = value.Quote.ToFloat(),
-                Status = value.Status.ToInvoiceStatus(),
+                Status = value.Status.ToPurchaseInvoiceStatus(),
                 SupplierId = value.SupplierId.ToInt(),
                 TotalGross = value.TotalGross.ToFloat(),
                 TotalNet = value.TotalNet.ToFloat(),
