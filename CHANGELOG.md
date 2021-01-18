@@ -17,6 +17,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - nothing
 
+## [0.1.6] - 2020-12-27
+### Added
+- implemented R operation on offers and offer items
+- service collection extension to add all the services to IoC container
+- implemented R operations for suppliers
+- convinience method to determine portal url for entities
+
+### Changed
+- changed creation of invoices to use the template and pre configured values
+
+### Removed
+- nothing
+
+### Fixed
+- date filter problems in invoice service
+
+## [0.1.5] - 2020-08-13
+### Added
+- implemented service for CUD operations on one contact
+- implemented service for CUD operations on article
+- implemented service for U operations on article property
+- implemented service for CRD operation on article tag
+- implemented service for R operations on client properties
+- implemented service for CR operations on client property
+- implemented service for R operations on client tags
+- implemented service for CRD operations on one client tag
+- implemented service for CUD operations on one contact
+- implemented service for UD operations on one tax item
+- implemented service for U operations on one invoice
+- implemented service for C operations on invoice mail
+- implemented service for CUD operations on one invoice item
+- implemented service for CRD operations on one invoice comment
+- implemented service for R operations on invoice comments
+- implemented service for CRD operations on one invoice payment
+- implemented service for R operations on invoice payments
+- implemented service for R operations on one invoice payment
+- implemented service for R operations on invoice payments
+- implemented service for R operations on invoice one tag
+- implemented service for CRD operations on invoice tags
+
+### Changed
+- GetList can throw an exception when not authorized now
+- ToApiDate returns null when value is null
+
+### Removed
+- nothing
+
+### Fixed
+- converting SupplyDateType for CU operation on invoice
+- Client Model and Mapper
+- ToQueryString (ClientPropertyFilter) filters clients instead of articles
+
 
 ## [0.1.4] - 2020-07-16
 ### Added
