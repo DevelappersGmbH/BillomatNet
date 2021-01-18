@@ -14,6 +14,7 @@ namespace Develappers.BillomatNet.Mapping
         {
             return ApiToDomain(value?.Supplier);
         }
+
         public Supplier ApiToDomain(Api.Supplier value)
         {
             if (value == null)
