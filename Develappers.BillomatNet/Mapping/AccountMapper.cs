@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Globalization;
 using Develappers.BillomatNet.Api;
 using Account = Develappers.BillomatNet.Types.Account;
 
@@ -11,6 +10,8 @@ namespace Develappers.BillomatNet.Mapping
 {
     internal class AccountMapper : IMapper<Api.Account, Account>
     {
+        private readonly QuotaMapper _quotaMapper = new QuotaMapper();
+
         public Account ApiToDomain(Api.Account value)
         {
             if (value == null)
@@ -20,17 +21,17 @@ namespace Develappers.BillomatNet.Mapping
 
             return new Account
             {
-                Id = int.Parse(value.Id),
-                Number = int.Parse(value.Number),
+                Id = value.Id.ToInt(),
+                Number = value.Number.ToInt(),
                 CountryCode = value.CountryCode,
                 Email = value.Email,
                 FirstName = value.FirstName,
                 LastName = value.LastName,
                 Note = value.Note,
-                Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
-                Archived = value.Archived != "0",
+                Created = value.Created.ToDateTime(),
+                Archived = value.Archived.ToBoolean(),
                 NumberPre = value.NumberPre,
-                NumberLength = int.Parse(value.NumberLength),
+                NumberLength = value.NumberLength.ToInt(),
                 Address = value.Address,
                 ClientNumber = value.ClientNumber,
                 BankAccountNumber = value.BankAccountNumber,
@@ -53,7 +54,7 @@ namespace Develappers.BillomatNet.Mapping
                 Www = value.Www,
                 Zip = value.Zip,
                 Plan = value.Plan,
-                Quotas = new QuotaMapper().ApiToDomain(value.Quotas)
+                Quotas = _quotaMapper.ApiToDomain(value.Quotas)
             };
         }
 
