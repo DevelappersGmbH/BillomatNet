@@ -4,6 +4,7 @@
 
 using System;
 using Microsoft.Extensions.DependencyInjection;
+// ReSharper disable UnusedMember.Global
 
 namespace Develappers.BillomatNet
 {
