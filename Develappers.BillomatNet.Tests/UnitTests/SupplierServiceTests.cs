@@ -168,6 +168,5 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     first.Name.Should().Be("Develappers GmbH");
                 });
         }
-
     }
 }

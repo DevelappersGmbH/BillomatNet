@@ -8,10 +8,10 @@ using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Api
 {
-    internal class InboxDocumentMetadata
+    internal class InboxDocumentList : PagedList<InboxDocument>
     {
-        [JsonProperty("data")]
-        [JsonConverter(typeof(CollectionConverter<KeyValuePair>))]
-        public List<KeyValuePair> Data { get; set; }
+        [JsonProperty("inbox-document")]
+        [JsonConverter(typeof(CollectionConverter<InboxDocument>))]
+        public override List<InboxDocument> List { get; set; }
     }
 }

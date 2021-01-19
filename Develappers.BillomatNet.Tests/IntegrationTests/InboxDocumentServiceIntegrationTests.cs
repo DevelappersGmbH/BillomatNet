@@ -19,5 +19,12 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             var result = await SystemUnderTest.GetByIdAsync(729809);
             Assert.NotNull(result);
         }
+
+        [Fact]
+        public async Task GetInboxDocumentList()
+        {
+            var result = await SystemUnderTest.GetListAsync();
+            Assert.NotNull(result);
+        }
     }
 }

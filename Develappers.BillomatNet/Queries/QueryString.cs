@@ -77,5 +77,10 @@ namespace Develappers.BillomatNet.Queries
         {
             return new IncomingQueryStringBuilder().BuildFor(value);
         }
+
+        public static string For(Query<InboxDocument, InboxDocumentFilter> value)
+        {
+            return new InboxDocumentQueryStringBuilder().BuildFor(value);
+        }
     }
 }

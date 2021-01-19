@@ -561,5 +561,42 @@ namespace Develappers.BillomatNet.Mapping
                     return "";
             }
         }
+
+        public static InboxDocumentType ToInboxDocumentType(string value)
+        {
+            switch (value)
+            {
+                case "BANK_STATEMENT":
+                    return InboxDocumentType.BankStatement;
+                case "CONTRACT":
+                    return InboxDocumentType.Contract;
+                case "INVOICE":
+                    return InboxDocumentType.Invoice;
+                case "REMINDER":
+                    return InboxDocumentType.Reminder;
+                case "REMITTANCE_SLIP":
+                    return InboxDocumentType.RemittanceSlip;
+                case "TRAVEL_EXPENSE_REPORT":
+                    return InboxDocumentType.TravelExpenseReport;
+                case "RECEIPT":
+                    return InboxDocumentType.Receipt;
+                case "FUEL_RECEIPT":
+                    return InboxDocumentType.FuelReceipt;
+                case "ENERGY":
+                    return InboxDocumentType.Energy;
+                default:
+                    return InboxDocumentType.Other;
+            }
+        }
+
+        public static byte[] ToByteArray(string value)
+        {
+           if (string.IsNullOrEmpty(value))
+           {
+               return null;
+           }
+
+           return Convert.FromBase64String(value);
+        }
     }
 }

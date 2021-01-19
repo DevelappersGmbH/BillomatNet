@@ -26,14 +26,15 @@ namespace Develappers.BillomatNet
         {
         }
 
-        Task<Types.PagedList<InboxDocument>> IEntityService<InboxDocument, InboxDocumentFilter>.GetListAsync(CancellationToken token)
+        public Task<Types.PagedList<InboxDocument>> GetListAsync(CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            return GetListAsync(null, token);
         }
 
-        Task<Types.PagedList<InboxDocument>> IEntityService<InboxDocument, InboxDocumentFilter>.GetListAsync(Query<InboxDocument, InboxDocumentFilter> query, CancellationToken token)
+        public async Task<Types.PagedList<InboxDocument>> GetListAsync(Query<InboxDocument, InboxDocumentFilter> query, CancellationToken token)
         {
-            throw new NotImplementedException();
+            var jsonModel = await GetListAsync<InboxDocumentListWrapper>($"/api/{EntityUrlFragment}", QueryString.For(query), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
         }
 
         public async Task<InboxDocument> GetByIdAsync(int id, CancellationToken token = default)

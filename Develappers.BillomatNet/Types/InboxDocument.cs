@@ -16,5 +16,7 @@ namespace Develappers.BillomatNet.Types
         public int PageCount { get; set; }
 
         public Dictionary<string, string> Metadata { get; set; }
+
+        public InboxDocumentType DocumentType { get; set; }
     }
 }

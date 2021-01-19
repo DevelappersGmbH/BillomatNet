@@ -25,7 +25,7 @@ namespace Develappers.BillomatNet.Mapping
                 FileSize = value.FileSize.ToInt(),
                 IncomingId = value.IncomingId.ToInt(),
                 MimeType = value.MimeType,
-                FileContent = Convert.FromBase64String(value.Base64File)
+                FileContent = MappingHelpers.ToByteArray(value.Base64File)
             };
         }
 

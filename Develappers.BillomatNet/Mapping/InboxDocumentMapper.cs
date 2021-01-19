@@ -28,8 +28,9 @@ namespace Develappers.BillomatNet.Mapping
                 Created = value.Created.ToDateTime(),
                 PageCount = value.PageCount.ToInt(),
                 Updated = value.Updated.ToDateTime(),
-                FileContent = Convert.FromBase64String(value.Base64File),
-                Metadata = value.Metadata?.Data?.ToDictionary()
+                FileContent = MappingHelpers.ToByteArray(value.Base64File),
+                Metadata = value.Metadata?.Data?.ToDictionary(),
+                DocumentType = MappingHelpers.ToInboxDocumentType(value.DocumentType)
             };
         }
 
@@ -40,7 +41,28 @@ namespace Develappers.BillomatNet.Mapping
 
         public Api.InboxDocument DomainToApi(InboxDocument value)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
+        }
+
+        public Types.PagedList<InboxDocument> ApiToDomain(InboxDocumentListWrapper value)
+        {
+            return ApiToDomain(value?.Item);
+        }
+
+        public Types.PagedList<InboxDocument> ApiToDomain(InboxDocumentList value)
+        {
+            if (value == null)
+            {
+                return null;
+            }
+
+            return new Types.PagedList<InboxDocument>
+            {
+                Page = value.Page,
+                ItemsPerPage = value.PerPage,
+                TotalItems = value.Total,
+                List = value.List?.Select(ApiToDomain).ToList()
+            };
         }
     }
 }

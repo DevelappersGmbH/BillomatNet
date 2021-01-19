@@ -317,6 +317,11 @@ namespace Develappers.BillomatNet.Mapping
             return s_inboxDocumentMapper.ApiToDomain(value);
         }
 
+        internal static Types.PagedList<Types.InboxDocument> ToDomain(this InboxDocumentListWrapper value)
+        {
+            return s_inboxDocumentMapper.ApiToDomain(value);
+        }
+
         internal static Types.PagedList<PurchaseInvoice> ToDomain(this IncomingListWrapper value)
         {
             return s_purchaseInvoiceMapper.ApiToDomain(value);
