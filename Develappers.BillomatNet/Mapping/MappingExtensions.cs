@@ -59,6 +59,7 @@ namespace Develappers.BillomatNet.Mapping
         private static readonly SupplierMapper s_supplierMapper = new SupplierMapper();
         private static readonly SupplierPropertyValueMapper s_supplierPropertyValueMapper = new SupplierPropertyValueMapper();
         private static readonly PurchaseInvoiceMapper s_purchaseInvoiceMapper = new PurchaseInvoiceMapper();
+        private static readonly PurchaseInvoiceDocumentMapper s_purchaseInvoiceDocumentMapper = new PurchaseInvoiceDocumentMapper();
 
         internal static Types.PagedList<Article> ToDomain(this ArticleListWrapper value)
         {
@@ -169,6 +170,11 @@ namespace Develappers.BillomatNet.Mapping
         internal static InvoiceDocument ToDomain(this InvoiceDocumentWrapper value)
         {
             return s_invoiceDocumentMapper.ApiToDomain(value);
+        }
+
+        internal static PurchaseInvoiceDocument ToDomain(this IncomingDocumentWrapper value)
+        {
+            return s_purchaseInvoiceDocumentMapper.ApiToDomain(value);
         }
 
         internal static OfferDocument ToDomain(this OfferDocumentWrapper value)

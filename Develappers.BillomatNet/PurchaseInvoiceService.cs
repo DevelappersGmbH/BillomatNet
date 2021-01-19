@@ -104,6 +104,12 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        public async Task<PurchaseInvoiceDocument> GetPdfAsync(int id, CancellationToken token = default)
+        {
+            var jsonModel = await GetItemByIdAsync<InvoiceDocumentWrapper>($"/api/{EntityUrlFragment}/{id}/pdf", token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
+        }
+
         Task IEntityService<PurchaseInvoice, PurchaseInvoiceFilter>.DeleteAsync(int id, CancellationToken token)
         {
             throw new NotImplementedException("This service is not implemented by now. You can help us by contributing to our project on github.");
