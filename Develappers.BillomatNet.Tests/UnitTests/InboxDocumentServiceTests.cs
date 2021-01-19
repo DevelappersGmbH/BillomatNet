@@ -85,5 +85,24 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     first.Id.Should().Be(286962);
                 });
         }
+
+        [Fact]
+        public async Task Delete_WithCorrectParameters_ShouldSucceed()
+        {
+            const int id = 8;
+            const string expectedUri = "/api/inbox-documents/8";
+
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(string.Empty));
+
+            var sut = GetSystemUnderTest(http);
+
+            await sut.DeleteAsync(id);
+
+            A.CallTo(() => http.DeleteAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+        }
     }
 }

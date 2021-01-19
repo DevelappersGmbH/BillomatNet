@@ -37,6 +37,12 @@ namespace Develappers.BillomatNet
             throw new NotSupportedException("not supported by api");
         }
 
+        /// <summary>
+        /// Returns an inbox document by it's ID. 
+        /// </summary>
+        /// <param name="id">The ID of the inbox document.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>A task that represents the asynchronous operation. The task result contains the inbox document.</returns>
         public async Task<InboxDocument> GetByIdAsync(int id, CancellationToken token = default)
         {
             if (id <= 0)
@@ -48,9 +54,24 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
-        Task IEntityService<InboxDocument, InboxDocumentFilter>.DeleteAsync(int id, CancellationToken token)
+        /// <summary>
+        /// Deletes an inbox document.
+        /// </summary>
+        /// <param name="id">The ID of the inbox document.</param>
+        /// <param name="token">The cancellation token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// </returns>
+        /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
+        /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
+        /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
+        public Task DeleteAsync(int id, CancellationToken token = default)
         {
-            throw new NotImplementedException();
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid inbox document id", nameof(id));
+            }
+            return DeleteAsync($"/api/{EntityUrlFragment}/{id}", token);
         }
 
         Task<InboxDocument> IEntityService<InboxDocument, InboxDocumentFilter>.CreateAsync(InboxDocument model, CancellationToken token)
