@@ -167,8 +167,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     first.Id.Should().Be(36444);
                     first.Name.Should().Be("Develappers GmbH");
                 });
-
-
         }
 
     }
