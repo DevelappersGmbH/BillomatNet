@@ -24,6 +24,13 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         }
 
         [Fact]
+        public async Task GetPurchaseInvoicePdfById()
+        {
+            var result = await SystemUnderTest.GetPdfAsync(626880);
+            Assert.NotNull(result);
+        }
+
+        [Fact]
         public async Task GetPurchaseInvoiceBySupplier()
         {
             // ReSharper disable once RedundantArgumentDefaultValue

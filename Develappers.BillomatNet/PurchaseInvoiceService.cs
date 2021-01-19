@@ -104,6 +104,15 @@ namespace Develappers.BillomatNet
             return jsonModel.ToDomain();
         }
 
+        /// <summary>
+        /// Gets the PDF as an asynchronous operation.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the purchase invoice document.
+        /// </returns>
         public async Task<PurchaseInvoiceDocument> GetPdfAsync(int id, CancellationToken token = default)
         {
             var jsonModel = await GetItemByIdAsync<IncomingDocumentWrapper>($"/api/{EntityUrlFragment}/{id}/pdf", token).ConfigureAwait(false);

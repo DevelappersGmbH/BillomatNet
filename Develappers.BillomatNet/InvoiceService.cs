@@ -391,6 +391,15 @@ namespace Develappers.BillomatNet
             return DeleteAsync($"/api/invoice-items/{id}", token);
         }
 
+        /// <summary>
+        /// Gets the PDF as an asynchronous operation.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <param name="token">The token.</param>
+        /// <returns>
+        /// A task that represents the asynchronous operation.
+        /// The task result contains the invoice document.
+        /// </returns>
         public async Task<InvoiceDocument> GetPdfAsync(int id, CancellationToken token = default)
         {
             var jsonModel = await GetItemByIdAsync<InvoiceDocumentWrapper>($"/api/{EntityUrlFragment}/{id}/pdf", token).ConfigureAwait(false);

@@ -80,6 +80,39 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             result.Should().BeEquivalentTo(expectedResult);
         }
 
+
+        [Fact]
+        public async Task GetByPdf_WithValidData_ShouldReturnCorrectValues()
+        {
+            const string httpResult =
+                "{\"pdf\":{\"id\":\"11807505\",\"created\":\"2020-07-01T09:38:21+02:00\",\"incoming_id\":\"626880\",\"filename\":\"Eingangsrechnung 1234.pdf\",\"mimetype\":\"application\\/pdf\",\"filesize\":\"238280\",\"base64file\":\"VGVzdA==\"}}";
+            const int id = 626880;
+            const string expectedUri = "/api/incomings/626880/pdf";
+
+            var expectedResult = new PurchaseInvoiceDocument
+            {
+                Id = 11807505,
+                Created = DateTime.Parse("2020-07-01T09:38:21+02:00", CultureInfo.InvariantCulture),
+                IncomingId = id,
+                FileName = "Eingangsrechnung 1234.pdf",
+                MimeType = "application/pdf",
+                FileSize = 238280,
+                FileContent = new[] { (byte)0x54, (byte)0x65, (byte)0x73, (byte)0x74 }
+            };
+
+            var http = A.Fake<IHttpClient>();
+            A.CallTo(() => http.GetAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .Returns(Task.FromResult(httpResult));
+
+            var sut = GetSystemUnderTest(http);
+            var result = await sut.GetPdfAsync(id);
+
+            A.CallTo(() => http.GetAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
+                .MustHaveHappenedOnceExactly();
+
+            result.Should().BeEquivalentTo(expectedResult);
+        }
+
         [Fact]
         public async Task GetFilteredList_ShouldReturnCorrectResult()
         {
