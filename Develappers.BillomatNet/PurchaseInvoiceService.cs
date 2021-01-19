@@ -106,7 +106,7 @@ namespace Develappers.BillomatNet
 
         public async Task<PurchaseInvoiceDocument> GetPdfAsync(int id, CancellationToken token = default)
         {
-            var jsonModel = await GetItemByIdAsync<InvoiceDocumentWrapper>($"/api/{EntityUrlFragment}/{id}/pdf", token).ConfigureAwait(false);
+            var jsonModel = await GetItemByIdAsync<IncomingDocumentWrapper>($"/api/{EntityUrlFragment}/{id}/pdf", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 
