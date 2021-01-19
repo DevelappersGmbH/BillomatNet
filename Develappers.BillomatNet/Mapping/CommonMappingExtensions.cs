@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Develappers.BillomatNet.Api;
 
 namespace Develappers.BillomatNet.Mapping
 {
@@ -191,6 +192,9 @@ namespace Develappers.BillomatNet.Mapping
             return value.Split(',').Select(x => int.Parse(x.Trim())).ToList();
         }
 
-
+        internal static Dictionary<string, string> ToDictionary(this List<KeyValuePair> value)
+        {
+            return value?.ToDictionary(item => item.Key, item => item.Value);
+        }
     }
 }
