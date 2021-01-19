@@ -69,27 +69,20 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             var sut = GetSystemUnderTest(http);
 
             var expectedRequestUri = new Uri("/api/inbox-documents", UriKind.Relative);
-            const string expectedRequestQuery = "order_by=id+DESC&per_page=100&page=1";
-            const string responseBody = "{\"suppliers\":{\"supplier\":{\"id\":\"36444\",\"created\":\"2017-06-27T17:25:46+02:00\",\"updated\":\"2018-01-20T15:23:34+01:00\",\"name\":\"Develappers GmbH\",\"salutation\":\"Herr\",\"first_name\":\"Martin\",\"last_name\":\"Hey\",\"street\":\"K\\u00f6nigsbr\\u00fccker Str. 64\",\"zip\":\"01234\",\"city\":\"Dresden\",\"state\":\"Sachsen\",\"country_code\":\"DE\",\"is_eu_country\":\"1\",\"address\":\"Develappers GmbH\\nHerr Martin Hey\\nK\\u00f6nigsbr\\u00fccker Str. 64\\n01234 Dresden\",\"phone\":\"1\",\"fax\":\"2\",\"mobile\":\"3\",\"email\":\"4@4.de\",\"www\":\"http:\\/\\/5.de\",\"tax_number\":\"123123\",\"vat_number\":\"123345\",\"bank_account_owner\":\"1\",\"bank_number\":\"456\",\"bank_name\":\"2\",\"bank_account_number\":\"123\",\"bank_swift\":\"\",\"bank_iban\":\"\",\"currency_code\":\"\",\"locale\":\"\",\"note\":\"\",\"client_number\":\"123\",\"creditor_account_number\":\"1\",\"creditor_identifier\":\"\",\"costs_gross\":\"2478.11\",\"costs_net\":\"997.99\",\"customfield\":\"\",\"supplier-property-values\":{\"supplier-property-value\":[{\"id\":\"20204\",\"supplier_id\":\"36444\",\"supplier_property_id\":\"172\",\"type\":\"CHECKBOX\",\"name\":\"SupplierCheckBox\",\"value\":\"\",\"customfield\":\"\"},{\"id\":\"20205\",\"supplier_id\":\"36444\",\"supplier_property_id\":\"173\",\"type\":\"TEXTFIELD\",\"name\":\"SupplierTextField\",\"value\":\"\",\"customfield\":\"\"},{\"id\":\"20206\",\"supplier_id\":\"36444\",\"supplier_property_id\":\"174\",\"type\":\"TEXTAREA\",\"name\":\"SupplierTextArea\",\"value\":\"\",\"customfield\":\"\"}]}},\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"1\"}}";
+            const string responseBody = "{\"inbox-documents\":{\"inbox-document\":[{\"id\":\"286962\",\"created\":\"2018-01-19T09:58:17+01:00\",\"updated\":\"2018-01-19T09:58:23+01:00\",\"user_id\":\"58027\",\"filename\":\"inbox_286962.pdf\",\"mimetype\":\"image\\/png\",\"document_type\":\"\",\"filesize\":\"933436\",\"page_count\":\"1\",\"metadata\":{\"data\":[{\"key\":\"TOTAL_NET\",\"value\":\"13.1\"},{\"key\":\"CURRENCY_CODE\",\"value\":\"EUR\"},{\"key\":\"recipient\",\"value\":\"01309 Dresden\"},{\"key\":\"PAYMENT_REFERENCE\",\"value\":\"ReNr 5761\"},{\"key\":\"INVOICE_NUMBER\",\"value\":\"5761\"},{\"key\":\"TOTAL_GROSS\",\"value\":\"21.84\"},{\"key\":\"tax19\",\"value\":\"2.49:EUR\"},{\"key\":\"PAYMENT_STATE\",\"value\":\"Paid\"},{\"key\":\"referenceId\",\"value\":\"Terminal-Id 61313738\"},{\"key\":\"DOCUMENT_DOMAIN\",\"value\":\"Other\"},{\"key\":\"DOC_TYPE\",\"value\":\"Other\"}]},\"customfield\":\"\"}],\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"106\"}}";
 
-            A.CallTo(() => http.GetAsync(expectedRequestUri, expectedRequestQuery, A<CancellationToken>.Ignored))
+            A.CallTo(() => http.GetAsync(expectedRequestUri, A<string>._, A<CancellationToken>._))
                 .Returns(Task.FromResult(responseBody));
 
-            // ReSharper disable once RedundantArgumentDefaultValue
-            // ReSharper disable once RedundantArgumentDefaultValue
-            var query = new Query<InboxDocument, InboxDocumentFilter>()
-                .AddSort(x => x.Id, SortOrder.Descending);
-            
-            var result = await sut.GetListAsync(query, CancellationToken.None);
+            var result = await sut.GetListAsync(CancellationToken.None);
 
             result.Page.Should().Be(1);
             result.ItemsPerPage.Should().Be(100);
-            result.TotalItems.Should().Be(1);
+            result.TotalItems.Should().Be(106);
             result.List.Should().SatisfyRespectively(
                 first =>
                 {
-                    first.Id.Should().Be(36444);
-                    //first.Name.Should().Be("Develappers GmbH");
+                    first.Id.Should().Be(286962);
                 });
         }
     }

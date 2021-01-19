@@ -26,15 +26,15 @@ namespace Develappers.BillomatNet
         {
         }
 
-        public Task<Types.PagedList<InboxDocument>> GetListAsync(CancellationToken token = default)
+        public async Task<Types.PagedList<InboxDocument>> GetListAsync(CancellationToken token = default)
         {
-            return GetListAsync(null, token);
+            var jsonModel = await GetListAsync<InboxDocumentListWrapper>($"/api/{EntityUrlFragment}", QueryString.For((Query<InboxDocument, InboxDocumentFilter>) null), token).ConfigureAwait(false);
+            return jsonModel.ToDomain();
         }
 
-        public async Task<Types.PagedList<InboxDocument>> GetListAsync(Query<InboxDocument, InboxDocumentFilter> query, CancellationToken token)
+        Task<Types.PagedList<InboxDocument>> IEntityService<InboxDocument, InboxDocumentFilter>.GetListAsync(Query<InboxDocument, InboxDocumentFilter> query, CancellationToken token)
         {
-            var jsonModel = await GetListAsync<InboxDocumentListWrapper>($"/api/{EntityUrlFragment}", QueryString.For(query), token).ConfigureAwait(false);
-            return jsonModel.ToDomain();
+            throw new NotSupportedException("not supported by api");
         }
 
         public async Task<InboxDocument> GetByIdAsync(int id, CancellationToken token = default)
@@ -60,7 +60,7 @@ namespace Develappers.BillomatNet
 
         Task<InboxDocument> IEntityService<InboxDocument, InboxDocumentFilter>.EditAsync(InboxDocument model, CancellationToken token)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("not supported by api");
         }
     }
 }
