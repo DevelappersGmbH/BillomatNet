@@ -9,45 +9,6 @@ using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Queries
 {
-    internal class ClientPropertyQueryStringBuilder : QueryStringBuilder<ClientProperty, Api.ClientProperty, ClientPropertyFilter>
-    {
-        protected internal override string GetFilterStringFor(ClientPropertyFilter filter)
-        {
-            if (filter == null)
-            {
-                return string.Empty;
-            }
-
-            var filters = new List<string>();
-            if (filter.ClientId.HasValue)
-            {
-                filters.Add($"client_id={filter.ClientId.Value}");
-            }
-
-            if (filter.ClientPropertyId.HasValue)
-            {
-                filters.Add($"client_property_id={filter.ClientPropertyId.Value}");
-            }
-
-            if (filter.Value != null)
-            {
-                string val;
-                if (filter.Value is bool)
-                {
-                    val = filter.Value.ToString();
-                }
-                else
-                {
-                    val = (string)filter.Value;
-                }
-
-                filters.Add($"value={HttpUtility.UrlEncode(val)}");
-            }
-
-            return string.Join("&", filters);
-        }
-    }
-
     internal class ClientQueryStringBuilder : QueryStringBuilder<Client, Api.Client, ClientFilter>
     {
         protected internal override string GetFilterStringFor(ClientFilter filter)
@@ -76,11 +37,6 @@ namespace Develappers.BillomatNet.Queries
             if (!string.IsNullOrEmpty(filter.FirstName))
             {
                 filters.Add($"first_name={HttpUtility.UrlEncode(filter.FirstName)}");
-            }
-
-            if (!string.IsNullOrEmpty(filter.LastName))
-            {
-                filters.Add($"last_name={HttpUtility.UrlEncode(filter.LastName)}");
             }
 
             if (!string.IsNullOrEmpty(filter.LastName))

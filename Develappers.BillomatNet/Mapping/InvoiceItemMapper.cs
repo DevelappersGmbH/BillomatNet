@@ -90,7 +90,7 @@ namespace Develappers.BillomatNet.Mapping
                 Quantity = value.Quantity.ToString(CultureInfo.InvariantCulture),
                 UnitPrice = value.UnitPrice.ToString(CultureInfo.InvariantCulture),
                 TaxName = value.TaxName,
-                TaxRate = value.TaxRate.ToString(),
+                TaxRate = value.TaxRate?.ToString(),
                 Title = value.Title,
                 Description = value.Description,
                 TotalGross = value.TotalGross.ToString(CultureInfo.InvariantCulture),

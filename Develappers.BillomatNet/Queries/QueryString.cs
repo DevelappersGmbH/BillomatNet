@@ -13,6 +13,11 @@ namespace Develappers.BillomatNet.Queries
             return new ClientQueryStringBuilder().BuildFor(value);
         }
 
+        internal static string For(Query<Supplier, SupplierFilter> value)
+        {
+            return new SupplierQueryStringBuilder().BuildFor(value);
+        }
+
         internal static string For(Query<ClientTag, ClientTagFilter> value)
         {
             return new ClientTagQueryStringBuilder().BuildFor(value);
@@ -26,6 +31,11 @@ namespace Develappers.BillomatNet.Queries
         internal static string For(Query<ArticleTag, ArticleTagFilter> value)
         {
             return new ArticleTagQueryStringBuilder().BuildFor(value);
+        }
+
+        internal static string For(Query<Offer, OfferFilter> value)
+        {
+            return new OfferQueryStringBuilder().BuildFor(value);
         }
 
         internal static string For(Query<Invoice, InvoiceFilter> value)
@@ -61,6 +71,16 @@ namespace Develappers.BillomatNet.Queries
         internal static string For(Query<Unit, UnitFilter> value)
         {
             return new UnitQueryStringBuilder().BuildFor(value);
+        }
+
+        public static string For(Query<PurchaseInvoice, PurchaseInvoiceFilter> value)
+        {
+            return new IncomingQueryStringBuilder().BuildFor(value);
+        }
+
+        public static string For(Query<InboxDocument, InboxDocumentFilter> value)
+        {
+            return new InboxDocumentQueryStringBuilder().BuildFor(value);
         }
     }
 }

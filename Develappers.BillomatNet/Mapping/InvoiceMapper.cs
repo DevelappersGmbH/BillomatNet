@@ -83,47 +83,47 @@ namespace Develappers.BillomatNet.Mapping
 
             return new Invoice
             {
-                Id = int.Parse(value.Id, CultureInfo.InvariantCulture),
+                Id = value.Id.ToInt(),
                 InvoiceId = value.InvoiceId.ToOptionalInt(),
                 ConfirmationId = value.ConfirmationId.ToOptionalInt(),
                 OfferId = value.OfferId.ToOptionalInt(),
                 RecurringId = value.RecurringId.ToOptionalInt(),
                 TemplateId = value.TemplateId.ToOptionalInt(),
-                CustomerPortalUrl = value.CustomerPortalUrl,
-                ClientId = int.Parse(value.ClientId, CultureInfo.InvariantCulture),
+                CustomerPortalUrl = value.CustomerPortalUrl.Sanitize(),
+                ClientId = value.ClientId.ToInt(),
                 ContactId = value.ContactId.ToOptionalInt(),
                 InvoiceNumber = value.InvoiceNumber,
                 Number = value.Number.ToOptionalInt(),
                 NumberPre = value.NumberPre,
-                NumberLength = int.Parse(value.NumberLength, CultureInfo.InvariantCulture),
-                Title = value.Title,
-                Date = DateTime.Parse(value.Date, CultureInfo.InvariantCulture),
-                Address = value.Address,
-                Label = value.Label,
-                Intro = value.Intro,
-                Note = value.Note,
-                TotalGross = float.Parse(value.TotalGross, CultureInfo.InvariantCulture),
-                TotalNet = float.Parse(value.TotalNet, CultureInfo.InvariantCulture),
+                NumberLength = value.NumberLength.ToInt(),
+                Title = value.Title.Sanitize(),
+                Date = value.Date.ToDateTime(),
+                Address = value.Address.Sanitize(),
+                Label = value.Label.Sanitize(),
+                Intro = value.Intro.Sanitize(),
+                Note = value.Note.Sanitize(),
+                TotalGross = value.TotalGross.ToFloat(),
+                TotalNet = value.TotalNet.ToFloat(),
                 CurrencyCode = value.CurrencyCode,
-                TotalGrossUnreduced = float.Parse(value.TotalGrossUnreduced, CultureInfo.InvariantCulture),
-                TotalNetUnreduced = float.Parse(value.TotalNetUnreduced, CultureInfo.InvariantCulture),
-                Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
-                DueDate = DateTime.Parse(value.DueDate, CultureInfo.InvariantCulture),
-                DueDays = int.Parse(value.DueDays, CultureInfo.InvariantCulture),
+                TotalGrossUnreduced = value.TotalGrossUnreduced.ToFloat(),
+                TotalNetUnreduced = value.TotalNetUnreduced.ToFloat(),
+                Created = value.Created.ToDateTime(),
+                DueDate = value.DueDate.ToDateTime(),
+                DueDays = value.DueDays.ToOptionalInt(),
                 NetGross = value.NetGross.ToNetGrossType(),
                 SupplyDate = supplyDate,
                 SupplyDateType = supplyDateType,
                 Status = value.Status.ToInvoiceStatus(),
                 PaymentTypes = value.PaymentTypes.ToStringList(),
                 Taxes = _taxMapper.ApiToDomain(value.Taxes),
-                Quote = float.Parse(value.Quote, CultureInfo.InvariantCulture),
+                Quote = value.Quote.ToFloat(),
                 Reduction = reduction,
-                DiscountRate = float.Parse(value.DiscountRate, CultureInfo.InvariantCulture),
+                DiscountRate = value.DiscountRate.ToFloat(),
                 DiscountDate = value.DiscountDate.ToOptionalDateTime(),
                 DiscountDays = value.DiscountDays.ToOptionalInt(),
                 DiscountAmount = value.DiscountAmount.ToOptionalFloat(),
-                PaidAmount = float.Parse(value.PaidAmount, CultureInfo.InvariantCulture),
-                OpenAmount = float.Parse(value.OpenAmount, CultureInfo.InvariantCulture)
+                PaidAmount = value.PaidAmount.ToFloat(),
+                OpenAmount = value.OpenAmount.ToFloat()
             };
         }
 
@@ -167,7 +167,7 @@ namespace Develappers.BillomatNet.Mapping
             string paymentTypes = null;
             if (value.PaymentTypes != null && value.PaymentTypes.Count != 0)
             {
-                paymentTypes = String.Join(",", value.PaymentTypes);
+                paymentTypes = string.Join(",", value.PaymentTypes);
             }
 
             InvoiceItemsWrapper itemsWrapper = null;
@@ -194,17 +194,17 @@ namespace Develappers.BillomatNet.Mapping
                 Date = value.Date.ToApiDate(),
                 SupplyDate = strSupplyDate,
                 SupplyDateType = value.SupplyDateType.ToApiValue(),
-                DueDate = null,
-                DueDays = null,
+                DueDate = value.DueDate?.ToApiDate(),
+                DueDays = !value.DueDays.HasValue ? null : value.DueDays.ToString(),
                 Address = (value.Address == "") ? null : value.Address,
                 Status = value.Status.ToApiValue(),
                 DiscountRate = value.DiscountRate.ToString(CultureInfo.InvariantCulture),
                 DiscountDate = value.DiscountDate.ToApiDate(),
                 DiscountDays = value.DiscountDays.ToString(),
                 DiscountAmount = value.DiscountAmount.ToString(),
-                Label = value.Label,
-                Intro = value.Intro,
-                Note = value.Note,
+                Label = (value.Label == "") ? null : value.Label,
+                Intro = (value.Intro == "") ? null : value.Intro,
+                Note = (value.Note == "") ? null : value.Note,
                 TotalGross = value.TotalGross.ToString(CultureInfo.InvariantCulture),
                 TotalNet = value.TotalNet.ToString(CultureInfo.InvariantCulture),
                 CurrencyCode = value.CurrencyCode,
@@ -222,7 +222,7 @@ namespace Develappers.BillomatNet.Mapping
                 RecurringId = value.RecurringId.ToString(),
                 TemplateId = value.TemplateId.ToString(),
                 PaymentTypes = paymentTypes,
-                Taxes = new InvoiceTaxWrapper(),
+                Taxes = null,
                 InvoiceItems = itemsWrapper
             };
         }

@@ -9,7 +9,6 @@ using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
-using Develappers.BillomatNet.Tests.UnitTests.Comparer;
 using Develappers.BillomatNet.Types;
 using FakeItEasy;
 using FluentAssertions;
@@ -28,21 +27,21 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             const string responseBody = "{\"units\":{\"unit\":[{\"id\":\"20573\",\"created\":\"2016-03-14T13:37:29+01:00\",\"updated\":\"2016-03-14T13:37:29+01:00\",\"name\":\"Beutel\",\"customfield\":\"\"},{\"id\":\"20574\",\"created\":\"2016-03-14T13:37:54+01:00\",\"updated\":\"2016-03-14T13:37:54+01:00\",\"name\":\"St\\u00fcck\",\"customfield\":\"\"},{\"id\":\"21813\",\"created\":\"2016-11-03T08:01:17+01:00\",\"updated\":\"2016-11-03T08:01:17+01:00\",\"name\":\"kg\",\"customfield\":\"\"}],\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"3\"}}";
             var expectedResult = new List<Unit>
             {
-                new Unit
+                new()
                 {
                     Id = 20573,
                     Created = DateTime.Parse("2016-03-14T13:37:29+01:00", CultureInfo.InvariantCulture),
                     Updated = DateTime.Parse("2016-03-14T13:37:29+01:00", CultureInfo.InvariantCulture),
                     Name = "Beutel"
                 },
-                new Unit
+                new()
                 {
                     Id = 20574,
                     Created = DateTime.Parse("2016-03-14T13:37:54+01:00", CultureInfo.InvariantCulture),
                     Updated = DateTime.Parse("2016-03-14T13:37:54+01:00", CultureInfo.InvariantCulture),
                     Name = "Stück"
                 },
-                new Unit
+                new()
                 {
                     Id = 21813,
                     Created = DateTime.Parse("2016-11-03T08:01:17+01:00", CultureInfo.InvariantCulture),
@@ -64,9 +63,9 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             A.CallTo(() => http.GetAsync(expectedRequestUri, null, A<CancellationToken>.Ignored))
                 .MustHaveHappenedOnceExactly();
 
-            result.List.Should()
-                .HaveCount(expectedResult.Count)
-                .And.ContainItemsInOrderUsingComparer(expectedResult, new UnitEqualityComparer());
+            result.List.Should().SatisfyRespectively(first => first.Should().BeEquivalentTo(expectedResult[0]),
+                second => second.Should().BeEquivalentTo(expectedResult[1]),
+                third => third.Should().BeEquivalentTo(expectedResult[2]));
         }
 
         [Fact]

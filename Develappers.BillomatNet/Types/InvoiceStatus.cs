@@ -9,6 +9,10 @@ namespace Develappers.BillomatNet.Types
     /// </summary>
     public enum InvoiceStatus
     {
-        Draft, Open, Paid, Overdue, Canceled
+        Draft,
+        Open,
+        Paid,
+        Overdue,
+        Canceled
     }
 }

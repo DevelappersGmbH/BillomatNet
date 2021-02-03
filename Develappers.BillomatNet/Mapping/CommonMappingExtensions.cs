@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Develappers.BillomatNet.Api;
 
 namespace Develappers.BillomatNet.Mapping
 {
@@ -23,6 +24,21 @@ namespace Develappers.BillomatNet.Mapping
                 return null;
             }
 
+            return value.ToInt();
+        }
+
+        /// <summary>
+        /// Converts a string to a integer.
+        /// </summary>
+        /// <param name="value">The string which gets converted</param>
+        /// <returns>The integer.</returns>
+        internal static int ToInt(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentException();
+            }
+
             return int.Parse(value, CultureInfo.InvariantCulture);
         }
 
@@ -37,9 +53,20 @@ namespace Develappers.BillomatNet.Mapping
             {
                 return null;
             }
-            if (value == null)
+
+            return value.ToFloat();
+        }
+
+        /// <summary>
+        /// Converts a string to a float.
+        /// </summary>
+        /// <param name="value">The string which gets converted</param>
+        /// <returns>The float.</returns>
+        internal static float ToFloat(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
             {
-                return null;
+                throw new ArgumentException();
             }
 
             return float.Parse(value, CultureInfo.InvariantCulture);
@@ -55,6 +82,21 @@ namespace Develappers.BillomatNet.Mapping
             if (string.IsNullOrEmpty(value))
             {
                 return null;
+            }
+
+            return value.ToDateTime();
+        }
+
+        /// <summary>
+        /// Converts a string to a DateTime.
+        /// </summary>
+        /// <param name="value">The string which gets converted</param>
+        /// <returns>The DateTime.</returns>
+        internal static DateTime ToDateTime(this string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentException();
             }
 
             return DateTime.Parse(value, CultureInfo.InvariantCulture);
@@ -114,10 +156,10 @@ namespace Develappers.BillomatNet.Mapping
         /// Converts a string to a list of strings.
         /// </summary>
         /// <param name="value">The string which gets converted</param>
-        /// <returns>The the list of strings</returns>
+        /// <returns>The list of strings</returns>
         internal static List<string> ToStringList(this string value)
         {
-            if (value == null)
+            if (string.IsNullOrEmpty(value))
             {
                 return new List<string>();
             }
@@ -126,10 +168,20 @@ namespace Develappers.BillomatNet.Mapping
         }
 
         /// <summary>
+        /// Treats empty stings as null.
+        /// </summary>
+        /// <param name="value">The string which gets converted</param>
+        /// <returns>The string.</returns>
+        internal static string Sanitize(this string value)
+        {
+            return string.IsNullOrEmpty(value) ? null : value;
+        }
+
+        /// <summary>
         /// Converts a string to a list of integer.
         /// </summary>
         /// <param name="value">The string which gets converted</param>
-        /// <returns>The the list of integer</returns>
+        /// <returns>The list of integer</returns>
         internal static List<int> ToIntList(this string value)
         {
             if (value == null)
@@ -140,6 +192,9 @@ namespace Develappers.BillomatNet.Mapping
             return value.Split(',').Select(x => int.Parse(x.Trim())).ToList();
         }
 
-
+        internal static Dictionary<string, string> ToDictionary(this List<KeyValuePair> value)
+        {
+            return value?.ToDictionary(item => item.Key, item => item.Value);
+        }
     }
 }
