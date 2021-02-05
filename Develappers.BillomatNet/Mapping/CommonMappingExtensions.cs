@@ -143,6 +143,56 @@ namespace Develappers.BillomatNet.Mapping
         }
 
         /// <summary>
+        /// Converts an int to a string.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>System.String.</returns>
+        internal static string ToApiInt(this int value)
+        {
+            return value.ToString();
+        }
+
+        /// <summary>
+        /// Converts an int to a string.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>System.String.</returns>
+        internal static string ToApiOptionalInt(this int value)
+        {
+            return value == 0 ? null : value.ToString();
+        }
+
+        /// <summary>
+        /// Converts an int to a string.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>System.String.</returns>
+        internal static string ToApiOptionalInt(this int? value)
+        {
+            return value.GetValueOrDefault(0) == 0 ? null : value.ToString();
+        }
+
+        /// <summary>
+        /// Converts a float to a string..
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>System.String.</returns>
+        internal static string ToApiFloat(this float value)
+        {
+            return value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Converts a float to a string..
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>System.String.</returns>
+        internal static string ToApiOptionalFloat(this float? value)
+        {
+            return value?.ToString(CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
         /// Converts a string to a boolean.
         /// </summary>
         /// <param name="value">The string which gets converted.</param>
