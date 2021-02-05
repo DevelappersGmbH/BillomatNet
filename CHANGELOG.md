@@ -12,10 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - nothing
 
 ### Removed
-- nothing
+- service collection extension to add all the services to IoC container (BREAKING CHANGE !!!)
 
 ### Fixed
-- nothing
+- problems with default values during create
 
 
 ## [0.1.7] - 2021-01-18
@@ -85,7 +85,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.3] - 2020-02-11
 ### Changed
-- changed namespace (BREAKING!)
+- changed namespace (BREAKING CHANGE !!!)
 
 
 ## [0.1.2] - 2018-11-07
