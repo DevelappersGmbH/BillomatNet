@@ -54,10 +54,8 @@ namespace Develappers.BillomatNet.Mapping
             {
                 return "1";
             }
-            else
-            {
-                return "0";
-            }
+
+            return "0";
         }
 
         internal static TagCloudItem ToDomain(this Api.TagCloudItem value)
@@ -357,7 +355,7 @@ namespace Develappers.BillomatNet.Mapping
                 case CommentType.CreateFromInvoice:
                     return "CREATE_FROM_INVOICE";
                 case CommentType.CreateFromRecurring:
-                    return "CREATE_FROM_REURRING";
+                    return "CREATE_FROM_RECURRING";
                 case CommentType.Status:
                     return "STATUS";
                 case CommentType.Payment:
