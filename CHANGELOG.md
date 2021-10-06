@@ -12,6 +12,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - nothing
 
 ### Removed
+- nothing
+
+### Fixed
+- nothing
+
+
+## [0.2.1] - 2021-10-06
+### Added
+- RD operations on inbox documents
+- R operation on purchase invoice documents
+- R operations on suppliers
+
+### Changed
+- nothing
+
+### Removed
 - service collection extension to add all the services to IoC container (BREAKING CHANGE !!!)
 
 ### Fixed
