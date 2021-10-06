@@ -5,14 +5,12 @@
 namespace Develappers.BillomatNet.Types
 {
     /// <summary>
-    /// The status of the invoice.
+    /// The status of the incoming invoice.
     /// </summary>
-    public enum InvoiceStatus
+    public enum PurchaseInvoiceStatus
     {
-        Draft,
         Open,
         Paid,
-        Overdue,
-        Canceled
+        Overdue
     }
 }

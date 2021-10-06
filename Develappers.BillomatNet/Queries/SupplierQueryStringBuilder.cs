@@ -9,9 +9,9 @@ using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Queries
 {
-    internal class ClientQueryStringBuilder : QueryStringBuilder<Client, Api.Client, ClientFilter>
+    internal class SupplierQueryStringBuilder : QueryStringBuilder<Supplier, Api.Supplier, SupplierFilter>
     {
-        protected internal override string GetFilterStringFor(ClientFilter filter)
+        protected internal override string GetFilterStringFor(SupplierFilter filter)
         {
             if (filter == null)
             {
@@ -22,11 +22,6 @@ namespace Develappers.BillomatNet.Queries
             if (!string.IsNullOrEmpty(filter.Name))
             {
                 filters.Add($"name={HttpUtility.UrlEncode(filter.Name)}");
-            }
-
-            if (!string.IsNullOrEmpty(filter.ClientNumber))
-            {
-                filters.Add($"client_number={HttpUtility.UrlEncode(filter.ClientNumber)}");
             }
 
             if (!string.IsNullOrEmpty(filter.Email))
@@ -49,14 +44,24 @@ namespace Develappers.BillomatNet.Queries
                 filters.Add($"country_code={HttpUtility.UrlEncode(filter.CountryCode)}");
             }
 
+            if (!string.IsNullOrEmpty(filter.CreditorIdentifier))
+            {
+                filters.Add($"creditor_identifier={HttpUtility.UrlEncode(filter.CreditorIdentifier)}");
+            }
+
             if (!string.IsNullOrEmpty(filter.Note))
             {
                 filters.Add($"note={HttpUtility.UrlEncode(filter.Note)}");
             }
 
-            if ((filter.InvoiceIds?.Count ?? 0) > 0)
+            if (!string.IsNullOrEmpty(filter.ClientNumber))
             {
-                filters.Add($"invoice_id={string.Join(",", filter.InvoiceIds)}");
+                filters.Add($"client_number={HttpUtility.UrlEncode(filter.ClientNumber)}");
+            }
+
+            if ((filter.PurchaseInvoiceIds?.Count ?? 0) > 0)
+            {
+                filters.Add($"incoming_id={string.Join(",", filter.PurchaseInvoiceIds)}");
             }
 
             if ((filter.Tags?.Count ?? 0) > 0)

@@ -10,7 +10,7 @@ using Client = Develappers.BillomatNet.Types.Client;
 
 namespace Develappers.BillomatNet.Mapping
 {
-    internal class ClientMapper : IMapper<Api.Client, Types.Client>
+    internal class ClientMapper : IMapper<Api.Client, Client>
     {
         public Client ApiToDomain(Api.Client value)
         {

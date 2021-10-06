@@ -4,15 +4,17 @@
 
 namespace Develappers.BillomatNet.Types
 {
-    /// <summary>
-    /// The status of the invoice.
-    /// </summary>
-    public enum InvoiceStatus
+    public enum InboxDocumentType
     {
-        Draft,
-        Open,
-        Paid,
-        Overdue,
-        Canceled
+        BankStatement,
+        Contract,
+        Invoice,
+        Reminder,
+        RemittanceSlip,
+        TravelExpenseReport,
+        Receipt,
+        FuelReceipt,
+        Energy,
+        Other
     }
 }

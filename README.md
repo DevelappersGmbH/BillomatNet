@@ -17,7 +17,6 @@ This is an API client to access your data in [Billomat](https://www.billomat.com
 ### release
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
-![GitHub Release Date](https://img.shields.io/github/release-date/DevelappersGmbH/BillomatNet)
 ![Nuget](https://img.shields.io/nuget/v/Develappers.BillomatNet)
 [![NuGet](https://img.shields.io/nuget/dt/Develappers.BillomatNet.svg)](https://www.nuget.org/packages/Develappers.BillomatNet/)
 

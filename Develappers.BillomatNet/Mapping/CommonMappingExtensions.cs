@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Develappers.BillomatNet.Api;
 
 namespace Develappers.BillomatNet.Mapping
 {
@@ -87,10 +88,10 @@ namespace Develappers.BillomatNet.Mapping
         }
 
         /// <summary>
-        /// Converts a string to a nullable DateTime.
+        /// Converts a string to a DateTime.
         /// </summary>
         /// <param name="value">The string which gets converted</param>
-        /// <returns>The nullable DateTime or null if not found</returns>
+        /// <returns>The DateTime.</returns>
         internal static DateTime ToDateTime(this string value)
         {
             if (string.IsNullOrEmpty(value))
@@ -139,6 +140,56 @@ namespace Develappers.BillomatNet.Mapping
         internal static string ToApiDate(this DateTime value)
         {
             return ((DateTime?)value).ToApiDate();
+        }
+
+        /// <summary>
+        /// Converts an int to a string.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>System.String.</returns>
+        internal static string ToApiInt(this int value)
+        {
+            return value.ToString();
+        }
+
+        /// <summary>
+        /// Converts an int to a string.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>System.String.</returns>
+        internal static string ToApiOptionalInt(this int value)
+        {
+            return value == 0 ? null : value.ToString();
+        }
+
+        /// <summary>
+        /// Converts an int to a string.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>System.String.</returns>
+        internal static string ToApiOptionalInt(this int? value)
+        {
+            return value.GetValueOrDefault(0) == 0 ? null : value.ToString();
+        }
+
+        /// <summary>
+        /// Converts a float to a string..
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>System.String.</returns>
+        internal static string ToApiFloat(this float value)
+        {
+            return value.ToString(CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Converts a float to a string..
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>System.String.</returns>
+        internal static string ToApiOptionalFloat(this float? value)
+        {
+            return value?.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -191,6 +242,9 @@ namespace Develappers.BillomatNet.Mapping
             return value.Split(',').Select(x => int.Parse(x.Trim())).ToList();
         }
 
-
+        internal static Dictionary<string, string> ToDictionary(this List<KeyValuePair> value)
+        {
+            return value?.ToDictionary(item => item.Key, item => item.Value);
+        }
     }
 }

@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using Develappers.BillomatNet.Api;
+using Develappers.BillomatNet.Types;
 using Account = Develappers.BillomatNet.Types.Account;
 using Article = Develappers.BillomatNet.Types.Article;
 using ArticleProperty = Develappers.BillomatNet.Types.ArticleProperty;
@@ -57,6 +58,9 @@ namespace Develappers.BillomatNet.Mapping
         private static readonly ClientPropertyMapper s_clientPropertyMapper = new ClientPropertyMapper();
         private static readonly SupplierMapper s_supplierMapper = new SupplierMapper();
         private static readonly SupplierPropertyValueMapper s_supplierPropertyValueMapper = new SupplierPropertyValueMapper();
+        private static readonly PurchaseInvoiceMapper s_purchaseInvoiceMapper = new PurchaseInvoiceMapper();
+        private static readonly PurchaseInvoiceDocumentMapper s_purchaseInvoiceDocumentMapper = new PurchaseInvoiceDocumentMapper();
+        private static readonly InboxDocumentMapper s_inboxDocumentMapper = new InboxDocumentMapper();
 
         internal static Types.PagedList<Article> ToDomain(this ArticleListWrapper value)
         {
@@ -72,7 +76,6 @@ namespace Develappers.BillomatNet.Mapping
         {
             return s_articleMapper.DomainToApi(value);
         }
-
 
         internal static Types.PagedList<Unit> ToDomain(this UnitListWrapper value)
         {
@@ -167,6 +170,11 @@ namespace Develappers.BillomatNet.Mapping
         internal static InvoiceDocument ToDomain(this InvoiceDocumentWrapper value)
         {
             return s_invoiceDocumentMapper.ApiToDomain(value);
+        }
+
+        internal static PurchaseInvoiceDocument ToDomain(this IncomingDocumentWrapper value)
+        {
+            return s_purchaseInvoiceDocumentMapper.ApiToDomain(value);
         }
 
         internal static OfferDocument ToDomain(this OfferDocumentWrapper value)
@@ -299,11 +307,30 @@ namespace Develappers.BillomatNet.Mapping
             return s_clientMapper.ApiToDomain(value);
         }
 
+        internal static Types.PagedList<Supplier> ToDomain(this SupplierListWrapper value)
+        {
+            return s_supplierMapper.ApiToDomain(value);
+        }
+
+        internal static Types.InboxDocument ToDomain(this InboxDocumentWrapper value)
+        {
+            return s_inboxDocumentMapper.ApiToDomain(value);
+        }
+
+        internal static Types.PagedList<Types.InboxDocument> ToDomain(this InboxDocumentListWrapper value)
+        {
+            return s_inboxDocumentMapper.ApiToDomain(value);
+        }
+
+        internal static Types.PagedList<PurchaseInvoice> ToDomain(this IncomingListWrapper value)
+        {
+            return s_purchaseInvoiceMapper.ApiToDomain(value);
+        }
+
         internal static Client ToDomain(this ClientWrapper value)
         {
             return s_clientMapper.ApiToDomain(value);
         }
-
 
         internal static Types.PagedList<TagCloudItem> ToDomain(this ClientTagCloudItemListWrapper value)
         {
@@ -348,6 +375,11 @@ namespace Develappers.BillomatNet.Mapping
         internal static Supplier ToDomain(this SupplierWrapper value)
         {
             return s_supplierMapper.ApiToDomain(value);
+        }
+
+        internal static PurchaseInvoice ToDomain(this IncomingWrapper value)
+        {
+            return s_purchaseInvoiceMapper.ApiToDomain(value);
         }
 
         internal static List<SupplierPropertyValue> ToDomain(this SupplierPropertyValuesWrapper value)

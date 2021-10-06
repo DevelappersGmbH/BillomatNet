@@ -10,9 +10,9 @@ using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Queries
 {
-    internal class InvoiceQueryStringBuilder : QueryStringBuilder<Invoice, Api.Invoice, InvoiceFilter>
+    internal class IncomingQueryStringBuilder : QueryStringBuilder<PurchaseInvoice, Api.Incoming, PurchaseInvoiceFilter>
     {
-        protected internal override string GetFilterStringFor(InvoiceFilter filter)
+        protected internal override string GetFilterStringFor(PurchaseInvoiceFilter filter)
         {
             if (filter == null)
             {
@@ -20,29 +20,20 @@ namespace Develappers.BillomatNet.Queries
             }
 
             var filters = new List<string>();
-            if (filter.ClientId.HasValue)
+
+            if (filter.SupplierId.HasValue)
             {
-                filters.Add($"client_id={filter.ClientId.Value}");
+                filters.Add($"supplier_id={filter.SupplierId.Value}");
             }
 
-            if (filter.ContactId.HasValue)
+            if (!string.IsNullOrEmpty(filter.Number))
             {
-                filters.Add($"contact_id={filter.ContactId.Value}");
-            }
-
-            if (!string.IsNullOrEmpty(filter.InvoiceNumber))
-            {
-                filters.Add($"invoice_number={HttpUtility.UrlEncode(filter.InvoiceNumber)}");
+                filters.Add($"incoming_number={HttpUtility.UrlEncode(filter.Number)}");
             }
 
             if ((filter.Status?.Count ?? 0) > 0)
             {
                 filters.Add($"status={string.Join(",", filter.Status.Select(MappingHelpers.ToApiValue))}");
-            }
-
-            if ((filter.PaymentType?.Count ?? 0) > 0)
-            {
-                filters.Add($"payment_type={string.Join(",", filter.PaymentType.Select(MappingHelpers.ToApiValue))}");
             }
 
             if (filter.From.HasValue)
@@ -53,16 +44,6 @@ namespace Develappers.BillomatNet.Queries
             if (filter.To.HasValue)
             {
                 filters.Add($"to={filter.To.Value:yyyy-MM-dd}");
-            }
-
-            if (!string.IsNullOrEmpty(filter.Label))
-            {
-                filters.Add($"label={HttpUtility.UrlEncode(filter.Label)}");
-            }
-
-            if (!string.IsNullOrEmpty(filter.Intro))
-            {
-                filters.Add($"intro={HttpUtility.UrlEncode(filter.Intro)}");
             }
 
             if (!string.IsNullOrEmpty(filter.Note))

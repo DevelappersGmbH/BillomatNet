@@ -4,37 +4,37 @@
 
 using System;
 using Develappers.BillomatNet.Api;
-using InvoiceDocument = Develappers.BillomatNet.Types.InvoiceDocument;
+using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Mapping
 {
-    internal class InvoiceDocumentMapper : IMapper<Api.InvoiceDocument, InvoiceDocument>
+    internal class PurchaseInvoiceDocumentMapper : IMapper<IncomingDocument, PurchaseInvoiceDocument>
     {
-        public InvoiceDocument ApiToDomain(Api.InvoiceDocument value)
+        public PurchaseInvoiceDocument ApiToDomain(IncomingDocument value)
         {
             if (value == null)
             {
                 return null;
             }
 
-            return new InvoiceDocument
+            return new PurchaseInvoiceDocument
             {
                 Id = value.Id.ToInt(),
                 Created = value.Created.ToDateTime(),
                 FileName = value.FileName,
                 FileSize = value.FileSize.ToInt(),
-                InvoiceId = value.InvoiceId.ToInt(),
+                IncomingId = value.IncomingId.ToInt(),
                 MimeType = value.MimeType,
                 FileContent = MappingHelpers.ToByteArray(value.Base64File)
             };
         }
 
-        public Api.InvoiceDocument DomainToApi(InvoiceDocument value)
+        public IncomingDocument DomainToApi(PurchaseInvoiceDocument value)
         {
             throw new NotImplementedException();
         }
 
-        public InvoiceDocument ApiToDomain(InvoiceDocumentWrapper value)
+        public PurchaseInvoiceDocument ApiToDomain(IncomingDocumentWrapper value)
         {
             return ApiToDomain(value?.Pdf);
         }

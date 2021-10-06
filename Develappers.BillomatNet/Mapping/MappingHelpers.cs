@@ -4,7 +4,6 @@
 
 using System;
 using System.Globalization;
-using System.Runtime.CompilerServices;
 using Develappers.BillomatNet.Types;
 
 namespace Develappers.BillomatNet.Mapping
@@ -55,10 +54,8 @@ namespace Develappers.BillomatNet.Mapping
             {
                 return "1";
             }
-            else
-            {
-                return "0";
-            }
+
+            return "0";
         }
 
         internal static TagCloudItem ToDomain(this Api.TagCloudItem value)
@@ -141,6 +138,21 @@ namespace Develappers.BillomatNet.Mapping
                     return InvoiceStatus.Paid;
                 case "canceled":
                     return InvoiceStatus.Canceled;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
+        }
+
+        internal static PurchaseInvoiceStatus ToPurchaseInvoiceStatus(this string value)
+        {
+            switch (value.ToLowerInvariant())
+            {
+                case "open":
+                    return PurchaseInvoiceStatus.Open;
+                case "overdue":
+                    return PurchaseInvoiceStatus.Overdue;
+                case "paid":
+                    return PurchaseInvoiceStatus.Paid;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value), value, null);
             }
@@ -315,6 +327,21 @@ namespace Develappers.BillomatNet.Mapping
             }
         }
 
+        internal static string ToApiValue(this PurchaseInvoiceStatus value)
+        {
+            switch (value)
+            {
+                case PurchaseInvoiceStatus.Open:
+                    return "OPEN";
+                case PurchaseInvoiceStatus.Paid:
+                    return "PAID";
+                case PurchaseInvoiceStatus.Overdue:
+                    return "OVERDUE";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(value), value, null);
+            }
+        }
+
         internal static string ToApiValue(this CommentType value)
         {
             switch (value)
@@ -328,7 +355,7 @@ namespace Develappers.BillomatNet.Mapping
                 case CommentType.CreateFromInvoice:
                     return "CREATE_FROM_INVOICE";
                 case CommentType.CreateFromRecurring:
-                    return "CREATE_FROM_REURRING";
+                    return "CREATE_FROM_RECURRING";
                 case CommentType.Status:
                     return "STATUS";
                 case CommentType.Payment:
@@ -531,6 +558,43 @@ namespace Develappers.BillomatNet.Mapping
                 default:
                     return "";
             }
+        }
+
+        public static InboxDocumentType ToInboxDocumentType(string value)
+        {
+            switch (value)
+            {
+                case "BANK_STATEMENT":
+                    return InboxDocumentType.BankStatement;
+                case "CONTRACT":
+                    return InboxDocumentType.Contract;
+                case "INVOICE":
+                    return InboxDocumentType.Invoice;
+                case "REMINDER":
+                    return InboxDocumentType.Reminder;
+                case "REMITTANCE_SLIP":
+                    return InboxDocumentType.RemittanceSlip;
+                case "TRAVEL_EXPENSE_REPORT":
+                    return InboxDocumentType.TravelExpenseReport;
+                case "RECEIPT":
+                    return InboxDocumentType.Receipt;
+                case "FUEL_RECEIPT":
+                    return InboxDocumentType.FuelReceipt;
+                case "ENERGY":
+                    return InboxDocumentType.Energy;
+                default:
+                    return InboxDocumentType.Other;
+            }
+        }
+
+        public static byte[] ToByteArray(string value)
+        {
+           if (string.IsNullOrEmpty(value))
+           {
+               return null;
+           }
+
+           return Convert.FromBase64String(value);
         }
     }
 }
