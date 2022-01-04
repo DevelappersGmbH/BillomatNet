@@ -13,7 +13,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class ClientServicePropertiesIntegrationTest : IntegrationTestBase<ClientService>
     {
-        public ClientServicePropertiesIntegrationTest() : base(c => new ClientService(c))
+        public ClientServicePropertiesIntegrationTest() : base(c => new BillomatClient(c).Clients)
         {
         }
 

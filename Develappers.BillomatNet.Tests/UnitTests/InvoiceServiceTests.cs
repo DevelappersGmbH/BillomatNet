@@ -79,7 +79,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 DiscountAmount = 92.31f,
                 PaidAmount = 4523.19f,
                 OpenAmount = 0f,
-                PaymentTypes = new List<string>( ),
+                PaymentTypes = new List<string>(),
                 CustomerPortalUrl = "https://develappersdev.billomat.net/customerportal/invoices/show/bc3654c0-b822-4aad-894f-8c5b1620241c",
                 Taxes = new List<InvoiceTax>
                 {

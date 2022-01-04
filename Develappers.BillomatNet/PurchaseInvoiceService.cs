@@ -16,24 +16,13 @@ namespace Develappers.BillomatNet
     public class PurchaseInvoiceService : ServiceBase,
         IEntityService<PurchaseInvoice, PurchaseInvoiceFilter>
     {
-        private readonly Configuration _configuration;
         private const string EntityUrlFragment = "incomings";
 
         /// <summary>
         /// Creates a new instance of <see cref="PurchaseInvoiceService"/>.
         /// </summary>
-        /// <param name="configuration">The service configuration.</param>
-        public PurchaseInvoiceService(Configuration configuration) : base(configuration)
-        {
-            _configuration = configuration;
-        }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="PurchaseInvoiceService"/> for unit tests.
-        /// </summary>
-        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        internal PurchaseInvoiceService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
+        /// <param name="httpClient">The http client.</param>
+        public PurchaseInvoiceService(IHttpClient httpClient) : base(httpClient)
         {
         }
 
@@ -50,7 +39,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid incoming invoice id", nameof(id));
             }
 
-            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
+            return $"{HttpClient.BaseUrl}app/{EntityUrlFragment}/show/entityId/{id}";
         }
 
         /// <summary>

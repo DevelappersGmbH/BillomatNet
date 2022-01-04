@@ -13,10 +13,6 @@ namespace Develappers.BillomatNet.Api.Net
 {
     internal sealed class HttpClient : IHttpClient
     {
-        private const string HeaderNameApiKey = "X-BillomatApiKey";
-        private const string HeaderNameAppId = "X-AppId";
-        private const string HeaderNameAppSecret = "X-AppSecret";
-
         /// <summary>
         /// Sets the Billomat ID and the API-key
         /// </summary>
@@ -36,6 +32,8 @@ namespace Develappers.BillomatNet.Api.Net
 
             BillomatId = billomatId;
             ApiKey = apiKey;
+
+            UpdateLimits(null, null);
         }
 
         public string ApiKey { get; }
@@ -45,6 +43,21 @@ namespace Develappers.BillomatNet.Api.Net
         public string AppId { get; set; }
 
         public string AppSecret { get; set; }
+
+        public string BaseUrl => $"https://{BillomatId}.billomat.net/";
+
+        public event EventHandler ApiCallLimitUpdated;
+
+        public int ApiCallLimit { get; private set; }
+
+        public DateTime ApiCallLimitResetsAt { get; private set; }
+
+        private void UpdateLimits(int? limit, TimeSpan? resetsIn)
+        {
+            ApiCallLimit = limit ?? int.MaxValue;
+            ApiCallLimitResetsAt = DateTime.UtcNow.Add(resetsIn ?? new TimeSpan(0, 15, 0));
+            ApiCallLimitUpdated?.Invoke(this, EventArgs.Empty);
+        }
 
         /// <summary>
         /// Makes GET web request to specific URL.
@@ -58,33 +71,28 @@ namespace Develappers.BillomatNet.Api.Net
         /// <exception cref="IOException"> Throws when the response was null.</exception>
         public async Task<byte[]> GetBytesAsync(Uri relativeUri, CancellationToken token = default)
         {
-            var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
-            var builder = new UriBuilder(new Uri(baseUri, relativeUri));
+            var builder = new UriBuilder(new Uri(new Uri(BaseUrl), relativeUri));
             var uri = builder.ToString();
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpWebRequest.Method = "GET";
-            httpWebRequest.Headers.Add(HeaderNameApiKey, ApiKey);
+            httpWebRequest.Headers.Add(HeaderNames.ApiKey, ApiKey);
 
             if (!string.IsNullOrWhiteSpace(AppId))
             {
-                httpWebRequest.Headers.Add(HeaderNameAppId, AppId);
+                httpWebRequest.Headers.Add(HeaderNames.AppId, AppId);
             }
             if (!string.IsNullOrWhiteSpace(AppSecret))
             {
-                httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
+                httpWebRequest.Headers.Add(HeaderNames.AppSecret, AppSecret);
             }
 
             var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            var responseStream = httpResponse.GetResponseStream();
-            if (responseStream == null)
-            {
-                throw new IOException("response stream was null!");
-            }
+            var result = await HttpResponseFactory.CreateFromWebResponseAsync<byte[]>(httpResponse);
 
-            var ms = new MemoryStream();
-            await responseStream.CopyToAsync(ms);
-            return ms.ToArray();
+            UpdateLimits(result.LimitRemaining, result.LimitReset);
+
+            return result.Content;
         }
 
         /// <summary>
@@ -114,8 +122,7 @@ namespace Develappers.BillomatNet.Api.Net
         /// <exception cref="IOException"> Throws when the response was null.</exception>
         public async Task<string> GetAsync(Uri relativeUri, string query, CancellationToken token = default)
         {
-            var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
-            var builder = new UriBuilder(new Uri(baseUri, relativeUri));
+            var builder = new UriBuilder(new Uri(new Uri(BaseUrl), relativeUri));
             if (!string.IsNullOrEmpty(query))
             {
                 builder.Query = query;
@@ -125,31 +132,21 @@ namespace Develappers.BillomatNet.Api.Net
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpWebRequest.Method = "GET";
             httpWebRequest.Accept = "application/json";
-            httpWebRequest.Headers.Add(HeaderNameApiKey, ApiKey);
+            httpWebRequest.Headers.Add(HeaderNames.ApiKey, ApiKey);
 
             if (!string.IsNullOrWhiteSpace(AppId))
             {
-                httpWebRequest.Headers.Add(HeaderNameAppId, AppId);
+                httpWebRequest.Headers.Add(HeaderNames.AppId, AppId);
             }
             if (!string.IsNullOrWhiteSpace(AppSecret))
             {
-                httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
+                httpWebRequest.Headers.Add(HeaderNames.AppSecret, AppSecret);
             }
 
             var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            var responseStream = httpResponse.GetResponseStream();
-            if (responseStream == null)
-            {
-                throw new IOException("response stream was null!");
-            }
-
-            string result;
-            using (var streamReader = new StreamReader(responseStream))
-            {
-                result = await streamReader.ReadToEndAsync();
-            }
-
-            return result;
+            var result = await HttpResponseFactory.CreateFromWebResponseAsync<string>(httpResponse);
+            UpdateLimits(result.LimitRemaining, result.LimitReset);
+            return result.Content;
         }
 
         /// <summary>
@@ -164,39 +161,28 @@ namespace Develappers.BillomatNet.Api.Net
         /// <exception cref="IOException"> Throws when the response was null.</exception>
         public async Task<string> DeleteAsync(Uri relativeUri, CancellationToken token)
         {
-            var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
-            var builder = new UriBuilder(new Uri(baseUri, relativeUri));
+            var builder = new UriBuilder(new Uri(new Uri(BaseUrl), relativeUri));
             var uri = builder.ToString();
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpWebRequest.Method = "DELETE";
             httpWebRequest.Accept = "application/json";
-            httpWebRequest.Headers.Add(HeaderNameApiKey, ApiKey);
+            httpWebRequest.Headers.Add(HeaderNames.ApiKey, ApiKey);
 
             if (!string.IsNullOrWhiteSpace(AppId))
             {
-                httpWebRequest.Headers.Add(HeaderNameAppId, AppId);
+                httpWebRequest.Headers.Add(HeaderNames.AppId, AppId);
             }
             if (!string.IsNullOrWhiteSpace(AppSecret))
             {
-                httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
+                httpWebRequest.Headers.Add(HeaderNames.AppSecret, AppSecret);
             }
 
 
             var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            var responseStream = httpResponse.GetResponseStream();
-            if (responseStream == null)
-            {
-                throw new IOException("response stream was null!");
-            }
-
-            string result;
-            using (var streamReader = new StreamReader(responseStream))
-            {
-                result = await streamReader.ReadToEndAsync();
-            }
-
-            return result;
+            var result = await HttpResponseFactory.CreateFromWebResponseAsync<string>(httpResponse);
+            UpdateLimits(result.LimitRemaining, result.LimitReset);
+            return result.Content;
         }
 
         /// <summary>
@@ -212,23 +198,22 @@ namespace Develappers.BillomatNet.Api.Net
         /// <exception cref="IOException"> Throws when the response was null.</exception>
         public async Task<string> PutAsync(Uri relativeUri, string data, CancellationToken token)
         {
-            var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
-            var builder = new UriBuilder(new Uri(baseUri, relativeUri));
+            var builder = new UriBuilder(new Uri(new Uri(BaseUrl), relativeUri));
             var uri = builder.ToString();
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpWebRequest.Method = "PUT";
             httpWebRequest.Accept = "application/json";
             httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Headers.Add(HeaderNameApiKey, ApiKey);
+            httpWebRequest.Headers.Add(HeaderNames.ApiKey, ApiKey);
 
             if (!string.IsNullOrWhiteSpace(AppId))
             {
-                httpWebRequest.Headers.Add(HeaderNameAppId, AppId);
+                httpWebRequest.Headers.Add(HeaderNames.AppId, AppId);
             }
             if (!string.IsNullOrWhiteSpace(AppSecret))
             {
-                httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
+                httpWebRequest.Headers.Add(HeaderNames.AppSecret, AppSecret);
             }
 
             var reqStream = httpWebRequest.GetRequestStream();
@@ -237,19 +222,9 @@ namespace Develappers.BillomatNet.Api.Net
             reqStream.Close();
 
             var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            var responseStream = httpResponse.GetResponseStream();
-            if (responseStream == null)
-            {
-                throw new IOException("response stream was null!");
-            }
-
-            string result;
-            using (var streamReader = new StreamReader(responseStream))
-            {
-                result = await streamReader.ReadToEndAsync();
-            }
-
-            return result;
+            var result = await HttpResponseFactory.CreateFromWebResponseAsync<string>(httpResponse);
+            UpdateLimits(result.LimitRemaining, result.LimitReset);
+            return result.Content;
         }
 
         /// <summary>
@@ -265,23 +240,22 @@ namespace Develappers.BillomatNet.Api.Net
         /// <exception cref="IOException">Thrown when the response was null.</exception>
         public async Task<string> PostAsync(Uri relativeUri, string data, CancellationToken token)
         {
-            var baseUri = new Uri($"https://{BillomatId}.billomat.net/");
-            var builder = new UriBuilder(new Uri(baseUri, relativeUri));
+            var builder = new UriBuilder(new Uri(new Uri(BaseUrl), relativeUri));
             var uri = builder.ToString();
 
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
             httpWebRequest.Method = "POST";
             httpWebRequest.Accept = "application/json";
             httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Headers.Add(HeaderNameApiKey, ApiKey);
+            httpWebRequest.Headers.Add(HeaderNames.ApiKey, ApiKey);
 
             if (!string.IsNullOrWhiteSpace(AppId))
             {
-                httpWebRequest.Headers.Add(HeaderNameAppId, AppId);
+                httpWebRequest.Headers.Add(HeaderNames.AppId, AppId);
             }
             if (!string.IsNullOrWhiteSpace(AppSecret))
             {
-                httpWebRequest.Headers.Add(HeaderNameAppSecret, AppSecret);
+                httpWebRequest.Headers.Add(HeaderNames.AppSecret, AppSecret);
             }
 
             using (var reqStream = httpWebRequest.GetRequestStream())
@@ -292,19 +266,9 @@ namespace Develappers.BillomatNet.Api.Net
             }
 
             var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            var responseStream = httpResponse.GetResponseStream();
-            if (responseStream == null)
-            {
-                throw new IOException("response stream was null!");
-            }
-
-            string result;
-            using (var streamReader = new StreamReader(responseStream))
-            {
-                result = await streamReader.ReadToEndAsync();
-            }
-
-            return result;
+            var result = await HttpResponseFactory.CreateFromWebResponseAsync<string>(httpResponse);
+            UpdateLimits(result.LimitRemaining, result.LimitReset);
+            return result.Content;
         }
     }
 }

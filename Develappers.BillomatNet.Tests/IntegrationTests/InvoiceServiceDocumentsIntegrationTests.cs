@@ -12,7 +12,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     public class InvoiceServiceDocumentsIntegrationTests : IntegrationTestBase<InvoiceService>
     {
-        public InvoiceServiceDocumentsIntegrationTests() : base(c => new InvoiceService(c))
+        public InvoiceServiceDocumentsIntegrationTests() : base(c => new BillomatClient(c).Invoices)
         {
         }
 
@@ -33,8 +33,14 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Recipients = new Recipients
                 {
                     //E-Mail should be changed to test
-                    To = new List<string>{ "info@billomat.com", "info@.net" },
-                    Cc = new List<string>{ "example@mail.com" }
+                    To = new List<string>
+                    {
+                        "info@billomat.com", "info@.net"
+                    },
+                    Cc = new List<string>
+                    {
+                        "example@mail.com"
+                    }
                 },
                 Subject = "TestMail",
                 Body = "Sehr geehrte Damen und Herren, das ist ein Test",

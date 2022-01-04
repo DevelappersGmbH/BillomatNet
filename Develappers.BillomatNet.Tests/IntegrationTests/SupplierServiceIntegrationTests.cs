@@ -12,7 +12,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     public class SupplierServiceIntegrationTests : IntegrationTestBase<SupplierService>
     {
-        public SupplierServiceIntegrationTests() : base(c => new SupplierService(c))
+        public SupplierServiceIntegrationTests() : base(c => new BillomatClient(c).Suppliers)
         {
         }
 

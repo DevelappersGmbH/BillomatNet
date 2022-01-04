@@ -11,7 +11,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     public class InvoiceServiceCommentsIntegrationTests : IntegrationTestBase<InvoiceService>
     {
-        public InvoiceServiceCommentsIntegrationTests() : base(c => new InvoiceService(c))
+        public InvoiceServiceCommentsIntegrationTests() : base(c => new BillomatClient(c).Invoices)
         {
         }
 

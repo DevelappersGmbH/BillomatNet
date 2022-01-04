@@ -18,17 +18,13 @@ namespace Develappers.BillomatNet
     {
         private const string EntityUrlFragment = "inbox-documents";
 
-        public InboxDocumentService(Configuration configuration) : base(configuration)
-        {
-        }
-
-        public InboxDocumentService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
+        public InboxDocumentService(IHttpClient httpClient) : base(httpClient)
         {
         }
 
         public async Task<Types.PagedList<InboxDocument>> GetListAsync(CancellationToken token = default)
         {
-            var jsonModel = await GetListAsync<InboxDocumentListWrapper>($"/api/{EntityUrlFragment}", QueryString.For((Query<InboxDocument, InboxDocumentFilter>) null), token).ConfigureAwait(false);
+            var jsonModel = await GetListAsync<InboxDocumentListWrapper>($"/api/{EntityUrlFragment}", QueryString.For((Query<InboxDocument, InboxDocumentFilter>)null), token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
 

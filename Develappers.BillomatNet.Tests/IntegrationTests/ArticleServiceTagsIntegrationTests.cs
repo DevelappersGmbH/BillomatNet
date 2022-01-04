@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Queries;
 using Develappers.BillomatNet.Types;
 using Xunit;
@@ -15,7 +16,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class ArticleServiceTagsIntegrationTests : IntegrationTestBase<ArticleService>
     {
-        public ArticleServiceTagsIntegrationTests() : base(c => new ArticleService(c))
+        public ArticleServiceTagsIntegrationTests() : base(c => new BillomatClient(c).Articles)
         {
         }
 

@@ -15,7 +15,13 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class UnitServiceIntegrationTests : IntegrationTestBase<UnitService>
     {
-        public UnitServiceIntegrationTests() : base(c => new UnitService(c))
+        private static BillomatClient _client;
+
+        public UnitServiceIntegrationTests() : base(c =>
+        {
+            _client = new BillomatClient(c);
+            return _client.Units;
+        })
         {
         }
 
@@ -68,7 +74,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         public async Task GetUnitByIdWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new UnitService(Configuration);
+            var service = new BillomatClient(Configuration).Units;
             await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(20573));
         }
 

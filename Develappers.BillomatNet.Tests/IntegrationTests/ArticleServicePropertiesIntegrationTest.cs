@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
+using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Types;
 using Xunit;
 
@@ -15,7 +16,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
     public class ArticleServicePropertiesIntegrationTest : IntegrationTestBase<ArticleService>
     {
 
-        public ArticleServicePropertiesIntegrationTest() : base(c => new ArticleService(c))
+        public ArticleServicePropertiesIntegrationTest() : base(c => new BillomatClient(c).Articles)
         {
         }
 

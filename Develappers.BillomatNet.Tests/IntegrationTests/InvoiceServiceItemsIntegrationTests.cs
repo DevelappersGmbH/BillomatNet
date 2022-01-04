@@ -15,7 +15,13 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class InvoiceServiceItemsIntegrationTests : IntegrationTestBase<InvoiceService>
     {
-        public InvoiceServiceItemsIntegrationTests() : base(c => new InvoiceService(c))
+        private static BillomatClient _client;
+
+        public InvoiceServiceItemsIntegrationTests() : base(c =>
+        {
+            _client = new BillomatClient(c);
+            return _client.Invoices;
+        })
         {
         }
 
@@ -40,16 +46,16 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         {
             var cl = await SystemUnderTest.GetByIdAsync(1506365);
 
-            var articleService = new ArticleService(Configuration);
+            var articleService = _client.Articles;
             var article = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(Configuration);
+            var unitService = _client.Units;
             var units = await unitService.GetByIdAsync(article.UnitId.Value);
 
-            var taxService = new TaxService(Configuration);
+            var taxService = _client.Taxes;
             var taxes = await taxService.GetByIdAsync(article.TaxId.Value);
 
-            var settingsService = new SettingsService(Configuration);
+            var settingsService = _client.Settings;
             var settings = await settingsService.GetAsync();
 
             var label = "xUnit Test Object";
@@ -130,19 +136,20 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         public async Task EditInvoiceItem()
         {
             #region Initializing to create
-            var cs = new ClientService(Configuration);
+
+            var cs = _client.Clients;
             var cl = await cs.GetByIdAsync(1506365);
 
-            var articleService = new ArticleService(Configuration);
+            var articleService = _client.Articles;
             var articles = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(Configuration);
+            var unitService = _client.Units;
             var units = await unitService.GetByIdAsync(articles.UnitId.Value);
 
-            var taxService = new TaxService(Configuration);
+            var taxService = _client.Taxes;
             var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
 
-            var settingsService = new SettingsService(Configuration);
+            var settingsService = _client.Settings;
             var settings = await settingsService.GetAsync();
 
             var label = "xUnit Test Object";
@@ -234,19 +241,20 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         {
 
             #region Initializing to create
-            var cs = new ClientService(Configuration);
+
+            var cs = _client.Clients;
             var cl = await cs.GetByIdAsync(1506365);
 
-            var articleService = new ArticleService(Configuration);
+            var articleService = _client.Articles;
             var articles = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(Configuration);
+            var unitService = _client.Units;
             var units = await unitService.GetByIdAsync(articles.UnitId.Value);
 
-            var taxService = new TaxService(Configuration);
+            var taxService = _client.Taxes;
             var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
 
-            var settingsService = new SettingsService(Configuration);
+            var settingsService = _client.Settings;
             var settings = await settingsService.GetAsync();
 
             var title = "xUnit Test Object";

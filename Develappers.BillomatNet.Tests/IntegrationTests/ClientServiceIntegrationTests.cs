@@ -12,7 +12,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     public class ClientServiceIntegrationTests : IntegrationTestBase<ClientService>
     {
-        public ClientServiceIntegrationTests() : base(c => new ClientService(c))
+        public ClientServiceIntegrationTests() : base(c => new BillomatClient(c).Clients)
         {
         }
 

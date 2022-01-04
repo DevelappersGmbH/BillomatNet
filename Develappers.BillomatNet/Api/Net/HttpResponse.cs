@@ -1,0 +1,20 @@
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information.
+
+using System;
+
+namespace Develappers.BillomatNet.Api.Net
+{
+    public class HttpResponse<T> : HttpResponse
+    {
+        public T Content { get; set; }
+    }
+
+    public class HttpResponse
+    {
+        public int? LimitRemaining { get; set; }
+
+        public TimeSpan? LimitReset { get; set; }
+    }
+}
