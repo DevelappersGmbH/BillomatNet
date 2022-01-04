@@ -15,6 +15,6 @@ namespace Develappers.BillomatNet.Api.Net
     {
         public int? LimitRemaining { get; set; }
 
-        public TimeSpan? LimitReset { get; set; }
+        public DateTime? LimitReset { get; set; }
     }
 }

@@ -63,7 +63,7 @@ namespace Develappers.BillomatNet.Api.Net
 
             if (int.TryParse(value.GetResponseHeader(HeaderNames.LimitReset), out var lres))
             {
-                result.LimitReset = TimeSpan.FromSeconds(lres);
+                result.LimitReset = DateTime.SpecifyKind(DateTimeOffset.FromUnixTimeSeconds(lres).DateTime, DateTimeKind.Utc);
             }
 
             return result;

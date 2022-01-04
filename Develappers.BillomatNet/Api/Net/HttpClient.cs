@@ -52,10 +52,10 @@ namespace Develappers.BillomatNet.Api.Net
 
         public DateTime ApiCallLimitResetsAt { get; private set; }
 
-        private void UpdateLimits(int? limit, TimeSpan? resetsIn)
+        private void UpdateLimits(int? limit, DateTime? resetsAt)
         {
             ApiCallLimit = limit ?? int.MaxValue;
-            ApiCallLimitResetsAt = DateTime.UtcNow.Add(resetsIn ?? new TimeSpan(0, 15, 0));
+            ApiCallLimitResetsAt = resetsAt ?? DateTime.UtcNow;
             ApiCallLimitUpdated?.Invoke(this, EventArgs.Empty);
         }
 
