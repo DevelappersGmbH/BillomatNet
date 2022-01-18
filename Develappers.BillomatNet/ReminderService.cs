@@ -3,32 +3,19 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Develappers.BillomatNet.Api.Net;
 
 namespace Develappers.BillomatNet
 {
     public class ReminderService : ServiceBase
     {
-        private readonly Configuration _configuration;
         private const string EntityUrlFragment = "reminders";
 
         /// <summary>
         /// Creates a new instance of <see cref="ReminderService"/>.
         /// </summary>
-        /// <param name="configuration">The service configuration.</param>
-        public ReminderService(Configuration configuration) : base(configuration)
-        {
-            _configuration = configuration;
-        }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="ReminderService"/> for unit tests.
-        /// </summary>
-        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        internal ReminderService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
+        /// <param name="httpClient">The http client.</param>
+        public ReminderService(IHttpClient httpClient) : base(httpClient)
         {
         }
 
@@ -45,7 +32,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid reminder id", nameof(id));
             }
 
-            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
+            return $"{HttpClient.BaseUrl}app/{EntityUrlFragment}/show/entityId/{id}";
         }
     }
 }

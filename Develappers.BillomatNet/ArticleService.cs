@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,26 +22,14 @@ namespace Develappers.BillomatNet
         IEntityPropertyService<ArticleProperty, ArticlePropertyFilter>,
         IEntityTagService<ArticleTag, ArticleTagFilter>
     {
-        private readonly Configuration _configuration;
         private const string EntityUrlFragment = "articles";
         private const string EntityTagsUrlFragment = "article-tags";
 
         /// <summary>
         /// Creates a new instance of <see cref="ArticleService"/>.
         /// </summary>
-        /// <param name="configuration">The service configuration.</param>
-        public ArticleService(Configuration configuration) : base(configuration)
-        {
-            _configuration = configuration;
-        }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="ArticleService"/> for unit tests.
-        /// </summary>
-        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        internal ArticleService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
+        /// <param name="httpClient">The http client.</param>
+        public ArticleService(IHttpClient httpClient) : base(httpClient)
         {
         }
 
@@ -340,7 +327,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid article id", nameof(id));
             }
 
-            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
+            return $"{HttpClient.BaseUrl}app/{EntityUrlFragment}/show/entityId/{id}";
         }
     }
 }

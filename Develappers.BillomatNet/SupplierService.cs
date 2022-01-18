@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
@@ -17,25 +16,13 @@ namespace Develappers.BillomatNet
     public class SupplierService : ServiceBase,
         IEntityService<Supplier, SupplierFilter>
     {
-        private readonly Configuration _configuration;
         private const string EntityUrlFragment = "suppliers";
 
         /// <summary>
         /// Creates a new instance of <see cref="SupplierService"/>.
         /// </summary>
-        /// <param name="configuration">The service configuration.</param>
-        public SupplierService(Configuration configuration) : base(configuration)
-        {
-            _configuration = configuration;
-        }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="SupplierService"/> for unit tests.
-        /// </summary>
-        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        internal SupplierService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
+        /// <param name="httpClient">The http client.</param>
+        public SupplierService(IHttpClient httpClient) : base(httpClient)
         {
         }
 
@@ -118,7 +105,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid supplier id", nameof(id));
             }
 
-            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
+            return $"{HttpClient.BaseUrl}app/{EntityUrlFragment}/show/entityId/{id}";
         }
     }
 }

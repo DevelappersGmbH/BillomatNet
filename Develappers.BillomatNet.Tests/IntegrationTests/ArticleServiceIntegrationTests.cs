@@ -14,7 +14,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class ArticleServiceIntegrationTests : IntegrationTestBase<ArticleService>
     {
-        public ArticleServiceIntegrationTests() : base(c => new ArticleService(c))
+        public ArticleServiceIntegrationTests() : base(c => new BillomatClient(c).Articles)
         {
         }
 

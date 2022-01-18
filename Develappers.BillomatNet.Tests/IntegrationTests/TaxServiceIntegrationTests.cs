@@ -14,7 +14,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class TaxServiceIntegrationTests : IntegrationTestBase<TaxService>
     {
-        public TaxServiceIntegrationTests() : base(c => new TaxService(c))
+        public TaxServiceIntegrationTests() : base(c => new BillomatClient(c).Taxes)
         {
         }
 

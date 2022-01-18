@@ -16,7 +16,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
     [SuppressMessage("ReSharper", "StringLiteralTypo")]
     public class InvoiceServiceIntegrationTests : IntegrationTestBase<InvoiceService>
     {
-        public InvoiceServiceIntegrationTests() : base(c => new InvoiceService(c))
+        public InvoiceServiceIntegrationTests() : base(c => new BillomatClient(c).Invoices)
         {
         }
 
@@ -24,7 +24,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         public async Task GetFilteredInvoices()
         {
             var result = await SystemUnderTest.GetListAsync(
-                new Query<Invoice, InvoiceFilter>().AddFilter(x => x.Status, new List<InvoiceStatus> { InvoiceStatus.Draft } ));
+                new Query<Invoice, InvoiceFilter>().AddFilter(x => x.Status, new List<InvoiceStatus> { InvoiceStatus.Draft }));
             Assert.True(result.List.Count > 0);
         }
 
@@ -62,19 +62,21 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateInvoice()
         {
-            var cs = new ClientService(Configuration);
+            var bc = new BillomatClient(Configuration);
+
+            var cs = bc.Clients;
             var cl = await cs.GetByIdAsync(1506365);
 
-            var articleService = new ArticleService(Configuration);
+            var articleService = bc.Articles;
             var article = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(Configuration);
+            var unitService = bc.Units;
             var unit = await unitService.GetByIdAsync(article.UnitId.Value);
 
-            var taxService = new TaxService(Configuration);
+            var taxService = bc.Taxes;
             var taxes = await taxService.GetByIdAsync(article.TaxId.Value);
 
-            var settingsService = new SettingsService(Configuration);
+            var settingsService = bc.Settings;
             var settings = await settingsService.GetAsync();
 
             var label = "xUnit Test Object";
@@ -113,19 +115,21 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateInvoiceWhenNotAuthorized()
         {
-            var cs = new ClientService(Configuration);
+            var bc = new BillomatClient(Configuration);
+
+            var cs = bc.Clients;
             var cl = await cs.GetByIdAsync(1506365);
 
-            var articleService = new ArticleService(Configuration);
+            var articleService = bc.Articles;
             var articles = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(Configuration);
+            var unitService = bc.Units;
             var units = await unitService.GetByIdAsync(articles.UnitId.Value);
 
-            var taxService = new TaxService(Configuration);
+            var taxService = bc.Taxes;
             var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
 
-            var settingsService = new SettingsService(Configuration);
+            var settingsService = bc.Settings;
             var settings = await settingsService.GetAsync();
 
             var title = "xUnit Test Object";
@@ -183,19 +187,21 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditInvoice()
         {
-            var cs = new ClientService(Configuration);
+            var bc = new BillomatClient(Configuration);
+
+            var cs = bc.Clients;
             var cl = await cs.GetByIdAsync(1506365);
 
-            var articleService = new ArticleService(Configuration);
+            var articleService = bc.Articles;
             var articles = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(Configuration);
+            var unitService = bc.Units;
             var units = await unitService.GetByIdAsync(articles.UnitId.Value);
 
-            var taxService = new TaxService(Configuration);
+            var taxService = bc.Taxes;
             var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
 
-            var settingsService = new SettingsService(Configuration);
+            var settingsService = bc.Settings;
             var settings = await settingsService.GetAsync();
 
             var title = "xUnit Test Object";
@@ -248,19 +254,21 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditInvoiceArgumentException()
         {
-            var cs = new ClientService(Configuration);
+            var bc = new BillomatClient(Configuration);
+
+            var cs = bc.Clients;
             var cl = await cs.GetByIdAsync(1506365);
 
-            var articleService = new ArticleService(Configuration);
+            var articleService = bc.Articles;
             var articles = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(Configuration);
+            var unitService = bc.Units;
             var units = await unitService.GetByIdAsync(articles.UnitId.Value);
 
-            var taxService = new TaxService(Configuration);
+            var taxService = bc.Taxes;
             var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
 
-            var settingsService = new SettingsService(Configuration);
+            var settingsService = bc.Settings;
             var settings = await settingsService.GetAsync();
 
             var title = "xUnit Test Object";
@@ -313,19 +321,21 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         {
             var conf = Configuration.DeepCopy(Configuration);
 
-            var cs = new ClientService(conf);
+            var bc = new BillomatClient(Configuration);
+
+            var cs = bc.Clients;
             var cl = await cs.GetByIdAsync(1506365);
 
-            var articleService = new ArticleService(conf);
+            var articleService = bc.Articles;
             var articles = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(conf);
+            var unitService = bc.Units;
             var units = await unitService.GetByIdAsync(articles.UnitId.Value);
 
-            var taxService = new TaxService(conf);
+            var taxService = bc.Taxes;
             var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
 
-            var settingsService = new SettingsService(conf);
+            var settingsService = bc.Settings;
             var settings = await settingsService.GetAsync();
 
             var title = "xUnit Test Object";
@@ -353,7 +363,8 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 Quote = 1,
                 InvoiceItems = invoiceItemList
             };
-            var service = new InvoiceService(conf);
+
+            var service = bc.Invoices;
             var result = await service.CreateAsync(inv);
             Assert.NotNull(result);
 
@@ -378,19 +389,21 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditInvoiceNotFound()
         {
-            var cs = new ClientService(Configuration);
+            var bc = new BillomatClient(Configuration);
+
+            var cs = bc.Clients;
             var cl = await cs.GetByIdAsync(1506365);
 
-            var articleService = new ArticleService(Configuration);
+            var articleService = bc.Articles;
             var articles = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(Configuration);
+            var unitService = bc.Units;
             var units = await unitService.GetByIdAsync(articles.UnitId.Value);
 
-            var taxService = new TaxService(Configuration);
+            var taxService = bc.Taxes;
             var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
 
-            var settingsService = new SettingsService(Configuration);
+            var settingsService = bc.Settings;
             var settings = await settingsService.GetAsync();
 
             var title = "xUnit Test Object";
@@ -426,19 +439,21 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteInvoice()
         {
-            var cs = new ClientService(Configuration);
+            var bc = new BillomatClient(Configuration);
+
+            var cs = bc.Clients;
             var cl = await cs.GetByIdAsync(1506365);
 
-            var articleService = new ArticleService(Configuration);
+            var articleService = bc.Articles;
             var articles = await articleService.GetByIdAsync(835226);
 
-            var unitService = new UnitService(Configuration);
+            var unitService = bc.Units;
             var units = await unitService.GetByIdAsync(articles.UnitId.Value);
 
-            var taxService = new TaxService(Configuration);
+            var taxService = bc.Taxes;
             var taxes = await taxService.GetByIdAsync(articles.TaxId.Value);
 
-            var settingsService = new SettingsService(Configuration);
+            var settingsService = bc.Settings;
             var settings = await settingsService.GetAsync();
 
             var title = "xUnit Test Object";

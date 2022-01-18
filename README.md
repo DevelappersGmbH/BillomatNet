@@ -26,7 +26,7 @@ This is an API client to access your data in [Billomat](https://www.billomat.com
 
 First of all, you need an API Key for your user. To get one, please follow the [instructions](https://www.billomat.com/api/grundlagen/authentifizierung/).
 
-BillomatNet is divided into several services, which correspond to the sections of the REST-API (e.g. InvoiceService for invoices, OfferService for offers and so on). Every service can be instanciated providing the credentials to authorize against your instance. Aas the API is stateless, you don't have to handle with sessions.
+BillomatNet is divided into several services, which correspond to the sections of the REST-API (e.g. InvoiceService for invoices, OfferService for offers and so on). Every service can be instanciated providing a configured HttpClient. But there's also a central entry point BillomatClient, so you just have to instanciate it with a valid configuration and access the configured service instance of your interest.
  
 *Sample 1 (querying a filtered list of customers)*
 ```
@@ -36,7 +36,8 @@ var config = new Configuration
     BillomatId = "your_billomat_id"
 };
 
-var service = new ClientService(config);
+var billomatClient = new BillomatClient(config);
+var service = billomatClient.Clients;
 
 var query = new Query<Client, ClientFilter>()
     .AddFilter(x => x.Name, "GmbH")
@@ -55,7 +56,8 @@ var config = new Configuration
     BillomatId = "your_billomat_id"
 };
 
-var service = new ClientService(config);
+var billomatClient = new BillomatClient(config);
+var service = billomatClient.Clients;
 var client = await service.GetById(435363);
 ```
 

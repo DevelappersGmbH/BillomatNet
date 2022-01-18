@@ -10,25 +10,13 @@ namespace Develappers.BillomatNet
 {
     public class OrderConfirmationService : ServiceBase
     {
-        private readonly Configuration _configuration;
         private const string EntityUrlFragment = "confirmations";
 
         /// <summary>
         /// Creates a new instance of <see cref="OrderConfirmationService"/>.
         /// </summary>
-        /// <param name="configuration">The service configuration.</param>
-        public OrderConfirmationService(Configuration configuration) : base(configuration)
-        {
-            _configuration = configuration;
-        }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="OrderConfirmationService"/> for unit tests.
-        /// </summary>
-        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        internal OrderConfirmationService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
+        /// <param name="httpClient">The http client.</param>
+        public OrderConfirmationService(IHttpClient httpClient) : base(httpClient)
         {
         }
 
@@ -45,7 +33,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid confirmation id", nameof(id));
             }
 
-            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
+            return $"{HttpClient.BaseUrl}app/{EntityUrlFragment}/show/entityId/{id}";
         }
     }
 }

@@ -53,7 +53,10 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
             // act and assert
             await Assert.ThrowsAsync<ArgumentNullException>(() => sut.CreateAsync(null));
-            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreateAsync(new Article {Id = 999}));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.CreateAsync(new Article
+            {
+                Id = 999
+            }));
         }
 
         [Fact]
@@ -170,7 +173,10 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     A<CancellationToken>.Ignored))
                 .ThrowsAsync(ExceptionFactory.CreateNotFoundException);
 
-            var editedArticleItem = new Article {Id = 1};
+            var editedArticleItem = new Article
+            {
+                Id = 1
+            };
 
             await Assert.ThrowsAsync<NotFoundException>(() => sut.EditAsync(editedArticleItem));
             A.CallTo(() => http.PutAsync(new Uri(expectedUri, UriKind.Relative), A<string>.Ignored,
@@ -190,7 +196,10 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     A<CancellationToken>.Ignored))
                 .ThrowsAsync(ExceptionFactory.CreateNotAuthorizedException);
 
-            var editedArticleItem = new Article {Id = 1};
+            var editedArticleItem = new Article
+            {
+                Id = 1
+            };
 
             await Assert.ThrowsAsync<NotAuthorizedException>(() => sut.EditAsync(editedArticleItem));
             A.CallTo(() => http.PutAsync(new Uri(expectedUri, UriKind.Relative), A<string>.Ignored,
@@ -208,7 +217,10 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
             // act and assert
             await Assert.ThrowsAsync<ArgumentNullException>(() => sut.EditAsync(null));
-            await Assert.ThrowsAsync<ArgumentException>(() => sut.EditAsync(new Article {Id = 0}));
+            await Assert.ThrowsAsync<ArgumentException>(() => sut.EditAsync(new Article
+            {
+                Id = 0
+            }));
         }
 
         [Fact]

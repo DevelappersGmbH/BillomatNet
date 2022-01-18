@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
@@ -18,24 +17,11 @@ namespace Develappers.BillomatNet
 {
     public class OfferService : ServiceBase, IEntityService<Offer, OfferFilter>
     {
-        private readonly Configuration _configuration;
-
         /// <summary>
         /// Creates a new instance of <see cref="OfferService"/>.
         /// </summary>
-        /// <param name="configuration">The service configuration.</param>
-        public OfferService(Configuration configuration) : base(configuration)
-        {
-            _configuration = configuration;
-        }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="OfferService"/> for unit tests.
-        /// </summary>
-        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        internal OfferService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
+        /// <param name="httpClient">The http client.</param>
+        public OfferService(IHttpClient httpClient) : base(httpClient)
         {
         }
 
@@ -64,7 +50,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid offer id", nameof(id));
             }
 
-            return $"https://{_configuration.BillomatId}.billomat.net/app/offers/show/entityId/{id}";
+            return $"{HttpClient.BaseUrl}app/offers/show/entityId/{id}";
         }
 
         Task IEntityService<Offer, OfferFilter>.DeleteAsync(int id, CancellationToken token)

@@ -13,29 +13,14 @@ namespace Develappers.BillomatNet
 {
     public abstract class ServiceBase
     {
-        protected readonly Func<IHttpClient> HttpClientFactory;
+        private readonly IHttpClient _httpClient;
 
-        protected ServiceBase(Configuration configuration) : this(() =>
-            new HttpClient(configuration.BillomatId, configuration.ApiKey)
-            {
-                AppId = configuration.AppId,
-                AppSecret = configuration.AppSecret
-            })
+        protected ServiceBase(IHttpClient httpClient)
         {
+            _httpClient = httpClient;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceBase" /> class.
-        /// </summary>
-        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        /// <remarks>
-        /// Used to create a new instance for tests. Should be exposed as internal constructor to create unit tests.
-        /// </remarks>
-        protected ServiceBase(Func<IHttpClient> httpClientFactory)
-        {
-            HttpClientFactory = httpClientFactory ?? throw new ArgumentNullException();
-        }
+        protected IHttpClient HttpClient => _httpClient;
 
         /// <summary>
         /// Executes an API call to retrieve one element and returns the item or null if not found.
@@ -51,12 +36,11 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         protected async Task<T> GetItemByIdAsync<T>(string resourceUrl, CancellationToken token = default) where T : class
         {
-            var httpClient = HttpClientFactory.Invoke();
             string httpResponse;
 
             try
             {
-                httpResponse = await httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), token).ConfigureAwait(false);
+                httpResponse = await _httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), token).ConfigureAwait(false);
             }
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
@@ -88,11 +72,10 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
         protected async Task<T> GetListAsync<T>(string resourceUrl, string query, CancellationToken token)
         {
-            var httpClient = HttpClientFactory.Invoke();
             string httpResponse;
             try
             {
-                httpResponse = await httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), query, token).ConfigureAwait(false);
+                httpResponse = await _httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), query, token).ConfigureAwait(false);
             }
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
@@ -121,10 +104,9 @@ namespace Develappers.BillomatNet
         /// <exception cref="NotFoundException">Thrown when the resource url could not be found.</exception>
         protected async Task DeleteAsync(string resourceUrl, CancellationToken token)
         {
-            var httpClient = HttpClientFactory.Invoke();
             try
             {
-                await httpClient.DeleteAsync(new Uri(resourceUrl, UriKind.Relative), token).ConfigureAwait(false);
+                await _httpClient.DeleteAsync(new Uri(resourceUrl, UriKind.Relative), token).ConfigureAwait(false);
             }
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
@@ -177,12 +159,10 @@ namespace Develappers.BillomatNet
             where TIn : class
             where TOut : class
         {
-            var httpClient = HttpClientFactory.Invoke();
-
             try
             {
                 var requestData = model == null ? "" : JsonConvert.SerializeObject(model);
-                var result = await httpClient.PutAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token).ConfigureAwait(false);
+                var result = await _httpClient.PutAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token).ConfigureAwait(false);
                 return JsonConvert.DeserializeObject<TOut>(result);
             }
             catch (WebException wex)
@@ -236,15 +216,13 @@ namespace Develappers.BillomatNet
             where TIn : class
             where TOut : class
         {
-            var httpClient = HttpClientFactory.Invoke();
-
             try
             {
                 var requestData = model == null ? "" : JsonConvert.SerializeObject(model, new JsonSerializerSettings
                 {
                     NullValueHandling = NullValueHandling.Ignore
                 });
-                var responseData = await httpClient.PostAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token);
+                var responseData = await _httpClient.PostAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token);
                 return JsonConvert.DeserializeObject<TOut>(responseData);
             }
             catch (WebException wex)

@@ -19,13 +19,11 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 throw new ArgumentNullException(nameof(httpClient));
             }
 
-            Func<IHttpClient> httpClientFactory = () => httpClient;
-
             // call internal constructor using reflection
             return (T)Activator.CreateInstance(typeof(T),
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance,
                 null,
-                new object[] { httpClientFactory }, null);
+                new object[] { httpClient }, null);
         }
     }
 }

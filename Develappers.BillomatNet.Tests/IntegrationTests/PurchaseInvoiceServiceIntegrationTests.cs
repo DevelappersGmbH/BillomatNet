@@ -12,7 +12,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     public class PurchaseInvoiceServiceIntegrationTests : IntegrationTestBase<PurchaseInvoiceService>
     {
-        public PurchaseInvoiceServiceIntegrationTests() : base(c => new PurchaseInvoiceService(c))
+        public PurchaseInvoiceServiceIntegrationTests() : base(c => new BillomatClient(c).PurchaseInvoices)
         {
         }
 

@@ -21,17 +21,8 @@ namespace Develappers.BillomatNet
         /// <summary>
         ///     Creates a new instance of <see cref="TaxService" />.
         /// </summary>
-        /// <param name="configuration">The service configuration.</param>
-        public TaxService(Configuration configuration) : base(configuration)
-        {
-        }
-
-        /// <summary>
-        ///     Creates a new instance of <see cref="TaxService" /> for unit tests.
-        /// </summary>
-        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        internal TaxService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
+        /// <param name="httpClient">The http client.</param>
+        public TaxService(IHttpClient httpClient) : base(httpClient)
         {
         }
 

@@ -84,5 +84,20 @@ namespace Develappers.BillomatNet.Api.Net
         /// </returns>
         /// <exception cref="IOException"> Throws when the response was null.</exception>
         Task<string> PostAsync(Uri relativeUri, string data, CancellationToken token);
+
+        /// <summary>
+        /// The billomat instance url.
+        /// </summary>
+        string BaseUrl { get; }
+
+        /// <summary>
+        /// The call limit for the current user.
+        /// </summary>
+        int ApiRequestLimitRemaining { get; }
+
+        /// <summary>
+        /// The point in time when the call limit resets.
+        /// </summary>
+        DateTime ApiRequestLimitResetsAt { get; }
     }
 }

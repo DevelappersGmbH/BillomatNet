@@ -3,32 +3,19 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using Develappers.BillomatNet.Api.Net;
 
 namespace Develappers.BillomatNet
 {
     public class CreditNoteService : ServiceBase
     {
-        private readonly Configuration _configuration;
         private const string EntityUrlFragment = "creditnotes";
 
         /// <summary>
         /// Creates a new instance of <see cref="CreditNoteService"/>.
         /// </summary>
-        /// <param name="configuration">The service configuration.</param>
-        public CreditNoteService(Configuration configuration) : base(configuration)
-        {
-            _configuration = configuration;
-        }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="CreditNoteService"/> for unit tests.
-        /// </summary>
-        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        internal CreditNoteService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
+        /// <param name="httpClient">The http client.</param>
+        public CreditNoteService(IHttpClient httpClient) : base(httpClient)
         {
         }
 
@@ -45,7 +32,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid credit note id", nameof(id));
             }
 
-            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
+            return $"{HttpClient.BaseUrl}app/{EntityUrlFragment}/show/entityId/{id}";
         }
     }
 }

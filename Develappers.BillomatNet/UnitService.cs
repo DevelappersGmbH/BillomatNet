@@ -3,7 +3,6 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
@@ -19,20 +18,11 @@ namespace Develappers.BillomatNet
         /// <summary>
         /// Creates a new instance of <see cref="UnitService"/>.
         /// </summary>
-        /// <param name="configuration">The service configuration.</param>
-        public UnitService(Configuration configuration) : base(configuration)
+        /// <param name="httpClient">The http client.</param>
+        public UnitService(IHttpClient httpClient) : base(httpClient)
         {
         }
 
-        /// <summary>
-        /// Creates a new instance of <see cref="UnitService"/> for unit tests.
-        /// </summary>
-        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        internal UnitService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
-        {
-        }
 
         /// <summary>
         /// Retrieves a list of units.

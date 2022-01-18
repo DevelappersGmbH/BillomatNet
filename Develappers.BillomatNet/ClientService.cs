@@ -26,24 +26,13 @@ namespace Develappers.BillomatNet
         IEntityPropertyService<ClientProperty, ClientPropertyFilter>,
         IEntityTagService<ClientTag, ClientTagFilter>
     {
-        private readonly Configuration _configuration;
         private const string EntityUrlFragment = "clients";
 
         /// <summary>
         /// Creates a new instance of <see cref="ClientService"/>.
         /// </summary>
-        /// <param name="configuration">The service configuration.</param>
-        public ClientService(Configuration configuration) : base(configuration)
-        {
-            _configuration = configuration;
-        }
-
-        /// <summary>
-        /// Creates a new instance of <see cref="ClientService"/> for unit tests.
-        /// </summary>
-        /// <param name="httpClientFactory">The function which creates a new <see cref="IHttpClient" /> implementation.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the parameter is null.</exception>
-        internal ClientService(Func<IHttpClient> httpClientFactory) : base(httpClientFactory)
+        /// <param name="httpClient">The http client.</param>
+        public ClientService(IHttpClient httpClient) : base(httpClient)
         {
         }
 
@@ -54,8 +43,7 @@ namespace Develappers.BillomatNet
         /// <returns>The account data.</returns>
         public async Task<Account> MyselfAsync(CancellationToken token = default)
         {
-            var httpClient = HttpClientFactory.Invoke();
-            var httpResponse = await httpClient.GetAsync(new Uri($"/api/{EntityUrlFragment}/myself", UriKind.Relative), token).ConfigureAwait(false);
+            var httpResponse = await HttpClient.GetAsync(new Uri($"/api/{EntityUrlFragment}/myself", UriKind.Relative), token).ConfigureAwait(false);
             var jsonModel = JsonConvert.DeserializeObject<AccountWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }
@@ -111,7 +99,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid client id", nameof(id));
             }
 
-            return $"https://{_configuration.BillomatId}.billomat.net/app/{EntityUrlFragment}/show/entityId/{id}";
+            return $"{HttpClient.BaseUrl}/app/{EntityUrlFragment}/show/entityId/{id}";
         }
 
         Task IEntityService<Client, ClientFilter>.DeleteAsync(int id, CancellationToken token)
@@ -394,8 +382,7 @@ namespace Develappers.BillomatNet
         /// <returns></returns>
         public async Task<byte[]> GetContactAvatarByIdAsync(int id, int size, CancellationToken token = default)
         {
-            var httpClient = HttpClientFactory.Invoke();
-            return await httpClient.GetBytesAsync(new Uri($"/api/contacts/{id}/avatar?size={size}", UriKind.Relative), token).ConfigureAwait(false);
+            return await HttpClient.GetBytesAsync(new Uri($"/api/contacts/{id}/avatar?size={size}", UriKind.Relative), token).ConfigureAwait(false);
         }
 
         /// <summary>

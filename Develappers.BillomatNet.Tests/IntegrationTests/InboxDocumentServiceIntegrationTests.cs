@@ -9,7 +9,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
 {
     public class InboxDocumentServiceIntegrationTests : IntegrationTestBase<InboxDocumentService>
     {
-        public InboxDocumentServiceIntegrationTests() : base(c => new InboxDocumentService(c))
+        public InboxDocumentServiceIntegrationTests() : base(c => new BillomatClient(c).InboxDocuments)
         {
         }
 
