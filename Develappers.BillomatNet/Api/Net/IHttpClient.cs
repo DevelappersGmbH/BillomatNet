@@ -93,11 +93,11 @@ namespace Develappers.BillomatNet.Api.Net
         /// <summary>
         /// The call limit for the current user.
         /// </summary>
-        int ApiCallLimit { get; }
+        int ApiRequestLimitRemaining { get; }
 
         /// <summary>
         /// The point in time when the call limit resets.
         /// </summary>
-        DateTime ApiCallLimitResetsAt { get; }
+        DateTime ApiRequestLimitResetsAt { get; }
     }
 }

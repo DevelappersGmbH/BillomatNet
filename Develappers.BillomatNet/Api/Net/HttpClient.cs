@@ -48,14 +48,14 @@ namespace Develappers.BillomatNet.Api.Net
 
         public event EventHandler ApiCallLimitUpdated;
 
-        public int ApiCallLimit { get; private set; }
+        public int ApiRequestLimitRemaining { get; private set; }
 
-        public DateTime ApiCallLimitResetsAt { get; private set; }
+        public DateTime ApiRequestLimitResetsAt { get; private set; }
 
         private void UpdateLimits(int? limit, DateTime? resetsAt)
         {
-            ApiCallLimit = limit ?? int.MaxValue;
-            ApiCallLimitResetsAt = resetsAt ?? DateTime.UtcNow;
+            ApiRequestLimitRemaining = limit ?? int.MaxValue;
+            ApiRequestLimitResetsAt = resetsAt ?? DateTime.UtcNow;
             ApiCallLimitUpdated?.Invoke(this, EventArgs.Empty);
         }
 

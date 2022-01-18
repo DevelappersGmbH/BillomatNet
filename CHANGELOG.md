@@ -6,10 +6,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.3.1]
 ### Added
-- information about limits
+- information about api request limits
 
 ### Changed
 - created a new central entry point
+- documentation
 
 ### Removed
 - old constructors of service classes (BREAKING CHANGE !!!)

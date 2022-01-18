@@ -66,8 +66,8 @@ namespace Develappers.BillomatNet
             _unitService = new Lazy<UnitService>(() => new UnitService(httpClient));
         }
 
-        public int ApiCallLimit => _httpClient.ApiCallLimit;
-        public DateTime ApiCallLimitResetsAt => _httpClient.ApiCallLimitResetsAt;
+        public int ApiRequestLimitRemaining => _httpClient.ApiRequestLimitRemaining;
+        public DateTime ApiRequestLimitResetsAt => _httpClient.ApiRequestLimitResetsAt;
 
         public ClientService Clients => _clientService.Value;
         public ActivityFeedService ActivityFeed => _activityFeedService.Value;
