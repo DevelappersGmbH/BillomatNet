@@ -5,7 +5,7 @@
 	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>0.4.1</Version>
+    <Version>0.5.1-alpha</Version>
     <Authors>Develappers GmbH</Authors>
     <Company>Develappers GmbH</Company>
     <Description>A C# client to access Billomat.</Description>
@@ -16,7 +16,7 @@
     <PackageTags>billomat invoice accounting</PackageTags>
     <PackageIcon>icon.png</PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <AssemblyVersion>0.4.1.0</AssemblyVersion>
+    <AssemblyVersion>0.5.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
