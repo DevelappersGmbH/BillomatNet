@@ -35,7 +35,7 @@ namespace Develappers.BillomatNet.Types
         public int? DueDays { get; set; }
         public string Address { get; set; }
         public InvoiceStatus Status { get; set; }
-        public float DiscountRate { get; set; }
+        public float? DiscountRate { get; set; }
         public DateTime? DiscountDate { get; set; }
         public int? DiscountDays { get; set; }
         public float? DiscountAmount { get; set; }
