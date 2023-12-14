@@ -45,6 +45,7 @@ namespace Develappers.BillomatNet.Mapping
                 InvoiceId = int.Parse(value.InvoiceId, CultureInfo.InvariantCulture),
                 ArticleId = value.ArticleId.ToOptionalInt(),
                 Description = value.Description,
+                InvoiceItemType = value.InvoiceItemType.ToInvoiceItemType(),
                 Position = int.Parse(value.Position, CultureInfo.InvariantCulture),
                 Title = value.Title,
                 Unit = value.Unit,
@@ -85,6 +86,7 @@ namespace Develappers.BillomatNet.Mapping
             {
                 ArticleId = value.ArticleId.ToString(),
                 InvoiceId = value.InvoiceId.ToString(),
+                InvoiceItemType = value.InvoiceItemType.ToApiValue(),
                 Position = value.Position.ToString(),
                 Unit = value.Unit,
                 Quantity = value.Quantity.ToString(CultureInfo.InvariantCulture),

@@ -50,5 +50,7 @@ namespace Develappers.BillomatNet.Types
         public NetGrossType PurchasePriceNetGross { get; set; }
 
         public int? SupplierId { get; set; }
+        public InvoiceItemType? ArticleType { get; set; }
+        public int? CostCenter { get; set; }
     }
 }

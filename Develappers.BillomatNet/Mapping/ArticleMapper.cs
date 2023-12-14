@@ -6,6 +6,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using Develappers.BillomatNet.Api;
+using Develappers.BillomatNet.Types;
 using Article = Develappers.BillomatNet.Types.Article;
 
 namespace Develappers.BillomatNet.Mapping
@@ -46,6 +47,8 @@ namespace Develappers.BillomatNet.Mapping
                 Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
                 Updated = DateTime.Parse(value.Updated, CultureInfo.InvariantCulture),
                 ArticleNumber = value.ArticleNumber,
+                ArticleType = value.ArticleType.ToInvoiceItemType(),
+                CostCenter = value.CostCenter.ToOptionalInt(),
                 CurrencyCode = value.CurrencyCode,
                 Description = value.Description,
                 Number = int.Parse(value.Number),
@@ -77,6 +80,8 @@ namespace Develappers.BillomatNet.Mapping
                 Id = value.Id.ToString(),
                 Created = value.Created.ToApiDate(),
                 ArticleNumber = value.ArticleNumber,
+                ArticleType = value.ArticleType.ToApiValue(),
+                CostCenter = value.CostCenter.ToString(),
                 CurrencyCode = value.CurrencyCode,
                 Description = value.Description,
                 Number = value.Number.ToString(),
