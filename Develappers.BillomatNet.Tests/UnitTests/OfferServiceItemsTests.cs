@@ -53,7 +53,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .MustHaveHappenedOnceExactly();
 
             result.Should().BeEquivalentTo(expectedResult);
-
         }
 
         [Fact]
@@ -94,7 +93,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 .MustHaveHappenedOnceExactly();
 
             result.Should().NotBeEquivalentTo(expectedResult);
-
         }
     }
 }

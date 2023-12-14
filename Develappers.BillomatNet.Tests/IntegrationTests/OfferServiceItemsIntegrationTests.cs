@@ -83,6 +83,5 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
                 first => first.Should().BeEquivalentTo(expectedResults[0]),
                 second => second.Should().BeEquivalentTo(expectedResults[1]));
         }
-
     }
 }
