@@ -70,5 +70,9 @@ namespace Develappers.BillomatNet.Api
 
         [JsonProperty("supplier_id")]
         public string SupplierId { get; set; }
+        [JsonProperty("type")]
+        public string Type { get; set; }
+        [JsonProperty("cost_center")]
+        public string CostCenter { get; set; }
     }
 }
