@@ -68,9 +68,9 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
             const string expectedUri = "/api/articles";
             const string expectedHttpRequest =
-                "{\"article\":{\"id\":\"0\",\"created\":\"0001-01-01\",\"number\":\"\",\"number_length\":\"0\",\"title\":\"xUnit test\",\"sales_price\":\"3.5\",\"unit_id\":\"20573\",\"tax_id\":\"21281\",\"purchase_price\":\"3.4\",\"purchase_price_net_gross\":\"NET\",\"supplier_id\":\"\"}}";
+                "{\"article\":{\"id\":\"0\",\"created\":\"0001-01-01\",\"number\":\"\",\"number_length\":\"0\",\"title\":\"xUnit test\",\"sales_price\":\"3.5\",\"unit_id\":\"20573\",\"tax_id\":\"21281\",\"purchase_price\":\"3.4\",\"purchase_price_net_gross\":\"NET\",\"supplier_id\":\"\",\"type\":\"\",\"cost_center\":\"Ib34\"}}";
             const string httpResult =
-                "{\"article\":{\"id\":\"842769\",\"created\":\"2020-07-28T18:32:05+02:00\",\"updated\":\"2020-07-28T18:32:05+02:00\",\"archived\":\"0\",\"unit_id\":\"20573\",\"article_number\":\"5\",\"number\":\"5\",\"number_pre\":\"\",\"number_length\":\"0\",\"type\":\"SERVICE\",\"title\":\"xUnit test\",\"description\":\"\",\"sales_price\":\"3.5\",\"sales_price2\":\"\",\"sales_price3\":\"\",\"sales_price4\":\"\",\"sales_price5\":\"\",\"currency_code\":\"EUR\",\"tax_id\":\"21281\",\"revenue_account_number\":\"\",\"cost_center\":\"\",\"purchase_price\":\"3.4\",\"purchase_price_net_gross\":\"NET\",\"supplier_id\":\"\",\"customfield\":\"\",\"article-property-values\":{\"article-property-value\":[{\"id\":\"1423686\",\"created\":\"2020-07-28T18:32:05+02:00\",\"updated\":\"2020-07-28T18:32:05+02:00\",\"article_id\":\"842769\",\"article_property_id\":\"2442\",\"type\":\"TEXTFIELD\",\"name\":\"Farbe\",\"value\":\"farblos\",\"customfield\":\"\"},{\"id\":\"1423687\",\"created\":\"2020-07-28T18:32:05+02:00\",\"updated\":\"2020-07-28T18:32:05+02:00\",\"article_id\":\"842769\",\"article_property_id\":\"2490\",\"type\":\"CHECKBOX\",\"name\":\"ist defekt?\",\"value\":\"1\",\"customfield\":\"\"},{\"id\":\"1423688\",\"created\":\"2020-07-28T18:32:05+02:00\",\"updated\":\"2020-07-28T18:32:05+02:00\",\"article_id\":\"842769\",\"article_property_id\":\"4499\",\"type\":\"CHECKBOX\",\"name\":\"Sch\\u00f6n\",\"value\":\"0\",\"customfield\":\"\"}]}}}";
+                "{\"article\":{\"id\":\"842769\",\"created\":\"2020-07-28T18:32:05+02:00\",\"updated\":\"2020-07-28T18:32:05+02:00\",\"archived\":\"0\",\"unit_id\":\"20573\",\"article_number\":\"5\",\"number\":\"5\",\"number_pre\":\"\",\"number_length\":\"0\",\"type\":\"SERVICE\",\"title\":\"xUnit test\",\"description\":\"\",\"sales_price\":\"3.5\",\"sales_price2\":\"\",\"sales_price3\":\"\",\"sales_price4\":\"\",\"sales_price5\":\"\",\"currency_code\":\"EUR\",\"tax_id\":\"21281\",\"revenue_account_number\":\"\",\"cost_center\":\"Ib34\",\"purchase_price\":\"3.4\",\"purchase_price_net_gross\":\"NET\",\"supplier_id\":\"\",\"customfield\":\"\",\"article-property-values\":{\"article-property-value\":[{\"id\":\"1423686\",\"created\":\"2020-07-28T18:32:05+02:00\",\"updated\":\"2020-07-28T18:32:05+02:00\",\"article_id\":\"842769\",\"article_property_id\":\"2442\",\"type\":\"TEXTFIELD\",\"name\":\"Farbe\",\"value\":\"farblos\",\"customfield\":\"\"},{\"id\":\"1423687\",\"created\":\"2020-07-28T18:32:05+02:00\",\"updated\":\"2020-07-28T18:32:05+02:00\",\"article_id\":\"842769\",\"article_property_id\":\"2490\",\"type\":\"CHECKBOX\",\"name\":\"ist defekt?\",\"value\":\"1\",\"customfield\":\"\"},{\"id\":\"1423688\",\"created\":\"2020-07-28T18:32:05+02:00\",\"updated\":\"2020-07-28T18:32:05+02:00\",\"article_id\":\"842769\",\"article_property_id\":\"4499\",\"type\":\"CHECKBOX\",\"name\":\"Sch\\u00f6n\",\"value\":\"0\",\"customfield\":\"\"}]}}}";
 
             A.CallTo(() => http.PostAsync(new Uri(expectedUri, UriKind.Relative), expectedHttpRequest,
                     A<CancellationToken>.Ignored))
@@ -82,7 +82,8 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 SalesPrice = 3.5f,
                 UnitId = 20573,
                 TaxId = 21281,
-                PurchasePrice = 3.4f
+                PurchasePrice = 3.4f,
+                CostCenter = "Ib34"
             };
 
             // act
@@ -257,6 +258,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 Updated = DateTime.Parse("2020-07-10T12:20:36+02:00", CultureInfo.InvariantCulture),
                 UnitId = 20574,
                 ArticleNumber = "ART3",
+                CostCenter = "",
                 Number = 3,
                 NumberPrefix = "ART",
                 NumberLength = 0,
@@ -304,6 +306,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     Updated = DateTime.Parse("2017-07-22T13:57:37+02:00", CultureInfo.InvariantCulture),
                     UnitId = null,
                     ArticleNumber = "ART62",
+                    CostCenter = "",
                     Number = 62,
                     NumberPrefix = "ART",
                     NumberLength = 0,
@@ -326,6 +329,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     Updated = DateTime.Parse("2020-07-10T12:20:36+02:00", CultureInfo.InvariantCulture),
                     UnitId = null,
                     ArticleNumber = "ART63",
+                    CostCenter = "",
                     Number = 63,
                     NumberPrefix = "ART",
                     NumberLength = 0,
@@ -348,6 +352,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                     Updated = DateTime.Parse("2020-07-10T12:20:36+02:00", CultureInfo.InvariantCulture),
                     UnitId = null,
                     ArticleNumber = "ART64",
+                    CostCenter = "",
                     Number = 64,
                     NumberPrefix = "ART",
                     NumberLength = 0,
