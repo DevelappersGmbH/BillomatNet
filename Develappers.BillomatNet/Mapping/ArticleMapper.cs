@@ -79,7 +79,7 @@ namespace Develappers.BillomatNet.Mapping
                 Id = value.Id.ToString(),
                 Created = value.Created.ToApiDate(),
                 ArticleNumber = value.ArticleNumber,
-                CostCenter = value.CostCenter.ToString(),
+                CostCenter = value.CostCenter,
                 CurrencyCode = value.CurrencyCode,
                 Description = value.Description,
                 Number = value.Number.ToString(),
