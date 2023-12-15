@@ -62,7 +62,7 @@ namespace Develappers.BillomatNet.Mapping
                 SupplierId = value.SupplierId.ToOptionalInt(),
                 TaxId = value.TaxId.ToOptionalInt(),
                 Title = value.Title,
-                Type = value.Type.ToOptionionalInvoiceItemType(),
+                Type = value.Type.ToOptionalItemType(),
                 UnitId = value.UnitId.ToOptionalInt()
 
             };

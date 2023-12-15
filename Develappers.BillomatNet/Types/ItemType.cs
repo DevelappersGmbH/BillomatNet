@@ -4,7 +4,7 @@
 
 namespace Develappers.BillomatNet.Types
 {
-    public enum InvoiceItemType
+    public enum ItemType
     {
         Product,
         Service

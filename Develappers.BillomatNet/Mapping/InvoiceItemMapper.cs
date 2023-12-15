@@ -56,7 +56,7 @@ namespace Develappers.BillomatNet.Mapping
                 TotalGrossUnreduced = float.Parse(value.TotalGrossUnreduced, CultureInfo.InvariantCulture),
                 UnitPrice = float.Parse(value.UnitPrice, CultureInfo.InvariantCulture),
                 TaxRate = value.TaxRate.ToOptionalFloat(),
-                Type = value.Type.ToOptionionalInvoiceItemType()
+                Type = value.Type.ToOptionalItemType()
             };
         }
 

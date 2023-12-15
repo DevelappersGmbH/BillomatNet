@@ -40,6 +40,6 @@ namespace Develappers.BillomatNet.Types
         public float TotalGrossUnreduced { get; set; }
 
         public float TotalNetUnreduced { get; set; }
-        public InvoiceItemType? Type { get; set; }
+        public ItemType? Type { get; set; }
     }
 }

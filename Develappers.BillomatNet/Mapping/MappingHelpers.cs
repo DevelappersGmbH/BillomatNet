@@ -124,7 +124,7 @@ namespace Develappers.BillomatNet.Mapping
             return value?.ToString(CultureInfo.InvariantCulture);
         }
 
-        internal static InvoiceItemType? ToOptionionalInvoiceItemType(this string value)
+        internal static ItemType? ToOptionalItemType(this string value)
         {
             if (value == null)
             {
@@ -134,16 +134,16 @@ namespace Develappers.BillomatNet.Mapping
             switch (value.ToLowerInvariant())
             {
                 case "product":
-                    return InvoiceItemType.Product;
+                    return ItemType.Product;
                 case "service":
-                    return InvoiceItemType.Service;
+                    return ItemType.Service;
                 case "":
                     return null;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(value));
             }
         }
-        internal static string ToApiValue(this InvoiceItemType? value)
+        internal static string ToApiValue(this ItemType? value)
         {
             if (value == null) return string.Empty;
             return value.ToString().ToUpperInvariant();
