@@ -59,6 +59,6 @@ namespace Develappers.BillomatNet.Api
         [JsonProperty("total_net_unreduced")]
         public string TotalNetUnreduced { get; set; }
         [JsonProperty("type")]
-        public string OfferItemType { get; set; }
+        public string Type { get; set; }
     }
 }

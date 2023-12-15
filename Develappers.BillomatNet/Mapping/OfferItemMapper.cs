@@ -46,7 +46,6 @@ namespace Develappers.BillomatNet.Mapping
                 Id = int.Parse(value.Id, CultureInfo.InvariantCulture),
                 Reduction = reduction,
                 OfferId = int.Parse(value.OfferId, CultureInfo.InvariantCulture),
-                OfferItemType = value.OfferItemType.ToInvoiceItemType(),
                 ArticleId = value.ArticleId.ToOptionalInt(),
                 Description = value.Description,
                 Position = int.Parse(value.Position, CultureInfo.InvariantCulture),
@@ -59,7 +58,8 @@ namespace Develappers.BillomatNet.Mapping
                 TotalGross = float.Parse(value.TotalGross, CultureInfo.InvariantCulture),
                 TotalGrossUnreduced = float.Parse(value.TotalGrossUnreduced, CultureInfo.InvariantCulture),
                 UnitPrice = float.Parse(value.UnitPrice, CultureInfo.InvariantCulture),
-                TaxRate = value.TaxRate.ToOptionalFloat()
+                TaxRate = value.TaxRate.ToOptionalFloat(),
+                Type = value.Type.ToOptionionalInvoiceItemType()
             };
         }
 
@@ -89,7 +89,6 @@ namespace Develappers.BillomatNet.Mapping
             {
                 ArticleId = value.ArticleId.ToString(),
                 OfferId = value.OfferId.ToString(),
-                OfferItemType = value.OfferItemType.ToApiValue(),
                 Position = value.Position.ToString(),
                 Unit = value.Unit,
                 Quantity = value.Quantity.ToString(CultureInfo.InvariantCulture),
@@ -102,7 +101,8 @@ namespace Develappers.BillomatNet.Mapping
                 TotalNet = value.TotalNet.ToString(CultureInfo.InvariantCulture),
                 Reduction = reduction,
                 TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(CultureInfo.InvariantCulture),
-                TotalNetUnreduced = value.TotalNetUnreduced.ToString(CultureInfo.InvariantCulture)
+                TotalNetUnreduced = value.TotalNetUnreduced.ToString(CultureInfo.InvariantCulture),
+                Type = value.Type.ToApiValue()
             };
         }
 

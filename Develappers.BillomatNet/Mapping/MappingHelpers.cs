@@ -124,7 +124,7 @@ namespace Develappers.BillomatNet.Mapping
             return value?.ToString(CultureInfo.InvariantCulture);
         }
 
-        internal static InvoiceItemType? ToInvoiceItemType(this string value)
+        internal static InvoiceItemType? ToOptionionalInvoiceItemType(this string value)
         {
             if (value == null)
             {

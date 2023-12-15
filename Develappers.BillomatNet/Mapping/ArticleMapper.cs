@@ -46,8 +46,7 @@ namespace Develappers.BillomatNet.Mapping
                 Created = DateTime.Parse(value.Created, CultureInfo.InvariantCulture),
                 Updated = DateTime.Parse(value.Updated, CultureInfo.InvariantCulture),
                 ArticleNumber = value.ArticleNumber,
-                ArticleType = value.ArticleType.ToInvoiceItemType(),
-                CostCenter = value.CostCenter.ToOptionalInt(),
+                CostCenter = value.CostCenter,
                 CurrencyCode = value.CurrencyCode,
                 Description = value.Description,
                 Number = int.Parse(value.Number),
@@ -63,6 +62,7 @@ namespace Develappers.BillomatNet.Mapping
                 SupplierId = value.SupplierId.ToOptionalInt(),
                 TaxId = value.TaxId.ToOptionalInt(),
                 Title = value.Title,
+                Type = value.Type.ToOptionionalInvoiceItemType(),
                 UnitId = value.UnitId.ToOptionalInt()
 
             };
@@ -79,7 +79,6 @@ namespace Develappers.BillomatNet.Mapping
                 Id = value.Id.ToString(),
                 Created = value.Created.ToApiDate(),
                 ArticleNumber = value.ArticleNumber,
-                ArticleType = value.ArticleType.ToApiValue(),
                 CostCenter = value.CostCenter.ToString(),
                 CurrencyCode = value.CurrencyCode,
                 Description = value.Description,
@@ -96,6 +95,7 @@ namespace Develappers.BillomatNet.Mapping
                 SupplierId = value.SupplierId.ToString(),
                 TaxId = value.TaxId.ToString(),
                 Title = value.Title,
+                Type = value.Type.ToApiValue(),
                 UnitId = value.UnitId.ToString()
             };
         }

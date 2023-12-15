@@ -45,7 +45,6 @@ namespace Develappers.BillomatNet.Mapping
                 InvoiceId = int.Parse(value.InvoiceId, CultureInfo.InvariantCulture),
                 ArticleId = value.ArticleId.ToOptionalInt(),
                 Description = value.Description,
-                InvoiceItemType = value.InvoiceItemType.ToInvoiceItemType(),
                 Position = int.Parse(value.Position, CultureInfo.InvariantCulture),
                 Title = value.Title,
                 Unit = value.Unit,
@@ -56,7 +55,8 @@ namespace Develappers.BillomatNet.Mapping
                 TotalGross = float.Parse(value.TotalGross, CultureInfo.InvariantCulture),
                 TotalGrossUnreduced = float.Parse(value.TotalGrossUnreduced, CultureInfo.InvariantCulture),
                 UnitPrice = float.Parse(value.UnitPrice, CultureInfo.InvariantCulture),
-                TaxRate = value.TaxRate.ToOptionalFloat()
+                TaxRate = value.TaxRate.ToOptionalFloat(),
+                Type = value.Type.ToOptionionalInvoiceItemType()
             };
         }
 
@@ -86,7 +86,6 @@ namespace Develappers.BillomatNet.Mapping
             {
                 ArticleId = value.ArticleId.ToString(),
                 InvoiceId = value.InvoiceId.ToString(),
-                InvoiceItemType = value.InvoiceItemType.ToApiValue(),
                 Position = value.Position.ToString(),
                 Unit = value.Unit,
                 Quantity = value.Quantity.ToString(CultureInfo.InvariantCulture),
@@ -99,7 +98,8 @@ namespace Develappers.BillomatNet.Mapping
                 TotalNet = value.TotalNet.ToString(CultureInfo.InvariantCulture),
                 Reduction = reduction,
                 TotalGrossUnreduced = value.TotalGrossUnreduced.ToString(CultureInfo.InvariantCulture),
-                TotalNetUnreduced = value.TotalNetUnreduced.ToString(CultureInfo.InvariantCulture)
+                TotalNetUnreduced = value.TotalNetUnreduced.ToString(CultureInfo.InvariantCulture),
+                Type = value.Type.ToApiValue()
             };
         }
 
