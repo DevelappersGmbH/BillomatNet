@@ -33,6 +33,7 @@ namespace Develappers.BillomatNet
             }
 
             return $"{HttpClient.BaseUrl}app/{EntityUrlFragment}/show/entityId/{id}";
+            return $"{HttpClient.BaseUrl}app/beta/{EntityUrlFragment}/{id}";
         }
     }
 }

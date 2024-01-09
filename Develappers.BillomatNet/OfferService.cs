@@ -17,6 +17,8 @@ namespace Develappers.BillomatNet
 {
     public class OfferService : ServiceBase, IEntityService<Offer, OfferFilter>
     {
+        private const string EntityUrlFragment = "offers";
+
         /// <summary>
         /// Creates a new instance of <see cref="OfferService"/>.
         /// </summary>
@@ -50,7 +52,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid offer id", nameof(id));
             }
 
-            return $"{HttpClient.BaseUrl}app/offers/show/entityId/{id}";
+            return $"{HttpClient.BaseUrl}app/beta/{EntityUrlFragment}/{id}";
         }
 
         Task IEntityService<Offer, OfferFilter>.DeleteAsync(int id, CancellationToken token)
