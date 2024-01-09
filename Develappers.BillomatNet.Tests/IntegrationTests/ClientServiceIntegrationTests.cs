@@ -38,6 +38,14 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         }
 
         [Fact]
+        public async Task GetMyself()
+        {
+            var result = await SystemUnderTest.MyselfAsync(CancellationToken.None);
+
+            Assert.True(result.Id > 0);
+        }
+
+        [Fact]
         public async Task GetClientById()
         {
             var result = await SystemUnderTest.GetByIdAsync(1227912);

@@ -32,7 +32,7 @@ namespace Develappers.BillomatNet
                 throw new ArgumentException("invalid reminder id", nameof(id));
             }
 
-            return $"{HttpClient.BaseUrl}app/{EntityUrlFragment}/show/entityId/{id}";
+            return $"{HttpClient.BaseUrl}app/beta/{EntityUrlFragment}/{id}";
         }
     }
 }
