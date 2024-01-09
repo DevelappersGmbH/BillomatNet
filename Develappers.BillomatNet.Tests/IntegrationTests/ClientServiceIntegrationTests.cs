@@ -45,7 +45,6 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.True(result.Id > 0);
         }
 
-
         [Fact]
         public async Task GetClientById()
         {
