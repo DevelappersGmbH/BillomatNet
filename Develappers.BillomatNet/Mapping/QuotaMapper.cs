@@ -47,8 +47,8 @@ namespace Develappers.BillomatNet.Mapping
 
             return new Quota
             {
-                Available = int.Parse(value.Available),
-                Used = int.Parse(value.Used),
+                Available = long.Parse(value.Available),
+                Used = long.Parse(value.Used),
                 Entity = type
             };
         }
