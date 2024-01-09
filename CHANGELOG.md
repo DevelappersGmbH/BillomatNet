@@ -4,10 +4,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+
+## [0.7.0]
+### Added
+- nothing
+
+### Changed
+- portal urls point to new portal
+- quotas can be larger than int.MaxValue
+
+### Removed
+- nothing
+
+### Fixed
+- nothing
+
 ## [0.6.0]
 ### Added
 - ItemType in Article, InvoiceItem and OfferItem
 - CostCenter in Article
+
+### Changed
+- upgrade of NewtonSoft.Json
+
+### Removed
+- nothing
+
+### Fixed
+- nothing
 
 ## [0.4.1]
 ### Added
