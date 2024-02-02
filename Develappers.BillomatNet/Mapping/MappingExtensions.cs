@@ -30,6 +30,7 @@ using SupplierPropertyValue = Develappers.BillomatNet.Types.SupplierPropertyValu
 using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 using Tax = Develappers.BillomatNet.Types.Tax;
 using Unit = Develappers.BillomatNet.Types.Unit;
+using Template = Develappers.BillomatNet.Types.Template;
 
 namespace Develappers.BillomatNet.Mapping
 {
@@ -57,6 +58,7 @@ namespace Develappers.BillomatNet.Mapping
         private static readonly ClientTagMapper s_clientTagMapper = new ClientTagMapper();
         private static readonly ClientPropertyMapper s_clientPropertyMapper = new ClientPropertyMapper();
         private static readonly SupplierMapper s_supplierMapper = new SupplierMapper();
+        private static readonly TemplateMapper s_templateMapper = new TemplateMapper();
         private static readonly SupplierPropertyValueMapper s_supplierPropertyValueMapper = new SupplierPropertyValueMapper();
         private static readonly PurchaseInvoiceMapper s_purchaseInvoiceMapper = new PurchaseInvoiceMapper();
         private static readonly PurchaseInvoiceDocumentMapper s_purchaseInvoiceDocumentMapper = new PurchaseInvoiceDocumentMapper();
@@ -312,6 +314,11 @@ namespace Develappers.BillomatNet.Mapping
             return s_supplierMapper.ApiToDomain(value);
         }
 
+        internal static Types.PagedList<Template> ToDomain(this TemplateListWrapper value)
+        {
+            return s_templateMapper.ApiToDomain(value);
+        }
+
         internal static Types.InboxDocument ToDomain(this InboxDocumentWrapper value)
         {
             return s_inboxDocumentMapper.ApiToDomain(value);
@@ -375,6 +382,11 @@ namespace Develappers.BillomatNet.Mapping
         internal static Supplier ToDomain(this SupplierWrapper value)
         {
             return s_supplierMapper.ApiToDomain(value);
+        }
+
+        internal static Template ToDomain(this TemplateWrapper value)
+        {
+            return s_templateMapper.ApiToDomain(value);
         }
 
         internal static PurchaseInvoice ToDomain(this IncomingWrapper value)
