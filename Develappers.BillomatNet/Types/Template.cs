@@ -20,5 +20,3 @@ namespace Develappers.BillomatNet.Types
         public bool IsDefault { get; set; }
     }
 }
-
-
