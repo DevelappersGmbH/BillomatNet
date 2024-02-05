@@ -25,6 +25,7 @@ namespace Develappers.BillomatNet
         private readonly Lazy<SettingsService> _settingsService;
         private readonly Lazy<SubscriptionInvoiceService> _subscriptionInvoiceService;
         private readonly Lazy<SupplierService> _supplierService;
+        private readonly Lazy<TemplateService> _templateService;
         private readonly Lazy<TaxService> _taxService;
         private readonly Lazy<UnitService> _unitService;
 
@@ -62,6 +63,7 @@ namespace Develappers.BillomatNet
             _settingsService = new Lazy<SettingsService>(() => new SettingsService(httpClient));
             _subscriptionInvoiceService = new Lazy<SubscriptionInvoiceService>(() => new SubscriptionInvoiceService(httpClient));
             _supplierService = new Lazy<SupplierService>(() => new SupplierService(httpClient));
+            _templateService = new Lazy<TemplateService>(() => new TemplateService(httpClient));
             _taxService = new Lazy<TaxService>(() => new TaxService(httpClient));
             _unitService = new Lazy<UnitService>(() => new UnitService(httpClient));
         }
@@ -84,6 +86,7 @@ namespace Develappers.BillomatNet
         public SettingsService Settings => _settingsService.Value;
         public SubscriptionInvoiceService SubscriptionInvoices => _subscriptionInvoiceService.Value;
         public SupplierService Suppliers => _supplierService.Value;
+        public TemplateService Templates => _templateService.Value;
         public TaxService Taxes => _taxService.Value;
         public UnitService Units => _unitService.Value;
     }
