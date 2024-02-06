@@ -5,7 +5,7 @@
 	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>0.7.1-alpha</Version>
+    <Version>0.8.0</Version>
     <Authors>Develappers GmbH</Authors>
     <Company>Develappers GmbH</Company>
     <Description>A C# client to access Billomat.</Description>
