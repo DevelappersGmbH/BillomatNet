@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
+using Develappers.BillomatNet.Types;
 using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Api
@@ -27,6 +28,6 @@ namespace Develappers.BillomatNet.Api
         public string Note { get; set; }
 
         [JsonProperty("is_default")]
-        public int IsDefault { get; set; }
+        public string IsDefault { get; set; }
     }
 }

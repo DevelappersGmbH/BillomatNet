@@ -10,7 +10,7 @@ namespace Develappers.BillomatNet.Types
 
         public string Name { get; set; }
 
-        public string FreeTextType { get; set; }
+        public FreeTextType FreeTextType { get; set; }
 
         public string Title { get; set; }
 
