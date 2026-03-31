@@ -225,7 +225,6 @@ namespace Develappers.BillomatNet.Mapping
             return s_invoicePaymentMapper.DomainToApi(value);
         }
 
-
         internal static Types.PagedList<TagCloudItem> ToDomain(this InvoiceTagCloudItemListWrapper value)
         {
             return s_invoiceTagMapper.ApiToDomain(value);
