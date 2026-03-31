@@ -13,7 +13,6 @@ namespace Develappers.BillomatNet.Mapping
 {
     internal class FreeTextMapper : IMapper<Api.FreeText, FreeText>
     {
-
         public FreeText ApiToDomain(Api.FreeText value)
         {
             if (value == null)

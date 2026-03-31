@@ -9,6 +9,5 @@ namespace Develappers.BillomatNet.Queries
     /// </summary>
     public class FreeTextFilter
     {
-
     }
 }
