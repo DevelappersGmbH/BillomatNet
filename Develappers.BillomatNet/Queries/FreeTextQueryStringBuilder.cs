@@ -13,48 +13,7 @@ namespace Develappers.BillomatNet.Queries
     {
         protected internal override string GetFilterStringFor(FreeTextFilter filter)
         {
-            if (filter == null)
-            {
-                return string.Empty;
-            }
-
-            var filters = new List<string>();
-            //if (!string.IsNullOrEmpty(filter.articlenumber))
-            //{
-            //    filters.Add($"article_number={HttpUtility.UrlEncode(filter.ArticleNumber)}");
-            //}
-
-            //if (!string.IsNullOrEmpty(filter.Title))
-            //{
-            //    filters.Add($"title={HttpUtility.UrlEncode(filter.Title)}");
-            //}
-
-            //if (!string.IsNullOrEmpty(filter.Description))
-            //{
-            //    filters.Add($"description={HttpUtility.UrlEncode(filter.Description)}");
-            //}
-
-            //if (!string.IsNullOrEmpty(filter.CurrencyCode))
-            //{
-            //    filters.Add($"currency_code={HttpUtility.UrlEncode(filter.CurrencyCode)}");
-            //}
-
-            //if (filter.SupplierId.HasValue)
-            //{
-            //    filters.Add($"supplier_id={filter.SupplierId.Value}");
-            //}
-
-            //if (filter.UnitId.HasValue)
-            //{
-            //    filters.Add($"unit_id={filter.UnitId.Value}");
-            //}
-
-            //if ((filter.Tags?.Count ?? 0) > 0)
-            //{
-            //    filters.Add($"tags={string.Join(",", filter.Tags.Select(HttpUtility.UrlEncode))}");
-            //}
-
-            return string.Join("&", filters);
+            return string.Empty;
         }
     }
 }
