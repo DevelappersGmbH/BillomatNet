@@ -21,7 +21,7 @@ namespace Develappers.BillomatNet
         private const string EntityUrlFragment = "free-texts";
 
         /// <summary>
-        /// Creates a new instance of <see cref="ArticleService"/>.
+        /// Creates a new instance of <see cref="FreeTextService"/>.
         /// </summary>
         /// <param name="httpClient">The http client.</param>
         public FreeTextService(IHttpClient httpClient) : base(httpClient)
@@ -29,7 +29,7 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Retrieves a list of articles.
+        /// Retrieves a list of free texts.
         /// </summary>
         /// <param name="token">The cancellation token.</param>
         /// <returns></returns>
@@ -39,7 +39,7 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Retrieves a list of articles.
+        /// Retrieves a list of free texts.
         /// </summary>
         /// <param name="query">The filter and sort options.</param>
         /// <param name="token">The cancellation token.</param>
@@ -51,9 +51,9 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Returns an article by it's ID. 
+        /// Returns a free texts by it's ID. 
         /// </summary>
-        /// <param name="id">The ID of the article.</param>
+        /// <param name="id">The ID of the free text.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>The article or null if not found.</returns>
         public async Task<FreeText> GetByIdAsync(int id, CancellationToken token = default)
@@ -63,13 +63,13 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Creates an article.
+        /// Creates a free texts.
         /// </summary>
-        /// <param name="value">The article to create.</param>
+        /// <param name="value">The free text to create.</param>
         /// <param name="token">The cancellation token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
-        /// The task result contains the new article.
+        /// The task result contains the new free text.
         /// </returns>
         /// <exception cref="ArgumentException">Thrown when the parameter check fails.</exception>
         /// <exception cref="NotAuthorizedException">Thrown when not authorized to access this resource.</exception>
@@ -82,7 +82,7 @@ namespace Develappers.BillomatNet
             }
             if (value.Id != 0)
             {
-                throw new ArgumentException("invalid article id", nameof(value));
+                throw new ArgumentException("invalid free text id", nameof(value));
             }
 
             var wrappedModel = new FreeTextWrapper
@@ -95,9 +95,9 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Updates the specified article.
+        /// Updates the specified free text.
         /// </summary>
-        /// <param name="value">The article.</param>
+        /// <param name="value">The free text.</param>
         /// <param name="token">The token.</param>
         /// <returns>
         /// A task that represents the asynchronous operation.
@@ -115,7 +115,7 @@ namespace Develappers.BillomatNet
 
             if (value.Id <= 0)
             {
-                throw new ArgumentException("invalid article id", nameof(value));
+                throw new ArgumentException("invalid free text id", nameof(value));
             }
 
             var wrappedModel = new FreeTextWrapper
@@ -128,7 +128,7 @@ namespace Develappers.BillomatNet
         }
 
         /// <summary>
-        /// Deletes the article with the given ID.
+        /// Deletes the free text with the given ID.
         /// </summary>
         /// <param name="id">The ID.</param>
         /// <param name="token">The token.</param>
@@ -142,7 +142,7 @@ namespace Develappers.BillomatNet
         {
             if (id <= 0)
             {
-                throw new ArgumentException("invalid article id", nameof(id));
+                throw new ArgumentException("invalid free text id", nameof(id));
             }
             return DeleteAsync($"/api/{EntityUrlFragment}/{id}", token);
         }
@@ -157,7 +157,7 @@ namespace Develappers.BillomatNet
         {
             if (id <= 0)
             {
-                throw new ArgumentException("invalid article id", nameof(id));
+                throw new ArgumentException("invalid free text id", nameof(id));
             }
 
             return $"{HttpClient.BaseUrl}app/beta/masterdata/{EntityUrlFragment}/{id}";
