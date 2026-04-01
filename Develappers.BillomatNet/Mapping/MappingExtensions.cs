@@ -31,6 +31,7 @@ using TagCloudItem = Develappers.BillomatNet.Types.TagCloudItem;
 using Tax = Develappers.BillomatNet.Types.Tax;
 using Unit = Develappers.BillomatNet.Types.Unit;
 using Template = Develappers.BillomatNet.Types.Template;
+using FreeText = Develappers.BillomatNet.Types.FreeText;
 
 namespace Develappers.BillomatNet.Mapping
 {
@@ -63,6 +64,7 @@ namespace Develappers.BillomatNet.Mapping
         private static readonly PurchaseInvoiceMapper s_purchaseInvoiceMapper = new PurchaseInvoiceMapper();
         private static readonly PurchaseInvoiceDocumentMapper s_purchaseInvoiceDocumentMapper = new PurchaseInvoiceDocumentMapper();
         private static readonly InboxDocumentMapper s_inboxDocumentMapper = new InboxDocumentMapper();
+        private static readonly FreeTextMapper s_freeTextMapper = new FreeTextMapper();
 
         internal static Types.PagedList<Article> ToDomain(this ArticleListWrapper value)
         {
@@ -222,7 +224,6 @@ namespace Develappers.BillomatNet.Mapping
         {
             return s_invoicePaymentMapper.DomainToApi(value);
         }
-
 
         internal static Types.PagedList<TagCloudItem> ToDomain(this InvoiceTagCloudItemListWrapper value)
         {
@@ -397,6 +398,21 @@ namespace Develappers.BillomatNet.Mapping
         internal static List<SupplierPropertyValue> ToDomain(this SupplierPropertyValuesWrapper value)
         {
             return s_supplierPropertyValueMapper.ApiToDomain(value);
+        }
+
+        internal static Types.PagedList<FreeText> ToDomain(this FreeTextListWrapper value)
+        {
+            return s_freeTextMapper.ApiToDomain(value);
+        }
+
+        internal static FreeText ToDomain(this FreeTextWrapper value)
+        {
+            return s_freeTextMapper.ApiToDomain(value);
+        }
+
+        internal static Api.FreeText ToApi(this FreeText value)
+        {
+            return s_freeTextMapper.DomainToApi(value);
         }
     }
 }
