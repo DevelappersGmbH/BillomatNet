@@ -92,7 +92,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 RecurringId = null,
                 //digproceeded
                 // CustomField
-                TemplateId = null
+                FreeTextId = null
             };
 
 
