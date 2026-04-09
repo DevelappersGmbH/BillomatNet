@@ -88,7 +88,7 @@ namespace Develappers.BillomatNet.Mapping
                 ConfirmationId = value.ConfirmationId.ToOptionalInt(),
                 OfferId = value.OfferId.ToOptionalInt(),
                 RecurringId = value.RecurringId.ToOptionalInt(),
-                TemplateId = value.TemplateId.ToOptionalInt(),
+                FreeTextId = value.FreeTextId.ToOptionalInt(),
                 CustomerPortalUrl = value.CustomerPortalUrl.Sanitize(),
                 ClientId = value.ClientId.ToInt(),
                 ContactId = value.ContactId.ToOptionalInt(),
@@ -220,7 +220,7 @@ namespace Develappers.BillomatNet.Mapping
                 OfferId = value.OfferId.ToApiOptionalInt(),
                 ConfirmationId = value.ConfirmationId.ToApiOptionalInt(),
                 RecurringId = value.RecurringId.ToApiOptionalInt(),
-                TemplateId = value.TemplateId.ToApiOptionalInt(),
+                FreeTextId = value.FreeTextId.ToApiOptionalInt(),
                 PaymentTypes = paymentTypes,
                 Taxes = null,
                 InvoiceItems = itemsWrapper
