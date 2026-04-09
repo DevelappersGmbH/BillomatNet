@@ -20,6 +20,7 @@ namespace Develappers.BillomatNet.Types
         public int? ConfirmationId { get; set; }
         public int? RecurringId { get; set; }
         public int? FreeTextId { get; set; }
+        public int? TemplateId { get; set; }
         public DateTime Created { get; set; }
         public DateTime Updated { get; set; }
         public int? ContactId { get; set; }

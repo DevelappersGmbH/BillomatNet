@@ -128,6 +128,9 @@ namespace Develappers.BillomatNet.Api
         [JsonProperty("free_text_id")]
         public string FreeTextId { get; set; }
 
+        [JsonProperty("template_id")]
+        public string TemplateId { get; set; }
+
         [JsonProperty("payment_types")]
         public string PaymentTypes { get; set; }
 
