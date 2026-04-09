@@ -95,7 +95,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
                 FreeTextId = null
             };
 
-
             var http = A.Fake<IHttpClient>();
             A.CallTo(() => http.GetAsync(new Uri(expectedUri, UriKind.Relative), A<CancellationToken>.Ignored))
                 .Returns(Task.FromResult(httpResult));
