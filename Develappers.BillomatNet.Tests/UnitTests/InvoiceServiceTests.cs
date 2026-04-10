@@ -46,7 +46,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             {
                 Id = id,
                 Created = DateTime.Parse("2015-06-04T16:12:59+02:00", CultureInfo.InvariantCulture),
-                //Updated = DateTime.Parse("2019-08-08T09:21:08+02:00", CultureInfo.InvariantCulture),
+                Updated = DateTime.Parse("2019-08-08T09:21:08+02:00", CultureInfo.InvariantCulture),
                 ClientId = 485054,
                 ContactId = null,
                 InvoiceNumber = "RE17",
@@ -132,6 +132,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             {
                 Id = 7563765,
                 Created = DateTime.Parse("2020-08-06T09:25:37+02:00", CultureInfo.InvariantCulture),
+                Updated = DateTime.Parse("2020-08-06T09:25:37+02:00", CultureInfo.InvariantCulture),
                 ClientId = 485054,
                 ContactId = 7722,
                 InvoiceNumber = "RE198",
