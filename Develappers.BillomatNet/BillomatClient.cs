@@ -28,6 +28,7 @@ namespace Develappers.BillomatNet
         private readonly Lazy<TemplateService> _templateService;
         private readonly Lazy<TaxService> _taxService;
         private readonly Lazy<UnitService> _unitService;
+        private readonly Lazy<FreeTextService> _freeTextService;
 
         public BillomatClient(Configuration configuration) : this(new HttpClient(configuration.BillomatId, configuration.ApiKey)
         {
@@ -66,6 +67,7 @@ namespace Develappers.BillomatNet
             _templateService = new Lazy<TemplateService>(() => new TemplateService(httpClient));
             _taxService = new Lazy<TaxService>(() => new TaxService(httpClient));
             _unitService = new Lazy<UnitService>(() => new UnitService(httpClient));
+            _freeTextService = new Lazy<FreeTextService>(() => new FreeTextService(httpClient));
         }
 
         public int ApiRequestLimitRemaining => _httpClient.ApiRequestLimitRemaining;
@@ -89,5 +91,6 @@ namespace Develappers.BillomatNet
         public TemplateService Templates => _templateService.Value;
         public TaxService Taxes => _taxService.Value;
         public UnitService Units => _unitService.Value;
+        public FreeTextService FreeTexts => _freeTextService.Value;
     }
 }

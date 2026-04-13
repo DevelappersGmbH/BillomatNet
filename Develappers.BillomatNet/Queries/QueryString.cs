@@ -87,5 +87,10 @@ namespace Develappers.BillomatNet.Queries
         {
             return new InboxDocumentQueryStringBuilder().BuildFor(value);
         }
+
+        public static string For(Query<FreeText, FreeTextFilter> value)
+        {
+            return new FreeTextQueryStringBuilder().BuildFor(value);
+        }
     }
 }
