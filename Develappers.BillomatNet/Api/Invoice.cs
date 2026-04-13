@@ -125,6 +125,9 @@ namespace Develappers.BillomatNet.Api
         [JsonProperty("recurring_id")]
         public string RecurringId { get; set; }
 
+        [JsonProperty("free_text_id")]
+        public string FreeTextId { get; set; }
+
         [JsonProperty("template_id")]
         public string TemplateId { get; set; }
 

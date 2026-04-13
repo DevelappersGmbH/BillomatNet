@@ -58,6 +58,11 @@ namespace Develappers.BillomatNet
         /// <returns>The article or null if not found.</returns>
         public async Task<FreeText> GetByIdAsync(int id, CancellationToken token = default)
         {
+            if (id <= 0)
+            {
+                throw new ArgumentException("invalid free text id", nameof(id));
+            }
+
             var jsonModel = await GetItemByIdAsync<FreeTextWrapper>($"/api/{EntityUrlFragment}/{id}", token).ConfigureAwait(false);
             return jsonModel.ToDomain();
         }
