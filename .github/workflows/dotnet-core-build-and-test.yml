@@ -30,7 +30,7 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         path-to-lcov: ./Develappers.BillomatNet.Tests/TestResults/coverage.info 
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v4
       with:
         name: package
         path: ./Develappers.BillomatNet/bin/Release/Develappers.BillomatNet.*.nupkg
