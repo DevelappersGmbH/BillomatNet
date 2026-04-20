@@ -4,10 +4,11 @@
 
 using System;
 using System.Net;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet
 {
@@ -54,8 +55,7 @@ namespace Develappers.BillomatNet
                 // Unauthorized
                 throw new NotAuthorizedException("You are not authorized to access this item.", wex);
             }
-
-            return JsonConvert.DeserializeObject<T>(httpResponse);
+            return JsonSerializer.Deserialize<T>(httpResponse);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace Develappers.BillomatNet
                 // Unauthorized
                 throw new NotAuthorizedException("You are not authorized to access this item.", wex);
             }
-            return JsonConvert.DeserializeObject<T>(httpResponse);
+            return JsonSerializer.Deserialize<T>(httpResponse);
         }
 
         /// <summary>
@@ -161,9 +161,9 @@ namespace Develappers.BillomatNet
         {
             try
             {
-                var requestData = model == null ? "" : JsonConvert.SerializeObject(model);
+                var requestData = model == null ? "" : JsonSerializer.Serialize(model);
                 var result = await _httpClient.PutAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token).ConfigureAwait(false);
-                return JsonConvert.DeserializeObject<TOut>(result);
+                return JsonSerializer.Deserialize<TOut>(result);
             }
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
@@ -218,12 +218,12 @@ namespace Develappers.BillomatNet
         {
             try
             {
-                var requestData = model == null ? "" : JsonConvert.SerializeObject(model, new JsonSerializerSettings
+                var requestData = model == null ? "" : JsonSerializer.Serialize(model, new JsonSerializerOptions
                 {
-                    NullValueHandling = NullValueHandling.Ignore
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
                 });
                 var responseData = await _httpClient.PostAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token);
-                return JsonConvert.DeserializeObject<TOut>(responseData);
+                return JsonSerializer.Deserialize<TOut>(responseData);
             }
             catch (WebException wex)
                 when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)

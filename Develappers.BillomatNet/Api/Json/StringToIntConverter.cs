@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api.Json
 {
-    internal class CollectionConverter<T> : JsonConverter<List<T>>
+    internal class StringToIntConverter : JsonConverter<int>
     {
 
         /// <summary>
@@ -19,20 +19,22 @@ namespace Develappers.BillomatNet.Api.Json
         /// <returns>The boolean, true if List.</returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(List<T>);
+            return objectType == typeof(int);
         }
 
 
-        public override List<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+        public override int Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            using (JsonDocument doc = JsonDocument.ParseValue(ref reader))
-            {
-                JsonValueKind kind = doc.RootElement.ValueKind;
-                return kind == JsonValueKind.Array ? doc.Deserialize<List<T>>() : new List<T> { doc.Deserialize<T>() };
-            }
+            if (reader.TokenType == JsonTokenType.String)
+                return int.Parse(reader.GetString());
+
+            if (reader.TokenType == JsonTokenType.Number)
+                return reader.GetInt32();
+
+            throw new JsonException($"Cannot convert {reader.TokenType} to int.");
         }
 
-        public override void Write(Utf8JsonWriter writer, List<T> value, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, int value, JsonSerializerOptions options)
         {
             throw new NotImplementedException();
         }

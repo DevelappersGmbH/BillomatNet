@@ -3,7 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+using Develappers.BillomatNet.Api.Json;
 
 namespace Develappers.BillomatNet.Api
 {
@@ -11,13 +12,16 @@ namespace Develappers.BillomatNet.Api
     {
         public abstract List<T> List { get; set; }
 
-        [JsonProperty("@page")]
+        [JsonPropertyName("@page")]
+        [JsonConverter(typeof(StringToIntConverter))]
         public int Page { get; set; }
 
-        [JsonProperty("@per_page")]
+        [JsonPropertyName("@per_page")]
+        [JsonConverter(typeof(StringToIntConverter))]
         public int PerPage { get; set; }
 
-        [JsonProperty("@total")]
+        [JsonPropertyName("@total")]
+        [JsonConverter(typeof(StringToIntConverter))]
         public int Total { get; set; }
     }
 }
