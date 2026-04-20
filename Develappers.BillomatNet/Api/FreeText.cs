@@ -2,32 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Develappers.BillomatNet.Types;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     public class FreeText
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string FreeTextType { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("intro")]
+        [JsonPropertyName("intro")]
         public string Intro { get; set; }
 
-        [JsonProperty("note")]
+        [JsonPropertyName("note")]
         public string Note { get; set; }
 
-        [JsonProperty("is_default")]
+        [JsonPropertyName("is_default")]
         public string IsDefault { get; set; }
     }
 }

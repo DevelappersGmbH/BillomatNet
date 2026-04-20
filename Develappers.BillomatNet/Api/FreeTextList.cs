@@ -3,14 +3,14 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Develappers.BillomatNet.Api.Json;
-using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class FreeTextList : PagedList<FreeText>
     {
-        [JsonProperty("free-text")]
+        [JsonPropertyName("free-text")]
         [JsonConverter(typeof(CollectionConverter<FreeText>))]
         public override List<FreeText> List { get; set; }
     }
