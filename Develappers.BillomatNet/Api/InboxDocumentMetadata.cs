@@ -4,13 +4,13 @@
 
 using System.Collections.Generic;
 using Develappers.BillomatNet.Api.Json;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class InboxDocumentMetadata
     {
-        [JsonProperty("data")]
+        [JsonPropertyName("data")]
         [JsonConverter(typeof(CollectionConverter<KeyValuePair>))]
         public List<KeyValuePair> Data { get; set; }
     }

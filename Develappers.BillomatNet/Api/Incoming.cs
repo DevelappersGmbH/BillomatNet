@@ -2,73 +2,73 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class Incoming
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonProperty("created")]
+        [JsonPropertyName("created")]
         public string Created { get; set; }
 
-        [JsonProperty("updated")]
+        [JsonPropertyName("updated")]
         public string Updated { get; set; }
 
-        [JsonProperty("supplier_id")]
+        [JsonPropertyName("supplier_id")]
         public string SupplierId { get; set; }
 
-        [JsonProperty("client_number")]
+        [JsonPropertyName("client_number")]
         public string ClientNumber { get; set; }
 
-        [JsonProperty("number")]
+        [JsonPropertyName("number")]
         public string Number { get; set; }
 
-        [JsonProperty("date")]
+        [JsonPropertyName("date")]
         public string Date { get; set; }
 
-        [JsonProperty("due_date")]
+        [JsonPropertyName("due_date")]
         public string DueDate { get; set; }
 
-        [JsonProperty("address")]
+        [JsonPropertyName("address")]
         public string Address { get; set; }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
 
-        [JsonProperty("label")]
+        [JsonPropertyName("label")]
         public string Label { get; set; }
 
-        [JsonProperty("note")]
+        [JsonPropertyName("note")]
         public string Note { get; set; }
 
-        [JsonProperty("total_gross")]
+        [JsonPropertyName("total_gross")]
         public string TotalGross { get; set; }
 
-        [JsonProperty("total_net")]
+        [JsonPropertyName("total_net")]
         public string TotalNet { get; set; }
 
-        [JsonProperty("currency_code")]
+        [JsonPropertyName("currency_code")]
         public string CurrencyCode { get; set; }
 
-        [JsonProperty("quote")]
+        [JsonPropertyName("quote")]
         public string Quote { get; set; }
 
-        [JsonProperty("paid_amount")]
+        [JsonPropertyName("paid_amount")]
         public string PaidAmount { get; set; }
 
-        [JsonProperty("open_amount")]
+        [JsonPropertyName("open_amount")]
         public string OpenAmount { get; set; }
 
-        [JsonProperty("expense_account_number")]
+        [JsonPropertyName("expense_account_number")]
         public string ExpenseAccountNumber { get; set; }
 
-        [JsonProperty("category")]
+        [JsonPropertyName("category")]
         public string Category { get; set; }
 
-        [JsonProperty("page_count")]
+        [JsonPropertyName("page_count")]
         public string PageCount { get; set; }
     }
 }

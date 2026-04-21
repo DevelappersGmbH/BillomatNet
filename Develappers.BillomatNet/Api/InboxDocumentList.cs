@@ -4,13 +4,13 @@
 
 using System.Collections.Generic;
 using Develappers.BillomatNet.Api.Json;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class InboxDocumentList : PagedList<InboxDocument>
     {
-        [JsonProperty("inbox-document")]
+        [JsonPropertyName("inbox-document")]
         [JsonConverter(typeof(CollectionConverter<InboxDocument>))]
         public override List<InboxDocument> List { get; set; }
     }

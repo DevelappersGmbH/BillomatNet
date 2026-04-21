@@ -2,17 +2,20 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+using Develappers.BillomatNet.Api.Json;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class ClientTag
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
+        [JsonConverter(typeof(StringToIntConverter))]
         public int Id { get; set; }
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonProperty("client_id")]
+        [JsonPropertyName("client_id")]
+        [JsonConverter(typeof(StringToIntConverter))]
         public int ClientId { get; set; }
     }
 }

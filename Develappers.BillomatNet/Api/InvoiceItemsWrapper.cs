@@ -4,13 +4,13 @@
 
 using System.Collections.Generic;
 using Develappers.BillomatNet.Api.Json;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class InvoiceItemsWrapper
     {
-        [JsonProperty("invoice_items")]
+        [JsonPropertyName("invoice_items")]
         [JsonConverter(typeof(CollectionConverter<InvoiceItem>))]
         public List<InvoiceItem> List { get; set; }
     }

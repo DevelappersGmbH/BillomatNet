@@ -2,35 +2,35 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class InvoicePayment
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
-        [JsonProperty("created")]
+        [JsonPropertyName("created")]
         public string Created { get; set; }
-        [JsonProperty("invoice_id")]
+        [JsonPropertyName("invoice_id")]
         public string InvoiceId { get; set; }
-        [JsonProperty("user_id")]
+        [JsonPropertyName("user_id")]
         public string UserId { get; set; }
-        [JsonProperty("date")]
+        [JsonPropertyName("date")]
         public string Date { get; set; }
-        [JsonProperty("amount")]
+        [JsonPropertyName("amount")]
         public string Amount { get; set; }
-        [JsonProperty("comment")]
+        [JsonPropertyName("comment")]
         public string Comment { get; set; }
-        [JsonProperty("transaction_purpose")]
+        [JsonPropertyName("transaction_purpose")]
         public string TransactionPurpose { get; set; }
-        [JsonProperty("currency_code")]
+        [JsonPropertyName("currency_code")]
         public string CurrencyCode { get; set; }
-        [JsonProperty("quote")]
+        [JsonPropertyName("quote")]
         public string Quote { get; set; }
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
-        [JsonProperty("mark_invoice_as_paid")]
+        [JsonPropertyName("mark_invoice_as_paid")]
         public string MarkInvoiceAsPaid { get; set; }
     }
 }

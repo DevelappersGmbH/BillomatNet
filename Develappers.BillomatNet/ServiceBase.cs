@@ -220,9 +220,12 @@ namespace Develappers.BillomatNet
             {
                 var requestData = model == null ? "" : JsonSerializer.Serialize(model, new JsonSerializerOptions
                 {
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
                     DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
                 });
                 var responseData = await _httpClient.PostAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token);
+                if (responseData == "")
+                    return null;
                 return JsonSerializer.Deserialize<TOut>(responseData);
             }
             catch (WebException wex)

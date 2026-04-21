@@ -4,13 +4,13 @@
 
 using System.Collections.Generic;
 using Develappers.BillomatNet.Api.Json;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class ClientTagCloudItemList : PagedList<TagCloudItem>
     {
-        [JsonProperty("client-tag")]
+        [JsonPropertyName("client-tag")]
         [JsonConverter(typeof(CollectionConverter<TagCloudItem>))]
         public override List<TagCloudItem> List { get; set; }
     }

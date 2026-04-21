@@ -3,13 +3,13 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class QuotaWrapper
     {
-        [JsonProperty("quota")]
+        [JsonPropertyName("quota")]
         public List<Quota> Quota { get; set; }
     }
 }

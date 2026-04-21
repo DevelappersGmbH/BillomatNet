@@ -2,43 +2,43 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class InvoiceTax
     {
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("rate")]
+        [JsonPropertyName("rate")]
         public string Rate { get; set; }
 
-        [JsonProperty("amount")]
+        [JsonPropertyName("amount")]
         public string Amount { get; set; }
 
-        [JsonProperty("amount_plain")]
+        [JsonPropertyName("amount_plain")]
         public string AmountPlain { get; set; }
 
-        [JsonProperty("amount_rounded")]
+        [JsonPropertyName("amount_rounded")]
         public string AmountRounded { get; set; }
 
-        [JsonProperty("amount_net")]
+        [JsonPropertyName("amount_net")]
         public string AmountNet { get; set; }
 
-        [JsonProperty("amount_net_plain")]
+        [JsonPropertyName("amount_net_plain")]
         public string AmountNetPlain { get; set; }
 
-        [JsonProperty("amount_net_rounded")]
+        [JsonPropertyName("amount_net_rounded")]
         public string AmountNetRounded { get; set; }
 
-        [JsonProperty("amount_gross")]
+        [JsonPropertyName("amount_gross")]
         public string AmountGross { get; set; }
 
-        [JsonProperty("amount_gross_plain")]
+        [JsonPropertyName("amount_gross_plain")]
         public string AmountGrossPlain { get; set; }
 
-        [JsonProperty("amount_gross_rounded")]
+        [JsonPropertyName("amount_gross_rounded")]
         public string AmountGrossRounded { get; set; }
     }
 }

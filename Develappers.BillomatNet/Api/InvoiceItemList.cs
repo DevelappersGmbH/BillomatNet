@@ -3,14 +3,14 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Develappers.BillomatNet.Api.Json;
-using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class InvoiceItemList : PagedList<InvoiceItem>
     {
-        [JsonProperty("invoice-item")]
+        [JsonPropertyName("invoice-item")]
         [JsonConverter(typeof(CollectionConverter<InvoiceItem>))]
         public override List<InvoiceItem> List { get; set; }
     }

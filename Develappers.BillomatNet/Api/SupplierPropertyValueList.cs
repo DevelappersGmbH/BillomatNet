@@ -4,13 +4,13 @@
 
 using System.Collections.Generic;
 using Develappers.BillomatNet.Api.Json;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class SupplierPropertyValuesWrapper
     {
-        [JsonProperty("supplier-property-value")]
+        [JsonPropertyName("supplier-property-value")]
         [JsonConverter(typeof(CollectionConverter<SupplierPropertyValue>))]
         public List<SupplierPropertyValue> List { get; set; }
     }

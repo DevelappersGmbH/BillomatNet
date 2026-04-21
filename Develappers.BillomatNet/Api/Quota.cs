@@ -2,19 +2,19 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class Quota
     {
-        [JsonProperty("entity")]
+        [JsonPropertyName("entity")]
         public string Entity { get; set; }
 
-        [JsonProperty("available")]
+        [JsonPropertyName("available")]
         public string Available { get; set; }
 
-        [JsonProperty("used")]
+        [JsonPropertyName("used")]
         public string Used { get; set; }
     }
 }

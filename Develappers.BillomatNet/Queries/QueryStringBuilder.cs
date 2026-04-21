@@ -4,9 +4,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Web;
 using Develappers.BillomatNet.Helpers;
-using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Queries
 {
@@ -54,8 +54,8 @@ namespace Develappers.BillomatNet.Queries
                 var domainObjectName = ReflectionHelper.GetPropertyInfo(x.Property).Name;
                 var queryMemberName = (typeof(TApiEntity)
                     .GetProperty(domainObjectName)
-                    .GetCustomAttributes(typeof(JsonPropertyAttribute), true)
-                    .FirstOrDefault() as JsonPropertyAttribute)?.PropertyName;
+                    .GetCustomAttributes(typeof(JsonPropertyNameAttribute), true)
+                    .FirstOrDefault() as JsonPropertyNameAttribute)?.Name;
                 var order = x.Order == SortOrder.Descending ? "DESC" : "ASC";
                 return HttpUtility.UrlEncode($"{queryMemberName} {order}");
             });

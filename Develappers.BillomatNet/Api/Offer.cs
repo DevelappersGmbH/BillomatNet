@@ -4,92 +4,91 @@
 
 using System;
 using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class Offer
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonProperty("created")]
+        [JsonPropertyName("created")]
         public string Created { get; set; }
 
-        [JsonProperty("updated")]
+        [JsonPropertyName("updated")]
         public string Updated { get; set; }
 
-        [JsonProperty("contact_id")]
+        [JsonPropertyName("contact_id")]
         public string ContactId { get; set; }
 
-        [JsonProperty("client_id")]
+        [JsonPropertyName("client_id")]
         public string ClientId { get; set; }
 
-        [JsonProperty("offer_number")]
+        [JsonPropertyName("offer_number")]
         public string OfferNumber { get; set; }
 
-        [JsonProperty("number")]
+        [JsonPropertyName("number")]
         public string Number { get; set; }
 
-        [JsonProperty("number_pre")]
+        [JsonPropertyName("number_pre")]
         public string NumberPre { get; set; }
 
-        [JsonProperty("number_length")]
+        [JsonPropertyName("number_length")]
         public string NumberLength { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("date")]
+        [JsonPropertyName("date")]
         public string Date { get; set; }
 
-        [JsonProperty("address")]
+        [JsonPropertyName("address")]
         public string Address { get; set; }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
 
-        [JsonProperty("label")]
+        [JsonPropertyName("label")]
         public string Label { get; set; }
 
-        [JsonProperty("intro")]
+        [JsonPropertyName("intro")]
         public string Intro { get; set; }
 
-        [JsonProperty("note")]
+        [JsonPropertyName("note")]
         public string Note { get; set; }
 
-        [JsonProperty("total_gross")]
+        [JsonPropertyName("total_gross")]
         public string TotalGross { get; set; }
 
-        [JsonProperty("total_net")]
+        [JsonPropertyName("total_net")]
         public string TotalNet { get; set; }
 
-        [JsonProperty("currency_code")]
+        [JsonPropertyName("currency_code")]
         public string CurrencyCode { get; set; }
 
-        [JsonProperty("quote")]
+        [JsonPropertyName("quote")]
         public string Quote { get; set; }
 
-        [JsonProperty("net_gross")]
+        [JsonPropertyName("net_gross")]
         public string NetGross { get; set; }
 
-        [JsonProperty("reduction")]
+        [JsonPropertyName("reduction")]
         public string Reduction { get; set; }
 
-        [JsonProperty("total_gross_unreduced")]
+        [JsonPropertyName("total_gross_unreduced")]
         public string TotalGrossUnreduced { get; set; }
 
-        [JsonProperty("total_net_unreduced")]
+        [JsonPropertyName("total_net_unreduced")]
         public string TotalNetUnreduced { get; set; }
 
-        [JsonProperty("customerportal_url")]
+        [JsonPropertyName("customerportal_url")]
         public string CustomerPortalUrl { get; set; }
 
-        [JsonProperty("template_id")]
+        [JsonPropertyName("template_id")]
         public string TemplateId { get; set; }
 
-        [JsonProperty("taxes")]
+        [JsonPropertyName("taxes")]
         public InvoiceTaxWrapper Taxes { get; set; }
     }
 }

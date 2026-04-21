@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
@@ -11,68 +11,68 @@ namespace Develappers.BillomatNet.Api
     /// </summary>
     internal class Article
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonProperty("created")]
+        [JsonPropertyName("created")]
         public string Created { get; set; }
 
-        [JsonProperty("updated")]
+        [JsonPropertyName("updated")]
         public string Updated { get; set; }
 
-        [JsonProperty("article_number")]
+        [JsonPropertyName("article_number")]
         public string ArticleNumber { get; set; }
 
-        [JsonProperty("number")]
+        [JsonPropertyName("number")]
         public string Number { get; set; }
 
-        [JsonProperty("number_pre")]
+        [JsonPropertyName("number_pre")]
         public string NumberPre { get; set; }
 
-        [JsonProperty("number_length")]
+        [JsonPropertyName("number_length")]
         public string NumberLength { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("sales_price")]
+        [JsonPropertyName("sales_price")]
         public string SalesPrice { get; set; }
 
-        [JsonProperty("sales_price2")]
+        [JsonPropertyName("sales_price2")]
         public string SalesPrice2 { get; set; }
 
-        [JsonProperty("sales_price3")]
+        [JsonPropertyName("sales_price3")]
         public string SalesPrice3 { get; set; }
 
-        [JsonProperty("sales_price4")]
+        [JsonPropertyName("sales_price4")]
         public string SalesPrice4 { get; set; }
 
-        [JsonProperty("sales_price5")]
+        [JsonPropertyName("sales_price5")]
         public string SalesPrice5 { get; set; }
 
-        [JsonProperty("currency_code")]
+        [JsonPropertyName("currency_code")]
         public string CurrencyCode { get; set; }
 
-        [JsonProperty("unit_id")]
+        [JsonPropertyName("unit_id")]
         public string UnitId { get; set; }
 
-        [JsonProperty("tax_id")]
+        [JsonPropertyName("tax_id")]
         public string TaxId { get; set; }
 
-        [JsonProperty("purchase_price")]
+        [JsonPropertyName("purchase_price")]
         public string PurchasePrice { get; set; }
 
-        [JsonProperty("purchase_price_net_gross")]
+        [JsonPropertyName("purchase_price_net_gross")]
         public string PurchasePriceNetGross { get; set; }
 
-        [JsonProperty("supplier_id")]
+        [JsonPropertyName("supplier_id")]
         public string SupplierId { get; set; }
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
-        [JsonProperty("cost_center")]
+        [JsonPropertyName("cost_center")]
         public string CostCenter { get; set; }
     }
 }

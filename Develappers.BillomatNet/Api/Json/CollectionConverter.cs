@@ -34,7 +34,12 @@ namespace Develappers.BillomatNet.Api.Json
 
         public override void Write(Utf8JsonWriter writer, List<T> value, JsonSerializerOptions options)
         {
-            throw new NotImplementedException();
+            writer.WriteStartArray();
+            foreach (T item in value)
+            {
+                JsonSerializer.Serialize(writer, item);
+            }
+            writer.WriteEndArray();
         }
     }
 
