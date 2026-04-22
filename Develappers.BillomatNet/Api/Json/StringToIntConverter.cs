@@ -37,5 +37,4 @@ namespace Develappers.BillomatNet.Api.Json
             throw new NotImplementedException();
         }
     }
-
 }
