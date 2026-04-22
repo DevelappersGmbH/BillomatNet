@@ -74,8 +74,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         public async Task GetUnitByIdWhenNotAuthorized()
         {
             Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
-            var service = new BillomatClient(Configuration).Units;
-            await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(20573));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetByIdAsync(20573));
         }
 
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
