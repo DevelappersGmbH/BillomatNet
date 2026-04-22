@@ -9,11 +9,11 @@ namespace Develappers.BillomatNet.Api
     internal class ClientProperty
     {
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
         [JsonPropertyName("client_id")]
-        public int ClientId { get; set; }
+        public string ClientId { get; set; }
         [JsonPropertyName("client_property_id")]
-        public int ClientPropertyId { get; set; }
+        public string ClientPropertyId { get; set; }
         [JsonPropertyName("type")]
         public string Type { get; set; }
         [JsonPropertyName("name")]

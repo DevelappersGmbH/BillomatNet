@@ -9,13 +9,13 @@ namespace Develappers.BillomatNet.Api
     internal class ArticleProperty
     {
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [JsonPropertyName("article_id")]
-        public int ArticleId { get; set; }
+        public string ArticleId { get; set; }
 
         [JsonPropertyName("article_property_id")]
-        public int ArticlePropertyId { get; set; }
+        public string ArticlePropertyId { get; set; }
 
         [JsonPropertyName("type")]
         public string Type { get; set; }

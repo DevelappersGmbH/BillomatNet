@@ -9,12 +9,12 @@ namespace Develappers.BillomatNet.Api
     internal class ArticleTag
     {
         [JsonPropertyName("id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
         [JsonPropertyName("article_id")]
-        public int ArticleId { get; set; }
+        public string ArticleId { get; set; }
     }
 }

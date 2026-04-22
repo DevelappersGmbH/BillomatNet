@@ -16,10 +16,10 @@ namespace Develappers.BillomatNet.Mapping
             var type = value.Type.ToPropertyType();
             return new ClientProperty
             {
-                Id = value.Id,
-                ClientPropertyId = value.ClientPropertyId,
+                Id = value.Id.ToInt(),
+                ClientPropertyId = value.ClientPropertyId.ToInt(),
                 Type = type,
-                ClientId = value.ClientId,
+                ClientId = value.ClientId.ToInt(),
                 Name = value.Name,
                 Value = MappingHelpers.ParsePropertyValue(type, value.Value)
             };
@@ -34,9 +34,9 @@ namespace Develappers.BillomatNet.Mapping
 
             return new Api.ClientProperty
             {
-                Id = value.Id,
-                ClientId = value.ClientId,
-                ClientPropertyId = value.ClientPropertyId,
+                Id = value.Id.ToString(),
+                ClientId = value.ClientId.ToString(),
+                ClientPropertyId = value.ClientPropertyId.ToString(),
                 Type = value.Type.ToApiValue(),
                 Name = value.Name,
                 Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)

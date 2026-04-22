@@ -20,10 +20,10 @@ namespace Develappers.BillomatNet.Mapping
             var type = value.Type.ToPropertyType();
             return new ArticleProperty
             {
-                Id = value.Id,
-                ArticlePropertyId = value.ArticlePropertyId,
+                Id = value.Id.ToInt(),
+                ArticlePropertyId = value.ArticlePropertyId.ToInt(),
                 Type = type,
-                ArticleId = value.ArticleId,
+                ArticleId = value.ArticleId.ToInt(),
                 Name = value.Name,
                 Value = MappingHelpers.ParsePropertyValue(type, value.Value)
             };
@@ -33,9 +33,9 @@ namespace Develappers.BillomatNet.Mapping
         {
             return new Api.ArticleProperty
             {
-                Id = value.Id,
-                ArticleId = value.ArticleId,
-                ArticlePropertyId = value.ArticlePropertyId,
+                Id = value.Id.ToString(),
+                ArticleId = value.ArticleId.ToString(),
+                ArticlePropertyId = value.ArticlePropertyId.ToString(),
                 Type = value.Type.ToApiValue(),
                 Name = value.Name,
                 Value = MappingHelpers.ParsePropertyValue(value.Type, value.Value)
