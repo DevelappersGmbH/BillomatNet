@@ -11,7 +11,6 @@ namespace Develappers.BillomatNet.Api.Json
 {
     internal class StringToIntConverter : JsonConverter<int>
     {
-
         /// <summary>
         /// Checks whether this item can be converted
         /// </summary>
@@ -21,7 +20,6 @@ namespace Develappers.BillomatNet.Api.Json
         {
             return objectType == typeof(int);
         }
-
 
         public override int Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {

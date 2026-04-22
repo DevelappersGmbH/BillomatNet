@@ -536,7 +536,6 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
             Assert.True(true);
         }
 
-
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CompleteInvoice()
         {

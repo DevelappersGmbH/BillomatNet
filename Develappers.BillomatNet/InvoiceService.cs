@@ -270,7 +270,6 @@ namespace Develappers.BillomatNet
             return DeleteAsync($"/api/{EntityUrlFragment}/{id}", token);
         }
 
-
         /// <summary>
         /// Retrieves a list of the items (articles) used in the invoice.
         /// </summary>

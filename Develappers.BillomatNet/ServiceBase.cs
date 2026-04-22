@@ -197,7 +197,6 @@ namespace Develappers.BillomatNet
             return PostAsync<T, T>(resourceUrl, model, token);
         }
 
-
         /// <summary>
         /// Creates a new entity.
         /// </summary>

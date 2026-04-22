@@ -48,7 +48,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
         //        .MustHaveHappenedOnceExactly();
         //}
 
-
         [Fact]
         public async Task GetById_WithValidData_ShouldReturnCorrectValues()
         {

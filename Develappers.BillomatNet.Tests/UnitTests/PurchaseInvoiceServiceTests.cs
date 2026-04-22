@@ -80,7 +80,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             result.Should().BeEquivalentTo(expectedResult);
         }
 
-
         [Fact]
         public async Task GetByPdf_WithValidData_ShouldReturnCorrectValues()
         {

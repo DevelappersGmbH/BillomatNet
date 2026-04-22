@@ -11,7 +11,6 @@ namespace Develappers.BillomatNet.Api.Json
 {
     internal class CollectionConverter<T> : JsonConverter<List<T>>
     {
-
         /// <summary>
         /// Checks whether this item can be converted
         /// </summary>
@@ -21,7 +20,6 @@ namespace Develappers.BillomatNet.Api.Json
         {
             return objectType == typeof(List<T>);
         }
-
 
         public override List<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
