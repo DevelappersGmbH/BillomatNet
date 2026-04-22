@@ -38,7 +38,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetArticleTagByIdWhenNotAuthorized()
         {
-            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetTagByIdAsync(9700));
         }
 

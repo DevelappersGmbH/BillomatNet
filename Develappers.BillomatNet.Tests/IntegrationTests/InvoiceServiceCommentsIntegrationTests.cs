@@ -25,7 +25,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetCommentListAsyncWhenNotAuthorized()
         {
-            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetCommentListAsync(new Query<InvoiceComment, InvoiceCommentFilter>().AddFilter(x => x.InvoiceId, 1322225)));
         }
 

@@ -55,7 +55,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetInvoiceByIdWhenNotAuthorized()
         {
-            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
+            Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
             var ex = await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetByIdAsync(1));
         }
 
