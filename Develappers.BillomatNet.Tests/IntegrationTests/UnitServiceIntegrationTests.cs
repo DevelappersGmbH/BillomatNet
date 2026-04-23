@@ -51,7 +51,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetFilteredUnitsNotAuthorized()
         {
-            Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetListAsync(
                 new Query<Unit, UnitFilter>().AddFilter(x => x.Name, "Stunde")));
         }
@@ -73,7 +73,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetUnitByIdWhenNotAuthorized()
         {
-            Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetByIdAsync(20573));
         }
 
@@ -92,7 +92,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task DeleteUnitItemNotAuthorized()
         {
-            Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.DeleteAsync(1));
         }
 
@@ -125,7 +125,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditUnitItemWhenNotAuthorized()
         {
-            Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var unitItem = new Unit
             {
                 Id = 20573
@@ -150,7 +150,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task CreateUnitItemWhenNotAuthorized()
         {
-            Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
 
             var name = "xUnit test";
 

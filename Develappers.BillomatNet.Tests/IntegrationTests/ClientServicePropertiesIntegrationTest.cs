@@ -34,7 +34,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetClientPropertyByIdWhenNotAuthorized()
         {
-            Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetPropertyById(3075686));
         }
 
@@ -89,7 +89,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]
         public async Task EditClientPropertyWhenNotAuthorized()
         {
-            Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var clientProp = new ClientProperty
             {
                 ClientId = 796659,

@@ -47,8 +47,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetTagListAsyncWhenNotAuthorized()
         {
-            Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
-
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             var query = new Query<ClientTag, ClientTagFilter>()
                 .AddFilter(x => x.ClientId, 796659);
 
@@ -84,7 +83,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         public async Task GetTagByIdWhenNotAuthorized()
         {
             // rewritten as unit test
-            Helpers.TrySetHttpClientApiKey(SystemUnderTest, "ajfkjeinodafkejlkdsjklj");
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetTagById(188156));
         }
 
