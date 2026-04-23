@@ -20,7 +20,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         protected IntegrationTestBase(Func<Configuration, T> sutFactoryMethod)
         {
             Configuration = Helpers.GetTestConfiguration();
-            _sut = new Lazy<T>(sutFactoryMethod.Invoke(Configuration));
+            _sut = new Lazy<T>(() => sutFactoryMethod.Invoke(Configuration));
         }
 
         private readonly Lazy<T> _sut;
