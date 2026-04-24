@@ -20,9 +20,5 @@ namespace Develappers.BillomatNet
         public NotAuthorizedException(string message, Exception innerException) : base(message, innerException)
         {
         }
-
-        protected NotAuthorizedException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
     }
 }

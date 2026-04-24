@@ -3,26 +3,33 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Net;
-using FakeItEasy;
+using System.Net.Http;
 
 namespace Develappers.BillomatNet.Tests.UnitTests
 {
     public class ExceptionFactory
     {
-        private static WebException CreateWebException(HttpStatusCode statusCode)
+        private static HttpRequestException CreateWebException(HttpStatusCode statusCode)
         {
-            var webResponse = A.Fake<HttpWebResponse>();
-            A.CallTo(() => webResponse.StatusCode).Returns(statusCode);
-            return new WebException("", null, WebExceptionStatus.ProtocolError, webResponse);
+            try
+            {
+                var response = new HttpResponseMessage(statusCode);
+                response.EnsureSuccessStatusCode();
+            }
+            catch (HttpRequestException exception)
+            {
+                return exception;
+            }
+            return new HttpRequestException("", null, statusCode);
         }
 
 
-        public static WebException CreateNotFoundException()
+        public static HttpRequestException CreateNotFoundException()
         {
             return CreateWebException(HttpStatusCode.NotFound);
         }
 
-        public static WebException CreateNotAuthorizedException()
+        public static HttpRequestException CreateNotAuthorizedException()
         {
             return CreateWebException(HttpStatusCode.Unauthorized);
         }

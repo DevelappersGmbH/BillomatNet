@@ -4,15 +4,36 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
-using System.Text;
+using System.Net.Http.Headers;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using Http = System.Net.Http;
 
 namespace Develappers.BillomatNet.Api.Net
 {
     internal sealed class HttpClient : IHttpClient
     {
+        public string ApiKey { get; }
+
+        public string BillomatId { get; }
+
+        public string AppId { get; set; }
+
+        public string AppSecret { get; set; }
+
+        public string BaseUrl => _httpClient.BaseAddress.ToString();
+
+        public event EventHandler ApiCallLimitUpdated;
+
+        public int ApiRequestLimitRemaining { get; private set; }
+
+        public DateTime ApiRequestLimitResetsAt { get; private set; }
+
+        private readonly Http.HttpClient _httpClient;
+
         /// <summary>
         /// Sets the Billomat ID and the API-key
         /// </summary>
@@ -33,24 +54,14 @@ namespace Develappers.BillomatNet.Api.Net
             BillomatId = billomatId;
             ApiKey = apiKey;
 
+            _httpClient = new() { BaseAddress = new Uri($"https://{BillomatId}.billomat.net/") };
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            _httpClient.DefaultRequestHeaders.Add(HeaderNames.ApiKey, ApiKey);
+            _httpClient.DefaultRequestHeaders.Add(HeaderNames.AppId, AppId);
+            _httpClient.DefaultRequestHeaders.Add(HeaderNames.AppSecret, AppSecret);
+
             UpdateLimits(null, null);
         }
-
-        public string ApiKey { get; }
-
-        public string BillomatId { get; }
-
-        public string AppId { get; set; }
-
-        public string AppSecret { get; set; }
-
-        public string BaseUrl => $"https://{BillomatId}.billomat.net/";
-
-        public event EventHandler ApiCallLimitUpdated;
-
-        public int ApiRequestLimitRemaining { get; private set; }
-
-        public DateTime ApiRequestLimitResetsAt { get; private set; }
 
         private void UpdateLimits(int? limit, DateTime? resetsAt)
         {
@@ -59,40 +70,27 @@ namespace Develappers.BillomatNet.Api.Net
             ApiCallLimitUpdated?.Invoke(this, EventArgs.Empty);
         }
 
-        /// <summary>
-        /// Makes GET web request to specific URL.
-        /// </summary>
-        /// <param name="relativeUri">The specific URI.</param>
-        /// <param name="token">The cancellation token.</param>
-        /// <returns>
-        /// A task that represents the asynchronous operation.
-        /// The task result contains the request result from the stream.
-        /// </returns>
-        /// <exception cref="IOException"> Throws when the response was null.</exception>
-        public async Task<byte[]> GetBytesAsync(Uri relativeUri, CancellationToken token = default)
+        private void UpdateLimits(Http.HttpResponseMessage response)
         {
-            var builder = new UriBuilder(new Uri(new Uri(BaseUrl), relativeUri));
-            var uri = builder.ToString();
+            int? limitRemaing = null;
+            DateTime? limitReset = null;
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpWebRequest.Method = "GET";
-            httpWebRequest.Headers.Add(HeaderNames.ApiKey, ApiKey);
-
-            if (!string.IsNullOrWhiteSpace(AppId))
+            if (response.Content.Headers.TryGetValues(HeaderNames.LimitRemaining, out var limitHeader))
             {
-                httpWebRequest.Headers.Add(HeaderNames.AppId, AppId);
+                if (int.TryParse(limitHeader.SingleOrDefault() ?? "", out var lrem))
+                {
+                    limitRemaing = lrem;
+                }
             }
-            if (!string.IsNullOrWhiteSpace(AppSecret))
+            if (response.Content.Headers.TryGetValues(HeaderNames.LimitReset, out var resetHeader))
             {
-                httpWebRequest.Headers.Add(HeaderNames.AppSecret, AppSecret);
+                if (DateTime.TryParse(resetHeader.SingleOrDefault() ?? "", out var lres))
+                {
+                    limitReset = lres;
+                }
             }
 
-            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            var result = await HttpResponseFactory.CreateFromWebResponseAsync<byte[]>(httpResponse);
-
-            UpdateLimits(result.LimitRemaining, result.LimitReset);
-
-            return result.Content;
+            UpdateLimits(limitRemaing, limitReset);
         }
 
         /// <summary>
@@ -104,9 +102,12 @@ namespace Develappers.BillomatNet.Api.Net
         /// A task that represents the asynchronous operation.
         /// The task result contains the request result from the stream.
         /// </returns>
-        public Task<string> GetAsync(Uri relativeUri, CancellationToken token = default)
+        public async Task<string> GetAsync(Uri relativeUri, CancellationToken token = default)
         {
-            return GetAsync(relativeUri, null, token);
+            var response = await _httpClient.GetAsync(relativeUri, token);
+            UpdateLimits(response);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync(token);
         }
 
         /// <summary>
@@ -123,30 +124,28 @@ namespace Develappers.BillomatNet.Api.Net
         public async Task<string> GetAsync(Uri relativeUri, string query, CancellationToken token = default)
         {
             var builder = new UriBuilder(new Uri(new Uri(BaseUrl), relativeUri));
+
             if (!string.IsNullOrEmpty(query))
             {
                 builder.Query = query;
             }
-            var uri = builder.ToString();
 
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpWebRequest.Method = "GET";
-            httpWebRequest.Accept = "application/json";
-            httpWebRequest.Headers.Add(HeaderNames.ApiKey, ApiKey);
+            return await GetAsync(builder.Uri, token);
+        }
 
-            if (!string.IsNullOrWhiteSpace(AppId))
-            {
-                httpWebRequest.Headers.Add(HeaderNames.AppId, AppId);
-            }
-            if (!string.IsNullOrWhiteSpace(AppSecret))
-            {
-                httpWebRequest.Headers.Add(HeaderNames.AppSecret, AppSecret);
-            }
-
-            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            var result = await HttpResponseFactory.CreateFromWebResponseAsync<string>(httpResponse);
-            UpdateLimits(result.LimitRemaining, result.LimitReset);
-            return result.Content;
+        /// <summary>
+        /// <inheritdoc cref="Http.HttpClient.GetByteArrayAsync(Uri?, CancellationToken)"/>
+        /// </summary>
+        /// <returns>
+        /// <inheritdoc cref="Http.HttpClient.GetByteArrayAsync(Uri?, CancellationToken)"/>
+        /// </returns>
+        /// <exception cref="IOException"> Throws when the response was null.</exception>
+        public async Task<byte[]> GetBytesAsync(Uri relativeUri, CancellationToken token = default)
+        {
+            var response = await _httpClient.GetAsync(relativeUri, token);
+            UpdateLimits(response);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsByteArrayAsync(token);
         }
 
         /// <summary>
@@ -161,28 +160,10 @@ namespace Develappers.BillomatNet.Api.Net
         /// <exception cref="IOException"> Throws when the response was null.</exception>
         public async Task<string> DeleteAsync(Uri relativeUri, CancellationToken token)
         {
-            var builder = new UriBuilder(new Uri(new Uri(BaseUrl), relativeUri));
-            var uri = builder.ToString();
-
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpWebRequest.Method = "DELETE";
-            httpWebRequest.Accept = "application/json";
-            httpWebRequest.Headers.Add(HeaderNames.ApiKey, ApiKey);
-
-            if (!string.IsNullOrWhiteSpace(AppId))
-            {
-                httpWebRequest.Headers.Add(HeaderNames.AppId, AppId);
-            }
-            if (!string.IsNullOrWhiteSpace(AppSecret))
-            {
-                httpWebRequest.Headers.Add(HeaderNames.AppSecret, AppSecret);
-            }
-
-
-            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            var result = await HttpResponseFactory.CreateFromWebResponseAsync<string>(httpResponse);
-            UpdateLimits(result.LimitRemaining, result.LimitReset);
-            return result.Content;
+            var response = await _httpClient.DeleteAsync(relativeUri, token);
+            UpdateLimits(response);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync(token);
         }
 
         /// <summary>
@@ -198,33 +179,10 @@ namespace Develappers.BillomatNet.Api.Net
         /// <exception cref="IOException"> Throws when the response was null.</exception>
         public async Task<string> PutAsync(Uri relativeUri, string data, CancellationToken token)
         {
-            var builder = new UriBuilder(new Uri(new Uri(BaseUrl), relativeUri));
-            var uri = builder.ToString();
-
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpWebRequest.Method = "PUT";
-            httpWebRequest.Accept = "application/json";
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Headers.Add(HeaderNames.ApiKey, ApiKey);
-
-            if (!string.IsNullOrWhiteSpace(AppId))
-            {
-                httpWebRequest.Headers.Add(HeaderNames.AppId, AppId);
-            }
-            if (!string.IsNullOrWhiteSpace(AppSecret))
-            {
-                httpWebRequest.Headers.Add(HeaderNames.AppSecret, AppSecret);
-            }
-
-            var reqStream = httpWebRequest.GetRequestStream();
-            var bytes = Encoding.UTF8.GetBytes(data);
-            await reqStream.WriteAsync(bytes, 0, bytes.Length, token).ConfigureAwait(false);
-            reqStream.Close();
-
-            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            var result = await HttpResponseFactory.CreateFromWebResponseAsync<string>(httpResponse);
-            UpdateLimits(result.LimitRemaining, result.LimitReset);
-            return result.Content;
+            var response = await _httpClient.PutAsync(relativeUri, new Http.StringContent(data), token);
+            UpdateLimits(response);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync(token);
         }
 
         /// <summary>
@@ -240,35 +198,10 @@ namespace Develappers.BillomatNet.Api.Net
         /// <exception cref="IOException">Thrown when the response was null.</exception>
         public async Task<string> PostAsync(Uri relativeUri, string data, CancellationToken token)
         {
-            var builder = new UriBuilder(new Uri(new Uri(BaseUrl), relativeUri));
-            var uri = builder.ToString();
-
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create(uri);
-            httpWebRequest.Method = "POST";
-            httpWebRequest.Accept = "application/json";
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Headers.Add(HeaderNames.ApiKey, ApiKey);
-
-            if (!string.IsNullOrWhiteSpace(AppId))
-            {
-                httpWebRequest.Headers.Add(HeaderNames.AppId, AppId);
-            }
-            if (!string.IsNullOrWhiteSpace(AppSecret))
-            {
-                httpWebRequest.Headers.Add(HeaderNames.AppSecret, AppSecret);
-            }
-
-            using (var reqStream = httpWebRequest.GetRequestStream())
-            {
-                var bytes = Encoding.UTF8.GetBytes(data);
-                await reqStream.WriteAsync(bytes, 0, bytes.Length, token).ConfigureAwait(false);
-                reqStream.Close();
-            }
-
-            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
-            var result = await HttpResponseFactory.CreateFromWebResponseAsync<string>(httpResponse);
-            UpdateLimits(result.LimitRemaining, result.LimitReset);
-            return result.Content;
+            var response = await _httpClient.PostAsync(relativeUri, new Http.StringContent(data), token);
+            UpdateLimits(response);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync(token);
         }
     }
 }
