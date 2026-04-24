@@ -2,13 +2,13 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class ArticleTagCloudItemListWrapper : PagedListWrapper<ArticleTagCloudItemList>
     {
-        [JsonProperty("article-tags")]
+        [JsonPropertyName("article-tags")]
         public override ArticleTagCloudItemList Item { get; set; }
     }
 }

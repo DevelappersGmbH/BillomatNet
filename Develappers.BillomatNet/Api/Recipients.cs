@@ -3,17 +3,19 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class Recipients
     {
-        [JsonProperty("to")]
+        [JsonPropertyName("to")]
         public List<string> To { get; set; }
-        [JsonProperty("cc", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("cc")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<string> Cc { get; set; }
-        [JsonProperty("bcc", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("bcc")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public List<string> Bcc { get; set; }
     }
 }

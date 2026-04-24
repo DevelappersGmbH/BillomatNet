@@ -2,7 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
@@ -11,10 +11,10 @@ namespace Develappers.BillomatNet.Api
     /// </summary>
     internal class Account : Client
     {
-        [JsonProperty("plan")]
+        [JsonPropertyName("plan")]
         public string Plan { get; set; }
 
-        [JsonProperty("quotas")]
+        [JsonPropertyName("quotas")]
         public QuotaWrapper Quotas { get; set; }
     }
 }

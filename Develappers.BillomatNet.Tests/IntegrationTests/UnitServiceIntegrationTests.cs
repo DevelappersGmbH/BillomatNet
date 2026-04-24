@@ -51,7 +51,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         [Fact]
         public async Task GetFilteredUnitsNotAuthorized()
         {
-            Configuration.ApiKey = "dfgdfgd";
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetListAsync(
                 new Query<Unit, UnitFilter>().AddFilter(x => x.Name, "Stunde")));
         }
@@ -74,8 +74,7 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         public async Task GetUnitByIdWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
-            var service = new BillomatClient(Configuration).Units;
-            await Assert.ThrowsAsync<NotAuthorizedException>(() => service.GetByIdAsync(20573));
+            await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetByIdAsync(20573));
         }
 
         [Fact(Skip = "Write operations shouldn't run unattended. Use unit test instead.")]

@@ -3,6 +3,8 @@
 // See the LICENSE file in the project root for more information.
 
 using System.IO;
+using System.Reflection;
+using Develappers.BillomatNet.Api.Net;
 using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Tests.IntegrationTests

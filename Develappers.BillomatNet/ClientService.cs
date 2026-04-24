@@ -4,13 +4,13 @@
 
 using System;
 using System.Net;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api;
 using Develappers.BillomatNet.Api.Net;
 using Develappers.BillomatNet.Mapping;
 using Develappers.BillomatNet.Queries;
-using Newtonsoft.Json;
 using Account = Develappers.BillomatNet.Types.Account;
 using ArticleTag = Develappers.BillomatNet.Types.ArticleTag;
 using Client = Develappers.BillomatNet.Types.Client;
@@ -44,7 +44,7 @@ namespace Develappers.BillomatNet
         public async Task<Account> MyselfAsync(CancellationToken token = default)
         {
             var httpResponse = await HttpClient.GetAsync(new Uri($"/api/{EntityUrlFragment}/myself", UriKind.Relative), token).ConfigureAwait(false);
-            var jsonModel = JsonConvert.DeserializeObject<AccountWrapper>(httpResponse);
+            var jsonModel = JsonSerializer.Deserialize<AccountWrapper>(httpResponse);
             return jsonModel.ToDomain();
         }
 

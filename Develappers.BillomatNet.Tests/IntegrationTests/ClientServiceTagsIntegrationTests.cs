@@ -48,7 +48,6 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         public async Task GetTagListAsyncWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
-
             var query = new Query<ClientTag, ClientTagFilter>()
                 .AddFilter(x => x.ClientId, 796659);
 

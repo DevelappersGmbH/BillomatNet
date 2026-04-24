@@ -3,19 +3,19 @@
 // See the LICENSE file in the project root for more information.
 
 using System;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class Unit
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
-        [JsonProperty("created")]
+        [JsonPropertyName("created")]
         public DateTime Created { get; set; }
-        [JsonProperty("updated")]
+        [JsonPropertyName("updated")]
         public DateTime Updated { get; set; }
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
     }
 }

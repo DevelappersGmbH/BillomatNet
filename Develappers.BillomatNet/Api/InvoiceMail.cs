@@ -2,21 +2,21 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class InvoiceMail
     {
-        [JsonProperty("from")]
+        [JsonPropertyName("from")]
         public string From { get; set; }
-        [JsonProperty("recipients")]
+        [JsonPropertyName("recipients")]
         public Recipients Recipients { get; set; }
-        [JsonProperty("subject")]
+        [JsonPropertyName("subject")]
         public string Subject { get; set; }
-        [JsonProperty("body")]
+        [JsonPropertyName("body")]
         public string Body { get; set; }
-        [JsonProperty("attachments")]
+        [JsonPropertyName("attachments")]
         public AttachmentsWrapper Attachments { get; set; }
     }
 }

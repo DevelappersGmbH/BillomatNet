@@ -2,141 +2,142 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class Invoice
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonProperty("created")]
+        [JsonPropertyName("created")]
         public string Created { get; set; }
 
-        [JsonProperty("updated")]
+        [JsonPropertyName("updated")]
         public string Updated { get; set; }
 
-        [JsonProperty("contact_id")]
+        [JsonPropertyName("contact_id")]
         public string ContactId { get; set; }
 
-        [JsonProperty("client_id")]
+        [JsonPropertyName("client_id")]
         public string ClientId { get; set; }
 
-        [JsonProperty("invoice_number")]
+        [JsonPropertyName("invoice_number")]
         public string InvoiceNumber { get; set; }
 
-        [JsonProperty("number")]
+        [JsonPropertyName("number")]
         public string Number { get; set; }
 
-        [JsonProperty("number_pre")]
+        [JsonPropertyName("number_pre")]
         public string NumberPre { get; set; }
 
-        [JsonProperty("number_length")]
+        [JsonPropertyName("number_length")]
         public string NumberLength { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("date")]
+        [JsonPropertyName("date")]
         public string Date { get; set; }
 
-        [JsonProperty("supply_date")]
+        [JsonPropertyName("supply_date")]
         public string SupplyDate { get; set; }
 
-        [JsonProperty("supply_date_type")]
+        [JsonPropertyName("supply_date_type")]
         public string SupplyDateType { get; set; }
 
-        [JsonProperty("due_date")]
+        [JsonPropertyName("due_date")]
         public string DueDate { get; set; }
 
-        [JsonProperty("due_days")]
+        [JsonPropertyName("due_days")]
         public string DueDays { get; set; }
 
-        [JsonProperty("address")]
+        [JsonPropertyName("address")]
         public string Address { get; set; }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
 
-        [JsonProperty("discount_rate")]
+        [JsonPropertyName("discount_rate")]
         public string DiscountRate { get; set; }
 
-        [JsonProperty("discount_date")]
+        [JsonPropertyName("discount_date")]
         public string DiscountDate { get; set; }
 
-        [JsonProperty("discount_days")]
+        [JsonPropertyName("discount_days")]
         public string DiscountDays { get; set; }
 
-        [JsonProperty("discount_amount")]
+        [JsonPropertyName("discount_amount")]
         public string DiscountAmount { get; set; }
 
-        [JsonProperty("label")]
+        [JsonPropertyName("label")]
         public string Label { get; set; }
 
-        [JsonProperty("intro")]
+        [JsonPropertyName("intro")]
         public string Intro { get; set; }
 
-        [JsonProperty("note")]
+        [JsonPropertyName("note")]
         public string Note { get; set; }
 
-        [JsonProperty("total_gross")]
+        [JsonPropertyName("total_gross")]
         public string TotalGross { get; set; }
 
-        [JsonProperty("total_net")]
+        [JsonPropertyName("total_net")]
         public string TotalNet { get; set; }
 
-        [JsonProperty("currency_code")]
+        [JsonPropertyName("currency_code")]
         public string CurrencyCode { get; set; }
 
-        [JsonProperty("quote")]
+        [JsonPropertyName("quote")]
         public string Quote { get; set; }
 
-        [JsonProperty("net_gross")]
+        [JsonPropertyName("net_gross")]
         public string NetGross { get; set; }
 
-        [JsonProperty("reduction")]
+        [JsonPropertyName("reduction")]
         public string Reduction { get; set; }
 
-        [JsonProperty("total_gross_unreduced")]
+        [JsonPropertyName("total_gross_unreduced")]
         public string TotalGrossUnreduced { get; set; }
 
-        [JsonProperty("total_net_unreduced")]
+        [JsonPropertyName("total_net_unreduced")]
         public string TotalNetUnreduced { get; set; }
 
-        [JsonProperty("paid_amount")]
+        [JsonPropertyName("paid_amount")]
         public string PaidAmount { get; set; }
 
-        [JsonProperty("open_amount")]
+        [JsonPropertyName("open_amount")]
         public string OpenAmount { get; set; }
 
-        [JsonProperty("customerportal_url")]
+        [JsonPropertyName("customerportal_url")]
         public string CustomerPortalUrl { get; set; }
 
-        [JsonProperty("invoice_id")]
+        [JsonPropertyName("invoice_id")]
         public string InvoiceId { get; set; }
 
-        [JsonProperty("offer_id")]
+        [JsonPropertyName("offer_id")]
         public string OfferId { get; set; }
 
-        [JsonProperty("confirmation_id")]
+        [JsonPropertyName("confirmation_id")]
         public string ConfirmationId { get; set; }
 
-        [JsonProperty("recurring_id")]
+        [JsonPropertyName("recurring_id")]
         public string RecurringId { get; set; }
 
-        [JsonProperty("free_text_id")]
+        [JsonPropertyName("free_text_id")]
         public string FreeTextId { get; set; }
 
-        [JsonProperty("template_id")]
+        [JsonPropertyName("template_id")]
         public string TemplateId { get; set; }
 
-        [JsonProperty("payment_types")]
+        [JsonPropertyName("payment_types")]
         public string PaymentTypes { get; set; }
 
-        [JsonProperty("taxes")]
+        [JsonPropertyName("taxes")]
         public InvoiceTaxWrapper Taxes { get; set; }
-        [JsonProperty("invoice_items")]
+
+        [JsonPropertyName("invoice_items")]
         public InvoiceItemsWrapper InvoiceItems { get; set; }
     }
 }

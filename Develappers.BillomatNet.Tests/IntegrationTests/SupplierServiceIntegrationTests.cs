@@ -45,8 +45,9 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         }
 
         [Fact]
-        public async Task GetSupplierByIdWhenNotFound()
+        public async Task GetSupplierByIdWhenNotAuthorizedException()
         {
+            Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
             await Assert.ThrowsAsync<NotAuthorizedException>(() => SystemUnderTest.GetByIdAsync(1));
         }
     }

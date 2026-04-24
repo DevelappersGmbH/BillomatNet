@@ -4,12 +4,12 @@
 
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api.Json
 {
-    internal class CollectionConverter<T> : JsonConverter
+    internal class CollectionConverter<T> : JsonConverter<List<T>>
     {
         /// <summary>
         /// Checks whether this item can be converted
@@ -18,26 +18,26 @@ namespace Develappers.BillomatNet.Api.Json
         /// <returns>The boolean, true if List.</returns>
         public override bool CanConvert(Type objectType)
         {
-            return (objectType == typeof(List<T>));
+            return objectType == typeof(List<T>);
         }
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override List<T> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var token = JToken.Load(reader);
-            return token.Type == JTokenType.Array ? token.ToObject<List<T>>() : new List<T> { token.ToObject<T>() };
+            using (JsonDocument doc = JsonDocument.ParseValue(ref reader))
+            {
+                JsonValueKind kind = doc.RootElement.ValueKind;
+                return kind == JsonValueKind.Array ? doc.Deserialize<List<T>>() : new List<T> { doc.Deserialize<T>() };
+            }
         }
 
-        public override bool CanWrite => false;
-
-        /// <summary>
-        /// Writes the list to json - currently not implemented
-        /// </summary>
-        /// <param name="writer">The Json Writer</param>
-        /// <param name="value">The object.</param>
-        /// <param name="serializer">The Json Serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, List<T> value, JsonSerializerOptions options)
         {
-            throw new NotSupportedException("writing objects is not supported");
+            writer.WriteStartArray();
+            foreach (T item in value)
+            {
+                JsonSerializer.Serialize(writer, item);
+            }
+            writer.WriteEndArray();
         }
     }
 

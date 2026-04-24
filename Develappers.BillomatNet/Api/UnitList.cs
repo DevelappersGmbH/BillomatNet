@@ -3,14 +3,14 @@
 // See the LICENSE file in the project root for more information.
 
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using Develappers.BillomatNet.Api.Json;
-using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class UnitList : PagedList<Unit>
     {
-        [JsonProperty("unit")]
+        [JsonPropertyName("unit")]
         [JsonConverter(typeof(CollectionConverter<Unit>))]
         public override List<Unit> List { get; set; }
     }

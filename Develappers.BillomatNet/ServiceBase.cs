@@ -4,10 +4,11 @@
 
 using System;
 using System.Net;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Develappers.BillomatNet.Api.Net;
-using Newtonsoft.Json;
 
 namespace Develappers.BillomatNet
 {
@@ -42,20 +43,17 @@ namespace Develappers.BillomatNet
             {
                 httpResponse = await _httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), token).ConfigureAwait(false);
             }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+            catch (HttpRequestException wex) when (wex.StatusCode == HttpStatusCode.NotFound)
             {
                 // NotFound
                 return null;
             }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
+            catch (HttpRequestException wex) when (wex.StatusCode == HttpStatusCode.Unauthorized)
             {
                 // Unauthorized
                 throw new NotAuthorizedException("You are not authorized to access this item.", wex);
             }
-
-            return JsonConvert.DeserializeObject<T>(httpResponse);
+            return JsonSerializer.Deserialize<T>(httpResponse);
         }
 
         /// <summary>
@@ -77,19 +75,18 @@ namespace Develappers.BillomatNet
             {
                 httpResponse = await _httpClient.GetAsync(new Uri(resourceUrl, UriKind.Relative), query, token).ConfigureAwait(false);
             }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+
+            catch (HttpRequestException wex) when (wex.StatusCode == HttpStatusCode.NotFound)
             {
                 // NotFound
                 throw new NotFoundException($"The resource at {resourceUrl} could not be found.", wex);
             }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
+            catch (HttpRequestException wex) when (wex.StatusCode == HttpStatusCode.Unauthorized)
             {
                 // Unauthorized
                 throw new NotAuthorizedException("You are not authorized to access this item.", wex);
             }
-            return JsonConvert.DeserializeObject<T>(httpResponse);
+            return JsonSerializer.Deserialize<T>(httpResponse);
         }
 
         /// <summary>
@@ -108,14 +105,12 @@ namespace Develappers.BillomatNet
             {
                 await _httpClient.DeleteAsync(new Uri(resourceUrl, UriKind.Relative), token).ConfigureAwait(false);
             }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+            catch (HttpRequestException wex) when (wex.StatusCode == HttpStatusCode.NotFound)
             {
                 // NotFound
                 throw new NotFoundException($"The resource at {resourceUrl} could not be found.", wex);
             }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
+            catch (HttpRequestException wex) when (wex.StatusCode == HttpStatusCode.Unauthorized)
             {
                 // Unauthorized
                 throw new NotAuthorizedException("You are not authorized to delete this item.", wex);
@@ -161,17 +156,15 @@ namespace Develappers.BillomatNet
         {
             try
             {
-                var requestData = model == null ? "" : JsonConvert.SerializeObject(model);
+                var requestData = model == null ? "" : JsonSerializer.Serialize(model);
                 var result = await _httpClient.PutAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token).ConfigureAwait(false);
-                return JsonConvert.DeserializeObject<TOut>(result);
+                return JsonSerializer.Deserialize<TOut>(result);
             }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+            catch (HttpRequestException wex) when (wex.StatusCode == HttpStatusCode.NotFound)
             {
                 throw new NotFoundException($"The resource at {resourceUrl} could not be found.", wex);
             }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
+            catch (HttpRequestException wex) when (wex.StatusCode == HttpStatusCode.Unauthorized)
             {
                 // Unauthorized
                 throw new NotAuthorizedException("You are not authorized to change this item.", wex);
@@ -197,7 +190,6 @@ namespace Develappers.BillomatNet
             return PostAsync<T, T>(resourceUrl, model, token);
         }
 
-
         /// <summary>
         /// Creates a new entity.
         /// </summary>
@@ -218,20 +210,21 @@ namespace Develappers.BillomatNet
         {
             try
             {
-                var requestData = model == null ? "" : JsonConvert.SerializeObject(model, new JsonSerializerSettings
+                var requestData = model == null ? "" : JsonSerializer.Serialize(model, new JsonSerializerOptions
                 {
-                    NullValueHandling = NullValueHandling.Ignore
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+                    DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
                 });
                 var responseData = await _httpClient.PostAsync(new Uri(resourceUrl, UriKind.Relative), requestData, token);
-                return JsonConvert.DeserializeObject<TOut>(responseData);
+                if (responseData == "")
+                    return null;
+                return JsonSerializer.Deserialize<TOut>(responseData);
             }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.NotFound)
+            catch (HttpRequestException wex) when (wex.StatusCode == HttpStatusCode.NotFound)
             {
                 throw new NotFoundException($"The resource at {resourceUrl} could not be found.", wex);
             }
-            catch (WebException wex)
-                when (wex.Status == WebExceptionStatus.ProtocolError && (wex.Response as HttpWebResponse)?.StatusCode == HttpStatusCode.Unauthorized)
+            catch (HttpRequestException wex) when (wex.StatusCode == HttpStatusCode.Unauthorized)
             {
                 // Unauthorized
                 throw new NotAuthorizedException("You are not authorized to change this item.", wex);

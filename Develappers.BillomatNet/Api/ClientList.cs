@@ -4,13 +4,13 @@
 
 using System.Collections.Generic;
 using Develappers.BillomatNet.Api.Json;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class ClientList : PagedList<Client>
     {
-        [JsonProperty("client")]
+        [JsonPropertyName("client")]
         [JsonConverter(typeof(CollectionConverter<Client>))]
         public override List<Client> List { get; set; }
     }

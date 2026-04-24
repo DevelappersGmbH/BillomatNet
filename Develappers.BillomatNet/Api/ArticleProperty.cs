@@ -2,28 +2,28 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class ArticleProperty
     {
-        [JsonProperty("id")]
-        public int Id { get; set; }
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
 
-        [JsonProperty("article_id")]
-        public int ArticleId { get; set; }
+        [JsonPropertyName("article_id")]
+        public string ArticleId { get; set; }
 
-        [JsonProperty("article_property_id")]
-        public int ArticlePropertyId { get; set; }
+        [JsonPropertyName("article_property_id")]
+        public string ArticlePropertyId { get; set; }
 
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
 
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
-        [JsonProperty("value")]
+        [JsonPropertyName("value")]
         public string Value { get; set; }
     }
 }

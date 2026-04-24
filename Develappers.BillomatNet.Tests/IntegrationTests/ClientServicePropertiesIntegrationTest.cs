@@ -90,7 +90,6 @@ namespace Develappers.BillomatNet.Tests.IntegrationTests
         public async Task EditClientPropertyWhenNotAuthorized()
         {
             Configuration.ApiKey = "ajfkjeinodafkejlkdsjklj";
-
             var clientProp = new ClientProperty
             {
                 ClientId = 796659,

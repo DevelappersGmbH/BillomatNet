@@ -2,63 +2,60 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class OfferItem
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonProperty("article_id")]
+        [JsonPropertyName("article_id")]
         public string ArticleId { get; set; }
 
-        [JsonProperty("offer_id")]
+        [JsonPropertyName("offer_id")]
         public string OfferId { get; set; }
 
-        [JsonProperty("position")]
+        [JsonPropertyName("position")]
         public string Position { get; set; }
 
-        [JsonProperty("unit")]
+        [JsonPropertyName("unit")]
         public string Unit { get; set; }
 
-        [JsonProperty("quantity")]
+        [JsonPropertyName("quantity")]
         public string Quantity { get; set; }
 
-        [JsonProperty("unit_price")]
+        [JsonPropertyName("unit_price")]
         public string UnitPrice { get; set; }
 
-        [JsonProperty("tax_name")]
+        [JsonPropertyName("tax_name")]
         public string TaxName { get; set; }
 
-        [JsonProperty("tax_rate")]
+        [JsonPropertyName("tax_rate")]
         public string TaxRate { get; set; }
 
-        [JsonProperty("title")]
+        [JsonPropertyName("title")]
         public string Title { get; set; }
 
-        [JsonProperty("description")]
+        [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonProperty("total_gross")]
+        [JsonPropertyName("total_gross")]
         public string TotalGross { get; set; }
 
-        [JsonProperty("total_net")]
+        [JsonPropertyName("total_net")]
         public string TotalNet { get; set; }
 
-        [JsonProperty("reduction")]
+        [JsonPropertyName("reduction")]
         public string Reduction { get; set; }
 
-        [JsonProperty("total_gross_unreduced")]
+        [JsonPropertyName("total_gross_unreduced")]
         public string TotalGrossUnreduced { get; set; }
 
-        [JsonProperty("total_net_unreduced")]
+        [JsonPropertyName("total_net_unreduced")]
         public string TotalNetUnreduced { get; set; }
-        [JsonProperty("type")]
+        [JsonPropertyName("type")]
         public string Type { get; set; }
     }
 }

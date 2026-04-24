@@ -80,7 +80,6 @@ namespace Develappers.BillomatNet.Tests.UnitTests
             result.Should().BeEquivalentTo(expectedResult);
         }
 
-
         [Fact]
         public async Task GetByPdf_WithValidData_ShouldReturnCorrectValues()
         {
@@ -122,7 +121,7 @@ namespace Develappers.BillomatNet.Tests.UnitTests
 
             var expectedRequestUri = new Uri("/api/incomings", UriKind.Relative);
             const string expectedRequestQuery = "supplier_id=50013&order_by=date+DESC&per_page=100&page=1";
-            const string responseBody = "{\"incomings\":{\"incoming\":{\"id\":\"626880\",\"created\":\"2020-07-01T09:38:21+02:00\",\"updated\":\"2020-07-01T09:38:22+02:00\",\"supplier_id\":\"50013\",\"number\":\"1234\",\"client_number\":\"\",\"date\":\"2020-07-01\",\"due_date\":\"\",\"address\":\"Meyers AG\\r\\nHerr Jens  Maul\",\"status\":\"OPEN\",\"label\":\"\",\"note\":\"\",\"total_net\":\"-12.36\",\"total_gross\":\"-14.71\",\"currency_code\":\"EUR\",\"quote\":\"1\",\"paid_amount\":\"0\",\"open_amount\":\"-14.71\",\"expense_account_number\":\"\",\"category\":\"\",\"page_count\":\"1\",\"customfield\":\"\",\"incoming-property-values\":\"\"},\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"1\"}}";
+            const string responseBody = "{\"incomings\":{\"incoming\":{\"id\":\"626880\",\"created\":\"2020-07-01T09:38:21+02:00\",\"updated\":\"2020-07-01T09:38:22+02:00\",\"supplier_id\":\"50013\",\"number\":\"1234\",\"client_number\":\"\",\"date\":\"2020-07-01\",\"due_date\":\"\",\"address\":\"Meyers AG\\nHerr Jens  Maul\",\"status\":\"OPEN\",\"label\":\"\",\"note\":\"\",\"total_net\":\"-12.36\",\"total_gross\":\"-14.71\",\"currency_code\":\"EUR\",\"quote\":\"1\",\"paid_amount\":\"0\",\"open_amount\":\"-14.71\",\"expense_account_number\":\"\",\"category\":\"\",\"page_count\":\"1\",\"customfield\":\"\",\"incoming-property-values\":\"\"},\"@page\":\"1\",\"@per_page\":\"100\",\"@total\":\"1\"}}";
 
             A.CallTo(() => http.GetAsync(expectedRequestUri, expectedRequestQuery, A<CancellationToken>.Ignored))
                 .Returns(Task.FromResult(responseBody));

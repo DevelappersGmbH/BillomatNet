@@ -20,8 +20,8 @@ namespace Develappers.BillomatNet.Mapping
 
             return new ArticleTag
             {
-                Id = value.Id,
-                ArticleId = value.ArticleId,
+                Id = value.Id.ToInt(),
+                ArticleId = value.ArticleId.ToInt(),
                 Name = value.Name
             };
         }
@@ -34,8 +34,8 @@ namespace Develappers.BillomatNet.Mapping
             }
             return new Api.ArticleTag
             {
-                Id = value.Id,
-                ArticleId = value.ArticleId,
+                Id = value.Id.ToString(),
+                ArticleId = value.ArticleId.ToString(),
                 Name = value.Name
             };
         }

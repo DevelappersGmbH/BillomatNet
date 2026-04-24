@@ -2,23 +2,23 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class Tax
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
-        [JsonProperty("created")]
+        [JsonPropertyName("created")]
         public string Created { get; set; }
-        [JsonProperty("updated")]
+        [JsonPropertyName("updated")]
         public string Updated { get; set; }
-        [JsonProperty("name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
-        [JsonProperty("rate")]
+        [JsonPropertyName("rate")]
         public string Rate { get; set; }
-        [JsonProperty("is_default")]
+        [JsonPropertyName("is_default")]
         public string IsDefault { get; set; }
     }
 }

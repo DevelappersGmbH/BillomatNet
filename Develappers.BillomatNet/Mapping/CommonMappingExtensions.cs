@@ -242,7 +242,7 @@ namespace Develappers.BillomatNet.Mapping
             return value.Split(',').Select(x => int.Parse(x.Trim())).ToList();
         }
 
-        internal static Dictionary<string, string> ToDictionary(this List<KeyValuePair> value)
+        internal static Dictionary<string, string> ToDictionary(this List<Api.KeyValuePair> value)
         {
             return value?.ToDictionary(item => item.Key, item => item.Value);
         }

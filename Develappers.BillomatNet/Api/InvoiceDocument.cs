@@ -2,31 +2,31 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information.
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Develappers.BillomatNet.Api
 {
     internal class InvoiceDocument
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
-        [JsonProperty("created")]
+        [JsonPropertyName("created")]
         public string Created { get; set; }
 
-        [JsonProperty("invoice_id")]
+        [JsonPropertyName("invoice_id")]
         public string InvoiceId { get; set; }
 
-        [JsonProperty("filename")]
+        [JsonPropertyName("filename")]
         public string FileName { get; set; }
 
-        [JsonProperty("mimetype")]
+        [JsonPropertyName("mimetype")]
         public string MimeType { get; set; }
 
-        [JsonProperty("filesize")]
+        [JsonPropertyName("filesize")]
         public string FileSize { get; set; }
 
-        [JsonProperty("base64file")]
+        [JsonPropertyName("base64file")]
         public string Base64File { get; set; }
     }
 }
